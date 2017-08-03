@@ -1,0 +1,10 @@
+.env
+
+# Editor specific stuffs
+.vscode/
+
+# Node.JS specific
+node_modules/
+.sass-cache/
+.nyc_output/
+npm-debug.log
