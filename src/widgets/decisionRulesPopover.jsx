@@ -38,9 +38,9 @@ class DecisionRulesPopover extends React.Component {
     return (
       <div className='popover-content craft-popover'>
         <div className='title' style={{ backgroundColor: color }}>
-        {
-          title
-        }
+          {
+            title
+          }
         </div>
         <ul>
           <li>Confidence: { (node.data.confidence * 100).toFixed(2) }%</li>
@@ -51,9 +51,9 @@ class DecisionRulesPopover extends React.Component {
           }
           <li>Decision rules:
             <ul>
-            {
-              _.map(decisionRulesKeys, this.displayConditions)
-            }
+              {
+                _.map(decisionRulesKeys, this.displayConditions)
+              }
             </ul>
           </li>
         </ul>

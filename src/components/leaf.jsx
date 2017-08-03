@@ -49,7 +49,7 @@ class Leaf extends React.Component {
         context={ this.props.configuration.context }
         title={ rendererText }
         color={ color } />
-      ) : null;
+    ) : null;
     return (
       <div>
         <div

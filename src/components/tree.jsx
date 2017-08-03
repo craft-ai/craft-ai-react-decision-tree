@@ -117,12 +117,13 @@ class Tree extends React.Component {
 
   componentDidMount() {
     const selection = d3Select('div.zoomed-tree');
-    selection.call(this.state.zoom
-      .scaleExtent(ZOOM_EXTENT)
-      .on('zoom', this.mouseWheel)
-      .on('start', this.onPanningActivated)
-      .on('end', this.onPanningDeactivated))
-    .on('dblclick.zoom', null);
+    selection.call(
+      this.state.zoom
+        .scaleExtent(ZOOM_EXTENT)
+        .on('zoom', this.mouseWheel)
+        .on('start', this.onPanningActivated)
+        .on('end', this.onPanningDeactivated)
+    ).on('dblclick.zoom', null);
     this.resetPosition();
   }
 

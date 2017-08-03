@@ -12,8 +12,18 @@
     "type": "git",
     "url": "git@github.com:craft-ai/craft-ai-react-decision-tree.git"
   },
-  "scripts": {},
-  "devDependencies": {},
+  "scripts": {
+    "build": "",
+    "fix_lint": "eslint --fix --ext .js,.jsx .",
+    "lint": "eslint --ext .js,.jsx ."
+  },
+  "devDependencies": {
+    "babel-eslint": "7.2.3",
+    "babel-plugin-transform-react-jsx": "6.24.1",
+    "eslint": "4.3.0",
+    "eslint-config-craft-ai": "2.2.3",
+    "eslint-plugin-react": "6.10.3"
+  },
   "dependencies": {
     "classnames": "2.2.5",
     "d3-hierarchy": "1.1.5",

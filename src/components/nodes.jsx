@@ -5,8 +5,10 @@ import React from 'react';
 import ToolTip from '../widgets/tooltip';
 import { Overlay } from 'react-overlays';
 import { Properties } from 'craft-ai';
-import { NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NOT_RELIABLE_LIMIT, NOT_RELIABLE_COLOR,
-         NULL_COLOR, RELIABLE_PERCENT, RELIABLE_COLOR } from '../common/constants';
+import {
+  NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NOT_RELIABLE_LIMIT, NOT_RELIABLE_COLOR,
+  NULL_COLOR, RELIABLE_PERCENT, RELIABLE_COLOR
+} from '../common/constants';
 
 const makeGradientColor = (percent) => {
   let newColor = {};

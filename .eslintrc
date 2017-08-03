@@ -1,0 +1,3 @@
+{
+  "extends": "craft-ai/react.babel"
+}
