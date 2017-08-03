@@ -1,0 +1,30 @@
+{
+  "name": "craft-ai-react-decision-tree",
+  "version": "1.0.0",
+  "description": "craft ai react package to display decision tree",
+  "private": true,
+  "author": {
+    "name": "craft ai",
+    "email": "contact@craft.ai",
+    "url": "http://craft.ai/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:craft-ai/craft-ai-react-decision-tree.git"
+  },
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "classnames": "2.2.5",
+    "d3-hierarchy": "1.1.5",
+    "d3-selection": "1.1.0",
+    "d3-zoom": "1.5.0",
+    "lodash": "4.17.4",
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-overlays": "0.8.0"
+  },
+  "browser": {
+    "dotenv": false
+  }
+}
