@@ -1,7 +1,7 @@
 {
-  "name": "craft-ai-react-decision-tree",
+  "name": "react-craft-ai-decision-tree",
   "version": "1.0.0",
-  "description": "craft ai react package to display craft ai decision tree",
+  "description": "React component to display craft ai decision tree",
   "author": {
     "name": "craft ai",
     "email": "contact@craft.ai",
@@ -9,15 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:craft-ai/craft-ai-react-decision-tree.git"
+    "url": "git@github.com:craft-ai/react-craft-ai-decision-tree.git"
   },
   "main": "index.js",
   "scripts": {
-    "build": "npm run build-css && npm run build_js",
-    "build_js": "babel src/ -d lib/",
+    "build": "npm run build-css && npm run build-js",
+    "build-js": "babel src/ -d lib/",
     "build-css": "node-sass --include-path scss src/style/tree.scss lib/css/tree.css",
-    "fix_lint": "eslint --fix --ext .js,.jsx .",
-    "lint": "eslint --ext .js,.jsx ."
+    "fix-lint": "eslint --fix --ext .js,.jsx .",
+    "lint": "eslint --ext .js,.jsx .",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",
