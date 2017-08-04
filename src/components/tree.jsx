@@ -10,7 +10,7 @@ import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
 import {
   NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH,
   NODE_WIDTH_MARGIN, MARGIN, ZOOM_EXTENT
-} from '../common/constants';
+} from '../utils/constants';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
 
 function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scaleExtent = ZOOM_EXTENT) {

@@ -4,7 +4,7 @@ import DecisionRulesPopover from '../widgets/decisionRulesPopover';
 import PopOver from '../widgets/popover';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NODE_HEIGHT, NODE_WIDTH } from './constants';
+import { NODE_HEIGHT, NODE_WIDTH } from '../utils/constants';
 import { Overlay } from 'react-overlays';
 
 class Leaf extends React.Component {

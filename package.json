@@ -11,14 +11,14 @@
     "type": "git",
     "url": "git@github.com:craft-ai/react-craft-ai-decision-tree.git"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "npm run build-css && npm run build-js",
     "build-js": "babel src/ -d lib/",
     "build-css": "node-sass --include-path scss src/style/tree.scss lib/css/tree.css",
     "fix-lint": "eslint --fix --ext .js,.jsx .",
     "lint": "eslint --ext .js,.jsx .",
-    "prepublish": "npm run build"
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",
