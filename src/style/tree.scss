@@ -42,3 +42,20 @@ $gray-light: #ccc;
 .popover > .popover-content {
   padding: 0;
 }
+
+.craft-popover {
+  & > .title {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: solid 1px $gray-light;
+    padding-bottom: 5;
+    padding-top: 5;
+  }
+
+  & > ul {
+    list-style-type: none;
+    border-bottom: none;
+    margin: 0;
+    padding: 5;
+  }
+}

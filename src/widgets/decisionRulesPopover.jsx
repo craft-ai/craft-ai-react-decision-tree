@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Properties } from 'craft-ai';
 
-import './popover.scss';
-
 class DecisionRulesPopover extends React.Component {
   shouldComponentUpdate(nextProps) {
     const { node, title, color } = this.props;
