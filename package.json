@@ -17,7 +17,8 @@
     "build-js": "babel src/ -d lib/",
     "build-css": "node-sass --include-path scss src/style/tree.scss lib/css/tree.css",
     "fix-lint": "eslint --fix --ext .js,.jsx .",
-    "lint": "eslint --ext .js,.jsx ."
+    "lint": "eslint --ext .js,.jsx .",
+    "prepublish": "npm run build"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",

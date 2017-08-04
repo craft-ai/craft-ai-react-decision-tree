@@ -3,56 +3,51 @@ import React from 'react';
 
 const MARGIN = 10;
 
-class PopOver extends React.Component {
-  setPopoverRef = (input) => (this.popoverRef = input)
-
-  onPopover = () => (this.props.onTooltip(true))
-
-  notOnPopover = () => (this.props.onTooltip(false))
+class ToolTip extends React.Component {
+  setTooltipRef = (input) => (this.tooltipRef = input);
 
   componentDidUpdate() {
     this.props.onPlacementUpdated(
-      this.popoverRef &&
-      (this.popoverRef.offsetHeight + this.props.style.top + MARGIN) > window.innerHeight
+      this.tooltipRef &&
+      (this.tooltipRef.offsetHeight + this.props.style.top + MARGIN) > window.innerHeight
     );
   }
 
   render() {
-    let { style, placement, children, arrowOffsetLeft } = this.props;
+    let { arrowOffsetLeft, style, placement, children } = this.props;
 
     // dealing with arrow percentage
     let arrowLeftPercent = parseFloat(arrowOffsetLeft);
 
-    if (arrowLeftPercent > 95) {
-      arrowOffsetLeft = '95%';
+    if (arrowLeftPercent > 75) {
+      arrowOffsetLeft = '75%';
     }
 
     return (
       <div
-        onMouseEnter={ this.onPopover }
-        onMouseLeave={ this.notOnPopover }
-        ref={ this.setPopoverRef }
-        className={ `popover ${placement}` }
-        style={{ display: 'block', ...style }}>
-        <div className='arrow' style={{ left: arrowOffsetLeft }} />
-        { children }
+        ref={ this.setTooltipRef }
+        className={ `craft-tooltip ${placement}` }
+        style={{ opacity: 1, ...style }}>
+        <div className='craft-tooltip-arrow' style={{ left: arrowOffsetLeft }} />
+        <div className='craft-tooltip-content'>
+          { children }
+        </div>
       </div>
     );
   }
 }
 
-PopOver.defaultProps = {
-  arrowOffsetLeft: '0',
-  onTooltip: () => null
+ToolTip.defaultProps = {
+  onPlacementUpdated: () => null,
+  arrowOffsetLeft: '0'
 };
 
-PopOver.propTypes = {
+ToolTip.propTypes = {
   placement: PropTypes.string,
   arrowOffsetLeft: PropTypes.string,
-  onTooltip: PropTypes.func,
   style: PropTypes.object,
   children: PropTypes.node,
   onPlacementUpdated: PropTypes.func
 };
 
-export default PopOver;
+export default ToolTip;
