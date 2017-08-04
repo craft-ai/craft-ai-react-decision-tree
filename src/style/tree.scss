@@ -1,0 +1,44 @@
+$gray-lighter: #ccc;
+$gray-light: #ccc;
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.craft-nodes {
+  position: absolute;
+  background-color: darken($gray-lighter, 20%);
+  text-align: center;
+  line-height: 1.75;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+  height: 30px;
+  pointer-events: auto;
+
+  &.empty-node {
+    box-sizing: border-box;
+    border: solid 2px $gray-light;
+    background: repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, $gray-light 10px, $gray-light 15px );
+  }
+}
+
+.craft-links {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  text-align: center;
+  font-size: smaller;
+  pointer-events: auto;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.translated-tree {
+  transform-origin: left top 0px;
+}
+
+.popover > .popover-content {
+  padding: 0;
+}

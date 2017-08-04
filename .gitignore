@@ -5,6 +5,7 @@
 
 # Node.JS specific
 node_modules/
+lib/
 .sass-cache/
 .nyc_output/
 npm-debug.log
