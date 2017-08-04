@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import classnames from 'classnames';
 import DecisionRulesPopover from '../widgets/decisionRulesPopover';
-import PopOver from '../common/popover';
+import PopOver from '../widgets/popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NODE_HEIGHT, NODE_WIDTH } from './constants';

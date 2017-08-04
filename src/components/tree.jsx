@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Box from './box';
+import Box from '../utils/box';
 import classnames from 'classnames';
 import Edges from './edges';
 import Nodes from './nodes';
@@ -7,10 +7,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { event as d3Event, select as d3Select } from 'd3-selection';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
+import {
+  NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH,
+  NODE_WIDTH_MARGIN, MARGIN, ZOOM_EXTENT
+} from '../common/constants';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
-import { NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NODE_WIDTH_MARGIN, ZOOM_EXTENT, MARGIN } from '../common/constants';
-
-import './tree.scss';
 
 function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scaleExtent = ZOOM_EXTENT) {
   // from https://developer.mozilla.org/en/docs/Web/SVG/Attribute/transform
