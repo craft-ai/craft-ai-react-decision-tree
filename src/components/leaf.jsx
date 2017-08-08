@@ -85,7 +85,7 @@ Leaf.propTypes = {
   ]),
   color: PropTypes.string.isRequired,
   configuration: PropTypes.object,
-  height: PropTypes.height
+  height: PropTypes.number
 };
 
 export default Leaf;

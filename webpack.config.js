@@ -1,7 +1,7 @@
 const path = require('path');
 
 const configuration = {
-  entry: './src/components/tree.jsx',
+  entry: './src/components/treeComponent.jsx',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
