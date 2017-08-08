@@ -196,6 +196,7 @@ class Tree extends React.Component {
             height: minSvgHeight
           }}>
           <Nodes
+            height={ this.props.height }
             configuration={ this.props.configuration }
             nodes={ nodes }
             links={ links } />
@@ -210,6 +211,7 @@ class Tree extends React.Component {
     );
   }
 }
+
 Tree.propTypes = {
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,

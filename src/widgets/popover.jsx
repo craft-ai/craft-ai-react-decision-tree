@@ -6,14 +6,14 @@ const MARGIN = 10;
 class PopOver extends React.Component {
   setPopoverRef = (input) => (this.popoverRef = input)
 
-  onPopover = () => (this.props.onTooltip(true))
+  onPopover = () => (this.props.onPopover(true))
 
-  notOnPopover = () => (this.props.onTooltip(false))
+  notOnPopover = () => (this.props.onPopover(false))
 
   componentDidUpdate() {
     this.props.onPlacementUpdated(
       this.popoverRef &&
-      (this.popoverRef.offsetHeight + this.props.style.top + MARGIN) > window.innerHeight
+      (this.popoverRef.offsetHeight + this.props.style.top + MARGIN) > this.props.height
     );
   }
 
@@ -32,9 +32,9 @@ class PopOver extends React.Component {
         onMouseEnter={ this.onPopover }
         onMouseLeave={ this.notOnPopover }
         ref={ this.setPopoverRef }
-        className={ `popover ${placement}` }
+        className={ `craft-popover ${placement}` }
         style={{ display: 'block', ...style }}>
-        <div className='arrow' style={{ left: arrowOffsetLeft }} />
+        <div className='craft-popover-arrow' style={{ left: arrowOffsetLeft }} />
         { children }
       </div>
     );
@@ -43,16 +43,18 @@ class PopOver extends React.Component {
 
 PopOver.defaultProps = {
   arrowOffsetLeft: '0',
-  onTooltip: () => null
+  onPopover: () => null,
+  height: window.innerHeight
 };
 
 PopOver.propTypes = {
   placement: PropTypes.string,
   arrowOffsetLeft: PropTypes.string,
-  onTooltip: PropTypes.func,
+  onPopover: PropTypes.func,
   style: PropTypes.object,
   children: PropTypes.node,
-  onPlacementUpdated: PropTypes.func
+  onPlacementUpdated: PropTypes.func,
+  height: PropTypes.number
 };
 
 export default PopOver;

@@ -71,6 +71,7 @@ class Nodes extends React.Component {
       return (
         <Leaf
           key={ index }
+          height={ this.props.height }
           node={ node }
           color={ newColor.cssColor }
           text={ node.data.predicted_value }
@@ -175,7 +176,8 @@ class Nodes extends React.Component {
 Nodes.propTypes = {
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
-  links: PropTypes.array.isRequired
+  links: PropTypes.array.isRequired,
+  height: PropTypes.number.isRequired,
 };
 
 export default Nodes;

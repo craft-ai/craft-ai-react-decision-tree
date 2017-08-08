@@ -10,7 +10,7 @@ import { Overlay } from 'react-overlays';
 class Leaf extends React.Component {
   state = {
     showingPopover: false,
-    tooltipOnPovover: false,
+    mouseOnPovover: false,
     popoverRef: null,
     placement: 'bottom'
   }
@@ -33,8 +33,8 @@ class Leaf extends React.Component {
     }
   }
 
-  setMouseOnToolTip = (onPopover) => {
-    this.setState({ tooltipOnPovover: onPopover });
+  setMouseOnPopover = (onPopover) => {
+    this.setState({ mouseOnPovover: onPopover });
   }
 
   render() {
@@ -50,6 +50,7 @@ class Leaf extends React.Component {
         title={ rendererText }
         color={ color } />
     ) : null;
+
     return (
       <div>
         <div
@@ -61,11 +62,12 @@ class Leaf extends React.Component {
           { rendererText }
         </div>
         <Overlay
-          show={ this.state.showingPopover || this.state.tooltipOnPovover }
+          show={ this.state.showingPopover || this.state.mouseOnPovover }
           placement={ this.state.placement }
           target={ this.state.popoverRef }>
           <PopOver
-            onTooltip={ this.setMouseOnToolTip }
+            onPopover={ this.setMouseOnPopover }
+            height={ this.props.height }
             onPlacementUpdated={ this.updatePopOverPlacement }>
             { renderList }
           </PopOver>
@@ -82,7 +84,8 @@ Leaf.propTypes = {
     PropTypes.string
   ]),
   color: PropTypes.string.isRequired,
-  configuration: PropTypes.object
+  configuration: PropTypes.object,
+  height: PropTypes.height
 };
 
 export default Leaf;

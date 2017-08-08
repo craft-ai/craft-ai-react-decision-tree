@@ -34,8 +34,8 @@ class DecisionRulesPopover extends React.Component {
     const { node, title, color } = this.props;
     const decisionRulesKeys = node ? _.keys(node.decisionRules) : [];
     return (
-      <div className='popover-content craft-popover'>
-        <div className='title' style={{ backgroundColor: color }}>
+      <div className='craft-popover-content'>
+        <div className='craft-popover-title' style={{ backgroundColor: color }}>
           {
             title
           }
