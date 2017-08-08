@@ -1,0 +1,526 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "confidence": 0.8077218532562256,
+                          "decision_rule": {
+                            "operand": "+01:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "OPEN"
+                        },
+                        {
+                          "confidence": 0.5260117053985596,
+                          "decision_rule": {
+                            "operand": "+02:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "CLOSED"
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          0,
+                          4
+                        ],
+                        "operator": "[in[",
+                        "property": "day"
+                      }
+                    },
+                    {
+                      "confidence": 0.8077218532562256,
+                      "decision_rule": {
+                        "operand": [
+                          4,
+                          5
+                        ],
+                        "operator": "[in[",
+                        "property": "day"
+                      },
+                      "predicted_value": "OPEN"
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      8,
+                      8.166667
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "confidence": 0.9992071390151978,
+                      "decision_rule": {
+                        "operand": [
+                          8.166667,
+                          18.166666
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      },
+                      "predicted_value": "OPEN"
+                    },
+                    {
+                      "children": [
+                        {
+                          "confidence": 0.913058578968048,
+                          "decision_rule": {
+                            "operand": "+01:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "CLOSED"
+                        },
+                        {
+                          "confidence": 0.9882375001907348,
+                          "decision_rule": {
+                            "operand": "+02:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "OPEN"
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          18.166666,
+                          19
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      8.166667,
+                      19
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  8,
+                  19
+                ],
+                "operator": "[in[",
+                "property": "time"
+              }
+            },
+            {
+              "children": [
+                {
+                  "confidence": 0.5858232378959656,
+                  "decision_rule": {
+                    "operand": [
+                      0,
+                      4
+                    ],
+                    "operator": "[in[",
+                    "property": "day"
+                  },
+                  "predicted_value": "CLOSED"
+                },
+                {
+                  "confidence": 0.8077218532562256,
+                  "decision_rule": {
+                    "operand": [
+                      4,
+                      5
+                    ],
+                    "operator": "[in[",
+                    "property": "day"
+                  },
+                  "predicted_value": "OPEN"
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  19,
+                  19.166666
+                ],
+                "operator": "[in[",
+                "property": "time"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": [
+              0,
+              5
+            ],
+            "operator": "[in[",
+            "property": "day"
+          }
+        },
+        {
+          "children": [
+            {
+              "confidence": 0.9926158785820008,
+              "decision_rule": {
+                "operand": [
+                  8,
+                  10.666667
+                ],
+                "operator": "[in[",
+                "property": "time"
+              },
+              "predicted_value": "CLOSED"
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "confidence": 0.8077218532562256,
+                          "decision_rule": {
+                            "operand": [
+                              5,
+                              6
+                            ],
+                            "operator": "[in[",
+                            "property": "day"
+                          },
+                          "predicted_value": "OPEN"
+                        },
+                        {
+                          "confidence": 0.28075236082077026,
+                          "decision_rule": {
+                            "operand": [
+                              6,
+                              0
+                            ],
+                            "operator": "[in[",
+                            "property": "day"
+                          },
+                          "predicted_value": "CLOSED"
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          10.666667,
+                          10.833333
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      }
+                    },
+                    {
+                      "confidence": 0.9948516488075256,
+                      "decision_rule": {
+                        "operand": [
+                          10.833333,
+                          14.666667
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      },
+                      "predicted_value": "OPEN"
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      10.666667,
+                      14.666667
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "confidence": 0.9264835119247437,
+                          "decision_rule": {
+                            "operand": "+01:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "OPEN"
+                        },
+                        {
+                          "confidence": 0.9652576446533204,
+                          "decision_rule": {
+                            "operand": "+02:00",
+                            "operator": "is",
+                            "property": "tz"
+                          },
+                          "predicted_value": "CLOSED"
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          14.666667,
+                          17
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      }
+                    },
+                    {
+                      "confidence": 0.6664235591888428,
+                      "decision_rule": {
+                        "operand": [
+                          17,
+                          19.166666
+                        ],
+                        "operator": "[in[",
+                        "property": "time"
+                      },
+                      "predicted_value": "OPEN"
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      14.666667,
+                      19.166666
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  10.666667,
+                  19.166666
+                ],
+                "operator": "[in[",
+                "property": "time"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": [
+              5,
+              0
+            ],
+            "operator": "[in[",
+            "property": "day"
+          }
+        }
+      ],
+      "decision_rule": {
+        "operand": [
+          8,
+          19.166666
+        ],
+        "operator": "[in[",
+        "property": "time"
+      }
+    },
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "confidence": 0.893635094165802,
+              "decision_rule": {
+                "operand": [
+                  5,
+                  6
+                ],
+                "operator": "[in[",
+                "property": "day"
+              },
+              "predicted_value": "OPEN"
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "confidence": 0.8077218532562256,
+                      "decision_rule": {
+                        "operand": "+01:00",
+                        "operator": "is",
+                        "property": "tz"
+                      },
+                      "predicted_value": "CLOSED"
+                    },
+                    {
+                      "confidence": 0.8077218532562256,
+                      "decision_rule": {
+                        "operand": "+02:00",
+                        "operator": "is",
+                        "property": "tz"
+                      },
+                      "predicted_value": "OPEN"
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      6,
+                      0
+                    ],
+                    "operator": "[in[",
+                    "property": "day"
+                  }
+                },
+                {
+                  "confidence": 0.9742316007614136,
+                  "decision_rule": {
+                    "operand": [
+                      0,
+                      5
+                    ],
+                    "operator": "[in[",
+                    "property": "day"
+                  },
+                  "predicted_value": "CLOSED"
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  6,
+                  5
+                ],
+                "operator": "[in[",
+                "property": "day"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": [
+              19.166666,
+              19.5
+            ],
+            "operator": "[in[",
+            "property": "time"
+          }
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "confidence": 0.8077218532562256,
+                      "decision_rule": {
+                        "operand": [
+                          5,
+                          6
+                        ],
+                        "operator": "[in[",
+                        "property": "day"
+                      },
+                      "predicted_value": "OPEN"
+                    },
+                    {
+                      "confidence": 0.9585137963294984,
+                      "decision_rule": {
+                        "operand": [
+                          6,
+                          5
+                        ],
+                        "operator": "[in[",
+                        "property": "day"
+                      },
+                      "predicted_value": "CLOSED"
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      19.5,
+                      19.666666
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  }
+                },
+                {
+                  "confidence": 0.999469518661499,
+                  "decision_rule": {
+                    "operand": [
+                      19.666666,
+                      7.1666665
+                    ],
+                    "operator": "[in[",
+                    "property": "time"
+                  },
+                  "predicted_value": "CLOSED"
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  19.5,
+                  7.1666665
+                ],
+                "operator": "[in[",
+                "property": "time"
+              }
+            },
+            {
+              "children": [
+                {
+                  "confidence": 0.954553723335266,
+                  "decision_rule": {
+                    "operand": "+01:00",
+                    "operator": "is",
+                    "property": "tz"
+                  },
+                  "predicted_value": "OPEN"
+                },
+                {
+                  "confidence": 0.9914179444313048,
+                  "decision_rule": {
+                    "operand": "+02:00",
+                    "operator": "is",
+                    "property": "tz"
+                  },
+                  "predicted_value": "CLOSED"
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  7.1666665,
+                  8
+                ],
+                "operator": "[in[",
+                "property": "time"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": [
+              19.5,
+              8
+            ],
+            "operator": "[in[",
+            "property": "time"
+          }
+        }
+      ],
+      "decision_rule": {
+        "operand": [
+          19.166666,
+          8
+        ],
+        "operator": "[in[",
+        "property": "time"
+      }
+    }
+  ]
+}
