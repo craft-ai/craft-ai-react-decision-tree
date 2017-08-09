@@ -1,7 +1,6 @@
 $gray-lighter: #eee;
 $gray-light: #777;
 
-
 .tree-overlay {
   opacity: 0;
   transition: opacity .25s ease-in-out;
@@ -24,63 +23,8 @@ $gray-light: #777;
   position: absolute;
 }
 
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-
-.craft-nodes {
-  position: absolute;
-  background-color: darken($gray-lighter, 20%);
-  text-align: center;
-  line-height: 1.75;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 100px;
-  height: 30px;
-  pointer-events: auto;
-
-  &.empty-node {
-    box-sizing: border-box;
-    border: solid 2px $gray-light;
-    background: repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, $gray-light 10px, $gray-light 15px );
-  }
-}
-
-.craft-links {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: absolute;
-  text-align: center;
-  font-size: smaller;
-  pointer-events: auto;
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
 .translated-tree {
   transform-origin: left top 0px;
-}
-
-.popover > .popover-content {
-  padding: 0;
-}
-
-.craft-popover {
-  & > .title {
-    text-align: center;
-    font-weight: bold;
-    border-bottom: solid 1px $gray-light;
-    padding-bottom: 5;
-    padding-top: 5;
-  }
-
-  & > ul {
-    list-style-type: none;
-    border-bottom: none;
-    margin: 0;
-    padding: 5;
-  }
 }
 
 .craft-tooltip {
@@ -203,5 +147,23 @@ $gray-light: #777;
     border-bottom: none;
     margin: 0;
     padding: 5px;
+  }
+}
+
+
+.craft-popover {
+  & > .title {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: solid 1px $gray-light;
+    padding-bottom: 5;
+    padding-top: 5;
+  }
+
+  & > ul {
+    list-style-type: none;
+    border-bottom: none;
+    margin: 0;
+    padding: 5;
   }
 }

@@ -1,8 +1,10 @@
 import _ from 'lodash';
+import glamorous from 'glamorous';
 import Leaf from './leaf';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ToolTip from '../widgets/tooltip';
+import Node from './node';
 import {
   NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NOT_RELIABLE_LIMIT, NOT_RELIABLE_COLOR,
   NULL_COLOR, RELIABLE_PERCENT, RELIABLE_COLOR
@@ -43,6 +45,16 @@ const makeGradientColor = (percent) => {
   newColor.cssColor = `#${makeColorPiece(newColor.r)}${makeColorPiece(newColor.g)}${makeColorPiece(newColor.b)}`;
   return newColor;
 };
+
+const CraftLinks = glamorous.div({
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  position: 'absolute',
+  textAlign: 'center',
+  fontSize: 'smaller',
+  pointerEvents: 'auto',
+  backgroundColor: 'rgba(255, 255, 255, 0.5)'
+});
 
 class Nodes extends React.Component {
   linkRef = {};
@@ -89,7 +101,7 @@ class Nodes extends React.Component {
     };
 
     return (
-      <div
+      <Node
         key={ index }
         ref={ indexRef }
         onMouseOver={ showTooltip }
@@ -97,7 +109,7 @@ class Nodes extends React.Component {
         className='craft-nodes'
         style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2 }}>
         { text }
-      </div>
+      </Node>
     );
   }
 
@@ -137,7 +149,7 @@ class Nodes extends React.Component {
     };
 
     return (
-      <div
+      <CraftLinks
         key={ index }
         ref={ indexRef }
         onMouseOver={ showTooltip }
@@ -145,7 +157,7 @@ class Nodes extends React.Component {
         className='craft-links'
         style={{ top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3), left: x, width: width }}>
         { text }
-      </div>
+      </CraftLinks>
     );
   }
 

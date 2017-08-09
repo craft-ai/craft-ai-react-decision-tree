@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import classnames from 'classnames';
 import DecisionRulesPopover from '../widgets/decisionRulesPopover';
+import Node from './node';
 import PopOver from '../widgets/popover';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -53,14 +53,15 @@ class Leaf extends React.Component {
 
     return (
       <div>
-        <div
+        <Node
           ref={ this.setLeafRef }
           onMouseEnter={ this.showPopover }
           onMouseLeave={ this.hidePopover }
-          className={ classnames('craft-nodes', { 'empty-node': _.isNull(text) }) }
+          empty={ _.isNull(text) }
+          className='craft-nodes'
           style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2, backgroundColor: color }}>
           { rendererText }
-        </div>
+        </Node>
         <Overlay
           show={ this.state.showingPopover || this.state.mouseOnPovover }
           placement={ this.state.placement }

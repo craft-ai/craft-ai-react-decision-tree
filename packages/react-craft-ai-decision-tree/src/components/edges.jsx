@@ -1,6 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { css } from 'glamor';
 import { select as d3Select } from 'd3-selection';
+
+// make links css rules
+const linksCssClass = css({
+  fill: 'none',
+  stroke: '#ccc',
+  strokeWidth: 1.5
+});
+
 
 class Edges extends React.Component {
   componentDidMount() {
@@ -58,7 +67,7 @@ class Edges extends React.Component {
 
     // Enter any new links at the parent's previous position.
     link.enter().insert('path', 'g')
-      .attr('class', 'link')
+      .attr('class', linksCssClass)
       .attr('d', this.diagonal);
 
     // Transition exiting nodes to the parent's new position.

@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- '6.9'
+before_install:
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+- export PATH="$HOME/.yarn/bin:$PATH"
+script: yarn run lint && yarn run build
+notifications:
+  slack: craft-ai:ZNnQErHJhw40oKmphy3fNGza
+  email:
+  - ops@craft.ai
+deploy:
+  provider: script
+  script: scripts/npm_publish.sh $NPM_TOKEN
+  on:
+    tags: true
+env:
+  global:
+    secure: J4AtTpF5hf4cB9jwXWM2aJ/cTx46TuLJn5beqkD0+vo8xxrXC2WGkFhhR4IXaVLfpXCqDiSSa3Hw1CvW+lsUvsUC1T09yHovm7VqYIQDlVFwyBMcr1Gq7DHQLm/9oHDQQ9Fu+1TxJ9/Y7ypg8RJFabxJNyn/3HhjZdkls1Zr+3RkMgVnP6+HwP5RoJ9YRLFcBvx+ei5fDKLyOZwhZ3NC9/AJDM6wWrs0YmxNFesbpZ3xEMFPaOVzwCjQ9GCehGKvi/HLwjAwPBZ3NsENHyYP9UFmLS8D/jvS4oPOQpgNkPDjcKx2STLkm8ngvXYo/lfZAnejFKCMLqlzdX3neSdna+Qb0O094EWoQaC3mvcUKakRwE4kZiMaGRDfSVag4OBIRjdcTpXRp7mvbKWUnJJGHuI89cxhbW8OSKj9p50Kt6z4n366IuDxhazIJOSe/+39aX/oyeXtMaDZl7nguVYt6mM9mH0k59aZqWqjpzgHOdoWA5ON2uyEg2Kb58a0NoqBfa3sZITpFSmDXrNENZanBdcXRq8y3QSJtx1EN24JJNq+QVUd8ynNhtAdrb8c/0VVTa+QbStdjLxwyXiafnrDwVxs0QPutkaMJoCfQUwEUCXawABKllxBe91b4YkJ5NK4jCSV+wyYc77P+glncjCX9tDU+n6cFGsrfPfT6HYOjwI=

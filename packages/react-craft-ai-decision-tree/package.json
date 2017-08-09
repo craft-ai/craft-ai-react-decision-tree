@@ -1,0 +1,63 @@
+{
+  "name": "react-craft-ai-decision-tree",
+  "version": "1.0.0",
+  "description": "React component to display craft ai decision tree",
+  "author": {
+    "name": "craft ai",
+    "email": "contact@craft.ai",
+    "url": "http://craft.ai/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:craft-ai/react-craft-ai-decision-tree.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run build-css && npm run build-js",
+    "build-js": "babel src/ -d lib/",
+    "build-css": "node-sass --include-path scss src/style/tree.scss lib/css/tree.css",
+    "fix-lint": "eslint --fix --ext .js,.jsx .",
+    "lint": "eslint --ext .js,.jsx .",
+    "storybook": "npm run build && start-storybook -p 9193 -c .storybook",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@storybook/addon-backgrounds": "3.0.0",
+    "@storybook/addon-knobs": "3.2.0",
+    "@storybook/react": "3.2.3",
+    "babel-cli": "6.24.1",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.1.1",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-object-rest-spread": "6.23.0",
+    "babel-plugin-transform-react-jsx": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "css-loader": "0.28.4",
+    "eslint": "4.3.0",
+    "eslint-config-craft-ai": "2.2.3",
+    "eslint-plugin-react": "6.10.3",
+    "node-sass": "4.5.3",
+    "sass-loader": "6.0.6",
+    "style-loader": "0.18.2",
+    "webpack": "3.4.1"
+  },
+  "dependencies": {
+    "classnames": "2.2.5",
+    "craft-ai": "1.7.0",
+    "d3-hierarchy": "1.1.5",
+    "d3-selection": "1.1.0",
+    "d3-zoom": "1.5.0",
+    "glamor": "2.20.39",
+    "glamorous": "4.1.0",
+    "lodash": "4.17.4",
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-container-dimensions": "1.3.2",
+    "react-dom": "15.6.1",
+    "react-overlays": "0.8.0"
+  },
+  "browser": {
+    "dotenv": false
+  }
+}
