@@ -1,7 +1,7 @@
 {
   "name": "react-craft-ai-popover",
   "version": "1.0.0",
-  "description": "React component to display craft ai decision tree",
+  "description": "React popover component used by craft ai based on bootstrap overlays",
   "author": {
     "name": "craft ai",
     "email": "contact@craft.ai",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:craft-ai/react-craft-ai-decision-tree.git"
+    "url": "git@github.com:craft-ai/react-craft-ai-components.git"
   },
   "main": "lib/index.js",
   "scripts": {
@@ -32,8 +32,7 @@
     "babel-preset-react": "6.24.1",
     "eslint": "4.3.0",
     "eslint-config-craft-ai": "2.2.5",
-    "eslint-plugin-react": "6.10.3",
-    "node-sass": "4.5.3"
+    "eslint-plugin-react": "6.10.3"
   },
   "dependencies": {
     "classnames": "2.2.5",
