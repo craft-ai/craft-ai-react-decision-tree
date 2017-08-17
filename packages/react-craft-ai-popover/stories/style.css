@@ -1,0 +1,22 @@
+.with-style.craft-popover.top > .craft-popover-arrow::after {
+  border-top-color: brown;
+}
+
+.with-style.craft-popover.bottom > .craft-popover-arrow::after {
+  border-bottom-color: brown;
+}
+
+.with-style.craft-popover.left > .craft-popover-arrow::after {
+  border-left-color: brown;
+}
+
+.with-style.craft-popover.right > .craft-popover-arrow::after {
+  border-right-color: brown;
+}
+
+.with-style .craft-popover-content {
+  padding: 20;
+  background-color: brown;
+  color: white;
+  height: 100px;
+}

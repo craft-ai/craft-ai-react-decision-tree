@@ -1,5 +1,0 @@
-0 silly input [ 'lint' ]
-1 silly flags { _: [ 'run' ], script: 'lint', args: [] }
-2 verbose rootPath /Users/pbr/craft-ai-react-decision-tree
-3 info version 2.0.0
-4 error ENOLERNA `lerna.json` does not exist, have you run `lerna init`?

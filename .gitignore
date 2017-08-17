@@ -9,3 +9,6 @@ lib/
 .sass-cache/
 .nyc_output/
 npm-debug.log
+
+# Lerna specific
+lerna-debug.log
