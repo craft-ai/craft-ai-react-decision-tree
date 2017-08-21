@@ -1,0 +1,22 @@
+.with-style.craft-tooltip.top > .craft-tooltip-arrow {
+  border-top-color: brown;
+}
+
+.with-style.craft-tooltip.bottom > .craft-tooltip-arrow {
+  border-bottom-color: brown;
+}
+
+.with-style.craft-tooltip.left > .craft-tooltip-arrow {
+  border-left-color: brown;
+}
+
+.with-style.craft-tooltip.right > .craft-tooltip-arrow {
+  border-right-color: brown;
+}
+
+.with-style .craft-tooltip-content {
+  padding: 20;
+  background-color: brown;
+  color: white;
+  height: 100px;
+}
