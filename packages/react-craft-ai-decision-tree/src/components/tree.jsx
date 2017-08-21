@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Box from '../utils/box';
 import classnames from 'classnames';
 import Edges from './edges';
+import glamorous from 'glamorous';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -44,6 +45,18 @@ function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scal
     newPos: translate
   };
 }
+
+const CraftAiTree = glamorous.div({
+  minWidth: 400,
+  overflow: 'hidden',
+  backgroundColor: 'white',
+  position: 'absolute'
+});
+
+const TranslatedTree = glamorous.div({
+  transformOrigin: 'left top 0px'
+});
+
 
 function computeSvgSizeFromData(root, width, height) {
   let tree = d3Tree().nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
@@ -180,14 +193,14 @@ class Tree extends React.Component {
     });
 
     return (
-      <div
+      <CraftAiTree
         onDoubleClick={ this.resetPosition }
         className='tree zoomed-tree'
         style={{
           height: this.props.height,
           width: this.props.width
         }}>
-        <div
+        <TranslatedTree
           onDoubleClick={ this.resetPosition }
           className={ classnames('translated-tree', { unselectable: this.state.isPanActivated, selectable: !this.state.isPanActivated }) }
           style={{
@@ -206,8 +219,8 @@ class Tree extends React.Component {
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight } />
-        </div>
-      </div>
+        </TranslatedTree>
+      </CraftAiTree>
     );
   }
 }

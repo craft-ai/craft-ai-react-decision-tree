@@ -1,7 +1,22 @@
 import _ from 'lodash';
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Properties } from 'craft-ai';
+
+const CrafPopoverTitle = glamorous.div({
+  textAlign: 'center',
+  fontWeight: 'bold',
+  padding: 5,
+  borderBottom: 'solid 1px #777'
+});
+
+const CrafPopoverList = glamorous.ul({
+  listStyleType: 'none',
+  borderBottom: 'none',
+  margin: 0,
+  padding: 5
+});
 
 class DecisionRulesPopover extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -34,13 +49,15 @@ class DecisionRulesPopover extends React.Component {
     const { node, title, color } = this.props;
     const decisionRulesKeys = node ? _.keys(node.decisionRules) : [];
     return (
-      <div className='craft-popover-content'>
-        <div className='craft-popover-title' style={{ backgroundColor: color }}>
+      <div>
+        <CrafPopoverTitle
+          className='craft-popover-title'
+          style={{ backgroundColor: color }}>
           {
             title
           }
-        </div>
-        <ul>
+        </CrafPopoverTitle>
+        <CrafPopoverList>
           <li>Confidence: { (node.data.confidence * 100).toFixed(2) }%</li>
           {
             !_.isUndefined(node.data.standard_deviation) ?
@@ -54,7 +71,7 @@ class DecisionRulesPopover extends React.Component {
               }
             </ul>
           </li>
-        </ul>
+        </CrafPopoverList>
       </div>
     );
   }

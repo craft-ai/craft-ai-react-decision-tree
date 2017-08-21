@@ -3,13 +3,12 @@ import glamorous from 'glamorous';
 import Leaf from './leaf';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ToolTip from '../widgets/tooltip';
+import ToolTip from 'react-craft-ai-tooltip';
 import Node from './node';
 import {
   NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NOT_RELIABLE_LIMIT, NOT_RELIABLE_COLOR,
   NULL_COLOR, RELIABLE_PERCENT, RELIABLE_COLOR
 } from '../utils/constants';
-import { Overlay } from 'react-overlays';
 import { Properties } from 'craft-ai';
 
 const makeGradientColor = (percent) => {
@@ -172,14 +171,13 @@ class Nodes extends React.Component {
       <div style={{ position: 'relative' }}>
         { _.map(this.props.nodes, this.displayNode) }
         { _.map(this.props.links, this.displayLinksText) }
-        <Overlay
+        <ToolTip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
-          target={ this.state.tooltipRef }>
-          <ToolTip onPlacementUpdated={ this.updateTooltipPlacement }>
-            { this.state.tooltipText }
-          </ToolTip>
-        </Overlay>
+          target={ this.state.tooltipRef }
+          onPlacementUpdated={ this.updateTooltipPlacement }>
+          { this.state.tooltipText }
+        </ToolTip>
       </div>
     );
   }

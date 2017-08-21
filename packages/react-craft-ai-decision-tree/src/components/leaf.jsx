@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import DecisionRulesPopover from '../widgets/decisionRulesPopover';
 import Node from './node';
-import PopOver from '../widgets/popover';
+import Popover from 'react-craft-ai-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NODE_HEIGHT, NODE_WIDTH } from '../utils/constants';
-import { Overlay } from 'react-overlays';
 
 class Leaf extends React.Component {
   state = {
@@ -62,17 +61,15 @@ class Leaf extends React.Component {
           style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2, backgroundColor: color }}>
           { rendererText }
         </Node>
-        <Overlay
-          show={ this.state.showingPopover || this.state.mouseOnPovover }
+        <Popover
           placement={ this.state.placement }
-          target={ this.state.popoverRef }>
-          <PopOver
-            onPopover={ this.setMouseOnPopover }
-            height={ this.props.height }
-            onPlacementUpdated={ this.updatePopOverPlacement }>
-            { renderList }
-          </PopOver>
-        </Overlay>
+          target={ this.state.popoverRef }
+          onPopover={ this.setMouseOnPopover }
+          height={ this.props.height }
+          show={ this.state.showingPopover || this.state.mouseOnPovover }
+          onPlacementUpdated={ this.updatePopOverPlacement }>
+          { renderList }
+        </Popover>
       </div>
     );
   }
