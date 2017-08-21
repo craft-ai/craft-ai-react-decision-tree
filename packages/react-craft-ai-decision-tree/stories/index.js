@@ -7,7 +7,6 @@ import { withKnobs, number } from '@storybook/addon-knobs';
 import tree from './tree.json';
 import smallTree from './smallTree.json';
 
-import '../lib/css/tree.css';
 import './test.css';
 
 const boundsOptions = {
