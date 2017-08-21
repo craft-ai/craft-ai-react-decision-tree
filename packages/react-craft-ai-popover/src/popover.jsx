@@ -7,29 +7,27 @@ const MARGIN = 10;
 const CraftPopover = glamorous.div({
   zIndex: 1070,
   position: 'absolute',
-  maxWidth: 276,
-  border: '1px solid rgba(0, 0, 0, 0.2)',
-  backgroundColor: 'white',
+  maxWidth: 286,
   display: 'block'
 },
 ({ placement = 'top' }) => {
   switch (placement) {
     case 'bottom':
       return {
-        marginTop: 10
+        paddingTop: 10
       };
     case 'left':
       return {
-        marginLeft: -10
+        paddingRight: 10
       };
     case 'right':
       return {
-        marginLeft: 10
+        paddingLeft: 10
       };
     default:
       // placement for top
       return {
-        marginTop: -10
+        paddingBottom: 10
       };
   }
 });
@@ -60,7 +58,7 @@ const CraftPopoverArrow = glamorous.div({
         marginLeft: -10,
         borderBottomColor: 'rgba(0, 0, 0, 0.25)',
         borderTopWidth: 0,
-        top: -11,
+        top: 0,
         left: '50%',
         '::after': {
           marginLeft: -10,
@@ -74,7 +72,7 @@ const CraftPopoverArrow = glamorous.div({
         borderLeftColor: 'rgba(0, 0, 0, 0.25)',
         borderRightWidth: 0,
         marginTop: -11,
-        right: -11,
+        right: 0,
         top: '50%',
         '::after': {
           right: 1,
@@ -88,7 +86,7 @@ const CraftPopoverArrow = glamorous.div({
         borderRightColor: 'rgba(0, 0, 0, 0.25)',
         borderLeftWidth: 0,
         marginTop: -11,
-        left: -11,
+        left: 0,
         top: '50%',
         '::after': {
           left: 1,
@@ -103,7 +101,7 @@ const CraftPopoverArrow = glamorous.div({
         marginLeft: -10,
         borderTopColor: 'rgba(0, 0, 0, 0.25)',
         borderBottomWidth: 0,
-        bottom: -11,
+        bottom: 0,
         left: '50%',
         '::after': {
           marginLeft: -10,
@@ -116,8 +114,8 @@ const CraftPopoverArrow = glamorous.div({
 });
 
 const CraftPopoverContent = glamorous.div({
-  padding: 5,
-  margin: 0
+  border: '1px solid rgba(0, 0, 0, 0.2)',
+  backgroundColor: 'white',
 });
 
 class Popover extends React.Component {
@@ -155,11 +153,11 @@ class Popover extends React.Component {
         ref={ this.setPopoverRef }
         className={ `craft-popover ${placement} ${className}` }
         style={{ ...style }}>
-        <CraftPopoverArrow
-          placement={ placement }
-          className={ `craft-popover-arrow ${placement}` }
-          style={{ left: arrowLeftPercent }} />
-        <CraftPopoverContent className='craft-popover-content'>
+        <CraftPopoverContent>
+          <CraftPopoverArrow
+            placement={ placement }
+            className={ `craft-popover-arrow ${placement}` }
+            style={{ left: arrowOffsetLeft }} />
           { children }
         </CraftPopoverContent>
       </CraftPopover>

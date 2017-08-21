@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git@github.com:craft-ai/react-craft-ai-components.git"
   },
-  "main": "lib/index.js",
+  "main": "lib/popoverComponent.js",
   "scripts": {
     "build": "babel src/ -d lib/",
     "fix_lint": "eslint --fix --ext .js,.jsx src/",
