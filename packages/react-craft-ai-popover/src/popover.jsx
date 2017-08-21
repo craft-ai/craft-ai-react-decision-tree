@@ -153,7 +153,7 @@ class Popover extends React.Component {
         ref={ this.setPopoverRef }
         className={ `craft-popover ${placement} ${className}` }
         style={{ ...style }}>
-        <CraftPopoverContent>
+        <CraftPopoverContent className='craft-popover-content'>
           <CraftPopoverArrow
             placement={ placement }
             className={ `craft-popover-arrow ${placement}` }
