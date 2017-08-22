@@ -20,7 +20,8 @@
     "lerna": "lerna",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "lint": "lerna run lint"
+    "lint": "lerna run lint",
+    "storybook:build": "lerna run storybook:build"
   },
   "engines": {
     "node": ">= 6.9.1"

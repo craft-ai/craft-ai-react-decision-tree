@@ -21,7 +21,8 @@
     "build": "babel src/ -d lib/",
     "lint": "eslint --ext .js,.jsx src/",
     "lint:fix": "eslint --fix --ext .js,.jsx src/",
-    "storybook": "npm run build && start-storybook -p 9193 -c .storybook"
+    "storybook": "start-storybook -p 9193 -c .storybook",
+    "storybook:build": "build-storybook -c .storybook -o ../../site/react-craft-ai-tooltip"
   },
   "devDependencies": {
     "@storybook/react": "3.2.3",

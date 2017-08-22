@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.4...HEAD) ##
 
+## Added ##
+- Component demo pages powered by [Storybook](https://storybook.js.org)
+
 ## [0.0.4](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.3...v0.0.4) - 2017-08-22 ##
 
 ### Changed ###
