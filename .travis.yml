@@ -13,6 +13,7 @@ notifications:
   email:
   - ops@craft.ai
 deploy:
+  skip_cleanup: true
   provider: script
   script: scripts/npm_publish.sh $NPM_TOKEN
   on:

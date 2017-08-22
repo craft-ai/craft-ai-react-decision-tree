@@ -21,8 +21,7 @@
     "build": "babel src/ -d lib/",
     "lint": "eslint --ext .js,.jsx src/",
     "lint:fix": "eslint --fix --ext .js,.jsx src/",
-    "storybook": "npm run build && start-storybook -p 9193 -c .storybook",
-    "prepublish": "npm run build"
+    "storybook": "npm run build && start-storybook -p 9193 -c .storybook"
   },
   "devDependencies": {
     "@storybook/react": "3.2.3",
