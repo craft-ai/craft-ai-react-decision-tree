@@ -1,6 +1,6 @@
 {
   "name": "react-craft-ai-popover",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React popover component used by craft ai based on bootstrap overlays",
   "author": {
     "name": "craft ai",
