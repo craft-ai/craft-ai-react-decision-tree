@@ -29,14 +29,14 @@
     "eslint": "4.5.0"
   },
   "dependencies": {
-    "glamorous": "4.1.0",
     "lodash": "4.17.4",
-    "prop-types": "15.5.10",
-    "react": "15.6.1",
-    "react-dom": "15.6.1",
     "react-overlays": "0.8.0"
   },
-  "browser": {
-    "dotenv": false
+  "peerDependencies": {
+    "glamor": "^2.0.0",
+    "glamorous": "^4.0.0",
+    "prop-types": "^15.0.0",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
   }
 }

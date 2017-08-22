@@ -1,6 +1,7 @@
 import backgrounds from '@storybook/addon-backgrounds';
 import DecisionTree from '../src/';
 import React from 'react';
+
 import smallTree from './smallTree.json';
 import tree from './tree.json';
 import { number, withKnobs } from '@storybook/addon-knobs';

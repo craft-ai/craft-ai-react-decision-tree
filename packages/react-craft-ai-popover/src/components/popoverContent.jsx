@@ -128,7 +128,7 @@ class PopoverContent extends React.Component {
   componentDidUpdate() {
     this.props.onPlacementUpdated(
       this.popoverRef &&
-      (this.popoverRef.offsetHeight + this.props.style ? this.props.style.top : 0 + MARGIN) > this.props.height
+      (this.popoverRef.offsetHeight + (this.props.style ? this.props.style.top : MARGIN)) > this.props.height
     );
   }
 
@@ -150,7 +150,7 @@ class PopoverContent extends React.Component {
         placement={ placement }
         onMouseEnter={ this.onPopover }
         onMouseLeave={ this.notOnPopover }
-        ref={ this.setPopoverRef }
+        innerRef={ this.setPopoverRef }
         className={ `craft-popover ${placement} ${className}` }
         style={{ ...style }}>
         <PopoverContentInner className='craft-popover-content'>
