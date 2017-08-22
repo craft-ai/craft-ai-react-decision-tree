@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Fixed ##
 - Set `react`, `glamor` and `glamorous` as peer dependencies.
+- Placement of the popover based on the height.
 
 ## [0.0.3](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.2...v0.0.3) - 2017-08-22 ##
 
