@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Tree from './tree';
 
-const TreeContainer = glamorous.div({
+const DecisionTreeContainer = glamorous.div({
   height: '100%'
 });
 
-const TreeComponent = ({ data, height, width }) => (
-  <TreeContainer
+const DecisionTree = ({ data, height, width }) => (
+  <DecisionTreeContainer
     style={{
       height: height,
       width: width
@@ -26,17 +26,17 @@ const TreeComponent = ({ data, height, width }) => (
         )
       }
     </ContainerDimensions>
-  </TreeContainer>
+  </DecisionTreeContainer>
 );
 
-TreeComponent.defaultProps = {
+DecisionTree.defaultProps = {
   auto: false
 };
 
-TreeComponent.propTypes = {
+DecisionTree.propTypes = {
   data: PropTypes.object.isRequired,
   height: PropTypes.number,
   width: PropTypes.number
 };
 
-export default TreeComponent;
+export default DecisionTree;

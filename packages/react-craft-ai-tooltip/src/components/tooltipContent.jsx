@@ -4,7 +4,7 @@ import React from 'react';
 
 const MARGIN = 10;
 
-const CraftTooltip = glamorous.div({
+const TooltipContentOuter = glamorous.div({
   zIndex: 1070,
   position: 'absolute',
   opacity: 1
@@ -25,7 +25,7 @@ const CraftTooltip = glamorous.div({
   }
 });
 
-const CraftTooltipArrow = glamorous.div({
+const TooltipArrow = glamorous.div({
   position: 'absolute',
   width: 0,
   height: 0,
@@ -70,7 +70,7 @@ const CraftTooltipArrow = glamorous.div({
   }
 });
 
-const CraftTooltipContent = glamorous.div({
+const TooltipContentInner = glamorous.div({
   padding: '3px 8px',
   backgroundColor: 'black',
   color: 'white',
@@ -79,7 +79,7 @@ const CraftTooltipContent = glamorous.div({
 });
 
 
-class ToolTip extends React.Component {
+class TooltipContent extends React.Component {
   setTooltipRef = (input) => (this.tooltipRef = input);
 
   componentDidUpdate() {
@@ -103,24 +103,24 @@ class ToolTip extends React.Component {
     }
 
     return (
-      <CraftTooltip
+      <TooltipContentOuter
         ref={ this.setTooltipRef }
         placement={ placement }
         className={ `craft-tooltip ${className} ${placement}` }
         style={{ ...style }}>
-        <CraftTooltipArrow
+        <TooltipArrow
           placement={ placement }
           className='craft-tooltip-arrow'
           style={{ left: arrowOffsetLeft }} />
-        <CraftTooltipContent className='craft-tooltip-content'>
+        <TooltipContentInner className='craft-tooltip-content'>
           { children }
-        </CraftTooltipContent>
-      </CraftTooltip>
+        </TooltipContentInner>
+      </TooltipContentOuter>
     );
   }
 }
 
-ToolTip.propTypes = {
+TooltipContent.propTypes = {
   className: PropTypes.string,
   placement: PropTypes.string.isRequired,
   arrowOffsetLeft: PropTypes.string,
@@ -129,4 +129,4 @@ ToolTip.propTypes = {
   onPlacementUpdated: PropTypes.func
 };
 
-export default ToolTip;
+export default TooltipContent;

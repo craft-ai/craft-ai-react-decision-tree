@@ -4,7 +4,7 @@ import React from 'react';
 
 const MARGIN = 10;
 
-const CraftPopover = glamorous.div({
+const PopoverContentOuter = glamorous.div({
   zIndex: 1070,
   position: 'absolute',
   maxWidth: 286,
@@ -32,7 +32,7 @@ const CraftPopover = glamorous.div({
   }
 });
 
-const CraftPopoverArrow = glamorous.div({
+const PopoverArrow = glamorous.div({
   position: 'absolute',
   borderWidth: 11,
   display: 'block',
@@ -113,12 +113,12 @@ const CraftPopoverArrow = glamorous.div({
   }
 });
 
-const CraftPopoverContent = glamorous.div({
+const PopoverContentInner = glamorous.div({
   border: '1px solid rgba(0, 0, 0, 0.2)',
   backgroundColor: 'white',
 });
 
-class Popover extends React.Component {
+class PopoverContent extends React.Component {
   setPopoverRef = (input) => (this.popoverRef = input)
 
   onPopover = () => (this.props.onPopover(true))
@@ -146,26 +146,26 @@ class Popover extends React.Component {
     }
 
     return (
-      <CraftPopover
+      <PopoverContentOuter
         placement={ placement }
         onMouseEnter={ this.onPopover }
         onMouseLeave={ this.notOnPopover }
         ref={ this.setPopoverRef }
         className={ `craft-popover ${placement} ${className}` }
         style={{ ...style }}>
-        <CraftPopoverContent className='craft-popover-content'>
-          <CraftPopoverArrow
+        <PopoverContentInner className='craft-popover-content'>
+          <PopoverArrow
             placement={ placement }
             className={ `craft-popover-arrow ${placement}` }
             style={{ left: arrowOffsetLeft }} />
           { children }
-        </CraftPopoverContent>
-      </CraftPopover>
+        </PopoverContentInner>
+      </PopoverContentOuter>
     );
   }
 }
 
-Popover.propTypes = {
+PopoverContent.propTypes = {
   className: PropTypes.string,
   placement: PropTypes.string.isRequired,
   arrowOffsetLeft: PropTypes.string,
@@ -176,4 +176,4 @@ Popover.propTypes = {
   height: PropTypes.number
 };
 
-export default Popover;
+export default PopoverContent;

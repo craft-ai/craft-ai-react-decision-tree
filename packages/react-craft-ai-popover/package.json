@@ -16,12 +16,12 @@
   },
   "homepage": "https://github.com/craft-ai/react-craft-ai-components/packages/react-craft-ai-popover#readme",
   "license": "BSD-3-Clause",
-  "main": "lib/popoverComponent.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel src/ -d lib/",
     "lint": "eslint --ext .js,.jsx src/",
     "lint:fix": "eslint --fix --ext .js,.jsx src/",
-    "storybook": "npm run build && start-storybook -p 9193 -c .storybook"
+    "storybook": "start-storybook -p 9193 -c .storybook"
   },
   "devDependencies": {
     "@storybook/react": "3.2.3",

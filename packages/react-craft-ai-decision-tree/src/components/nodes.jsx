@@ -45,7 +45,7 @@ const makeGradientColor = (percent) => {
   return newColor;
 };
 
-const CraftLinks = glamorous.div({
+const Links = glamorous.div({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   position: 'absolute',
@@ -148,7 +148,7 @@ class Nodes extends React.Component {
     };
 
     return (
-      <CraftLinks
+      <Links
         key={ index }
         ref={ indexRef }
         onMouseOver={ showTooltip }
@@ -156,7 +156,7 @@ class Nodes extends React.Component {
         className='craft-links'
         style={{ top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3), left: x, width: width }}>
         { text }
-      </CraftLinks>
+      </Links>
     );
   }
 

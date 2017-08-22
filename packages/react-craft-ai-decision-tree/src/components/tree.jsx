@@ -46,7 +46,7 @@ function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scal
   };
 }
 
-const CraftAiTree = glamorous.div({
+const TreeCanvas = glamorous.div({
   minWidth: 400,
   overflow: 'hidden',
   backgroundColor: 'white',
@@ -193,7 +193,7 @@ class Tree extends React.Component {
     });
 
     return (
-      <CraftAiTree
+      <TreeCanvas
         onDoubleClick={ this.resetPosition }
         className='tree zoomed-tree'
         style={{
@@ -220,7 +220,7 @@ class Tree extends React.Component {
             width={ minSvgWidth }
             height={ minSvgHeight } />
         </TranslatedTree>
-      </CraftAiTree>
+      </TreeCanvas>
     );
   }
 }

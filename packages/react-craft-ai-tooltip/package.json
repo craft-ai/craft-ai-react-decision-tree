@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/craft-ai/react-craft-ai-components/packages/react-craft-ai-tooltip#readme",
   "license": "BSD-3-Clause",
-  "main": "lib/tooltipComponent.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "babel src/ -d lib/",
     "lint": "eslint --ext .js,.jsx src/",

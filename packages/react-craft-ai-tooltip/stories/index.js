@@ -1,6 +1,6 @@
-import Tooltip from '../src/tooltipComponent';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Tooltip from '../src/';
 import { storiesOf } from '@storybook/react';
 
 import './style.css';
@@ -45,7 +45,7 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
-  placement: PropTypes.placement,
+  placement: PropTypes.string.isRequired,
   className: PropTypes.string
 };
 
