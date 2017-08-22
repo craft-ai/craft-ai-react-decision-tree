@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PopoverContent from './popoverContent';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -14,11 +13,11 @@ class Popover extends React.Component {
   }
 
   // Trick to ensure the popover hover
-  setShow = (show) => (this.setState({ show: show }))
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.show != this.props.show) {
-      _.delay(this.setShow, 5, nextProps.show);
+      setTimeout(() => {
+        this.setState({ show: this.props.show });
+      }, 5);
     }
   }
 

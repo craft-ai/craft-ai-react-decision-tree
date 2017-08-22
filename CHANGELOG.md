@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Added ##
 - Component demo pages powered by [Storybook](https://storybook.js.org)
 
+## Fixed ##
+- How the popover is showed or not.
+
 ## [0.0.4](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.3...v0.0.4) - 2017-08-22 ##
 
 ### Changed ###
