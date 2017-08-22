@@ -7,14 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.3...HEAD) ##
 
+### Changed ###
+- Slight refactor and reorganization of the code for improved consistency.
+
+## Fixed ##
+- Set `react`, `glamor` and `glamorous` as peer dependencies.
+
 ## [0.0.3](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.2...v0.0.3) - 2017-08-22 ##
 
 ### Fixed ###
 - Export the correct entry point for `react-craft-ai-decision-tree`.
 - Set the correct build target.
-
-### Changed ###
-- Slight refactor and reorganization of the code for improved consistency.
 
 ## [0.0.2](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.1...v0.0.2) - 2017-08-22 ##
 
