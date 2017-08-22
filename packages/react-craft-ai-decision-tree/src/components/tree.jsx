@@ -8,11 +8,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { event as d3Event, select as d3Select } from 'd3-selection';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
-import {
-  NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH,
-  NODE_WIDTH_MARGIN, MARGIN, ZOOM_EXTENT
-} from '../utils/constants';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
+import {
+  MARGIN, NODE_DEPTH, NODE_HEIGHT,
+  NODE_WIDTH, NODE_WIDTH_MARGIN, ZOOM_EXTENT
+} from '../utils/constants';
 
 function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scaleExtent = ZOOM_EXTENT) {
   // from https://developer.mozilla.org/en/docs/Web/SVG/Attribute/transform
@@ -156,8 +156,8 @@ class Tree extends React.Component {
     const canvasBbox = new Box(d3Select('div.zoomed-tree').node().getBoundingClientRect());
     const marginedCanvasBbox = canvasBbox.applyMargin(MARGIN);
     const treeBbox = new Box(d3Select('div.translated-tree').node().getBoundingClientRect());
-    const { scale, newPos } = computeFitTransformation(treeBbox, marginedCanvasBbox, this.state);
-    this.setState({ scale: scale, newPos: newPos });
+    const { newPos, scale } = computeFitTransformation(treeBbox, marginedCanvasBbox, this.state);
+    this.setState({ newPos: newPos, scale: scale });
     const selection = d3Select('div.zoomed-tree');
     selection.call(this.state.zoom.transform, zoomIdentity.translate(newPos[0], newPos[1]).scale(scale));
   }
@@ -184,7 +184,7 @@ class Tree extends React.Component {
     root.x = 0;
     root.y = 0;
 
-    const { minSvgWidth, minSvgHeight, nodes, offsetX, links } = computeSvgSizeFromData(root, width, height);
+    const { links, minSvgHeight, minSvgWidth, nodes, offsetX  } = computeSvgSizeFromData(root, width, height);
 
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodes, (d) => {

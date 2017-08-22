@@ -1,6 +1,6 @@
-import Tooltip from './tooltip';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Tooltip from './tooltip';
 import { Overlay } from 'react-overlays';
 
 const TooltipComponent = ({

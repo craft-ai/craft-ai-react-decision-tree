@@ -37,7 +37,7 @@ class Leaf extends React.Component {
   }
 
   render() {
-    const { node, text, color } = this.props;
+    const { color, node, text } = this.props;
     const rendererText = _.isNull(text) ?
       '' :
       (_.isFinite(text) ? parseFloat(text.toFixed(3)).toString() : text);

@@ -46,9 +46,9 @@ export default class Box extends Record({
       right: 0
     });
     return this
-      .updateIn(['origin', 'x'], x => x + m.left)
-      .updateIn(['origin', 'y'], y => y + m.top)
-      .updateIn(['delta', 'x'], x => x - m.left - m.right)
-      .updateIn(['delta', 'y'], y => y - m.top - m.bottom);
+      .updateIn(['origin', 'x'], (x) => x + m.left)
+      .updateIn(['origin', 'y'], (y) => y + m.top)
+      .updateIn(['delta', 'x'], (x) => x - m.left - m.right)
+      .updateIn(['delta', 'y'], (y) => y - m.top - m.bottom);
   }
 }

@@ -20,7 +20,7 @@ const CrafPopoverList = glamorous.ul({
 
 class DecisionRulesPopover extends React.Component {
   shouldComponentUpdate(nextProps) {
-    const { node, title, color } = this.props;
+    const { color, node, title } = this.props;
     return node  != nextProps.node  ||
            title != nextProps.title ||
            color != nextProps.color;
@@ -46,7 +46,7 @@ class DecisionRulesPopover extends React.Component {
   }
 
   render() {
-    const { node, title, color } = this.props;
+    const { color, node, title } = this.props;
     const decisionRulesKeys = node ? _.keys(node.decisionRules) : [];
     return (
       <div>

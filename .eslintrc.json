@@ -1,3 +1,4 @@
 {
+  "root": true,
   "extends": "craft-ai/react.babel"
 }
