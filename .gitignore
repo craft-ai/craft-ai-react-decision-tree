@@ -12,3 +12,6 @@ npm-debug.log
 
 # Lerna specific
 lerna-debug.log
+
+# Packaging scripts artifacts
+*.bak
