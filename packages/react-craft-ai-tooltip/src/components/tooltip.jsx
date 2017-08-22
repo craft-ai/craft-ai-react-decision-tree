@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Tooltip from './tooltip';
+import TooltipContent from './tooltipContent';
 import { Overlay } from 'react-overlays';
 
-const TooltipComponent = ({
+const Tooltip = ({
   arrowOffsetLeft, children, className,
   onPlacementUpdated, placement, show,
   style, target
@@ -12,26 +12,26 @@ const TooltipComponent = ({
     show={ show }
     placement={ placement }
     target={ target }>
-    <Tooltip
+    <TooltipContent
       className={ className }
       arrowOffsetLeft={ arrowOffsetLeft }
       placement={ placement }
       style={{ ...style }}
       onPlacementUpdated={ onPlacementUpdated }>
       { children }
-    </Tooltip>
+    </TooltipContent>
   </Overlay>
 );
 
-TooltipComponent.defaultProps = {
+Tooltip.defaultProps = {
   placement: 'top',
   onPlacementUpdated: () => null
 };
 
-TooltipComponent.propTypes = {
+Tooltip.propTypes = {
   className: PropTypes.string,
   show: PropTypes.bool.isRequired,
-  target: PropTypes.object.isRequired,
+  target: PropTypes.object,
   placement: PropTypes.string,
   arrowOffsetLeft: PropTypes.string,
   style: PropTypes.object,
@@ -39,4 +39,4 @@ TooltipComponent.propTypes = {
   onPlacementUpdated: PropTypes.func
 };
 
-export default TooltipComponent;
+export default Tooltip;
