@@ -25,7 +25,7 @@ storiesOf('Tree displayed with fixed height', module)
   .add('only tree', () => (
     <DecisionTree
       width={ number('Width', 600, boundsOptions) }
-      height={ number('height', 500, boundsOptions) }
+      height={ number('Height', 500, boundsOptions) }
       data={ tree } />
   ))
   .add('fixed width', () => (
