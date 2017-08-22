@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import DecisionRulesPopover from '../widgets/decisionRulesPopover';
+import DecisionRulesPopover from './decisionRulesPopover';
 import Node from './node';
 import Popover from 'react-craft-ai-popover';
 import PropTypes from 'prop-types';

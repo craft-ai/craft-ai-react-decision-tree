@@ -1,3 +1,3 @@
-import Tree from './components/treeComponents';
+import DecisionTree from './components/decisionTree';
 
-export default Tree;
+export default DecisionTree;
