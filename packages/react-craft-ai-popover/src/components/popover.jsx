@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import Popover from './popover';
+import PopoverContent from './popoverContent';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Overlay } from 'react-overlays';
 
-class PopoverComponent extends React.Component {
+class Popover extends React.Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,7 @@ class PopoverComponent extends React.Component {
         show={ this.state.show }
         placement={ placement }
         target={ target }>
-        <Popover
+        <PopoverContent
           className={ className }
           arrowOffsetLeft={ arrowOffsetLeft }
           placement={ placement }
@@ -43,23 +43,23 @@ class PopoverComponent extends React.Component {
           onPopover={ onPopover }
           onPlacementUpdated={ onPlacementUpdated }>
           { children }
-        </Popover>
+        </PopoverContent>
       </Overlay>
     );
   }
 }
 
-PopoverComponent.defaultProps = {
+Popover.defaultProps = {
   onPopover: () => null,
   height: window.innerHeight,
   placement: 'top',
   onPlacementUpdated: () => null
 };
 
-PopoverComponent.propTypes = {
+Popover.propTypes = {
   className: PropTypes.string,
   show: PropTypes.bool.isRequired,
-  target: PropTypes.object.isRequired,
+  target: PropTypes.object,
   placement: PropTypes.string,
   arrowOffsetLeft: PropTypes.string,
   onPopover: PropTypes.func,
@@ -69,4 +69,4 @@ PopoverComponent.propTypes = {
   height: PropTypes.number
 };
 
-export default PopoverComponent;
+export default Popover;

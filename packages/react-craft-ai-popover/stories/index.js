@@ -1,4 +1,4 @@
-import Popover from '../src/popoverComponent';
+import Popover from '../src';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { storiesOf } from '@storybook/react';
@@ -57,7 +57,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
   stayWhenHovered: PropTypes.bool,
-  placement: PropTypes.placement,
+  placement: PropTypes.string.isRequired,
   className: PropTypes.string,
   content: PropTypes.node
 };
