@@ -7,17 +7,27 @@ cache:
 before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - export PATH="$HOME/.yarn/bin:$PATH"
-script: yarn run lint && yarn run build
+script:
+  - yarn run lint
+  - yarn run build
+  - yarn run storybook:build
 notifications:
   slack: craft-ai:ZNnQErHJhw40oKmphy3fNGza
   email:
   - ops@craft.ai
 deploy:
+- provider: script
   skip_cleanup: true
-  provider: script
   script: scripts/npm_publish.sh $NPM_TOKEN
+  on:
+    tags: true
+- provider: pages
+  skip_cleanup: true
+  local_dir: ./site
+  github_token: $GH_TOKEN
   on:
     tags: true
 env:
   global:
-    secure: J4AtTpF5hf4cB9jwXWM2aJ/cTx46TuLJn5beqkD0+vo8xxrXC2WGkFhhR4IXaVLfpXCqDiSSa3Hw1CvW+lsUvsUC1T09yHovm7VqYIQDlVFwyBMcr1Gq7DHQLm/9oHDQQ9Fu+1TxJ9/Y7ypg8RJFabxJNyn/3HhjZdkls1Zr+3RkMgVnP6+HwP5RoJ9YRLFcBvx+ei5fDKLyOZwhZ3NC9/AJDM6wWrs0YmxNFesbpZ3xEMFPaOVzwCjQ9GCehGKvi/HLwjAwPBZ3NsENHyYP9UFmLS8D/jvS4oPOQpgNkPDjcKx2STLkm8ngvXYo/lfZAnejFKCMLqlzdX3neSdna+Qb0O094EWoQaC3mvcUKakRwE4kZiMaGRDfSVag4OBIRjdcTpXRp7mvbKWUnJJGHuI89cxhbW8OSKj9p50Kt6z4n366IuDxhazIJOSe/+39aX/oyeXtMaDZl7nguVYt6mM9mH0k59aZqWqjpzgHOdoWA5ON2uyEg2Kb58a0NoqBfa3sZITpFSmDXrNENZanBdcXRq8y3QSJtx1EN24JJNq+QVUd8ynNhtAdrb8c/0VVTa+QbStdjLxwyXiafnrDwVxs0QPutkaMJoCfQUwEUCXawABKllxBe91b4YkJ5NK4jCSV+wyYc77P+glncjCX9tDU+n6cFGsrfPfT6HYOjwI=
+  - secure: J4AtTpF5hf4cB9jwXWM2aJ/cTx46TuLJn5beqkD0+vo8xxrXC2WGkFhhR4IXaVLfpXCqDiSSa3Hw1CvW+lsUvsUC1T09yHovm7VqYIQDlVFwyBMcr1Gq7DHQLm/9oHDQQ9Fu+1TxJ9/Y7ypg8RJFabxJNyn/3HhjZdkls1Zr+3RkMgVnP6+HwP5RoJ9YRLFcBvx+ei5fDKLyOZwhZ3NC9/AJDM6wWrs0YmxNFesbpZ3xEMFPaOVzwCjQ9GCehGKvi/HLwjAwPBZ3NsENHyYP9UFmLS8D/jvS4oPOQpgNkPDjcKx2STLkm8ngvXYo/lfZAnejFKCMLqlzdX3neSdna+Qb0O094EWoQaC3mvcUKakRwE4kZiMaGRDfSVag4OBIRjdcTpXRp7mvbKWUnJJGHuI89cxhbW8OSKj9p50Kt6z4n366IuDxhazIJOSe/+39aX/oyeXtMaDZl7nguVYt6mM9mH0k59aZqWqjpzgHOdoWA5ON2uyEg2Kb58a0NoqBfa3sZITpFSmDXrNENZanBdcXRq8y3QSJtx1EN24JJNq+QVUd8ynNhtAdrb8c/0VVTa+QbStdjLxwyXiafnrDwVxs0QPutkaMJoCfQUwEUCXawABKllxBe91b4YkJ5NK4jCSV+wyYc77P+glncjCX9tDU+n6cFGsrfPfT6HYOjwI=
+  - secure: magzZllYZe86PHDD2JF6ByxVU/qMVfY/xQuIAwcTtOwVLSpeXX16yXo/UYsnpBQU+vSrgRlKYjHhFpi4s9PLohPWOhm/nllmaU3kU+ERXsRN/NrL+q0+pVQ+JQmFbGhfaZbAgiRgkQb3XxlxQgJzQKpk+zY8leMOkveDp7cmM36ooCg4SrxWntuTovzq0APBCBTV3RwdF015HXj3W9LSDqY++eGIihMBl7i9eNMAuW0+YCbV8CftWAI8rPrGjRgDdZFLUj8e1zjYoUrED40sjSP3PdFw/M3sjhTJ0JwEKFqQED0B6sB9Qqlsw0gcaLFVK3oTqRCCQT8ywak+tckUvurIh6Cd340SbrlTXpnDeiWcRZCs0YvGKJ/ybcMWZaJemiKI9rvkIBIhoPUBemSapN2FmHdKrCXwC+i2ZhPzrRFbgZxTx4qT3yKJvz35F/gB6Ny32xIx3BpGym8uA1yRVU3PzFI/a1pq5JUO8FT3dykTyZvc9x7UY2HjKiQRr8yJ8ShDGs049yO8sjA/dj3hrwixoHc+Mjkqa41RtJqb/fGUdLwNd/sD+ItfJZY74+Dm5eWcDiOAB9O+ECFSTGo7qU1IgApNQVhNqOu/9y9FcAHUr/UAB1xZCmK7hcJ+FvZ3AY76FpU0KiemdYHrpks1Vm4WWKYyb+L7UulKIyqPRdo=
