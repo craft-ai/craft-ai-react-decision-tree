@@ -1,5 +1,14 @@
 {
-  "presets": ["react"],
+  "presets": [
+    "react",
+    [
+      "env", {
+        "targets": {
+          "node": "0.12"
+        }
+      }
+    ]
+  ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties"
