@@ -15,3 +15,6 @@ lerna-debug.log
 
 # Packaging scripts artifacts
 *.bak
+
+# Generated site
+/site/*/*
