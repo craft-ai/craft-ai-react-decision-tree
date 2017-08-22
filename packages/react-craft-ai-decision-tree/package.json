@@ -9,8 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:craft-ai/react-craft-ai-decision-tree.git"
+    "url": "git+https://github.com/craft-ai/react-craft-ai-components.git"
   },
+  "bugs": {
+    "url": "https://github.com/craft-ai/react-craft-ai-components/issues"
+  },
+  "homepage": "https://github.com/craft-ai/react-craft-ai-components/packages/react-craft-ai-decision-tree#readme",
+  "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src/ -d lib/",
