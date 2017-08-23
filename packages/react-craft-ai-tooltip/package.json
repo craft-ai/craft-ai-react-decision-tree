@@ -2,6 +2,11 @@
   "name": "react-craft-ai-tooltip",
   "version": "0.0.5",
   "description": "React component to display tooltip",
+  "keywords": [
+    "react",
+    "react-component",
+    "tooltip"
+  ],
   "author": {
     "name": "craft ai",
     "email": "contact@craft.ai",

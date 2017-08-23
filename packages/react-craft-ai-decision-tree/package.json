@@ -2,6 +2,13 @@
   "name": "react-craft-ai-decision-tree",
   "version": "0.0.5",
   "description": "React component to display craft ai decision tree",
+  "keywords": [
+    "react",
+    "react-component",
+    "decision-tree",
+    "craft-ai",
+    "ai"
+  ],
   "author": {
     "name": "craft ai",
     "email": "contact@craft.ai",
