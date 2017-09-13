@@ -1,6 +1,6 @@
 {
   "name": "react-craft-ai-decision-tree",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "React component to display craft ai decision tree",
   "keywords": [
     "react",
@@ -44,8 +44,8 @@
     "d3-zoom": "1.5.0",
     "lodash": "4.17.4",
     "react-container-dimensions": "1.3.2",
-    "react-craft-ai-popover": "^0.0.6",
-    "react-craft-ai-tooltip": "^0.0.6"
+    "react-craft-ai-popover": "^0.0.7",
+    "react-craft-ai-tooltip": "^0.0.7"
   },
   "peerDependencies": {
     "glamor": "^2.0.0",
