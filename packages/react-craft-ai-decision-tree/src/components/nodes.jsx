@@ -161,7 +161,7 @@ class Nodes extends React.Component {
   }
 
   updateTooltipPlacement = (changeTooltipPlacement) => {
-    if (changeTooltipPlacement) {
+    if (changeTooltipPlacement && this.state.tooltipPlacement != 'top') {
       this.setState({ tooltipPlacement: 'top' });
     }
   }

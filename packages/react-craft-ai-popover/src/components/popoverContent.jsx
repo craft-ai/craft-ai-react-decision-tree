@@ -125,6 +125,14 @@ class PopoverContent extends React.Component {
 
   notOnPopover = () => (this.props.onPopover(false))
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.placement != this.props.placement ||
+           nextProps.style.left != this.props.style.left ||
+           nextProps.style.top != this.props.style.top ||
+           nextProps.height != this.props.height ||
+           nextProps.arrowOffsetLeft != this.props.arrowOffsetLeft;
+  }
+
   componentDidUpdate() {
     this.props.onPlacementUpdated(
       this.popoverRef &&
