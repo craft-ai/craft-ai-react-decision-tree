@@ -6,44 +6,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
-  NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH, NOT_RELIABLE_COLOR, NOT_RELIABLE_LIMIT,
-  NULL_COLOR, RELIABLE_COLOR, RELIABLE_PERCENT
+  COLOR_EDGES_CAPTION_BG,
+  NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH
 } from '../utils/constants';
 import { Properties } from 'craft-ai';
-
-const makeGradientColor = (percent) => {
-  let newColor = {};
-
-  const makeChannel = (a, b) => {
-    return (a + Math.round((b - a) * (((percent - NOT_RELIABLE_LIMIT) * RELIABLE_PERCENT) / 100)));
-  };
-
-  const makeColorPiece = (num) => {
-    num = Math.min(num, 255);   // not more than 255
-    num = Math.max(num, 0);     // not less than 0
-    let str = num.toString(16);
-    if (str.length < 2) {
-      str = `0${str}`;
-    }
-    return str;
-  };
-
-  if (percent == 0) {
-    newColor.cssColor = `#${makeColorPiece(NULL_COLOR.r)}${makeColorPiece(NULL_COLOR.g)}${makeColorPiece(NULL_COLOR.b)}`;
-    return newColor;
-  }
-
-  if (percent < NOT_RELIABLE_LIMIT) {
-    newColor.cssColor = `#${makeColorPiece(NOT_RELIABLE_COLOR.r)}${makeColorPiece(NOT_RELIABLE_COLOR.g)}${makeColorPiece(NOT_RELIABLE_COLOR.b)}`;
-    return newColor;
-  }
-
-  newColor.r = makeChannel(NOT_RELIABLE_COLOR.r, RELIABLE_COLOR.r);
-  newColor.g = makeChannel(NOT_RELIABLE_COLOR.g, RELIABLE_COLOR.g);
-  newColor.b = makeChannel(NOT_RELIABLE_COLOR.b, RELIABLE_COLOR.b);
-  newColor.cssColor = `#${makeColorPiece(newColor.r)}${makeColorPiece(newColor.g)}${makeColorPiece(newColor.b)}`;
-  return newColor;
-};
 
 const Links = glamorous.div({
   overflow: 'hidden',
@@ -52,7 +18,7 @@ const Links = glamorous.div({
   textAlign: 'center',
   fontSize: 'smaller',
   pointerEvents: 'auto',
-  backgroundColor: 'rgba(255, 255, 255, 0.5)'
+  backgroundColor: COLOR_EDGES_CAPTION_BG
 });
 
 class Nodes extends React.Component {
@@ -78,14 +44,11 @@ class Nodes extends React.Component {
 
   displayNode = (node, index) => {
     if (_.isUndefined(node.children)) { // leaf
-      let newColor = makeGradientColor(node.data.confidence * 100);
       return (
         <Leaf
           key={ index }
           height={ this.props.height }
           node={ node }
-          color={ newColor.cssColor }
-          text={ node.data.predicted_value }
           configuration={ this.props.configuration } />
       );
     }

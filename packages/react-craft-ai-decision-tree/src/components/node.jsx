@@ -1,8 +1,9 @@
 import glamorous from 'glamorous';
+import { COLOR_NODES } from '../utils/constants';
 
 const Node = glamorous.div({
   position: 'absolute',
-  backgroundColor: '#bbb',
+  backgroundColor: COLOR_NODES,
   textAlign: 'center',
   lineHeight: 1.75,
   textOverflow: 'ellipsis',

@@ -15,24 +15,11 @@ export const NODE_WIDTH = 100;
 export const NODE_HEIGHT = 30;
 export const NODE_DEPTH = 100;
 
-// Color of the leaf
-export const NOT_RELIABLE_COLOR = {
-  r: 249,
-  g: 174,
-  b: 89
-};
+// Color of the nodes and edges
+export const COLOR_EDGES_CAPTION_BG = 'rgba(255, 255, 255, 0.5)';
+export const COLOR_EDGES = '#ddd';
+export const COLOR_NODES = '#ddd';
 
-export const RELIABLE_COLOR = {
-  r: 162,
-  g: 247,
-  b: 89
-};
-
-export const NULL_COLOR = {
-  r: 249,
-  g: 94,
-  b: 89
-};
-
-export const NOT_RELIABLE_LIMIT = 75;
-export const RELIABLE_PERCENT = 100 / (100 - NOT_RELIABLE_LIMIT);
+// Color of the leaves
+export const COLOR_LEAVES_CONFIDENCE_0 = '#FEF3C2';
+export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';

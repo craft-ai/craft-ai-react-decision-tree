@@ -4,7 +4,13 @@ import Node from './node';
 import Popover from 'react-craft-ai-popover';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NODE_HEIGHT, NODE_WIDTH } from '../utils/constants';
+import { COLOR_LEAVES_CONFIDENCE_0, COLOR_LEAVES_CONFIDENCE_1, NODE_HEIGHT, NODE_WIDTH } from '../utils/constants';
+import { mix } from 'polished';
+
+function computeLeafColor(confidence) {
+  const blend = Math.pow(confidence, 3);
+  return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
+}
 
 class Leaf extends React.Component {
   state = {
@@ -37,7 +43,10 @@ class Leaf extends React.Component {
   }
 
   render() {
-    const { color, node, text } = this.props;
+    const { node } = this.props;
+    const color = computeLeafColor(node.data.confidence);
+    const text = node.data.predicted_value;
+
     const rendererText = _.isNull(text) ?
       '' :
       (_.isFinite(text) ? parseFloat(text.toFixed(3)).toString() : text);
@@ -58,7 +67,11 @@ class Leaf extends React.Component {
           onMouseLeave={ this.hidePopover }
           empty={ _.isNull(text) }
           className='craft-nodes'
-          style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2, backgroundColor: color }}>
+          style={{
+            top: node.y - NODE_HEIGHT / 3,
+            left: node.x - NODE_WIDTH / 2,
+            backgroundColor: color
+          }}>
           { rendererText }
         </Node>
         <Popover
@@ -77,11 +90,6 @@ class Leaf extends React.Component {
 
 Leaf.propTypes = {
   node: PropTypes.object.isRequired,
-  text: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string
-  ]),
-  color: PropTypes.string.isRequired,
   configuration: PropTypes.object,
   height: PropTypes.number
 };

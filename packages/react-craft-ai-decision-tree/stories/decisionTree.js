@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
 import DecisionTree from '../src/';
-import React from 'react';
 
+import React from 'react';
 import smallTree from './smallTree.json';
 import tree from './tree.json';
 import { number, withKnobs } from '@storybook/addon-knobs';
@@ -9,11 +10,18 @@ import { storiesOf } from '@storybook/react';
 
 import './test.css';
 
-const boundsOptions = {
+const sizeBoundOptions = {
   range: true,
   min: 60,
   max: 1000,
-  step: 1,
+  step: 1
+};
+
+const confidenceBoundOptions = {
+  range: true,
+  min: 0,
+  max: 1,
+  step: 0.05
 };
 
 storiesOf('Tree displayed with fixed height', module)
@@ -24,8 +32,8 @@ storiesOf('Tree displayed with fixed height', module)
   ]))
   .add('only tree', () => (
     <DecisionTree
-      width={ number('Width', 600, boundsOptions) }
-      height={ number('Height', 500, boundsOptions) }
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
       data={ tree } />
   ))
   .add('fixed width', () => (
@@ -90,6 +98,7 @@ storiesOf('Tree displayed with fixed width', module)
 
 
 storiesOf('Small tree', module)
+  .addDecorator(withKnobs)
   .add('fixed width', () => (
     <div
       style={{
@@ -100,18 +109,22 @@ storiesOf('Small tree', module)
       <DecisionTree data={ smallTree } />
     </div>
   ))
-  .add('flexbox row', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}>
-      <div style={{ flexGrow: 1 }}>
-        <DecisionTree data={ smallTree } />
+  .add('flexbox row', () => {
+    const parametrizedTree = _.cloneDeep(smallTree);
+    parametrizedTree.trees.interest.children[0].confidence = number('confidence', parametrizedTree.trees.interest.children[0].confidence, confidenceBoundOptions);
+    return (
+      <div
+        style={{
+          display: 'flex',
+          height: 500,
+          border: 'solid 1px black'
+        }}>
+        <div style={{ flexGrow: 1 }}>
+          <DecisionTree data={ parametrizedTree } />
+        </div>
       </div>
-    </div>
-  ))
+    );
+  })
   .add('width 100%', () => (
     <div
       style={{

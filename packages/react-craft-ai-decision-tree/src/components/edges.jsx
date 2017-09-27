@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { COLOR_EDGES } from '../utils/constants';
 import { css } from 'glamor';
 import { select as d3Select } from 'd3-selection';
 
 // make links css rules
 const linksCssClass = css({
   fill: 'none',
-  stroke: '#ccc',
+  stroke: COLOR_EDGES,
   strokeWidth: 1.5
 });
 
