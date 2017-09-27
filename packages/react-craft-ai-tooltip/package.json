@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/craft-ai/react-craft-ai-components/issues"
   },
-  "homepage": "https://github.com/craft-ai/react-craft-ai-components/packages/react-craft-ai-tooltip#readme",
+  "homepage": "https://github.com/craft-ai/react-craft-ai-components/tree/master/packages/react-craft-ai-tooltip#readme",
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "storybook:build": "build-storybook -c .storybook -o ../../site/react-craft-ai-tooltip"
   },
   "devDependencies": {
-    "@storybook/react": "3.2.3",
+    "@storybook/react": "3.2.6",
     "babel-cli": "6.24.1",
     "eslint": "4.5.0"
   },
