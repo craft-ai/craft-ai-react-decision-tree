@@ -12,6 +12,18 @@
 
 ### [`react-craft-ai-tooltip`](./packages/react-craft-ai-tooltip) [![Version](https://img.shields.io/npm/v/react-craft-ai-tooltip.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-tooltip) ###
 
+## Developers instructions ##
+
+### Testing locally using [Storybook](https://storybook.js.org) ###
+
+1. In the root directory, install dependencies by running `yarn install`,
+2. In the root directory, make sure all the packages are built using `yarn build`,
+3. Move the directory of package you want to test, e.g. `cd ./packages/react-craft-ai-decision-tree`,
+4. Launch the Storybook server by running `yarn run storybook`,
+5. Open the given URL in your favorite web browser,
+6. Edit the sources as you want the Storybook will autoreload,
+7. If you make some changes to an internal dependencies, e.g. if you update `react-craft-ai-tooltip` while you are testing `react-craft-ai-decision-tree`, re-run `yarn build` in the root directory.
+
 ### Releasing a new version (needs administrator rights) ###
 
 1. Make sure the build of the master branch is [passing](https://travis-ci.org/craft-ai/react-craft-ai-components).
