@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.7...HEAD) ##
 
+## Changed ##
+- Making the decision tree leaves confidence color scheme more neutral.
+
 ## [0.0.7](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.6...v0.0.7) - 2017-09-13 ##
+
+## Fixed ##
+- Infinite loop that was occurring when rendering the leaves tooltips.
 
 ## [0.0.6](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.5...v0.0.6) - 2017-08-23 ##
 
