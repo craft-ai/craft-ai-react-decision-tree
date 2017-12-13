@@ -24,8 +24,12 @@
   "homepage": "https://github.com/craft-ai/react-craft-ai-components/tree/master/packages/react-craft-ai-decision-tree#readme",
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
+  "unpkg": "dist/react-craft-ai-decision-tree.min",
   "scripts": {
-    "build": "babel src/ -d lib/",
+    "build": "yarn run build:module && yarn run build:umd_production && yarn run build:umd_development",
+    "build:module": "babel src/ -d lib/",
+    "build:umd_production": "NODE_ENV=production webpack",
+    "build:umd_development": "NODE_ENV=development webpack",
     "lint": "eslint --ext .js,.jsx src/",
     "lint:fix": "eslint --fix --ext .js,.jsx src/",
     "storybook": "start-storybook -p 9193 -c .storybook",
@@ -34,7 +38,10 @@
   "devDependencies": {
     "@storybook/react": "3.2.6",
     "babel-cli": "6.24.1",
-    "eslint": "4.5.0"
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "eslint": "4.5.0",
+    "webpack": "3.10.0"
   },
   "dependencies": {
     "classnames": "2.2.5",
@@ -44,7 +51,7 @@
     "d3-zoom": "1.5.0",
     "lodash": "4.17.4",
     "polished": "1.7.0",
-    "react-container-dimensions": "1.3.2",
+    "react-container-dimensions": "1.3.3",
     "react-craft-ai-popover": "^0.0.8",
     "react-craft-ai-tooltip": "^0.0.8"
   },
@@ -54,5 +61,8 @@
     "prop-types": "^15.0.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
+  },
+  "browser": {
+    "lodash": "lodash/lodash.min.js"
   }
 }

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.8...HEAD) ##
 
+## Added ##
+- `react-craft-ai-decision-tree` is now packaged as a UMD module and available through [unpkg](https://unpkg.com/).
+
 ## [0.0.8](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.7...v0.0.8) - 2017-09-28 ##
 
 ## Changed ##
