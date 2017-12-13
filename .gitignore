@@ -13,6 +13,9 @@ npm-debug.log
 # Lerna specific
 lerna-debug.log
 
+# UMD packages
+dist/
+
 # Packaging scripts artifacts
 *.bak
 
