@@ -31,9 +31,6 @@ module.exports = {
     'react': 'React',
     'react-dom': 'ReactDOM',
     'glamor': 'Glamor',
-    'glamorous': 'glamorous',
-    'd3-hierarchy': 'd3',
-    'd3-selection': 'd3',
-    'd3-zoom': 'd3'
+    'glamorous': 'glamorous'
   }
 };

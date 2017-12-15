@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.9...HEAD) ##
 
+## Fixed ##
+- `d3` packages are now included in the `react-craft-ai-decision-tree` umd.
+
 ## [0.0.9](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.8...v0.0.9) - 2017-12-13 ##
 
 ## Added ##
