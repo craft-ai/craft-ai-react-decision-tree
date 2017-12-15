@@ -29,9 +29,10 @@ Thanks to [unpkg](https://unpkg.com/), you can include the pre-generated bundle 
 <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
 <script src="https://unpkg.com/glamor@2/umd/index.min.js"></script>
 <script src="https://unpkg.com/glamorous@4/dist/glamorous.umd.min.js"></script>
-<script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://unpkg.com/react-craft-ai-decision-tree"></script>
 ````
+
+> See this [example](https://codepen.io/cloderic/pen/GygQVa).
 
 ## Usage ##
 
