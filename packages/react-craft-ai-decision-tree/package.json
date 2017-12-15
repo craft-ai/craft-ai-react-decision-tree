@@ -25,6 +25,7 @@
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "unpkg": "dist/react-craft-ai-decision-tree.min",
+  "jsdelivr": "dist/react-craft-ai-decision-tree.min",
   "scripts": {
     "build": "yarn run build:module && yarn run build:umd_production && yarn run build:umd_development",
     "build:module": "babel src/ -d lib/",
