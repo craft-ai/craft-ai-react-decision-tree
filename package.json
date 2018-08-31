@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@storybook/addon-backgrounds": "3.0.0",
-    "@storybook/addon-knobs": "3.2.6",
-    "@storybook/addon-options": "3.2.6",
+    "@storybook/addon-knobs": "3.4.10",
+    "@storybook/addon-options": "3.4.10",
     "babel-eslint": "7.2.3",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
