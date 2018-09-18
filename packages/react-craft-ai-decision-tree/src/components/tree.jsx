@@ -53,11 +53,6 @@ const TreeCanvas = glamorous.div({
   position: 'absolute'
 });
 
-const TranslatedTree = glamorous.div({
-  transformOrigin: 'left top 0px'
-});
-
-
 function computeSvgSizeFromData(root, width, height) {
   let tree = d3Tree().nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
   const nodes = d3Hierarchy(root, (d) => d.children);
@@ -122,17 +117,18 @@ function computeSvgSizeFromData(root, width, height) {
 
 class Tree extends React.Component {
   state = {
-    isPanActivated: false,
     newPos: [0, 0],
-    scale: 1,
-    zoom: d3Zoom(),
-    offsetX: 0
+    scale: 1
   }
+
+  zoom = d3Zoom();
+  isPanActivated = false;
+  translatedTreeRef = null;
 
   componentDidMount() {
     const selection = d3Select('div.zoomed-tree');
     selection.call(
-      this.state.zoom
+      this.zoom
         .scaleExtent(ZOOM_EXTENT)
         .on('zoom', this.mouseWheel)
         .on('start', this.onPanningActivated)
@@ -146,10 +142,7 @@ class Tree extends React.Component {
   }
 
   mouseWheel = () => {
-    this.setState({
-      scale: d3Event.transform.k,
-      newPos: [d3Event.transform.x, d3Event.transform.y]
-    });
+    this.setState({ scale: d3Event.transform.k, newPos: [d3Event.transform.x, d3Event.transform.y] });
   }
 
   doFitToScreen = () => {
@@ -157,9 +150,9 @@ class Tree extends React.Component {
     const marginedCanvasBbox = canvasBbox.applyMargin(MARGIN);
     const treeBbox = new Box(d3Select('div.translated-tree').node().getBoundingClientRect());
     const { newPos, scale } = computeFitTransformation(treeBbox, marginedCanvasBbox, this.state);
-    this.setState({ newPos: newPos, scale: scale });
+    this.setState({ newPos, scale });
     const selection = d3Select('div.zoomed-tree');
-    selection.call(this.state.zoom.transform, zoomIdentity.translate(newPos[0], newPos[1]).scale(scale));
+    selection.call(this.zoom.transform, zoomIdentity.translate(newPos[0], newPos[1]).scale(scale));
   }
 
   resetPosition = () => {
@@ -168,11 +161,15 @@ class Tree extends React.Component {
   }
 
   onPanningActivated = () => {
-    this.setState({ isPanActivated: true });
+    this.isPanActivated = true;
   }
 
   onPanningDeactivated = () => {
-    this.setState({ isPanActivated: false });
+    this.isPanActivated = false;
+  }
+
+  getTranslatedTreeRef = (input) => {
+    this.translatedTreeRef = input;
   }
 
   render() {
@@ -200,10 +197,12 @@ class Tree extends React.Component {
           height: this.props.height,
           width: this.props.width
         }}>
-        <TranslatedTree
+        <div
+          ref={ this.getTranslatedTreeRef }
           onDoubleClick={ this.resetPosition }
-          className={ classnames('translated-tree', { unselectable: this.state.isPanActivated, selectable: !this.state.isPanActivated }) }
+          className={ classnames('translated-tree', { unselectable: this.isPanActivated, selectable: !this.isPanActivated }) }
           style={{
+            transformOrigin: 'left top 0px',
             transform: `translate(${this.state.newPos[0]}px,${this.state.newPos[1]}px) scale(${this.state.scale})`,
             width: minSvgWidth,
             height: minSvgHeight
@@ -219,7 +218,7 @@ class Tree extends React.Component {
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight } />
-        </TranslatedTree>
+        </div>
       </TreeCanvas>
     );
   }
