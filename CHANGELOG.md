@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Zoom level is increased in `react-craft-ai-decision-tree`.
 
 ## Fixed ##
-- Panning and zooming on big decision tree have less lags in `react-craft-ai-decision-tree`.
+- Panning and zooming on big decision trees is more responsive in `react-craft-ai-decision-tree`.
 
 ## [0.0.10](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.9...v0.0.10) - 2017-12-15 ##
 
