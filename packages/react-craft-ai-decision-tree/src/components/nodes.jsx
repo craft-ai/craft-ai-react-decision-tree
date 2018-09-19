@@ -42,6 +42,15 @@ class Nodes extends React.Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const doUpdate = this.props.configuration != nextProps.configuration ||
+                   _.isEqual(this.props.nodes, nextProps.nodes) ||
+                   _.isEqual(this.props.links, nextProps.links) ||
+                   this.props.height != nextProps.height;
+
+    return doUpdate;
+  }
+
   displayNode = (node, index) => {
     if (_.isUndefined(node.children)) { // leaf
       return (

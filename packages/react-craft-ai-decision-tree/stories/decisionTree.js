@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
+import bigTree from './bigTree.json';
 import DecisionTree from '../src/';
-
 import React from 'react';
 import smallTree from './smallTree.json';
 import tree from './tree.json';
@@ -133,6 +133,29 @@ storiesOf('Small tree', module)
         border: 'solid 1px black'
       }}>
       <DecisionTree data={ smallTree } />
+    </div>
+  ));
+
+storiesOf('Big tree', module)
+  .addDecorator(withKnobs)
+  .add('fixed width', () => (
+    <div
+      style={{
+        width: 600,
+        height: 500,
+        border: 'solid 1px black'
+      }}>
+      <DecisionTree data={ bigTree } />
+    </div>
+  ))
+  .add('width 100%', () => (
+    <div
+      style={{
+        width: '100%',
+        height: 500,
+        border: 'solid 1px black'
+      }}>
+      <DecisionTree data={ bigTree } />
     </div>
   ));
 

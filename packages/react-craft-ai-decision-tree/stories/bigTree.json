@@ -1,0 +1,3751 @@
+{
+  "_version": "1.1.0",
+  "configuration": {
+    "time_quantum": 120,
+    "operations_as_events": true,
+    "learning_period": 31536000,
+    "tree_max_operations": 50000,
+    "tree_max_depth": 8,
+    "context": {
+      "timezone": {
+        "type": "timezone"
+      },
+      "timeOfDay": {
+        "type": "time_of_day",
+        "is_generated": true
+      },
+      "dayOfWeek": {
+        "type": "day_of_week",
+        "is_generated": true
+      },
+      "dayOfMonth": {
+        "type": "day_of_month",
+        "is_generated": true
+      },
+      "monthOfYear": {
+        "type": "month_of_year",
+        "is_generated": true
+      },
+      "apparentTemperature": {
+        "type": "continuous"
+      },
+      "temperature": {
+        "type": "continuous"
+      },
+      "humidity": {
+        "type": "continuous"
+      },
+      "precipIntensity": {
+        "type": "continuous"
+      },
+      "precipProbability": {
+        "type": "continuous"
+      },
+      "amount": {
+        "type": "continuous"
+      }
+    },
+    "output": [
+      "amount"
+    ]
+  },
+  "trees": {
+    "amount": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "confidence": 0.9999747276306152,
+                  "decision_rule": {
+                    "operand": 2.745,
+                    "operator": "<",
+                    "property": "apparentTemperature"
+                  },
+                  "predicted_value": 0,
+                  "standard_deviation": 0
+                },
+                {
+                  "children": [
+                    {
+                      "confidence": 0.5,
+                      "decision_rule": {
+                        "operand": [
+                          21.666666,
+                          21.75
+                        ],
+                        "operator": "[in[",
+                        "property": "timeOfDay"
+                      },
+                      "predicted_value": 13,
+                      "standard_deviation": 0
+                    },
+                    {
+                      "confidence": 0.27614232897758484,
+                      "decision_rule": {
+                        "operand": [
+                          21.75,
+                          21.666666
+                        ],
+                        "operator": "[in[",
+                        "property": "timeOfDay"
+                      },
+                      "predicted_value": 1,
+                      "standard_deviation": 1.4142135
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 2.745,
+                    "operator": ">=",
+                    "property": "apparentTemperature"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": 5.55,
+                "operator": "<",
+                "property": "apparentTemperature"
+              }
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "confidence": 0.5,
+                          "decision_rule": {
+                            "operand": [
+                              14.883333,
+                              16.85
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          },
+                          "predicted_value": 24.65,
+                          "standard_deviation": 0
+                        },
+                        {
+                          "confidence": 0.5326434969902039,
+                          "decision_rule": {
+                            "operand": [
+                              16.85,
+                              18.133333
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          },
+                          "predicted_value": 42.575,
+                          "standard_deviation": 10.712669
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          9,
+                          10
+                        ],
+                        "operator": "[in[",
+                        "property": "dayOfMonth"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5790260434150696,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.883333,
+                                          15.716666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 12.455401,
+                                      "standard_deviation": 8.955031
+                                    },
+                                    {
+                                      "confidence": 0.6020999550819397,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.716666,
+                                          15.816667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 17.994184,
+                                      "standard_deviation": 11.212303
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      10,
+                                      5
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.49785733222961426,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.883333,
+                                          15.333333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 11.428572,
+                                      "standard_deviation": 8.657504
+                                    },
+                                    {
+                                      "confidence": 0.5326718091964722,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.333333,
+                                          15.816667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 23.647501,
+                                      "standard_deviation": 18.632624
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      5,
+                                      9
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 0.90999997,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.883333,
+                                      15.466666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 7,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5690993666648865,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.466666,
+                                          15.75
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 34.142857,
+                                      "standard_deviation": 18.352371
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.75,
+                                          15.816667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 11,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.466666,
+                                      15.816667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 0.90999997,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              14.883333,
+                              15.816667
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5951545238494873,
+                                      "decision_rule": {
+                                        "operand": [
+                                          4,
+                                          5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 18.125,
+                                      "standard_deviation": 9.986639
+                                    },
+                                    {
+                                      "confidence": 0.598362922668457,
+                                      "decision_rule": {
+                                        "operand": [
+                                          5,
+                                          4
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 10.9540825,
+                                      "standard_deviation": 7.1677556
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.816667,
+                                      16.083334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.49007532000541687,
+                                      "decision_rule": {
+                                        "operand": [
+                                          3,
+                                          4
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 4.307692,
+                                      "standard_deviation": 3.8543181
+                                    },
+                                    {
+                                      "confidence": 0.5730735659599304,
+                                      "decision_rule": {
+                                        "operand": [
+                                          4,
+                                          3
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 9.732558,
+                                      "standard_deviation": 7.1523604
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      16.083334,
+                                      16.5
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  15.816667,
+                                  16.5
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5672350525856018,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.5,
+                                          16.65
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 14.878789,
+                                      "standard_deviation": 10.96009
+                                    },
+                                    {
+                                      "confidence": 0.5708341002464294,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.65,
+                                          17.333334
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 11.714289,
+                                      "standard_deviation": 8.739116
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      16.5,
+                                      17.333334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.34928828477859497,
+                                      "decision_rule": {
+                                        "operand": 0.595,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 59.333336,
+                                      "standard_deviation": 68.068596
+                                    },
+                                    {
+                                      "confidence": 0.5509817004203796,
+                                      "decision_rule": {
+                                        "operand": 0.595,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 13.57081,
+                                      "standard_deviation": 10.990819
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      17.333334,
+                                      18.133333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  16.5,
+                                  18.133333
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.816667,
+                              18.133333
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          10,
+                          9
+                        ],
+                        "operator": "[in[",
+                        "property": "dayOfMonth"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      14.883333,
+                      18.133333
+                    ],
+                    "operator": "[in[",
+                    "property": "timeOfDay"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.133333,
+                                      8.466666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 18,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      8.466666,
+                                      14.883333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 20,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 10.940001,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5573881268501282,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.133333,
+                                          12
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 7.2626395,
+                                      "standard_deviation": 5.738047
+                                    },
+                                    {
+                                      "confidence": 0.5388920903205872,
+                                      "decision_rule": {
+                                        "operand": [
+                                          12,
+                                          14.883333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 3.5312498,
+                                      "standard_deviation": 2.6360877
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 17.619999,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.4773557186126709,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.133333,
+                                          14.25
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 4.406977,
+                                      "standard_deviation": 4.615265
+                                    },
+                                    {
+                                      "confidence": 0.572045087814331,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.25,
+                                          14.883333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 10.333333,
+                                      "standard_deviation": 3.2145503
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 17.619999,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 10.940001,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 0.855,
+                            "operator": "<",
+                            "property": "humidity"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.4317862093448639,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.133333,
+                                          19.566668
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 9.2,
+                                      "standard_deviation": 8.5557
+                                    },
+                                    {
+                                      "confidence": 0.33603084087371826,
+                                      "decision_rule": {
+                                        "operand": [
+                                          19.566668,
+                                          8.333333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 2.25,
+                                      "standard_deviation": 3.4892693
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.133333,
+                                      8.333333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5319560170173645,
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.333333,
+                                          10.183333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 11.1428585,
+                                      "standard_deviation": 9.081786
+                                    },
+                                    {
+                                      "confidence": 0.4492068290710449,
+                                      "decision_rule": {
+                                        "operand": [
+                                          10.183333,
+                                          14.883333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 4.5,
+                                      "standard_deviation": 4.0865636
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      8.333333,
+                                      14.883333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 15.47,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.133333,
+                                      9.016666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 37,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      9.016666,
+                                      14.883333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 36,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 15.47,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 0.855,
+                            "operator": ">=",
+                            "property": "humidity"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          2,
+                          14
+                        ],
+                        "operator": "[in[",
+                        "property": "dayOfMonth"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5531124472618103,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.133333,
+                                          21.366667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 10.085347,
+                                      "standard_deviation": 8.125755
+                                    },
+                                    {
+                                      "confidence": 0.4831474125385285,
+                                      "decision_rule": {
+                                        "operand": [
+                                          21.366667,
+                                          8.35
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 4.34375,
+                                      "standard_deviation": 4.1179233
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.133333,
+                                      8.35
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5573883652687073,
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.35,
+                                          8.766666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 15.911765,
+                                      "standard_deviation": 12.221507
+                                    },
+                                    {
+                                      "confidence": 0.5257754921913147,
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.766666,
+                                          10.783334
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 10.800909,
+                                      "standard_deviation": 9.700405
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      8.35,
+                                      10.783334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 0.925,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5833228826522827,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.133333,
+                                          8.433333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 7.860345,
+                                      "standard_deviation": 5.165603
+                                    },
+                                    {
+                                      "confidence": 0.6302556395530701,
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.433333,
+                                          9.016666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 12.014815,
+                                      "standard_deviation": 6.3677497
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.133333,
+                                      9.016666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5885335803031921,
+                                      "decision_rule": {
+                                        "operand": [
+                                          9.016666,
+                                          9.8
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 6.400001,
+                                      "standard_deviation": 4.238085
+                                    },
+                                    {
+                                      "confidence": 0.5574321150779724,
+                                      "decision_rule": {
+                                        "operand": [
+                                          9.8,
+                                          10.783334
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 8.337836,
+                                      "standard_deviation": 6.2261252
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      9.016666,
+                                      10.783334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 0.925,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              18.133333,
+                              10.783334
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5345044136047363,
+                                      "decision_rule": {
+                                        "operand": [
+                                          0,
+                                          2
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 8.134169,
+                                      "standard_deviation": 6.958213
+                                    },
+                                    {
+                                      "confidence": 0.5219696164131165,
+                                      "decision_rule": {
+                                        "operand": [
+                                          2,
+                                          0
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 9.700957,
+                                      "standard_deviation": 8.825146
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 16.36,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5084783434867859,
+                                      "decision_rule": {
+                                        "operand": 0.545,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 11.2,
+                                      "standard_deviation": 7.1554174
+                                    },
+                                    {
+                                      "confidence": 0.5760391354560852,
+                                      "decision_rule": {
+                                        "operand": 0.545,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 5.5119047,
+                                      "standard_deviation": 3.8341982
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 16.36,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 21.835,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.38211390376091,
+                                  "decision_rule": {
+                                    "operand": [
+                                      10.783334,
+                                      14.816667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 33.25,
+                                  "standard_deviation": 36.362755
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.816667,
+                                      14.883333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 4,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 21.835,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              10.783334,
+                              14.883333
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          14,
+                          2
+                        ],
+                        "operator": "[in[",
+                        "property": "dayOfMonth"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      18.133333,
+                      14.883333
+                    ],
+                    "operator": "[in[",
+                    "property": "timeOfDay"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": 5.55,
+                "operator": ">=",
+                "property": "apparentTemperature"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": 0.98,
+            "operator": "<",
+            "property": "humidity"
+          }
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5565351843833923,
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          2
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 57.75,
+                                      "standard_deviation": 25.26361
+                                    },
+                                    {
+                                      "confidence": 0.6241475939750671,
+                                      "decision_rule": {
+                                        "operand": [
+                                          2,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 26.716864,
+                                      "standard_deviation": 15.578909
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.85,
+                                      15.616667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6659396886825562,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.616667,
+                                          16.683332
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 19.03596,
+                                      "standard_deviation": 9.389461
+                                    },
+                                    {
+                                      "confidence": 0.6311481595039368,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.683332,
+                                          19.05
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 23.60124,
+                                      "standard_deviation": 13.708864
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.616667,
+                                      19.05
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  19,
+                                  30
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6201542615890503,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.85,
+                                          18.266666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 27.307798,
+                                      "standard_deviation": 16.559288
+                                    },
+                                    {
+                                      "confidence": 0.6383815407752991,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.266666,
+                                          19.05
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 20.841467,
+                                      "standard_deviation": 11.412543
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 1.6949999,
+                                    "operator": "<",
+                                    "property": "humidity"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6963527798652649,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.85,
+                                          18.316668
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 38.903843,
+                                      "standard_deviation": 14.894978
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          18.316668,
+                                          19.05
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 78,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 1.6949999,
+                                    "operator": ">=",
+                                    "property": "humidity"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  30,
+                                  19
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              14.85,
+                              19.05
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.566135048866272,
+                                      "decision_rule": {
+                                        "operand": [
+                                          19.05,
+                                          8.366667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 19.134424,
+                                      "standard_deviation": 14.508873
+                                    },
+                                    {
+                                      "confidence": 0.6328082084655762,
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.366667,
+                                          9.3
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 24.006016,
+                                      "standard_deviation": 13.791728
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      19.05,
+                                      9.3
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6048488020896912,
+                                      "decision_rule": {
+                                        "operand": 1.35,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 15.14557,
+                                      "standard_deviation": 9.581685
+                                    },
+                                    {
+                                      "confidence": 0.6037507057189941,
+                                      "decision_rule": {
+                                        "operand": 1.35,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 19.827126,
+                                      "standard_deviation": 12.939331
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      9.3,
+                                      14.85
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 31.68,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6403105854988098,
+                                      "decision_rule": {
+                                        "operand": [
+                                          19.05,
+                                          13.45
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 22.699999,
+                                      "standard_deviation": 12.106975
+                                    },
+                                    {
+                                      "confidence": 0.6785434484481812,
+                                      "decision_rule": {
+                                        "operand": [
+                                          13.45,
+                                          14.85
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 13.174999,
+                                      "standard_deviation": 5.3169913
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      1,
+                                      16
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6311711072921753,
+                                      "decision_rule": {
+                                        "operand": 1.65,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 15.536586,
+                                      "standard_deviation": 8.880391
+                                    },
+                                    {
+                                      "confidence": 0.6251136064529419,
+                                      "decision_rule": {
+                                        "operand": 1.65,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 9.55,
+                                      "standard_deviation": 4.999737
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      16,
+                                      1
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 31.68,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              19.05,
+                              14.85
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 46.29,
+                        "operator": "<",
+                        "property": "temperature"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6666666269302368,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.1,
+                                          15.333333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 22,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.7504749894142151,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.333333,
+                                          15.85
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 16.5,
+                                      "standard_deviation": 2.3452077
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 60.12,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6333081722259521,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.1,
+                                          15.7
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 39,
+                                      "standard_deviation": 13.784049
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.7,
+                                          15.85
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 21,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 60.12,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  15,
+                                  16
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6068325042724609,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.1,
+                                          15.566667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 40.113636,
+                                      "standard_deviation": 23.115616
+                                    },
+                                    {
+                                      "confidence": 0.6774556040763855,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.566667,
+                                          15.85
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 29.558334,
+                                      "standard_deviation": 10.716805
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      4,
+                                      5
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7565170526504517,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.1,
+                                          15.3
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 38.64,
+                                      "standard_deviation": 10.471707
+                                    },
+                                    {
+                                      "confidence": 0.6679500341415405,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.3,
+                                          15.85
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 46.295082,
+                                      "standard_deviation": 21.89623
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      5,
+                                      4
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  16,
+                                  15
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.1,
+                              15.85
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.85,
+                                          15.966666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 26,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.7251231670379639,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.966666,
+                                          18.45
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 37.24242,
+                                      "standard_deviation": 12.607118
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.85,
+                                      18.45
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.45,
+                                      15.1
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 68,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  3,
+                                  4
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.85,
+                                          16.133333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 28,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.5752323269844055,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.133333,
+                                          15.1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 14.6875,
+                                      "standard_deviation": 8.008645
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 1.1600001,
+                                    "operator": "<",
+                                    "property": "humidity"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6715965867042542,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.85,
+                                          16.116667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 22.020836,
+                                      "standard_deviation": 9.456398
+                                    },
+                                    {
+                                      "confidence": 0.6509079933166504,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.116667,
+                                          15.1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 28.869322,
+                                      "standard_deviation": 15.149588
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 1.1600001,
+                                    "operator": ">=",
+                                    "property": "humidity"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  4,
+                                  3
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.85,
+                              15.1
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 46.29,
+                        "operator": ">=",
+                        "property": "temperature"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 1.935,
+                    "operator": "<",
+                    "property": "humidity"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6490365862846375,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.216666,
+                                          15.5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 37.878784,
+                                      "standard_deviation": 18.766254
+                                    },
+                                    {
+                                      "confidence": 0.6114943027496338,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.5,
+                                          15.566667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 20.75,
+                                      "standard_deviation": 6.3966136
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      0,
+                                      4
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6647680401802063,
+                                      "decision_rule": {
+                                        "operand": 2.145,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 37.692307,
+                                      "standard_deviation": 14.957633
+                                    },
+                                    {
+                                      "confidence": 0.7278081774711609,
+                                      "decision_rule": {
+                                        "operand": 2.145,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 51.32143,
+                                      "standard_deviation": 16.762068
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      4,
+                                      0
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  15.216666,
+                                  15.566667
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      5,
+                                      6
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  },
+                                  "predicted_value": 121,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6970604062080383,
+                                      "decision_rule": {
+                                        "operand": [
+                                          6,
+                                          28
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 55.4,
+                                      "standard_deviation": 10.830512
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          28,
+                                          5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 36,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      6,
+                                      5
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  15.566667,
+                                  15.6
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.216666,
+                              15.6
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6430714726448059,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.6,
+                                          11.583333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 29.400444,
+                                      "standard_deviation": 16.196095
+                                    },
+                                    {
+                                      "confidence": 0.5861950516700745,
+                                      "decision_rule": {
+                                        "operand": [
+                                          11.583333,
+                                          15.216666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 21.247221,
+                                      "standard_deviation": 13.091088
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      12,
+                                      25
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6479911804199219,
+                                      "decision_rule": {
+                                        "operand": 48.6,
+                                        "operator": "<",
+                                        "property": "temperature"
+                                      },
+                                      "predicted_value": 32.24259,
+                                      "standard_deviation": 17.400257
+                                    },
+                                    {
+                                      "confidence": 0.6440988779067993,
+                                      "decision_rule": {
+                                        "operand": 48.6,
+                                        "operator": ">=",
+                                        "property": "temperature"
+                                      },
+                                      "predicted_value": 37.728912,
+                                      "standard_deviation": 20.393282
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      25,
+                                      12
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.47,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6619237661361694,
+                                      "decision_rule": {
+                                        "operand": [
+                                          23,
+                                          30
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 32.023922,
+                                      "standard_deviation": 16.205435
+                                    },
+                                    {
+                                      "confidence": 0.6770591735839844,
+                                      "decision_rule": {
+                                        "operand": [
+                                          30,
+                                          23
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 36.579563,
+                                      "standard_deviation": 17.283346
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 49.54,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6198627352714539,
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          2
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 32.925003,
+                                      "standard_deviation": 17.662237
+                                    },
+                                    {
+                                      "confidence": 0.6666637063026428,
+                                      "decision_rule": {
+                                        "operand": [
+                                          2,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfWeek"
+                                      },
+                                      "predicted_value": 43.561073,
+                                      "standard_deviation": 21.249598
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 49.54,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.47,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.6,
+                              15.216666
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 69.03,
+                        "operator": "<",
+                        "property": "temperature"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6064652800559998,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16,
+                                          21
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 66,
+                                      "standard_deviation": 15.6205
+                                    },
+                                    {
+                                      "confidence": 0.7358216643333435,
+                                      "decision_rule": {
+                                        "operand": [
+                                          21,
+                                          16
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 43.157894,
+                                      "standard_deviation": 12.562126
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.866667,
+                                      15.416667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5333282351493835,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14,
+                                          16
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 42.75,
+                                      "standard_deviation": 21.375608
+                                    },
+                                    {
+                                      "confidence": 0.6836318373680115,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16,
+                                          14
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 27.428572,
+                                      "standard_deviation": 7.6780453
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.416667,
+                                      15.766666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.54,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7979812622070312,
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.866667,
+                                          15.333333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 61.05263,
+                                      "standard_deviation": 11.630772
+                                    },
+                                    {
+                                      "confidence": 0.7717676758766174,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.333333,
+                                          15.766666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 48.468746,
+                                      "standard_deviation": 12.430411
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      9,
+                                      18
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6750648021697998,
+                                      "decision_rule": {
+                                        "operand": 80.86,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 55,
+                                      "standard_deviation": 21.042082
+                                    },
+                                    {
+                                      "confidence": 0.7333539128303528,
+                                      "decision_rule": {
+                                        "operand": 80.86,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 68.52381,
+                                      "standard_deviation": 20.667896
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18,
+                                      9
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.54,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              14.866667,
+                              15.766666
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7072893381118774,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.766666,
+                                          16.45
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 28.944445,
+                                      "standard_deviation": 9.824772
+                                    },
+                                    {
+                                      "confidence": 0.7140313386917114,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.45,
+                                          14.866667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 39.32954,
+                                      "standard_deviation": 14.527415
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      3,
+                                      6
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7445813417434692,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.766666,
+                                          10.55
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 42.270092,
+                                      "standard_deviation": 13.97454
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          10.55,
+                                          14.866667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 17,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      6,
+                                      3
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfWeek"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.89,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6024183034896851,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.766666,
+                                          16.066668
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 38,
+                                      "standard_deviation": 12.463279
+                                    },
+                                    {
+                                      "confidence": 0.6687546968460083,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.066668,
+                                          18.35
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 55.791668,
+                                      "standard_deviation": 24.297485
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.766666,
+                                      18.35
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 78.34,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 24.5,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 78.34,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 23,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.35,
+                                      14.866667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2.89,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.766666,
+                              14.866667
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 69.03,
+                        "operator": ">=",
+                        "property": "temperature"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 1.935,
+                    "operator": ">=",
+                    "property": "humidity"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": 3.045,
+                "operator": "<",
+                "property": "humidity"
+              }
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7386140823364258,
+                                      "decision_rule": {
+                                        "operand": 3.935,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 41.60714,
+                                      "standard_deviation": 10.968801
+                                    },
+                                    {
+                                      "confidence": 0.7666621804237366,
+                                      "decision_rule": {
+                                        "operand": 3.935,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 54.555557,
+                                      "standard_deviation": 9.4882965
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.133333,
+                                      15.416667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.649587869644165,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.416667,
+                                          15.483334
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 75.6,
+                                      "standard_deviation": 21.384573
+                                    },
+                                    {
+                                      "confidence": 0.6695221066474915,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.483334,
+                                          15.65
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 50.25,
+                                      "standard_deviation": 16.464247
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.416667,
+                                      15.65
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2,
+                                "operator": "<",
+                                "property": "precipProbability"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.133333,
+                                      15.383333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 113,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 72.92999,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 41,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 72.92999,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 98,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.383333,
+                                      15.65
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 2,
+                                "operator": ">=",
+                                "property": "precipProbability"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 77.979996,
+                            "operator": "<",
+                            "property": "apparentTemperature"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.133333,
+                                      15.366667
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 202,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 118.425,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 128,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.693047046661377,
+                                      "decision_rule": {
+                                        "operand": 118.425,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 91.333336,
+                                      "standard_deviation": 7.505554
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.366667,
+                                      15.65
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  6,
+                                  8
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7527959942817688,
+                                      "decision_rule": {
+                                        "operand": 3.93,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 67.38281,
+                                      "standard_deviation": 20.750166
+                                    },
+                                    {
+                                      "confidence": 0.7062293291091919,
+                                      "decision_rule": {
+                                        "operand": 3.93,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 78.93678,
+                                      "standard_deviation": 31.565256
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 0.066300005,
+                                    "operator": "<",
+                                    "property": "precipIntensity"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 0.13,
+                                        "operator": "<",
+                                        "property": "precipProbability"
+                                      },
+                                      "predicted_value": 135,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.7383461594581604,
+                                      "decision_rule": {
+                                        "operand": 0.13,
+                                        "operator": ">=",
+                                        "property": "precipProbability"
+                                      },
+                                      "predicted_value": 92.57143,
+                                      "standard_deviation": 24.446848
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 0.066300005,
+                                    "operator": ">=",
+                                    "property": "precipIntensity"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  8,
+                                  6
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 77.979996,
+                            "operator": ">=",
+                            "property": "apparentTemperature"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          15.133333,
+                          15.65
+                        ],
+                        "operator": "[in[",
+                        "property": "timeOfDay"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7265415191650391,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.65,
+                                          16.883333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 46.81789,
+                                      "standard_deviation": 16.950254
+                                    },
+                                    {
+                                      "confidence": 0.6953786015510559,
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.883333,
+                                          18.25
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 54.579002,
+                                      "standard_deviation": 23.389389
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.65,
+                                      18.25
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6342172622680664,
+                                      "decision_rule": {
+                                        "operand": [
+                                          24,
+                                          28
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 38.669853,
+                                      "standard_deviation": 21.419056
+                                    },
+                                    {
+                                      "confidence": 0.7030359506607056,
+                                      "decision_rule": {
+                                        "operand": [
+                                          28,
+                                          24
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 46.734703,
+                                      "standard_deviation": 19.531807
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.25,
+                                      15.133333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 3.82,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7306352257728577,
+                                      "decision_rule": {
+                                        "operand": [
+                                          22,
+                                          29
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 50.93421,
+                                      "standard_deviation": 16.990526
+                                    },
+                                    {
+                                      "confidence": 0.7471299171447754,
+                                      "decision_rule": {
+                                        "operand": [
+                                          29,
+                                          22
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 66.86956,
+                                      "standard_deviation": 21.353752
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.65,
+                                      17.833334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7167808413505554,
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          30
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 50.536854,
+                                      "standard_deviation": 19.670961
+                                    },
+                                    {
+                                      "confidence": 0.7254619598388672,
+                                      "decision_rule": {
+                                        "operand": [
+                                          30,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 62.509377,
+                                      "standard_deviation": 21.044489
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      17.833334,
+                                      15.133333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 3.82,
+                                "operator": ">=",
+                                "property": "humidity"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 4.665,
+                            "operator": "<",
+                            "property": "humidity"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7381055951118469,
+                                      "decision_rule": {
+                                        "operand": 141.08499,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 61.72827,
+                                      "standard_deviation": 21.525698
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 141.08499,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 0,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 142.345,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6416899561882019,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.65,
+                                          15.966666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 54.5,
+                                      "standard_deviation": 2.1213202
+                                    },
+                                    {
+                                      "confidence": 0.7207522988319397,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.966666,
+                                          15.133333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 82.181816,
+                                      "standard_deviation": 22.338612
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 142.345,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  8,
+                                  30
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6292746663093567,
+                                      "decision_rule": {
+                                        "operand": 89.399994,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 119,
+                                      "standard_deviation": 7.071068
+                                    },
+                                    {
+                                      "confidence": 0.702177882194519,
+                                      "decision_rule": {
+                                        "operand": 89.399994,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 97.8,
+                                      "standard_deviation": 18.267458
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.65,
+                                      17.483334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7448254227638245,
+                                      "decision_rule": {
+                                        "operand": 5.0699997,
+                                        "operator": "<",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 65.76521,
+                                      "standard_deviation": 18.851925
+                                    },
+                                    {
+                                      "confidence": 0.7150416970252991,
+                                      "decision_rule": {
+                                        "operand": 5.0699997,
+                                        "operator": ">=",
+                                        "property": "humidity"
+                                      },
+                                      "predicted_value": 84.03571,
+                                      "standard_deviation": 25.654858
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      17.483334,
+                                      15.133333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  30,
+                                  8
+                                ],
+                                "operator": "[in[",
+                                "property": "dayOfMonth"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 4.665,
+                            "operator": ">=",
+                            "property": "humidity"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          15.65,
+                          15.133333
+                        ],
+                        "operator": "[in[",
+                        "property": "timeOfDay"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 5.62,
+                    "operator": "<",
+                    "property": "humidity"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": [
+                                      7.95,
+                                      8.333333
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  },
+                                  "predicted_value": 0,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7773295640945435,
+                                      "decision_rule": {
+                                        "operand": 3.74,
+                                        "operator": "<",
+                                        "property": "precipProbability"
+                                      },
+                                      "predicted_value": 80.699814,
+                                      "standard_deviation": 22.410683
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 3.74,
+                                        "operator": ">=",
+                                        "property": "precipProbability"
+                                      },
+                                      "predicted_value": 151,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      8.333333,
+                                      7.95
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 183.51001,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6346137523651123,
+                                      "decision_rule": {
+                                        "operand": 204.38501,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 112,
+                                      "standard_deviation": 5.656854
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 204.38501,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 81,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18,
+                                      21
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.3,
+                                          15.316667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 169,
+                                      "standard_deviation": 0
+                                    },
+                                    {
+                                      "confidence": 0.6503024697303772,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.316667,
+                                          15.3
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 140.5,
+                                      "standard_deviation": 3.535534
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      21,
+                                      31
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "dayOfMonth"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 183.51001,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              18,
+                              31
+                            ],
+                            "operator": "[in[",
+                            "property": "dayOfMonth"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7864714860916138,
+                                      "decision_rule": {
+                                        "operand": [
+                                          31,
+                                          17
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 93.58823,
+                                      "standard_deviation": 22.009459
+                                    },
+                                    {
+                                      "confidence": 0.6096367835998535,
+                                      "decision_rule": {
+                                        "operand": [
+                                          17,
+                                          18
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 128.5,
+                                      "standard_deviation": 12.020815
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      9.3,
+                                      15.4
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7791810631752014,
+                                      "decision_rule": {
+                                        "operand": 161.47,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 100.99999,
+                                      "standard_deviation": 17.821335
+                                    },
+                                    {
+                                      "confidence": 0.8248107433319092,
+                                      "decision_rule": {
+                                        "operand": 161.47,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 119.9,
+                                      "standard_deviation": 12.25153
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      15.4,
+                                      19.983334
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "timeOfDay"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  9.3,
+                                  19.983334
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": 68.98,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  },
+                                  "predicted_value": 156,
+                                  "standard_deviation": 0
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": 68.98,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  },
+                                  "predicted_value": 153,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  19.983334,
+                                  9.3
+                                ],
+                                "operator": "[in[",
+                                "property": "timeOfDay"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              31,
+                              18
+                            ],
+                            "operator": "[in[",
+                            "property": "dayOfMonth"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 7.625,
+                        "operator": "<",
+                        "property": "humidity"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.745262622833252,
+                                      "decision_rule": {
+                                        "operand": 106.29,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 110.05,
+                                      "standard_deviation": 24.191883
+                                    },
+                                    {
+                                      "confidence": 0.7406497001647949,
+                                      "decision_rule": {
+                                        "operand": 106.29,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 87.1,
+                                      "standard_deviation": 10.899542
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 11.625,
+                                    "operator": "<",
+                                    "property": "humidity"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7318030595779419,
+                                      "decision_rule": {
+                                        "operand": 108.509995,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 145,
+                                      "standard_deviation": 3.6055512
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 108.509995,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 133,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 11.625,
+                                    "operator": ">=",
+                                    "property": "humidity"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 119.655,
+                                "operator": "<",
+                                "property": "apparentTemperature"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.6102849841117859,
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          13
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 99.5,
+                                      "standard_deviation": 9.192389
+                                    },
+                                    {
+                                      "confidence": 0.7534452080726624,
+                                      "decision_rule": {
+                                        "operand": [
+                                          13,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "dayOfMonth"
+                                      },
+                                      "predicted_value": 142.28261,
+                                      "standard_deviation": 38.69162
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 0.43704998,
+                                    "operator": "<",
+                                    "property": "precipIntensity"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7696273922920227,
+                                      "decision_rule": {
+                                        "operand": 196.035,
+                                        "operator": "<",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 104.72222,
+                                      "standard_deviation": 17.73963
+                                    },
+                                    {
+                                      "confidence": 0.5,
+                                      "decision_rule": {
+                                        "operand": 196.035,
+                                        "operator": ">=",
+                                        "property": "apparentTemperature"
+                                      },
+                                      "predicted_value": 170,
+                                      "standard_deviation": 0
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 0.43704998,
+                                    "operator": ">=",
+                                    "property": "precipIntensity"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 119.655,
+                                "operator": ">=",
+                                "property": "apparentTemperature"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              8.45,
+                              15.5
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "confidence": 0.7944933176040649,
+                                      "decision_rule": {
+                                        "operand": [
+                                          15.5,
+                                          17.383333
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 88.22728,
+                                      "standard_deviation": 13.567174
+                                    },
+                                    {
+                                      "confidence": 0.7459747791290283,
+                                      "decision_rule": {
+                                        "operand": [
+                                          17.383333,
+                                          8.45
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "timeOfDay"
+                                      },
+                                      "predicted_value": 103.649994,
+                                      "standard_deviation": 22.664276
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": 234.64499,
+                                    "operator": "<",
+                                    "property": "apparentTemperature"
+                                  }
+                                },
+                                {
+                                  "confidence": 0.5,
+                                  "decision_rule": {
+                                    "operand": 234.64499,
+                                    "operator": ">=",
+                                    "property": "apparentTemperature"
+                                  },
+                                  "predicted_value": 60,
+                                  "standard_deviation": 0
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 11.38,
+                                "operator": "<",
+                                "property": "humidity"
+                              }
+                            },
+                            {
+                              "confidence": 0.5,
+                              "decision_rule": {
+                                "operand": 11.38,
+                                "operator": ">=",
+                                "property": "humidity"
+                              },
+                              "predicted_value": 0,
+                              "standard_deviation": 0
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              15.5,
+                              8.45
+                            ],
+                            "operator": "[in[",
+                            "property": "timeOfDay"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": 7.625,
+                        "operator": ">=",
+                        "property": "humidity"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 5.62,
+                    "operator": ">=",
+                    "property": "humidity"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": 3.045,
+                "operator": ">=",
+                "property": "humidity"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": 0.98,
+            "operator": ">=",
+            "property": "humidity"
+          }
+        }
+      ],
+      "x": 0,
+      "y": 0
+    }
+  }
+}
