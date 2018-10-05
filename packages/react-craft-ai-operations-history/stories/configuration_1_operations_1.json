@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": 1279602000,
+    "context": {
+      "load": 13.3,
+      "temperature": 20.33
+    }
+  },
+  {
+    "timestamp": 1279602900
+  },
+  {
+    "timestamp": 1279603800,
+    "context": {
+      "load": 13.48
+    }
+  }
+]

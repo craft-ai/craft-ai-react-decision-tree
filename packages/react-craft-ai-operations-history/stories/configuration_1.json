@@ -1,0 +1,23 @@
+{
+  "context": {
+    "load": {
+      "type": "continuous"
+    },
+    "time": {
+      "type": "time_of_day"
+    },
+    "day": {
+      "type": "day_of_week"
+    },
+    "month": {
+      "type": "month_of_year"
+    },
+    "timezone": {
+      "type": "timezone"
+    },
+    "temperature": {
+      "type": "continuous"
+    }
+  },
+  "output": ["load"]
+}

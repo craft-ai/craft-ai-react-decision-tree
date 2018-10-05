@@ -1,0 +1,62 @@
+{
+  "name": "react-craft-ai-operations-history",
+  "version": "0.0.11",
+  "description": "React component to display craft ai operations history",
+  "keywords": [
+    "react",
+    "react-component",
+    "craft-ai",
+    "ai"
+  ],
+  "author": {
+    "name": "craft ai",
+    "email": "contact@craft.ai",
+    "url": "http://craft.ai/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/craft-ai/react-craft-ai-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/craft-ai/react-craft-ai-components/issues"
+  },
+  "homepage": "https://github.com/craft-ai/react-craft-ai-components/tree/master/packages/react-craft-ai-operations-history#readme",
+  "license": "BSD-3-Clause",
+  "main": "lib/index.js",
+  "unpkg": "dist/react-craft-ai-operations-history.min",
+  "jsdelivr": "dist/react-craft-ai-operations-history.min",
+  "scripts": {
+    "build": "yarn run build:module && yarn run build:umd_production && yarn run build:umd_development",
+    "build:module": "babel src/ -d lib/",
+    "build:umd_production": "NODE_ENV=production webpack",
+    "build:umd_development": "NODE_ENV=development webpack",
+    "lint": "eslint --ext .js,.jsx src/",
+    "lint:fix": "eslint --fix --ext .js,.jsx src/",
+    "storybook": "start-storybook -p 9193 -c .storybook",
+    "storybook:build": "build-storybook -c .storybook -o ../../site/react-craft-ai-operations-history"
+  },
+  "devDependencies": {
+    "@storybook/react": "3.2.6",
+    "babel-cli": "6.24.1",
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.2",
+    "eslint": "4.5.0",
+    "webpack": "3.10.0"
+  },
+  "dependencies": {
+    "classnames": "2.2.5",
+    "craft-ai": "1.7.0",
+    "lodash": "4.17.4",
+    "polished": "1.7.0"
+  },
+  "peerDependencies": {
+    "glamor": "^2.0.0",
+    "glamorous": "^4.0.0",
+    "prop-types": "^15.0.0",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
+  },
+  "browser": {
+    "lodash": "lodash/lodash.min.js"
+  }
+}
