@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { COLOR_EDGES } from '../utils/constants';
-import { css } from 'glamor';
+import { css } from 'react-emotion';
 import { select as d3Select } from 'd3-selection';
 
 // make links css rules
-const linksCssClass = css({
-  fill: 'none',
-  stroke: COLOR_EDGES,
-  strokeWidth: 1.5
-});
+const linksCssClass = css`
+  fill: none;
+  stroke: ${COLOR_EDGES};
+  stroke-width: 1.5;
+`;
 
 
 class Edges extends React.Component {

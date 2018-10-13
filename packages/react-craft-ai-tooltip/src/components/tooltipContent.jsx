@@ -1,83 +1,76 @@
-import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { cx } from 'react-emotion';
 
 const MARGIN = 10;
 
-const TooltipContentOuter = glamorous.div({
-  zIndex: 1070,
-  position: 'absolute',
-  opacity: 1
-},
-({ placement = 'top' }) => {
-  switch (placement) {
-    case 'bottom':
-    case 'top':
-      return {
-        padding: '5px 0'
-      };
-    case 'left':
-    case 'right':
-    default:
-      return {
-        padding: '0 5px'
-      };
+const TooltipContentOuter = styled('div')`
+  z-index: 1070;
+  position: absolute;
+  opacity: 1;
+  display: block;
+  &.top, &.bottom {
+    padding: 5px 0;
   }
-});
-
-const TooltipArrow = glamorous.div({
-  position: 'absolute',
-  width: 0,
-  height: 0,
-  borderColor: 'transparent',
-  borderStyle: 'solid'
-},
-({ placement = 'top' }) => {
-  switch (placement) {
-    case 'bottom':
-      return {
-        top: 0,
-        left: '50%',
-        marginLeft: -5,
-        borderBottomColor: 'black',
-        borderWidth: '0 5px 5px'
-      };
-    case 'left':
-      return {
-        top: '50%',
-        right: 0,
-        marginTop: -5,
-        borderLeftColor: 'black',
-        borderWidth: '5px 0 5px 5px'
-      };
-    case 'right':
-      return {
-        top: '50%',
-        left: 0,
-        marginTop: -5,
-        borderRightColor: 'black',
-        borderWidth: '5px 5px 5px 0'
-      };
-    default:
-      // placement for top
-      return {
-        bottom: 0,
-        left: '50%',
-        marginLeft: -5,
-        borderTopColor: 'black',
-        borderWidth: '5px 5px 0'
-      };
+  &.left, &.right {
+    padding: 0 5px;
   }
-});
+`;
 
-const TooltipContentInner = glamorous.div({
-  padding: '3px 8px',
-  backgroundColor: 'black',
-  color: 'white',
-  textAlign: 'center',
-  maxWidth: 200
-});
+const TooltipArrow = styled('div')`
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
 
+  ${({ placement }) => {
+    switch (placement) {
+      default:
+      case 'top':
+        return `
+          bottom: 0;
+          left: 50%;
+          margin-left: -5px;
+          border-top-color: black;
+          border-width: 5px 5px 0;
+        `;
+      case 'bottom':
+        return `
+          top: 0;
+          left: 50%;
+          margin-left: -5px;
+          border-bottom-color: black;
+          border-width: 0 5px 5px;
+        `;
+      case 'left':
+        return `
+          top: 50%;
+          right: 0;
+          margin-top: -5px;
+          border-left-color: black;
+          border-width: 5px 0 5px 5px;
+        `;
+      case 'right':
+        return `
+          top: 50%;
+          left: 0;
+          margin-top: -5px;
+          border-right-color: black;
+          border-width: 5px 5px 5px 0;
+        `;
+    }
+  }}
+`;
+
+const TooltipContentInner = styled('div')`
+  padding: 3px 8px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  maxWidth: 200px;
+`;
 
 class TooltipContent extends React.Component {
   setTooltipRef = (input) => (this.tooltipRef = input);
@@ -106,7 +99,7 @@ class TooltipContent extends React.Component {
       <TooltipContentOuter
         ref={ this.setTooltipRef }
         placement={ placement }
-        className={ `craft-tooltip ${className} ${placement}` }
+        className={ cx('craft-tooltip', className, placement) }
         style={{ ...style }}>
         <TooltipArrow
           placement={ placement }

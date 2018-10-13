@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import glamorous from 'glamorous';
 import Leaf from './leaf';
 import Node from './node';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'react-emotion';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
   COLOR_EDGES_CAPTION_BG,
@@ -11,15 +11,15 @@ import {
 } from '../utils/constants';
 import { Properties } from 'craft-ai';
 
-const Links = glamorous.div({
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  position: 'absolute',
-  textAlign: 'center',
-  fontSize: 'smaller',
-  pointerEvents: 'auto',
-  backgroundColor: COLOR_EDGES_CAPTION_BG
-});
+const Links = styled('div')`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  text-align: center;
+  font-size: smaller;
+  pointer-events: auto;
+  background-color: ${COLOR_EDGES_CAPTION_BG}
+`;
 
 class Nodes extends React.Component {
   linkRef = {};

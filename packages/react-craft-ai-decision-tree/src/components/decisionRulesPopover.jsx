@@ -1,22 +1,22 @@
 import _ from 'lodash';
-import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'react-emotion';
 import { Properties } from 'craft-ai';
 
-const PopoverTitle = glamorous.div({
-  textAlign: 'center',
-  fontWeight: 'bold',
-  padding: 5,
-  borderBottom: 'solid 1px #777'
-});
+const PopoverTitle = styled('div')`
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  border-bottom: solid 1px #777;
+`;
 
-const PopoverUl = glamorous.ul({
-  listStyleType: 'none',
-  borderBottom: 'none',
-  margin: 0,
-  padding: 5
-});
+const PopoverUl = styled('ul')`
+  list-style-type: none;
+  border-bottom: none;
+  margin: 0px;
+  padding: 5px;
+`;
 
 class DecisionRulesPopover extends React.Component {
   shouldComponentUpdate(nextProps) {
