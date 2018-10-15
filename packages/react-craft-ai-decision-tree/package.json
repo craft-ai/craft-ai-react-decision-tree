@@ -37,7 +37,7 @@
     "storybook:build": "build-storybook -c .storybook -o ../../site/react-craft-ai-decision-tree"
   },
   "devDependencies": {
-    "@storybook/react": "3.2.6",
+    "@storybook/react": "3.4.11",
     "babel-cli": "6.24.1",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",

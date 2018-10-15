@@ -34,6 +34,7 @@
     "@storybook/addon-backgrounds": "3.0.0",
     "@storybook/addon-knobs": "3.4.10",
     "@storybook/addon-options": "3.4.10",
+    "@storybook/addons": "3.4.11",
     "babel-eslint": "7.2.3",
     "babel-plugin-emotion": "9.2.11",
     "babel-plugin-transform-class-properties": "6.24.1",

@@ -30,7 +30,7 @@
     "storybook:build": "build-storybook -c .storybook -o ../../site/react-craft-ai-popover"
   },
   "devDependencies": {
-    "@storybook/react": "3.2.6",
+    "@storybook/react": "3.4.11",
     "babel-cli": "6.24.1",
     "eslint": "4.5.0"
   },
