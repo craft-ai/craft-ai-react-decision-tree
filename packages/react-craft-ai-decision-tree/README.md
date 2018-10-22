@@ -32,7 +32,7 @@ Thanks to [unpkg](https://unpkg.com/), you can include the pre-generated bundle 
 
 > See this [example](https://codepen.io/cloderic/pen/GygQVa).
 
-:warning: Make sure a specific version of `react-craft-ai-decision-tree` to avoid any retrocompatibility issue.
+:warning: Make sure a specific version of `react-craft-ai-decision-tree` is used to avoid any retrocompatibility issue.
 
 ## Usage ##
 
