@@ -1,21 +1,21 @@
-import glamorous from 'glamorous';
+import styled from 'react-emotion';
 import { COLOR_NODES } from '../utils/constants';
 
-const Node = glamorous.div({
-  position: 'absolute',
-  backgroundColor: COLOR_NODES,
-  textAlign: 'center',
-  lineHeight: 1.75,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  width: 100,
-  height: 30,
-  pointerEvents: 'auto'
-},
-({ empty = false }) => ({
-  boxSizing: empty ? 'border-box' : undefined,
-  border: empty ? 'solid 2px #777' : undefined,
-  background: empty ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )' : undefined,
-}));
+const Node = styled('div')`
+  position: absolute;
+  background-color: ${COLOR_NODES};
+  text-align: center;
+  line-height: 1.75;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+  height: 30px;
+  pointerEvents: auto;
+  ${({ empty = false }) => `
+    box-sizing: ${empty ? 'border-box' : undefined};
+    border: ${empty ? 'solid 2px #777' : undefined};
+    background: ${empty ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )' : undefined};
+  `}
+`;
 
 export default Node;

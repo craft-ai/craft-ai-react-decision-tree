@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
-import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'react-emotion';
 import Tree from './tree';
 
-const DecisionTreeContainer = glamorous.div({
-  height: '100%'
-});
+const DecisionTreeContainer = styled('div')`
+  height: 100%;
+`;
 
 const DecisionTree = ({ data, height, width }) => (
   <DecisionTreeContainer

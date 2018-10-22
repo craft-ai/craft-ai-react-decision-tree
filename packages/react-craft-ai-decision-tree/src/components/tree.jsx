@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import Box from '../utils/box';
-import classnames from 'classnames';
 import Edges from './edges';
-import glamorous from 'glamorous';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled, { cx } from 'react-emotion';
 import { event as d3Event, select as d3Select } from 'd3-selection';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
@@ -46,12 +45,12 @@ function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scal
   };
 }
 
-const TreeCanvas = glamorous.div({
-  minWidth: 400,
-  overflow: 'hidden',
-  backgroundColor: 'white',
-  position: 'absolute'
-});
+const TreeCanvas = styled('div')`
+  min-width: 400px;
+  overflow: hidden;
+  background-color: white;
+  position: absolute;
+`;
 
 function computeSvgSizeFromData(root, width, height) {
   let tree = d3Tree().nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
@@ -200,7 +199,7 @@ class Tree extends React.Component {
         <div
           ref={ this.getTranslatedTreeRef }
           onDoubleClick={ this.resetPosition }
-          className={ classnames('translated-tree', { unselectable: this.isPanActivated, selectable: !this.isPanActivated }) }
+          className={ cx('translated-tree', { unselectable: this.isPanActivated, selectable: !this.isPanActivated }) }
           style={{
             transformOrigin: 'left top 0px',
             transform: `translate(${this.state.newPos[0]}px,${this.state.newPos[1]}px) scale(${this.state.scale})`,
