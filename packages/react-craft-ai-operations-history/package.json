@@ -44,14 +44,12 @@
     "webpack": "3.10.0"
   },
   "dependencies": {
-    "classnames": "2.2.5",
-    "craft-ai": "1.7.0",
-    "lodash": "4.17.4",
-    "polished": "1.7.0"
+    "camelcase": "5.0.0",
+    "craft-ai": "1.15.2",
+    "lodash.last": "3.0.0",
+    "lodash.orderby": "4.6.0"
   },
   "peerDependencies": {
-    "glamor": "^2.0.0",
-    "glamorous": "^4.0.0",
     "prop-types": "^15.0.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0"
