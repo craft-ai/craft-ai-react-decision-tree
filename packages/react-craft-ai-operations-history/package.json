@@ -46,8 +46,10 @@
   "dependencies": {
     "camelcase": "5.0.0",
     "craft-ai": "1.15.2",
+    "lodash.debounce": "4.0.8",
     "lodash.last": "3.0.0",
-    "lodash.orderby": "4.6.0"
+    "lodash.orderby": "4.6.0",
+    "lodash.range": "3.2.0"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",

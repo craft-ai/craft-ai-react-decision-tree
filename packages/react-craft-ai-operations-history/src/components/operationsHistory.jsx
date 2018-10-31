@@ -1,4 +1,5 @@
 import createTableComponents from './createTableComponents';
+import InfiniteList from './infiniteList';
 import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,10 +11,18 @@ const OperationsHistory = ({
   initialOperations,
   rowHeight
 }) => {
-  const { Header, Row } = createTableComponents(agentConfiguration);
+  const { Header, PlaceholderRow, Row } = createTableComponents(
+    agentConfiguration
+  );
   const preprocessedOperations = preprocessOperations(
     agentConfiguration,
     initialOperations
+  );
+  const renderRow = (index) => (
+    <Row key={ index } index={ index } { ...preprocessedOperations[index] } />
+  );
+  const renderPlaceholderRow = (start, end) => (
+    <PlaceholderRow key={ start } rowHeight={ rowHeight } rowCount={ end - start } />
   );
   return (
     <Table
@@ -23,7 +32,13 @@ const OperationsHistory = ({
       <thead>
         <Header />
       </thead>
-      <tbody>{preprocessedOperations.map(Row)}</tbody>
+      <InfiniteList
+        tag="tbody"
+        rowHeight={ rowHeight }
+        renderRow={ renderRow }
+        renderPlaceholderRow={ renderPlaceholderRow }
+        rowCount={ preprocessedOperations.length }
+      />
     </Table>
   );
 };

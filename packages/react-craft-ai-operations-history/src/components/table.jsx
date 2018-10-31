@@ -47,6 +47,9 @@ const Table = styled('table')`
       font-size: 0.7em;
     }
   }
+  tbody {
+    overflow-y: scroll;
+  }
 `;
 
 Table.defaultProps = {};

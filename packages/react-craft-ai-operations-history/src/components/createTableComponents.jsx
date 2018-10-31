@@ -2,7 +2,7 @@ import camelCase from 'camelcase';
 import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { cx } from 'react-emotion';
+import styled, { cx } from 'react-emotion';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter, Time } from 'craft-ai';
 
@@ -17,13 +17,17 @@ function createHeaderComponent(properties) {
     property: PropTypes.string.isRequired,
     output: PropTypes.bool.isRequired
   };
-  const Header = () => (
-    <tr>
+  const Header = ({ className }) => (
+    <tr className={ className }>
       <th>timestamp</th>
-      {properties.map(HeaderCell)}
+      {properties.map((property, index) => (
+        <HeaderCell key={ index } { ...property } />
+      ))}
     </tr>
   );
-  Header.propTypes = {};
+  Header.propTypes = {
+    className: PropTypes.string
+  };
   return Header;
 }
 
@@ -91,8 +95,15 @@ function createRowCellComponent({
 function createRowComponent(properties) {
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
   const Cells = properties.map(createRowCellComponent);
-  const Row = ({ operation = {}, state = {}, timestamp }) => (
-    <tr>
+  const Row = ({ index, operation = {}, state = {}, timestamp }) => (
+    <tr
+      key={ index }
+      className={ cx({
+        'craft-operation': true,
+        [`${index}`]: true,
+        odd: index % 2 == 1,
+        even: index % 2 == 1
+      }) }>
       <TimestampCell
         operation={ operation }
         state={ state }
@@ -111,10 +122,32 @@ function createRowComponent(properties) {
   Row.propTypes = {
     timestamp: PropTypes.number.isRequired,
     operation: PropTypes.object,
-    state: PropTypes.object
+    state: PropTypes.object,
+    index: PropTypes.number.isRequired
   };
   return Row;
 }
+
+const PlaceholderRowTr = styled('tr')`
+  height: ${({ height }) => height}px !important;
+`;
+
+const PlaceholderRow = ({ rowCount, rowHeight }) => {
+  if (rowCount > 0) {
+    return (
+      <PlaceholderRowTr
+        className="craft-operations-placeholder"
+        height={ rowCount * rowHeight }
+      />
+    );
+  }
+  return null;
+};
+
+PlaceholderRow.propTypes = {
+  rowHeight: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired
+};
 
 function createTableComponents(agentConfiguration) {
   const properties = Object.keys(agentConfiguration.context).map(
@@ -131,7 +164,8 @@ function createTableComponents(agentConfiguration) {
 
   return {
     Header: createHeaderComponent(sortedProperties),
-    Row: createRowComponent(sortedProperties)
+    Row: createRowComponent(sortedProperties),
+    PlaceholderRow
   };
 }
 

@@ -30,7 +30,7 @@ storiesOf('OperationsHistory', module)
     return (
       <OperationsHistory
         agentConfiguration={ CONFIGURATION_1 }
-        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(50, 200) }
+        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(50, 300) }
       />
     );
   });

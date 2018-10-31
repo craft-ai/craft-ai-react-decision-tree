@@ -8,7 +8,7 @@
   background-color: white;
 }
 
-.test .craft-operations-history tr:nth-child(2n) {
+.test .craft-operations-history tr.odd {
   background-color: #b0acd5;
 }
 
