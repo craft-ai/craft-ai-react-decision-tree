@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
 
@@ -5,9 +6,19 @@ const Table = styled('table')`
   border-spacing: 0px;
   border-collapse: collapse;
 
+  thead {
+    display: block;
+  }
+  tbody {
+    display: block;
+    overflow-y: scroll;
+    height: ${({ height, rowHeight }) => `${height - rowHeight}px`};
+  }
+
   tr {
     display: flex;
     flex-direction: row;
+    height: ${({ rowHeight }) => `${rowHeight}px`};
   }
   th,
   td {
@@ -37,5 +48,12 @@ const Table = styled('table')`
     }
   }
 `;
+
+Table.defaultProps = {};
+
+Table.propTypes = {
+  height: PropTypes.number.isRequired,
+  rowHeight: PropTypes.number.isRequired
+};
 
 export default Table;
