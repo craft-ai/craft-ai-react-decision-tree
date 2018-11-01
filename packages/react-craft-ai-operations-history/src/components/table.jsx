@@ -18,7 +18,7 @@ const Table = styled('table')`
   tr {
     display: flex;
     flex-direction: row;
-    height: ${({ rowHeight }) => `${rowHeight}px`};
+    height: ${({ rowHeight }) => rowHeight}px;
   }
   th,
   td {
@@ -51,8 +51,6 @@ const Table = styled('table')`
     overflow-y: scroll;
   }
 `;
-
-Table.defaultProps = {};
 
 Table.propTypes = {
   height: PropTypes.number.isRequired,

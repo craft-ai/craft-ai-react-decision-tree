@@ -1,52 +1,80 @@
-import createTableComponents from './createTableComponents';
+import createRowComponent from './createRowComponent';
+import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
+import PlaceholderRow from './placeholderRow';
 import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Table from './table';
 
-const OperationsHistory = ({
-  agentConfiguration,
-  height,
-  initialOperations,
-  rowHeight
-}) => {
-  const { Header, PlaceholderRow, Row } = createTableComponents(
-    agentConfiguration
-  );
-  const preprocessedOperations = preprocessOperations(
-    agentConfiguration,
-    initialOperations
-  );
-  const renderRow = (index) => (
-    <Row key={ index } index={ index } { ...preprocessedOperations[index] } />
-  );
-  const renderPlaceholderRow = (start, end) => (
-    <PlaceholderRow key={ start } rowHeight={ rowHeight } rowCount={ end - start } />
-  );
-  return (
-    <Table
-      className="craft-operations-history"
-      rowHeight={ rowHeight }
-      height={ height }>
-      <thead>
-        <Header />
-      </thead>
-      <InfiniteList
-        tag="tbody"
+class OperationsHistory extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const { agentConfiguration, initialOperations } = this.props;
+
+    const preprocessedOperations = preprocessOperations(
+      agentConfiguration,
+      initialOperations
+    );
+
+    this.state = {
+      loadedOperations: preprocessedOperations,
+      operationsCount: preprocessedOperations.length
+    };
+
+    this._refreshRowComponent = this._refreshRowComponent.bind(this);
+    this._renderRow = this._renderRow.bind(this);
+    this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
+  }
+  _refreshRowComponent() {
+    const { agentConfiguration, rowHeight } = this.props;
+    this.Row = createRowComponent({ agentConfiguration, rowHeight });
+  }
+  _renderRow(index) {
+    const { loadedOperations } = this.state;
+    return <this.Row key={ index } index={ index } { ...loadedOperations[index] } />;
+  }
+  _renderPlaceholderRow(start, end) {
+    const { rowHeight } = this.props;
+    return (
+      <PlaceholderRow
+        key={ start }
+        rowCount={ end - start }
         rowHeight={ rowHeight }
-        renderRow={ renderRow }
-        renderPlaceholderRow={ renderPlaceholderRow }
-        rowCount={ preprocessedOperations.length }
       />
-    </Table>
-  );
-};
+    );
+  }
+  render() {
+    const { agentConfiguration, height, rowHeight } = this.props;
+    const { operationsCount } = this.state;
+    // This should only be called if agentConfiguration or rowHeight changes
+    // Maybe simply use a memoize woumd be fine
+    this._refreshRowComponent();
+    return (
+      <Table
+        className="craft-operations-history"
+        height={ height }
+        rowHeight={ rowHeight }>
+        <thead>
+          <HeaderRow agentConfiguration={ agentConfiguration } />
+        </thead>
+        <InfiniteList
+          tag="tbody"
+          rowHeight={ rowHeight }
+          renderRow={ this._renderRow }
+          renderPlaceholderRow={ this._renderPlaceholderRow }
+          rowCount={ operationsCount }
+        />
+      </Table>
+    );
+  }
+}
 
 OperationsHistory.defaultProps = {
-  initialOperations: [],
-  rowHeight: 50,
-  height: 600
+  rowHeight: 45,
+  height: 600,
+  initialOperations: []
 };
 
 OperationsHistory.propTypes = {
