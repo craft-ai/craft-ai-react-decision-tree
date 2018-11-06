@@ -1,7 +1,7 @@
 import camelCase from 'camelcase';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { cx } from 'react-emotion';
+import styled, { cx } from 'react-emotion';
 import { extractProperties } from './headerRow';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter, Time } from 'craft-ai';
@@ -67,6 +67,10 @@ function createRowCellComponent({
   });
 }
 
+const LoadingTd = styled('td')`
+  flex-grow: 1 !important;
+`;
+
 export default function createRowComponent({ agentConfiguration }) {
   const properties = extractProperties(agentConfiguration);
 
@@ -83,17 +87,14 @@ export default function createRowComponent({ agentConfiguration }) {
     if (loading) {
       return (
         <tr key={ index } className={ classNames }>
-          <td colSpan={ properties.length + 1 }>loading...</td>
+          <TimestampCell timestamp={ timestamp } />
+          <LoadingTd colSpan={ properties.length }>loading...</LoadingTd>
         </tr>
       );
     }
     return (
       <tr key={ index } className={ classNames }>
-        <TimestampCell
-          operation={ operation }
-          state={ state }
-          timestamp={ timestamp }
-        />
+        <TimestampCell timestamp={ timestamp } />
         {Cells.map((Cell, cellIndex) => (
           <Cell
             key={ cellIndex }
@@ -107,14 +108,13 @@ export default function createRowComponent({ agentConfiguration }) {
   };
   Row.defaultProps = {
     loading: false,
-    timestamp: null,
     operation: {},
     state: {}
   };
   Row.propTypes = {
     index: PropTypes.number.isRequired,
     loading: PropTypes.bool,
-    timestamp: PropTypes.number,
+    timestamp: PropTypes.number.isRequired,
     operation: PropTypes.object,
     state: PropTypes.object
   };
