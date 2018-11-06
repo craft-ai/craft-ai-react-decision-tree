@@ -7,20 +7,93 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Table from './table';
 
+function estimateCount({
+  estimatedPeriod,
+  from,
+  initialOffset,
+  loadedOperations,
+  to
+}) {
+  const loadedCount = loadedOperations.length;
+  if ((from == null || to == null) && loadedCount == 0) {
+    throw new Error(
+      'Unexpected error, either \'from\' and \'to\' should be defined or \'loadedOperations\' should not be empty'
+    );
+  }
+  if (loadedCount == 0) {
+    // No data to estimate
+    const count = Math.ceil((to - from) / estimatedPeriod);
+    return {
+      from,
+      to,
+      estimatedPeriod,
+      estimatedLoadedOffset: 0,
+      initialOffset: Math.min(initialOffset || 0, count - 1),
+      count: Math.ceil((to - from) / estimatedPeriod)
+    };
+  }
+
+  // Operations are ordered from the latest to the earliest
+  const loadedTo = loadedOperations[0].timestamp;
+  const loadedFrom = loadedOperations[loadedCount - 1].timestamp;
+  const updatedEstimatedPeriod = (loadedTo - loadedFrom) / loadedCount;
+
+  if (from == null || to == null) {
+    return {
+      from: loadedFrom,
+      to: loadedTo,
+      estimatedLoadedOffset: 0,
+      estimatedPeriod: updatedEstimatedPeriod,
+      initialOffset: Math.min(initialOffset || 0, loadedCount - 1),
+      count: loadedCount
+    };
+  }
+
+  const estimatedLoadedOffset = Math.ceil(
+    (to - loadedTo) / updatedEstimatedPeriod
+  );
+  const count = Math.ceil((to - from) / updatedEstimatedPeriod);
+  return {
+    from,
+    to,
+    estimatedLoadedOffset,
+    estimatedPeriod: estimatedLoadedOffset,
+    initialOffset: Math.min(initialOffset || estimatedLoadedOffset, count - 1),
+    count
+  };
+}
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
 
-    const { agentConfiguration, initialOperations } = this.props;
-
-    const preprocessedOperations = preprocessOperations(
+    const {
       agentConfiguration,
-      initialOperations
-    );
+      estimatedPeriod,
+      from,
+      initialOperations,
+      to
+    } = props;
+
+    if ((from == null || to == null) && initialOperations.length == 0) {
+      throw new Error(
+        'Unable to build a \'OperationsHistory\', either \'from\' and \'to\' should be defined or \'initialOperations\' should not be empty'
+      );
+    }
+
+    const initialState = {
+      from,
+      to,
+      estimatedPeriod,
+      loadedOperations: preprocessOperations(
+        agentConfiguration,
+        initialOperations
+      )
+    };
 
     this.state = {
-      loadedOperations: preprocessedOperations,
-      operationsCount: preprocessedOperations.length
+      ...initialState,
+      ...estimateCount(initialState)
     };
 
     this._refreshRowComponent = this._refreshRowComponent.bind(this);
@@ -32,8 +105,18 @@ class OperationsHistory extends React.Component {
     this.Row = createRowComponent({ agentConfiguration, rowHeight });
   }
   _renderRow(index) {
-    const { loadedOperations } = this.state;
-    return <this.Row key={ index } index={ index } { ...loadedOperations[index] } />;
+    const { estimatedLoadedOffset, loadedOperations } = this.state;
+    //console.log('estimatedLoadedOffset', estimatedLoadedOffset);
+    //console.log('index', index);
+    const loadedIndex = index - estimatedLoadedOffset;
+    //console.log('loadedIndex', loadedIndex);
+    const operation = loadedOperations[loadedIndex];
+    //console.log('operation', operation);
+    if (!operation) {
+      return <this.Row key={ index } index={ index } loading />;
+    } else {
+      return <this.Row key={ index } index={ index } { ...operation } />;
+    }
   }
   _renderPlaceholderRow(start, end) {
     const { rowHeight } = this.props;
@@ -47,7 +130,7 @@ class OperationsHistory extends React.Component {
   }
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
-    const { operationsCount } = this.state;
+    const { count, initialOffset } = this.state;
     // This should only be called if agentConfiguration or rowHeight changes
     // Maybe simply use a memoize woumd be fine
     this._refreshRowComponent();
@@ -64,7 +147,8 @@ class OperationsHistory extends React.Component {
           rowHeight={ rowHeight }
           renderRow={ this._renderRow }
           renderPlaceholderRow={ this._renderPlaceholderRow }
-          rowCount={ operationsCount }
+          initialOffset={ initialOffset }
+          count={ count }
         />
       </Table>
     );
@@ -72,6 +156,8 @@ class OperationsHistory extends React.Component {
 }
 
 OperationsHistory.defaultProps = {
+  estimatedPeriod: 60 * 10, // 10 minutes
+  count: 0,
   rowHeight: 45,
   height: 600,
   initialOperations: []
@@ -81,7 +167,10 @@ OperationsHistory.propTypes = {
   agentConfiguration: PropTypes.object.isRequired,
   rowHeight: PropTypes.number,
   height: PropTypes.number,
-  initialOperations: PropTypes.array
+  initialOperations: PropTypes.array,
+  estimatedPeriod: PropTypes.number,
+  to: PropTypes.number,
+  from: PropTypes.number
 };
 
 export default OperationsHistory;

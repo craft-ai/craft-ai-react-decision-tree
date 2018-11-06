@@ -15,41 +15,42 @@ class InfiniteList extends React.Component {
       10
     );
 
-    const { bufferedRowCount, rowCount } = props;
+    const { bufferedCount, count, initialOffset } = props;
 
     this.state = {
-      renderedRowsStart: 0,
-      renderedRowsEnd: Math.min(bufferedRowCount, rowCount)
+      renderedRowsStart: Math.max(initialOffset - bufferedCount, 0),
+      renderedRowsEnd: Math.min(initialOffset + bufferedCount, count)
     };
   }
   componentDidMount() {
+    const { initialOffset, rowHeight } = this.props;
+    // Update the scroll position
+    this.wrapperElement.scrollTop = initialOffset * rowHeight;
     this._updateVisibleIndexes();
   }
   _setWrapperElement(element) {
     this.wrapperElement = element;
   }
   _updateVisibleIndexes() {
-    const { bufferedRowCount, rowCount, rowHeight } = this.props;
+    const { bufferedCount, count, rowHeight } = this.props;
 
     // Computing the number of row that are actually visible
     const wrapperRect = this.wrapperElement.getBoundingClientRect();
     const visibleRowCount = Math.ceil(wrapperRect.height / rowHeight);
     // Computing the index of the first visible row
-    const firstVisibleRow = Math.ceil(
-      this.wrapperElement.scrollTop / rowHeight
-    );
-    const renderedRowsStart = Math.max(firstVisibleRow - bufferedRowCount, 0);
+    const rowOffset = Math.ceil(this.wrapperElement.scrollTop / rowHeight);
+    const renderedRowsStart = Math.max(rowOffset - bufferedCount, 0);
     const renderedRowsEnd = Math.min(
-      firstVisibleRow + visibleRowCount + bufferedRowCount,
-      rowCount
+      rowOffset + visibleRowCount + bufferedCount,
+      count
     );
     this.setState({
-      renderedRowsStart,
-      renderedRowsEnd
+      renderedRowsEnd,
+      renderedRowsStart
     });
   }
   render() {
-    const { renderPlaceholderRow, renderRow, rowCount, tag: Tag } = this.props;
+    const { count, renderPlaceholderRow, renderRow, tag: Tag } = this.props;
     const { renderedRowsEnd, renderedRowsStart } = this.state;
     return (
       <Tag ref={ this._setWrapperElement } onScroll={ this._updateVisibleIndexes }>
@@ -60,7 +61,7 @@ class InfiniteList extends React.Component {
           renderRow(index)
         )}
         {/* The placeholder after the rows */}
-        {renderPlaceholderRow(renderedRowsEnd, rowCount)}
+        {renderPlaceholderRow(renderedRowsEnd, count)}
       </Tag>
     );
   }
@@ -68,16 +69,19 @@ class InfiniteList extends React.Component {
 
 InfiniteList.defaultProps = {
   tag: 'div',
-  initialRowData: [],
-  bufferedRowCount: 40
+  initialOffset: 0,
+  bufferedCount: 40
 };
 
 InfiniteList.propTypes = {
   // Pass in a Component to override default button element
   // default: 'div'
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  bufferedRowCount: PropTypes.number,
-  rowCount: PropTypes.number.isRequired,
+  bufferedCount: PropTypes.number,
+  // Index of the row that should visible be on top initially
+  // default: 0
+  initialOffset: PropTypes.number,
+  count: PropTypes.number.isRequired,
   rowHeight: PropTypes.number.isRequired,
   renderRow: PropTypes.func.isRequired,
   renderPlaceholderRow: PropTypes.func.isRequired

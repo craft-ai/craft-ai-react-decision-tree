@@ -72,35 +72,51 @@ export default function createRowComponent({ agentConfiguration }) {
 
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
   const Cells = properties.map(createRowCellComponent);
-  const Row = ({ index, operation = {}, state = {}, timestamp }) => (
-    <tr
-      key={ index }
-      className={ cx({
-        'craft-operation': true,
-        [`${index}`]: true,
-        odd: index % 2 == 1,
-        even: index % 2 == 1
-      }) }>
-      <TimestampCell
-        operation={ operation }
-        state={ state }
-        timestamp={ timestamp }
-      />
-      {Cells.map((Cell, index) => (
-        <Cell
-          key={ index }
+  const Row = ({ index, loading, operation, state, timestamp }) => {
+    const classNames = cx({
+      'craft-operation': true,
+      [`${timestamp}`]: timestamp != null,
+      loading: loading,
+      odd: index % 2 === 1,
+      even: index % 2 === 0
+    });
+    if (loading) {
+      return (
+        <tr key={ index } className={ classNames }>
+          <td colSpan={ properties.length + 1 }>loading...</td>
+        </tr>
+      );
+    }
+    return (
+      <tr key={ index } className={ classNames }>
+        <TimestampCell
           operation={ operation }
           state={ state }
           timestamp={ timestamp }
         />
-      ))}
-    </tr>
-  );
+        {Cells.map((Cell, cellIndex) => (
+          <Cell
+            key={ cellIndex }
+            operation={ operation }
+            state={ state }
+            timestamp={ timestamp }
+          />
+        ))}
+      </tr>
+    );
+  };
+  Row.defaultProps = {
+    loading: false,
+    timestamp: null,
+    operation: {},
+    state: {}
+  };
   Row.propTypes = {
-    timestamp: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired,
+    loading: PropTypes.bool,
+    timestamp: PropTypes.number,
     operation: PropTypes.object,
-    state: PropTypes.object,
-    index: PropTypes.number.isRequired
+    state: PropTypes.object
   };
   return Row;
 }

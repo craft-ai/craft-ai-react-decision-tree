@@ -33,4 +33,17 @@ storiesOf('OperationsHistory', module)
         initialOperations={ CONFIGURATION_1_OPERATIONS_1 }
       />
     );
+  })
+  .add('simple dynamic loading', () => {
+    return (
+      <OperationsHistory
+        agentConfiguration={ CONFIGURATION_1 }
+        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(0, 300) }
+        from={ CONFIGURATION_1_OPERATIONS_1[0].timestamp }
+        to={
+          CONFIGURATION_1_OPERATIONS_1[CONFIGURATION_1_OPERATIONS_1.length - 1]
+            .timestamp
+        }
+      />
+    );
   });
