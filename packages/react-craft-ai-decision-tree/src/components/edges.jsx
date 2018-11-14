@@ -43,7 +43,7 @@ class Edges extends React.Component {
     }`;
   }
 
-  refSvgTree = (input) => {
+  refSvgTree = input => {
     this.svgTreeRef = input;
   };
 
@@ -61,18 +61,16 @@ class Edges extends React.Component {
     let i = 0;
 
     // Update the nodes…
-    let node = svg.selectAll('g.node')
-      .data(nodes, (d) => d.id || (d.id = ++i));
+    let node = svg.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
 
     // Enter any new nodes at the parent's previous position.
     let nodeEnter = node
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', (d) => `translate(${d.x},${d.y})`);
+      .attr('transform', d => `translate(${d.x},${d.y})`);
 
-    nodeEnter.append('circle')
-      .attr('r', 1);
+    nodeEnter.append('circle').attr('r', 1);
 
     // Transition exiting nodes to the parent's new position.
     node
@@ -81,8 +79,7 @@ class Edges extends React.Component {
       .remove();
 
     // Update the links…
-    let link = svg.selectAll('path.link')
-      .data(links, (d) => d.target.id);
+    let link = svg.selectAll('path.link').data(links, d => d.target.id);
 
     // Enter any new links at the parent's previous position.
     link
