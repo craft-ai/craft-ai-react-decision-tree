@@ -71,6 +71,7 @@ class Nodes extends React.Component {
 
   displayNode = (node, index) => {
     if (_.isUndefined(node.children)) {
+      // leaf
       return (
         <Leaf
           key={ index }
@@ -78,18 +79,36 @@ class Nodes extends React.Component {
           node={ node }
           configuration={ this.props.configuration }
           selectable={ this.props.selectable }
+          updateSelectedNode={ this.props.updateSelectedNode }
         />
       );
     }
     const text = node.children[0].data.decision_rule.property;
 
+    const showTooltip = () => {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.nodeRef[index]
+      });
+    };
+
+    const setSelectedNode = () => {
+      this.props.updateSelectedNode(node.treePath);
+    };
+
+    const indexRef = (input) => {
+      this.nodeRef[index] = input;
+    };
+
     return (
       <Node
         key={ index }
-        ref={ this.indexNodeRef(index) }
-        onMouseOver={ this.showNodeTooltip(index, text) }
+        ref={ indexRef }
+        onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltip }
-        className='craft-nodes'
+        onClick={ setSelectedNode }
+        className="craft-nodes"
         style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2 }}
       >
         {text}
@@ -143,20 +162,32 @@ class Nodes extends React.Component {
       }
     ]);
 
+    const showTooltip = () => {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.linkRef[index]
+      });
+    };
+
+    const indexRef = (input) => {
+      this.linkRef[index] = input;
+    };
+
     return (
       <Links
         key={ index }
-        ref={ this.indexLinkRef(index) }
-        onMouseOver={ this.showLinkTooltip(index, text) }
-        onMouseOut={ this.hideTooltip }
-        className='craft-links'
+        ref={ indexRef }
+        onMouseOver={ showTooltip }
+        onMouseOut={ this.hideTooltips }
+        className="craft-links"
         style={{
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
           left: x,
           width: width
         }}
       >
-        {text}
+        { text }
       </Links>
     );
   };
@@ -170,15 +201,15 @@ class Nodes extends React.Component {
   render() {
     return (
       <div style={{ position: 'relative' }}>
-        {_.map(this.props.nodes, this.displayNode)}
-        {_.map(this.props.links, this.displayLinksText)}
+        { _.map(this.props.nodes, this.displayNode) }
+        { _.map(this.props.links, this.displayLinksText) }
         <ToolTip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
           onPlacementUpdated={ this.updateTooltipPlacement }
         >
-          {this.state.tooltipText}
+          { this.state.tooltipText }
         </ToolTip>
       </div>
     );
@@ -187,6 +218,7 @@ class Nodes extends React.Component {
 
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
+  updateSelectedNode: PropTypes.func.isRequired,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,

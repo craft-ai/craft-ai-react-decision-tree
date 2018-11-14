@@ -51,6 +51,10 @@ class Leaf extends React.Component {
     this.setState({ mouseOnPovover: onPopover });
   };
 
+  setSelectedLeaf = () => {
+    this.props.updateSelectedNode(this.props.node.treePath);
+  };
+
   render() {
     const { node } = this.props;
     const color = computeLeafColor(node.data.confidence);
@@ -59,27 +63,18 @@ class Leaf extends React.Component {
     const rendererText = _.isNull(text)
       ? ''
       : _.isFinite(text)
-        ? parseFloat(text.toFixed(3))
-          .toString()
-        : text;
-
-    const renderList = node ? (
-      <DecisionRulesPopover
-        node={ node }
-        context={ this.props.configuration.context }
-        title={ rendererText }
-        color={ color }
-      />
-    ) : null;
+      ? parseFloat(text.toFixed(3)).toString()
+      : text;
 
     return (
       <div>
         <Node
-          ref={ this.setLeafRef }
-          onMouseEnter={ this.showPopover }
-          onMouseLeave={ this.hidePopover }
-          empty={ _.isNull(text) }
-          className='craft-nodes'
+          ref={this.setLeafRef}
+          onMouseEnter={this.showPopover}
+          onMouseLeave={this.hidePopover}
+          onClick={this.setSelectedLeaf}
+          empty={_.isNull(text)}
+          className="craft-nodes"
           style={{
             top: node.y - NODE_HEIGHT / 3,
             left: node.x - NODE_WIDTH / 2,
@@ -88,23 +83,17 @@ class Leaf extends React.Component {
         >
           {rendererText}
         </Node>
-        <Popover
-          placement={ this.state.placement }
-          target={ this.state.popoverRef }
-          onPopover={ this.setMouseOnPopover }
-          height={ this.props.height }
-          show={ this.state.showingPopover || this.state.mouseOnPovover }
-          onPlacementUpdated={ this.updatePopOverPlacement }
-        >
-          {renderList}
-        </Popover>
       </div>
     );
   }
 }
 
 Leaf.propTypes = {
+<<<<<<< HEAD
   selectable: PropTypes.bool.isRequired,
+=======
+  updateSelectedNode: PropTypes.func.isRequired,
+>>>>>>> f489039... first version of node informations
   node: PropTypes.object.isRequired,
   configuration: PropTypes.object,
   height: PropTypes.number

@@ -11,14 +11,15 @@ const Node = styled('div')`
   width: 100px;
   height: 30px;
   pointerevents: auto;
+  cursor: pointer;
   ${({ empty = false }) => `
     box-sizing: ${empty ? 'border-box' : undefined};
     border: ${empty ? 'solid 2px #777' : undefined};
     background: ${
-  empty
-    ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )'
-    : undefined
-};
+      empty
+        ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )'
+        : undefined
+    };
   `}
 `;
 

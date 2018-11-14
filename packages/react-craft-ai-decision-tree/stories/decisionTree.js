@@ -2,6 +2,7 @@ import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
 import bigTree from './bigTree.json';
 import DecisionTree from '../src/';
+import PropTypes from 'prop-types';
 import React from 'react';
 import smallTree from './smallTree.json';
 import Storage from './testComponent';
@@ -23,6 +24,44 @@ const confidenceBoundOptions = {
   min: 0,
   max: 1,
   step: 0.05
+};
+
+class CustomComponent extends React.Component {
+  state = {
+    selectedNode: ''
+  };
+
+  updateSelectedNode = (nodeId) => {
+    this.setState({ selectedNode: nodeId });
+  };
+
+  render() {
+    return (
+      <div>
+        <div
+          style={{
+            backgroundColor: 'white',
+            padding: 5,
+            marginBottom: 10
+          }}
+        >
+          SelectedNode: {this.state.selectedNode}
+        </div>
+        <DecisionTree
+          updateSelectedNode={ this.updateSelectedNode }
+          width={ this.props.width }
+          height={ this.props.height }
+          data={ this.props.tree }
+        />
+      </div>
+    );
+  }
+}
+
+CustomComponent.propTypes = {
+  tree: PropTypes.object.isRequired,
+  height: PropTypes.number,
+  width: PropTypes.number
 };
 
 storiesOf('Tree displayed with fixed height', module)
@@ -88,7 +127,11 @@ storiesOf('Tree displayed with fixed height', module)
     </div>
   ))
   .add('width css', () => (
+<<<<<<< HEAD
     <div className='square'>
+=======
+    <div className="square">
+>>>>>>> first version of node informations
       <DecisionTree data={ tree } />
     </div>
   ));
@@ -281,4 +324,20 @@ storiesOf('Tree in content', module)
         ante.
       </p>
     </div>
+  ));
+
+storiesOf('Custom component for displaying nodes', module)
+  .addDecorator(withKnobs)
+  .addDecorator(
+    backgrounds([
+      { name: 'craft', value: '#42348b', default: true },
+      { name: 'pink', value: '#d54267' }
+    ])
+  )
+  .add('tree', () => (
+    <CustomComponent
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
+      tree={ tree }
+    />
   ));
