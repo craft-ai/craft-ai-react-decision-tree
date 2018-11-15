@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.11...HEAD) ##
 
 ## Changed ##
+- Update the version of the craft ai client
+
+## Changed ##
 - Now using [emotion](https://github.com/emotion-js/emotion) instead of glamor/glamorous for the basic styling of the components.
 
 ## [0.0.11](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.10...v0.0.11) - 2018-09-19 ##
