@@ -26,10 +26,6 @@
   "engines": {
     "node": ">= 6.9.1"
   },
-  "dependencies": {
-    "emotion": "9.2.12",
-    "react-emotion": "9.2.12"
-  },
   "devDependencies": {
     "@storybook/addon-backgrounds": "3.0.0",
     "@storybook/addon-knobs": "3.4.10",
