@@ -37,12 +37,10 @@ function preprocessOperations(
         ...context
       };
       const operationTz = state[tzProperty];
-      generatedProperties.forEach(
-        (property) =>
-          Time(timestamp, operationTz)[
-            agentConfiguration.context[property].type
-          ]
-      );
+      const time = Time(timestamp, operationTz);
+      generatedProperties.forEach((property) => {
+        state[property] = time[agentConfiguration.context[property].type];
+      });
 
       enrichedOperations.push({
         timestamp,

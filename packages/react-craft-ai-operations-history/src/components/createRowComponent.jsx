@@ -4,7 +4,7 @@ import React from 'react';
 import styled, { cx } from 'react-emotion';
 import { extractProperties } from './headerRow';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
-import { interpreter, Time } from 'craft-ai';
+import { interpreter } from 'craft-ai';
 
 function createPropertyCellComponent(property, renderFun) {
   const PropertyCell = renderFun;
@@ -19,13 +19,7 @@ function createPropertyCellComponent(property, renderFun) {
   return PropertyCell;
 }
 
-function createRowCellComponent({
-  isGenerated,
-  output,
-  property,
-  timezone,
-  type
-}) {
+function createRowCellComponent({ isGenerated, output, property, type }) {
   const formatter = interpreter.formatProperty(type);
   if (property === 'timestamp') {
     return createPropertyCellComponent(property, ({ timestamp }) => {
@@ -43,10 +37,9 @@ function createRowCellComponent({
     return createPropertyCellComponent(
       property,
       ({ state = {}, timestamp }) => {
-        const operationTz = state[timezone];
         return (
           <td className="craft-property-generated-value">
-            {formatter(Time(timestamp, operationTz))}
+            {formatter(state[property])}
           </td>
         );
       }
