@@ -1,5 +1,4 @@
 import createRowComponent from './createRowComponent';
-import has from 'lodash.has';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
 import PlaceholderRow from './placeholderRow';
@@ -8,60 +7,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Table from './table';
 import { EventEmitter } from 'events';
-import { Object } from 'es6-shim';
 import * as most from 'most';
 
-function computeDiff(object, updatedObject) {
-  const diff = {};
-  // Properties of the object having different values in the updated object
-  Object.keys(object).map((key) => {
-    if (has(updatedObject, key) && object[key] != updatedObject[key]) {
-      diff[key] = updatedObject[key];
-    }
-  });
-  // Properties of the updated object not existing in the object
-  Object.keys(updatedObject).map((key) => {
-    if (!has(object, key)) {
-      diff[key] = updatedObject[key];
-    }
-  });
-  return diff;
-}
+const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
+const TIMESTAMP_MIN = 0;
 
-function computeUpdatedState(
-  updatedState,
-  state = {},
-  updatedProps = {},
-  props = {}
-) {
-  // Computing the diffs
-  const diffState = computeDiff(state, updatedState);
-  const diffProps = computeDiff(props, updatedProps);
-
-  // Updating the loaded operations
-  let loadedOperations = diffState.loadedOperations || state.loadedOperations;
-  let estimatedPeriod =
-    diffProps.estimatedPeriod ||
-    diffState.estimatedPeriod ||
-    state.estimatedPeriod ||
-    props.estimatedPeriod;
-
-  if (diffProps.initialOperations || loadedOperations == null) {
-    // Initial operations changed or no loaded operations
-    const agentConfiguration =
-      diffProps.agentConfiguration || props.agentConfiguration;
-    loadedOperations = preprocessOperations(
-      agentConfiguration,
-      diffProps.initialOperations || props.initialOperations
-    );
-    estimatedPeriod = diffProps.estimatedPeriod || props.estimatedPeriod;
-  }
-
+function computeUpdatedEstimations({
+  estimatedPeriod,
+  from,
+  loadedFrom,
+  loadedOperations,
+  loadedTo,
+  to
+}) {
   const loadedCount = loadedOperations.length;
-
-  // Updating the overall bounds
-  const from = diffProps.from || diffState.from || state.from || props.from;
-  const to = diffProps.to || diffState.to || state.to || props.to;
 
   if ((from == null || to == null) && loadedCount == 0) {
     throw new Error(
@@ -69,54 +28,60 @@ function computeUpdatedState(
     );
   }
 
-  const initialOffset = diffState.initialOffset || state.initialOffset || 0;
-
   if (loadedCount == 0) {
-    // No data to estimate
-    const count = Math.ceil((to - from) / estimatedPeriod);
+    // Nothing loaded, we don't update anything
+
+    // No loaded data to re-estimate the period
+    const estimatedCount = Math.ceil((to - from) / estimatedPeriod);
+
     return {
+      estimatedPeriod,
+      estimatedCount,
+      estimatedBeforeLoadedCount: estimatedCount,
+      estimatedAfterLoadedCount: 0,
       from,
       to,
-      estimatedPeriod,
-      estimatedLoadedOffset: 0,
-      initialOffset: Math.min(initialOffset, count - 1),
-      count: Math.ceil((to - from) / estimatedPeriod),
-      loadedOperations
+      loadedFrom,
+      loadedTo
     };
   }
 
   // Operations are ordered from the latest to the earliest
-  const loadedTo = loadedOperations[0].timestamp;
-  const loadedFrom = loadedOperations[loadedCount - 1].timestamp;
+  const updatedLoadedFrom = Math.min(
+    loadedOperations[loadedCount - 1].timestamp,
+    loadedFrom || TIMESTAMP_MAX
+  );
+  const updatedLoadedTo = Math.max(
+    loadedOperations[0].timestamp,
+    loadedTo || TIMESTAMP_MIN
+  );
+  const updatedFrom = Math.min(updatedLoadedFrom, from || TIMESTAMP_MAX);
+  const updatedTo = Math.max(updatedLoadedTo, to || TIMESTAMP_MIN);
 
   // Period is the average time between operations
-  const updatedEstimatedPeriod = (loadedTo - loadedFrom) / (loadedCount - 1);
+  const updatedEstimatedPeriod =
+    (updatedLoadedTo - updatedLoadedFrom) / (loadedCount - 1);
 
-  if (from == null || to == null) {
-    return {
-      from: loadedFrom,
-      to: loadedTo,
-      estimatedLoadedOffset: 0,
-      estimatedPeriod: updatedEstimatedPeriod,
-      initialOffset: Math.min(initialOffset || 0, loadedCount - 1),
-      count: loadedCount,
-      loadedOperations
-    };
-  }
-
-  const estimatedLoadedOffset = Math.floor(
-    (to - loadedTo) / updatedEstimatedPeriod
+  // Estimate how many operations there is before and after what is loaded
+  const estimatedAfterLoadedCount = Math.ceil(
+    (updatedTo - updatedLoadedTo) / updatedEstimatedPeriod
+  );
+  const estimatedBeforeLoadedCount = Math.ceil(
+    (updatedLoadedFrom - updatedFrom) / updatedEstimatedPeriod
   );
 
-  const count = Math.floor((to - from) / updatedEstimatedPeriod);
+  const estimatedCount =
+    estimatedBeforeLoadedCount + loadedCount + estimatedAfterLoadedCount;
+
   return {
-    from,
-    to,
-    estimatedLoadedOffset,
     estimatedPeriod: updatedEstimatedPeriod,
-    initialOffset: Math.min(initialOffset || estimatedLoadedOffset, count - 1),
-    count,
-    loadedOperations
+    estimatedCount,
+    estimatedBeforeLoadedCount,
+    estimatedAfterLoadedCount,
+    from: Math.min(updatedLoadedFrom, from || TIMESTAMP_MAX),
+    to: Math.max(updatedLoadedTo, to || TIMESTAMP_MIN),
+    loadedFrom: updatedLoadedFrom,
+    loadedTo: updatedLoadedTo
   };
 }
 
@@ -124,7 +89,13 @@ class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
 
-    const { from, initialOperations, to } = props;
+    const {
+      agentConfiguration,
+      estimatedPeriod,
+      from,
+      initialOperations,
+      to
+    } = props;
 
     if ((from == null || to == null) && initialOperations.length == 0) {
       throw new Error(
@@ -132,7 +103,21 @@ class OperationsHistory extends React.Component {
       );
     }
 
-    this.state = computeUpdatedState({}, this.state, {}, props);
+    const loadedOperations = preprocessOperations(
+      agentConfiguration,
+      initialOperations
+    );
+    const estimations = computeUpdatedEstimations({
+      from,
+      to,
+      loadedOperations,
+      estimatedPeriod
+    });
+    this.state = {
+      initialOffset: estimations.estimatedAfterLoadedCount,
+      loadedOperations,
+      ...estimations
+    };
 
     this._refreshRowComponent = this._refreshRowComponent.bind(this);
     this._renderRow = this._renderRow.bind(this);
@@ -142,9 +127,6 @@ class OperationsHistory extends React.Component {
   _createLoadRows() {
     const eventEmitter = new EventEmitter();
     const REQUEST_ROW_EVENT = 'requestRow';
-    const { loadedOperations } = this.state;
-
-    const loadedCount = loadedOperations.length;
 
     most
       // Build a stream of all the requested operation's timestamp.
@@ -152,113 +134,108 @@ class OperationsHistory extends React.Component {
       // Transform it to a stream of the requested timestamp bounds
       // /!\ There is no support for "holes" in the loaded operations
       .scan(
-        ({ from, to }, timestamp) => ({
-          from: Math.min(from, timestamp),
-          to: Math.max(to, timestamp)
+        ({ requestedFrom, requestedTo }, timestamp) => ({
+          requestedFrom: Math.min(requestedFrom, timestamp),
+          requestedTo: Math.max(requestedTo, timestamp)
         }),
         {
-          from:
-            loadedCount > 0
-              ? loadedOperations[loadedCount - 1].timestamp
-              : Number.POSITIVE_INFINITY,
-          to: loadedCount > 0 ? loadedOperations[0].timestamp : 0
+          requestedFrom: TIMESTAMP_MAX,
+          requestedTo: TIMESTAMP_MIN
         }
       )
       // Only one event every 500ms
       .debounce(500)
-      // .tap(({ from, to }) =>
-      //   console.log(`Requesting operations from '${from}' to '${to}'...`)
-      // )
-      .concatMap(({ from, to }) => {
-        const { loadedOperations } = this.state;
-        const { onRequestOperations, onRequestState } = this.props;
+      .concatMap(({ requestedFrom, requestedTo }) => {
+        const { loadedFrom, loadedOperations, loadedTo } = this.state;
+        const { onRequestOperations } = this.props;
         const loadedCount = loadedOperations.length;
         if (loadedCount == 0) {
           // Nothing already loaded
           return most.fromPromise(
-            Promise.all([
-              onRequestOperations(from, to),
-              onRequestState(from)
-            ]).then(([operations, initialState]) => {
-              const { agentConfiguration } = this.props;
+            onRequestOperations(requestedFrom, requestedTo, true).then(
+              (result) => {
+                const { agentConfiguration } = this.props;
 
-              const preprocessedOperations = preprocessOperations(
-                agentConfiguration,
-                operations,
-                initialState.context
-              );
+                const preprocessedOperations = preprocessOperations(
+                  agentConfiguration,
+                  result.operations,
+                  result.initialState
+                );
 
-              return preprocessedOperations;
-            })
+                return {
+                  loadedFrom: result.from,
+                  loadedOperations: preprocessedOperations,
+                  loadedTo: result.to
+                };
+              }
+            )
           );
         }
-        const loadedTo = loadedOperations[0].timestamp;
-        const loadedFrom = loadedOperations[loadedCount - 1].timestamp;
 
         // First promise is about loading operations after what is already
         // loaded, second promise is about before, third is about the very first state
         return most.fromPromise(
           Promise.all([
-            loadedCount > 0 && to > loadedTo
-              ? onRequestOperations(loadedTo, to)
-              : Promise.resolve([]),
-            from < loadedFrom
-              ? onRequestOperations(from, loadedFrom)
-              : Promise.resolve([]),
-            from < loadedFrom ? onRequestState(from) : Promise.resolve({})
-          ]).then(([afterOperations, beforeOperations, beforeInitialState]) => {
+            requestedTo > loadedTo
+              ? onRequestOperations(loadedTo, requestedTo, false)
+              : Promise.resolve({
+                operations: [],
+                from: loadedTo,
+                to: requestedTo
+              }),
+            requestedFrom < loadedFrom
+              ? onRequestOperations(requestedFrom, loadedFrom, true)
+              : Promise.resolve({
+                operations: [],
+                from: requestedFrom,
+                to: loadedFrom
+              })
+          ]).then(([afterResults, beforeResults]) => {
             const { agentConfiguration } = this.props;
-            const { loadedOperations } = this.state;
+            const { loadedFrom, loadedOperations, loadedTo } = this.state;
 
             // Let's deal with 'afterOperations'
-            const lastLoadedTimestamp = loadedOperations[0].timestamp;
             const lastLoadedState = loadedOperations[0].state;
             const preprocessedAfterOperations = preprocessOperations(
               agentConfiguration,
-              afterOperations.filter(
-                ({ timestamp }) => timestamp > lastLoadedTimestamp
+              afterResults.operations.filter(
+                ({ timestamp }) => timestamp > loadedTo
               ),
               lastLoadedState
             );
 
             // Let's deal with 'beforeOperations' && 'beforeInitialState'
-            const loadedCount = loadedOperations.length;
-            const firstLoadedTimestamp =
-              loadedOperations[loadedCount - 1].timestamp;
             const preprocessedBeforeOperations = preprocessOperations(
               agentConfiguration,
-              beforeOperations.filter(
-                ({ timestamp }) => timestamp < firstLoadedTimestamp
+              beforeResults.operations.filter(
+                ({ timestamp }) => timestamp < loadedFrom
               ),
-              beforeInitialState.context
+              beforeResults.initialState
             );
 
             // Return the new value for the loaded operations
-            return preprocessedAfterOperations.concat(
-              loadedOperations,
-              preprocessedBeforeOperations
-            );
+            return {
+              loadedFrom: Math.min(beforeResults.from, loadedFrom),
+              loadedOperations: preprocessedAfterOperations.concat(
+                loadedOperations,
+                preprocessedBeforeOperations
+              ),
+              loadedTo: Math.max(beforeResults.to, loadedTo)
+            };
           })
         );
       })
-      // .tap((newLoadedOperations) =>
-      //   console.log(
-      //     `Operations from '${newLoadedOperations[0].timestamp}' to '${
-      //       newLoadedOperations[newLoadedOperations.length - 1].timestamp
-      //     }' loaded!`
-      //   )
-      // )
-      .observe((newLoadedOperations) => {
-        this.setState(
-          computeUpdatedState(
-            {
-              loadedOperations: newLoadedOperations
-            },
-            this.state,
-            {},
-            this.props
-          )
-        );
+      .observe(({ loadedFrom, loadedOperations, loadedTo }) => {
+        const estimations = computeUpdatedEstimations({
+          ...this.state,
+          loadedFrom,
+          loadedOperations,
+          loadedTo
+        });
+        this.setState({
+          ...estimations,
+          loadedOperations
+        });
       });
 
     return (timestamp) => {
@@ -271,16 +248,31 @@ class OperationsHistory extends React.Component {
   }
   _renderRow(index) {
     const {
-      estimatedLoadedOffset,
+      estimatedAfterLoadedCount,
+      estimatedBeforeLoadedCount,
+      estimatedCount,
       estimatedPeriod,
+      from,
       loadedOperations,
       to
     } = this.state;
-    const loadedIndex = index - estimatedLoadedOffset;
-    const operation = loadedOperations[loadedIndex];
-    if (!operation) {
-      const estimatedTimestamp = to - index * estimatedPeriod;
-
+    if (index < estimatedAfterLoadedCount) {
+      // We try to display something that is, in time, after the loaded operations
+      const estimatedTimestamp = Math.ceil(to - index * estimatedPeriod);
+      this._loadRows(estimatedTimestamp);
+      return (
+        <this.Row
+          key={ index }
+          index={ index }
+          timestamp={ estimatedTimestamp }
+          loading
+        />
+      );
+    } else if (estimatedCount - index <= estimatedBeforeLoadedCount) {
+      // We try to display something that is, in time, before the loaded operations
+      const estimatedTimestamp = Math.floor(
+        from + (estimatedCount - 1 - index) * estimatedPeriod
+      );
       this._loadRows(estimatedTimestamp);
       return (
         <this.Row
@@ -291,6 +283,8 @@ class OperationsHistory extends React.Component {
         />
       );
     } else {
+      const loadedIndex = index - estimatedAfterLoadedCount;
+      const operation = loadedOperations[loadedIndex];
       return <this.Row key={ index } index={ index } { ...operation } />;
     }
   }
@@ -306,7 +300,7 @@ class OperationsHistory extends React.Component {
   }
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
-    const { count, initialOffset } = this.state;
+    const { estimatedCount, initialOffset } = this.state;
     // This should only be called if agentConfiguration or rowHeight changes
     // Maybe simply use a memoize would be fine
     this._refreshRowComponent();
@@ -324,7 +318,7 @@ class OperationsHistory extends React.Component {
           renderRow={ this._renderRow }
           renderPlaceholderRow={ this._renderPlaceholderRow }
           initialOffset={ initialOffset }
-          count={ count }
+          count={ estimatedCount }
         />
       </Table>
     );
