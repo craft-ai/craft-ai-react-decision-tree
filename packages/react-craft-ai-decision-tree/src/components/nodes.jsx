@@ -9,7 +9,7 @@ import {
   COLOR_EDGES_CAPTION_BG,
   NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH
 } from '../utils/constants';
-import { Properties } from 'craft-ai';
+import { interpreter } from 'craft-ai';
 
 const Links = styled('div')`
   overflow: hidden;
@@ -106,10 +106,11 @@ class Nodes extends React.Component {
       }
     }
     const propertyType = this.props.configuration.context[link.target.data.decision_rule.property].type;
-    const text = Properties.formatDecisionRule({
-      ...link.target.data.decision_rule,
+    const text = interpreter.formatDecisionRules([{
+      operand: link.target.data.decision_rule.operand,
+      operator: link.target.data.decision_rule.operator,
       type: propertyType
-    });
+    }]);
 
     const showTooltip = () => {
       this.setState({ showingTooltip: true, tooltipText: text, tooltipRef: this.linkRef[index] });

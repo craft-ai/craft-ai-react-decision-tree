@@ -2,7 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { Properties } from 'craft-ai';
+import { interpreter, Properties } from 'craft-ai';
 
 const PopoverTitle = styled('div')`
   text-align: center;
@@ -26,21 +26,22 @@ class DecisionRulesPopover extends React.Component {
            color != nextProps.color;
   }
 
-  displayConditions = (key) => {
+  displayConditions = (property) => {
     try {
-      const decisionRule = Properties.reduceDecisionRule(this.props.node.decisionRules[key]);
-      const propertyType = this.props.context[key].type;
-      const text = Properties.formatDecisionRule({
+      const decisionRule = Properties.reduceDecisionRule(this.props.node.decisionRules[property]);
+      const propertyType = this.props.context[property].type;
+      const text = interpreter.formatDecisionRules([{
         ...decisionRule,
-        type: propertyType
-      });
+        type: propertyType,
+        property: property
+      }]);
       return (
-        <li key={ key }>{ `${key}: ${text}` }</li>
+        <li key={ property }>{ text }</li>
       );
     }
     catch (err) {
       return (
-        <li style={{ 'color': 'red' }} key={ key }>{ err.message }</li>
+        <li style={{ 'color': 'red' }} key={ property }>{ err.message }</li>
       );
     }
   }
