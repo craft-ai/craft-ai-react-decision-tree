@@ -6,6 +6,17 @@ import { extractProperties } from './headerRow';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
 
+function formatTimestampAsUtcDate(timestamp) {
+  const date = new Date(timestamp * 1000);
+  const DD = String(date.getUTCDate()).padStart(2, '0');
+  const MM = String(date.getUTCMonth()).padStart(2, '0');
+  const YYYY = String(date.getUTCFullYear());
+  const hh = String(date.getUTCHours()).padStart(2, '0');
+  const mm = String(date.getUTCMinutes()).padStart(2, '0');
+  const ss = String(date.getUTCSeconds()).padStart(2, '0');
+  return `${DD}/${MM}/${YYYY} ${hh}:${mm}:${ss} UTC`;
+}
+
 function createPropertyCellComponent(property, renderFun) {
   const PropertyCell = renderFun;
   PropertyCell.displayName = `${camelCase(property, {
@@ -25,7 +36,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
     return createPropertyCellComponent(property, ({ timestamp }) => {
       return (
         <td>
-          {new Date(timestamp * 1000).toUTCString()}
+          {formatTimestampAsUtcDate(timestamp)}
           <small>{timestamp}</small>
         </td>
       );

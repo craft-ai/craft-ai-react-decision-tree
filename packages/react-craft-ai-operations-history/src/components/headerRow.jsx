@@ -1,6 +1,26 @@
 import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {
+  faCalendar,
+  faClock,
+  faGlobeAfrica,
+  faStopwatch,
+  faTachometerAlt,
+  faTags
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TYPES } from 'craft-ai/lib/constants';
+
+const PropertyTypeIcons = {
+  [TYPES.continuous]: <FontAwesomeIcon icon={ faTachometerAlt } />,
+  [TYPES.enum]: <FontAwesomeIcon icon={ faTags } />,
+  [TYPES.timezone]: <FontAwesomeIcon icon={ faGlobeAfrica } />,
+  [TYPES.time_of_day]: <FontAwesomeIcon icon={ faClock } />,
+  [TYPES.day_of_week]: <FontAwesomeIcon icon={ faCalendar } />,
+  [TYPES.day_of_month]: <FontAwesomeIcon icon={ faCalendar } />,
+  [TYPES.month_of_year]: <FontAwesomeIcon icon={ faCalendar } />
+};
 
 export function extractProperties(agentConfiguration) {
   const properties = Object.keys(agentConfiguration.context).map(
@@ -18,14 +38,17 @@ export function extractProperties(agentConfiguration) {
   return sortedProperties;
 }
 
-const HeaderCell = ({ output, property }) => (
+const HeaderCell = ({ output, property, type }) => (
   <th>
-    {property}
+    <span>
+      {PropertyTypeIcons[type]} {property}
+    </span>
     {output ? <small>output</small> : void 0}
   </th>
 );
 HeaderCell.propTypes = {
   property: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   output: PropTypes.bool.isRequired
 };
 
@@ -33,7 +56,11 @@ const HeaderRow = ({ agentConfiguration }) => {
   const properties = extractProperties(agentConfiguration);
   return (
     <tr>
-      <th>timestamp</th>
+      <th>
+        <span>
+          <FontAwesomeIcon icon={ faStopwatch } /> timestamp
+        </span>
+      </th>
       {properties.map((property, index) => (
         <HeaderCell key={ index } { ...property } />
       ))}
