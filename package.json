@@ -27,21 +27,7 @@
     "node": ">= 6.9.1"
   },
   "devDependencies": {
-    "@storybook/addon-backgrounds": "3.0.0",
-    "@storybook/addon-knobs": "3.4.10",
-    "@storybook/addon-options": "3.4.10",
-    "@storybook/addons": "3.4.11",
-    "babel-eslint": "7.2.3",
-    "babel-plugin-emotion": "9.2.11",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "babel-plugin-transform-react-jsx": "6.24.1",
-    "babel-preset-env": "1.6.0",
-    "babel-preset-react": "6.24.1",
-    "eslint-config-craft-ai": "2.3",
-    "eslint-plugin-react": "7.3",
-    "eslint-plugin-wyze": "3.3.1",
-    "lerna": "2.0.0",
+    "lerna": "3.4.3",
     "prop-types": "15.5.10",
     "react-dom": "15.6.1",
     "react": "15.6.1"
