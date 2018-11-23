@@ -49,9 +49,15 @@ class InfiniteList extends React.Component {
       renderedRowsStart
     });
   }
+  componentDidUpdate(prevProps) {
+    if (this.props.count != prevProps.count) {
+      this._updateVisibleIndexes(); // Count has change, we need to refresh what's visible
+    }
+  }
   render() {
     const { count, renderPlaceholderRow, renderRow, tag: Tag } = this.props;
     const { renderedRowsEnd, renderedRowsStart } = this.state;
+    
     return (
       <Tag ref={ this._setWrapperElement } onScroll={ this._updateVisibleIndexes }>
         {/* The placeholder before the rows */}
