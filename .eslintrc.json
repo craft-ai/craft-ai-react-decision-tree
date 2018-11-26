@@ -1,4 +1,9 @@
 {
   "root": true,
-  "extends": "craft-ai/react.babel"
+  "extends": "craft-ai/react.babel",
+  "settings": {
+    "react": {
+      "version": "15.0"
+    }
+  }
 }
