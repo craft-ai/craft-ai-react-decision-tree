@@ -11,7 +11,6 @@ const Table = styled('table')`
   }
   tbody {
     display: block;
-    overflow-y: scroll;
     height: ${({ height, rowHeight }) => `${height - rowHeight}px`};
   }
 

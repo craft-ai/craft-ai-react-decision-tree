@@ -4,11 +4,12 @@ import { homepage } from '../package.json';
 
 setOptions({
   name: 'craft ai Operations History',
-  url: homepage,
+  url: homepage
 });
 
 function loadStories() {
   require('../stories/operationsHistory.js');
+  require('../stories/infiniteList.js');
 }
 
 configure(loadStories, module);

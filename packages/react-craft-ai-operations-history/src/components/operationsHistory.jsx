@@ -88,39 +88,44 @@ function computeUpdatedEstimations({
   };
 }
 
+function computeInitialStateFromProps(props) {
+  const {
+    agentConfiguration,
+    estimatedPeriod,
+    from,
+    initialOperations,
+    to
+  } = props;
+
+  if ((from == null || to == null) && initialOperations.length == 0) {
+    throw new Error(
+      'Unable to compute \'OperationsHistory\' initial state, either \'from\' and \'to\' should be defined or \'initialOperations\' should not be empty'
+    );
+  }
+
+  const loadedOperations = preprocessOperations(
+    agentConfiguration,
+    initialOperations
+  );
+  const estimations = computeUpdatedEstimations({
+    from,
+    to,
+    loadedOperations,
+    estimatedPeriod
+  });
+
+  return {
+    scrollToIndex: estimations.estimatedAfterLoadedCount,
+    loadedOperations,
+    ...estimations
+  };
+}
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
 
-    const {
-      agentConfiguration,
-      estimatedPeriod,
-      from,
-      initialOperations,
-      to
-    } = props;
-
-    if ((from == null || to == null) && initialOperations.length == 0) {
-      throw new Error(
-        'Unable to build a \'OperationsHistory\', either \'from\' and \'to\' should be defined or \'initialOperations\' should not be empty'
-      );
-    }
-
-    const loadedOperations = preprocessOperations(
-      agentConfiguration,
-      initialOperations
-    );
-    const estimations = computeUpdatedEstimations({
-      from,
-      to,
-      loadedOperations,
-      estimatedPeriod
-    });
-    this.state = {
-      initialOffset: estimations.estimatedAfterLoadedCount,
-      loadedOperations,
-      ...estimations
-    };
+    this.state = computeInitialStateFromProps(props);
 
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
@@ -289,9 +294,26 @@ class OperationsHistory extends React.Component {
       />
     );
   }
+  componentDidUpdate(prevProps, prevState) {
+    const { scrollToIndex } = this.state;
+    if (scrollToIndex != null) {
+      // Desired offset was set to something, that triggered a scroll to the offset
+      // in the child InfiniteList, now we can set it back to null.
+      this.setState({
+        scrollToIndex: null
+      });
+    }
+    if (this.props.initialOperations !== prevProps.initialOperations) {
+      // New initial operations, it's like a new start.
+      this.setState({
+        ...computeInitialStateFromProps(this.props)
+      });
+    }
+  }
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
-    const { estimatedCount, initialOffset } = this.state;
+    const { estimatedCount, scrollToIndex } = this.state;
+
     return (
       <Table
         className="craft-operations-history"
@@ -305,7 +327,7 @@ class OperationsHistory extends React.Component {
           rowHeight={ rowHeight }
           renderRow={ this._renderRow }
           renderPlaceholderRow={ this._renderPlaceholderRow }
-          initialOffset={ initialOffset }
+          scrollToIndex={ scrollToIndex }
           count={ estimatedCount }
         />
       </Table>

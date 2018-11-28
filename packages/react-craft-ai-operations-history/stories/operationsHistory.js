@@ -5,6 +5,7 @@ import OperationsHistory from '../src';
 import orderBy from 'lodash.orderby';
 import preprocessOperations from '../src/utils/preprocessOperations';
 import React from 'react';
+import { number, withKnobs } from '@storybook/addon-knobs';
 
 import { storiesOf } from '@storybook/react';
 
@@ -74,7 +75,35 @@ const requestOperationsFromC2O1 = createRequestOperations(
   CONFIGURATION_2_OPERATIONS_1_STATES
 );
 
+function createHeightKnob() {
+  return number('Height', 600, {
+    range: true,
+    min: 60,
+    max: 1000,
+    step: 1
+  });
+}
+
+function createRowHeightKnob() {
+  return number('Row Height', 45, {
+    range: true,
+    min: 40,
+    max: 300,
+    step: 1
+  });
+}
+
+function createInitialRowCountKnob(array, defaultCount) {
+  return number('Initial Row Count', defaultCount, {
+    range: true,
+    min: 1,
+    max: array.length,
+    step: 1
+  });
+}
+
 storiesOf('OperationsHistory', module)
+  .addDecorator(withKnobs)
   .addDecorator(
     backgrounds([
       { name: 'light-green', value: '#99F2C5', default: true },
@@ -87,7 +116,12 @@ storiesOf('OperationsHistory', module)
       <div className="test">
         <OperationsHistory
           agentConfiguration={ CONFIGURATION_1 }
-          initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(0, 200) }
+          initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
+            0,
+            createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 200)
+          ) }
+          height={ createHeightKnob() }
+          rowHeight={ createRowHeightKnob() }
         />
       </div>
     );
@@ -104,7 +138,10 @@ storiesOf('OperationsHistory', module)
     return (
       <OperationsHistory
         agentConfiguration={ CONFIGURATION_1 }
-        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(0, 300) }
+        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
+          0,
+          createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 300)
+        ) }
         onRequestOperations={ requestOperationsFromC1O1 }
         from={ CONFIGURATION_1_OPERATIONS_1[0].timestamp }
         to={
@@ -121,10 +158,7 @@ storiesOf('OperationsHistory', module)
         initialOperations={ CONFIGURATION_2_OPERATIONS_1.slice(0, 300) }
         onRequestOperations={ requestOperationsFromC2O1 }
         from={ CONFIGURATION_2_OPERATIONS_1[0].timestamp }
-        to={
-          CONFIGURATION_2_OPERATIONS_1[CONFIGURATION_2_OPERATIONS_1.length - 1]
-            .timestamp
-        }
+        to={ CONFIGURATION_2_OPERATIONS_1[3000].timestamp }
       />
     );
   })
