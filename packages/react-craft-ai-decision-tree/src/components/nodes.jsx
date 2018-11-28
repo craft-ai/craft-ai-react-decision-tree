@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { interpreter } from 'craft-ai';
-import Leaf from './leaf';
+import { mix } from 'polished';
 import Node from './node';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,10 +8,18 @@ import styled from 'react-emotion';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
   COLOR_EDGES_CAPTION_BG,
+  COLOR_LEAVES_CONFIDENCE_0,
+  COLOR_LEAVES_CONFIDENCE_1,
   NODE_DEPTH,
   NODE_HEIGHT,
   NODE_WIDTH
 } from '../utils/constants';
+
+
+function computeLeafColor(confidence) {
+  const blend = Math.pow(confidence, 3);
+  return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
+}
 
 const Links = styled('div')`
   overflow: hidden;
@@ -68,19 +76,29 @@ class Nodes extends React.Component {
   };
 
   displayNode = (node, index) => {
+    const setSelectedNode = () => {
+      this.props.updateSelectedNode(node.treePath);
+    };
+
+    const indexRef = (input) => {
+      this.nodeRef[index] = input;
+    };
+
+    let text;
+    let color;
+
     if (_.isUndefined(node.children)) {
       // leaf
-      return (
-        <Leaf
-          updateSelectedNode={this.props.updateSelectedNode}
-          key={index}
-          height={this.props.height}
-          node={node}
-          configuration={this.props.configuration}
-        />
-      );
+      color = computeLeafColor(node.data.confidence);
+      text = _.isNull(node.data.predicted_value)
+        ? ''
+        : _.isFinite(node.data.predicted_value)
+        ? parseFloat(node.data.predicted_value.toFixed(3)).toString()
+        : node.data.predicted_value;
+    } else {
+      // node
+      text = node.children[0].data.decision_rule.property;
     }
-    const text = node.children[0].data.decision_rule.property;
 
     const showTooltip = () => {
       this.setState({
@@ -90,23 +108,19 @@ class Nodes extends React.Component {
       });
     };
 
-    const setSelectedNode = () => {
-      this.props.updateSelectedNode(node.treePath);
-    };
-
-    const indexRef = input => {
-      this.nodeRef[index] = input;
-    };
-
     return (
       <Node
-        key={index}
         ref={indexRef}
+        key={index}
         onMouseOver={showTooltip}
         onMouseOut={this.hideTooltip}
         onClick={setSelectedNode}
         className="craft-nodes"
-        style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2 }}
+        style={{
+          top: node.y - NODE_HEIGHT / 3,
+          left: node.x - NODE_WIDTH / 2,
+          backgroundColor: color
+        }}
       >
         {text}
       </Node>
@@ -150,7 +164,7 @@ class Nodes extends React.Component {
       });
     };
 
-    const indexRef = input => {
+    const indexRef = (input) => {
       this.linkRef[index] = input;
     };
 
@@ -172,7 +186,7 @@ class Nodes extends React.Component {
     );
   };
 
-  updateTooltipPlacement = changeTooltipPlacement => {
+  updateTooltipPlacement = (changeTooltipPlacement) => {
     if (changeTooltipPlacement && this.state.tooltipPlacement != 'top') {
       this.setState({ tooltipPlacement: 'top' });
     }
