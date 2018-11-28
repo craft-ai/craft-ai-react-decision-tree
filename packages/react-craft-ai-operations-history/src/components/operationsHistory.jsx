@@ -115,7 +115,7 @@ function computeInitialStateFromProps(props) {
   });
 
   return {
-    scrollToIndex: estimations.estimatedAfterLoadedCount,
+    scrollToTimestamp: estimations.loadedTo,
     loadedOperations,
     ...estimations
   };
@@ -130,6 +130,9 @@ class OperationsHistory extends React.Component {
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
     this._loadRows = this._createLoadRows.bind(this)();
+    this._estimateIndexFromTimestamp = this._estimateIndexFromTimestamp.bind(
+      this
+    );
   }
   _createLoadRows() {
     const eventEmitter = new EventEmitter();
@@ -249,6 +252,33 @@ class OperationsHistory extends React.Component {
       eventEmitter.emit(REQUEST_ROW_EVENT, timestamp);
     };
   }
+  _estimateIndexFromTimestamp(timestamp) {
+    const {
+      estimatedAfterLoadedCount,
+      estimatedCount,
+      from,
+      loadedFrom,
+      loadedOperations,
+      loadedTo,
+      to
+    } = this.state;
+    if (timestamp <= from) {
+      return 0;
+    } else if (timestamp <= loadedFrom) {
+      return Math.floor((timestamp - from) / (loadedFrom - from));
+    } else if (timestamp <= loadedTo) {
+      return (
+        estimatedAfterLoadedCount +
+        loadedOperations.findIndex(
+          (operation) => timestamp >= operation.timestamp
+        )
+      );
+    } else if (timestamp <= to) {
+      return Math.floor((to - timestamp) / (to - loadedTo));
+    } else {
+      return estimatedCount - 1;
+    }
+  }
   _renderRow(index) {
     const { agentConfiguration } = this.props;
     const {
@@ -295,12 +325,12 @@ class OperationsHistory extends React.Component {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    const { scrollToIndex } = this.state;
-    if (scrollToIndex != null) {
+    const { scrollToTimestamp } = this.state;
+    if (scrollToTimestamp != null) {
       // Desired offset was set to something, that triggered a scroll to the offset
       // in the child InfiniteList, now we can set it back to null.
       this.setState({
-        scrollToIndex: null
+        scrollToTimestamp: null
       });
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
@@ -312,7 +342,7 @@ class OperationsHistory extends React.Component {
   }
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
-    const { estimatedCount, scrollToIndex } = this.state;
+    const { estimatedCount, scrollToTimestamp } = this.state;
 
     return (
       <Table
@@ -327,7 +357,11 @@ class OperationsHistory extends React.Component {
           rowHeight={ rowHeight }
           renderRow={ this._renderRow }
           renderPlaceholderRow={ this._renderPlaceholderRow }
-          scrollToIndex={ scrollToIndex }
+          scrollToIndex={
+            scrollToTimestamp != null
+              ? this._estimateIndexFromTimestamp(scrollToTimestamp)
+              : null
+          }
           count={ estimatedCount }
         />
       </Table>
