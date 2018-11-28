@@ -1,6 +1,7 @@
 import createRowComponent from './createRowComponent';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
+import memoizeOne from 'memoize-one';
 import PlaceholderRow from './placeholderRow';
 import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
@@ -11,6 +12,10 @@ import * as most from 'most';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
 const TIMESTAMP_MIN = 0;
+
+const memoizedCreateRowComponent = memoizeOne((agentConfiguration) => {
+  return createRowComponent({ agentConfiguration });
+});
 
 function computeUpdatedEstimations({
   estimatedPeriod,
@@ -29,8 +34,6 @@ function computeUpdatedEstimations({
   }
 
   if (loadedCount == 0) {
-    // Nothing loaded, we don't update anything
-
     // No loaded data to re-estimate the period
     const estimatedCount = Math.ceil((to - from) / estimatedPeriod);
 
@@ -119,7 +122,6 @@ class OperationsHistory extends React.Component {
       ...estimations
     };
 
-    this._refreshRowComponent = this._refreshRowComponent.bind(this);
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
     this._loadRows = this._createLoadRows.bind(this)();
@@ -242,11 +244,8 @@ class OperationsHistory extends React.Component {
       eventEmitter.emit(REQUEST_ROW_EVENT, timestamp);
     };
   }
-  _refreshRowComponent() {
-    const { agentConfiguration, rowHeight } = this.props;
-    this.Row = createRowComponent({ agentConfiguration, rowHeight });
-  }
   _renderRow(index) {
+    const { agentConfiguration } = this.props;
     const {
       estimatedAfterLoadedCount,
       estimatedBeforeLoadedCount,
@@ -256,36 +255,28 @@ class OperationsHistory extends React.Component {
       loadedOperations,
       to
     } = this.state;
+    const Row = memoizedCreateRowComponent(agentConfiguration);
+    const chronologicalIndex = estimatedCount - 1 - index;
     if (index < estimatedAfterLoadedCount) {
       // We try to display something that is, in time, after the loaded operations
       const estimatedTimestamp = Math.ceil(to - index * estimatedPeriod);
       this._loadRows(estimatedTimestamp);
       return (
-        <this.Row
-          key={ index }
-          index={ index }
-          timestamp={ estimatedTimestamp }
-          loading
-        />
+        <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
       );
-    } else if (estimatedCount - index <= estimatedBeforeLoadedCount) {
+    } else if (chronologicalIndex < estimatedBeforeLoadedCount) {
       // We try to display something that is, in time, before the loaded operations
       const estimatedTimestamp = Math.floor(
-        from + (estimatedCount - 1 - index) * estimatedPeriod
+        from + chronologicalIndex * estimatedPeriod
       );
       this._loadRows(estimatedTimestamp);
       return (
-        <this.Row
-          key={ index }
-          index={ index }
-          timestamp={ estimatedTimestamp }
-          loading
-        />
+        <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
       );
     } else {
       const loadedIndex = index - estimatedAfterLoadedCount;
       const operation = loadedOperations[loadedIndex];
-      return <this.Row key={ index } index={ index } { ...operation } />;
+      return <Row key={ index } index={ index } { ...operation } />;
     }
   }
   _renderPlaceholderRow(start, end) {
@@ -301,9 +292,6 @@ class OperationsHistory extends React.Component {
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
     const { estimatedCount, initialOffset } = this.state;
-    // This should only be called if agentConfiguration or rowHeight changes
-    // Maybe simply use a memoize would be fine
-    this._refreshRowComponent();
     return (
       <Table
         className="craft-operations-history"
