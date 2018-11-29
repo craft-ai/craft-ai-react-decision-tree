@@ -7,7 +7,7 @@ import styled from 'react-emotion';
 import Tree from './tree';
 
 const DecisionTreeContainer = styled('div')`
-  height: '100%';
+  height: 100%;
 `;
 
 class DecisionTree extends React.Component {
