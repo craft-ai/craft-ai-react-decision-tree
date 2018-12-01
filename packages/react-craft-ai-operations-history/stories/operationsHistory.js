@@ -15,6 +15,12 @@ const CONFIGURATION_1_OPERATIONS_1 = orderBy(
   require('./configuration_1_operations_1.json'),
   ['timestamp']
 );
+const CONFIGURATION_1_OPERATIONS_1_FROM =
+  CONFIGURATION_1_OPERATIONS_1[0].timestamp;
+const CONFIGURATION_1_OPERATIONS_1_TO =
+  CONFIGURATION_1_OPERATIONS_1[CONFIGURATION_1_OPERATIONS_1.length - 1]
+    .timestamp;
+
 const CONFIGURATION_1_OPERATIONS_1_STATES = orderBy(
   preprocessOperations(CONFIGURATION_1, CONFIGURATION_1_OPERATIONS_1).map(
     ({ state, timestamp }) => ({ context: state, timestamp })
@@ -26,6 +32,12 @@ const CONFIGURATION_2_OPERATIONS_1 = orderBy(
   require('./configuration_2_operations_1.json'),
   ['timestamp']
 );
+const CONFIGURATION_2_OPERATIONS_1_FROM =
+  CONFIGURATION_2_OPERATIONS_1[0].timestamp;
+const CONFIGURATION_2_OPERATIONS_1_TO =
+  CONFIGURATION_2_OPERATIONS_1[CONFIGURATION_2_OPERATIONS_1.length - 1]
+    .timestamp;
+
 const CONFIGURATION_2_OPERATIONS_1_STATES = orderBy(
   preprocessOperations(CONFIGURATION_2, CONFIGURATION_2_OPERATIONS_1).map(
     ({ state, timestamp }) => ({ context: state, timestamp })
@@ -143,11 +155,8 @@ storiesOf('OperationsHistory', module)
           createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 300)
         ) }
         onRequestOperations={ requestOperationsFromC1O1 }
-        from={ CONFIGURATION_1_OPERATIONS_1[0].timestamp }
-        to={
-          CONFIGURATION_1_OPERATIONS_1[CONFIGURATION_1_OPERATIONS_1.length - 1]
-            .timestamp
-        }
+        from={ CONFIGURATION_1_OPERATIONS_1_FROM }
+        to={ CONFIGURATION_1_OPERATIONS_1_TO }
       />
     );
   })
@@ -157,7 +166,7 @@ storiesOf('OperationsHistory', module)
         agentConfiguration={ CONFIGURATION_2 }
         initialOperations={ CONFIGURATION_2_OPERATIONS_1.slice(0, 300) }
         onRequestOperations={ requestOperationsFromC2O1 }
-        from={ CONFIGURATION_2_OPERATIONS_1[0].timestamp }
+        from={ CONFIGURATION_2_OPERATIONS_1_FROM }
         to={ CONFIGURATION_2_OPERATIONS_1[3000].timestamp }
       />
     );
@@ -175,11 +184,8 @@ storiesOf('OperationsHistory', module)
           )
         ] }
         onRequestOperations={ requestOperationsFromC1O1 }
-        from={ CONFIGURATION_1_OPERATIONS_1[0].timestamp }
-        to={
-          CONFIGURATION_1_OPERATIONS_1[CONFIGURATION_1_OPERATIONS_1.length - 1]
-            .timestamp
-        }
+        from={ CONFIGURATION_1_OPERATIONS_1_FROM }
+        to={ CONFIGURATION_1_OPERATIONS_1_TO }
       />
     );
   })
@@ -188,11 +194,8 @@ storiesOf('OperationsHistory', module)
       <OperationsHistory
         agentConfiguration={ CONFIGURATION_1 }
         onRequestOperations={ requestOperationsFromC1O1 }
-        from={ CONFIGURATION_1_OPERATIONS_1[0].timestamp }
-        to={
-          CONFIGURATION_1_OPERATIONS_1[CONFIGURATION_1_OPERATIONS_1.length - 1]
-            .timestamp
-        }
+        from={ CONFIGURATION_1_OPERATIONS_1_FROM }
+        to={ CONFIGURATION_1_OPERATIONS_1_TO }
       />
     );
   })
@@ -201,11 +204,30 @@ storiesOf('OperationsHistory', module)
       <OperationsHistory
         agentConfiguration={ CONFIGURATION_2 }
         onRequestOperations={ requestOperationsFromC2O1 }
-        from={ CONFIGURATION_2_OPERATIONS_1[0].timestamp }
-        to={
-          CONFIGURATION_2_OPERATIONS_1[CONFIGURATION_2_OPERATIONS_1.length - 1]
-            .timestamp
-        }
+        from={ CONFIGURATION_2_OPERATIONS_1_FROM }
+        to={ CONFIGURATION_2_OPERATIONS_1_TO }
       />
+    );
+  })
+  .add('Fully dynamic loading, irregular operations (custom css)', () => {
+    return (
+      <div className="test">
+        <OperationsHistory
+          agentConfiguration={ CONFIGURATION_2 }
+          onRequestOperations={ requestOperationsFromC2O1 }
+          from={ number('From', CONFIGURATION_2_OPERATIONS_1[500].timestamp, {
+            range: true,
+            min: CONFIGURATION_2_OPERATIONS_1_FROM,
+            max: CONFIGURATION_2_OPERATIONS_1_TO,
+            step: 1
+          }) }
+          to={ number('To', CONFIGURATION_2_OPERATIONS_1[1000].timestamp, {
+            range: true,
+            min: CONFIGURATION_2_OPERATIONS_1_FROM,
+            max: CONFIGURATION_2_OPERATIONS_1_TO,
+            step: 1
+          }) }
+        />
+      </div>
     );
   });

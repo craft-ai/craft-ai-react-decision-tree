@@ -34,8 +34,10 @@ function computeUpdatedEstimations({
   }
 
   if (loadedCount == 0) {
+    // The 'to' might be before the 'from', we need to update it
+    const updatedTo = Math.max(from, to);
     // No loaded data to re-estimate the period
-    const estimatedCount = Math.ceil((to - from) / estimatedPeriod);
+    const estimatedCount = Math.ceil((updatedTo - from) / estimatedPeriod);
 
     return {
       estimatedPeriod,
@@ -43,27 +45,49 @@ function computeUpdatedEstimations({
       estimatedBeforeLoadedCount: estimatedCount,
       estimatedAfterLoadedCount: 0,
       from,
-      to,
-      loadedFrom,
-      loadedTo
+      to: updatedTo,
+      loadedFrom: loadedFrom != null ? Math.max(loadedFrom, from) : null,
+      loadedTo: loadedTo != null ? Math.min(loadedTo, updatedTo) : null
     };
   }
 
-  // Operations are ordered from the latest to the earliest
-  const updatedLoadedFrom = Math.min(
-    loadedOperations[loadedCount - 1].timestamp,
+  let updatedFrom;
+  let updatedLoadedFrom = Math.min(
+    loadedOperations[loadedCount - 1].timestamp, // Operations are ordered from the latest to the earliest
     loadedFrom || TIMESTAMP_MAX
   );
-  const updatedLoadedTo = Math.max(
-    loadedOperations[0].timestamp,
-    loadedTo || TIMESTAMP_MIN
+  if (from == null) {
+    updatedFrom = updatedLoadedFrom;
+  } else {
+    updatedFrom = from;
+    updatedLoadedFrom = Math.max(updatedLoadedFrom, updatedFrom);
+  }
+
+  let updatedTo;
+  let updatedLoadedTo = Math.max(
+    loadedOperations[0].timestamp, // Operations are ordered from the latest to the earliest
+    loadedTo || updatedLoadedFrom
   );
-  const updatedFrom = Math.min(updatedLoadedFrom, from || TIMESTAMP_MAX);
-  const updatedTo = Math.max(updatedLoadedTo, to || TIMESTAMP_MIN);
+  if (to == null) {
+    updatedTo = updatedLoadedTo;
+  } else {
+    updatedTo = to;
+    updatedLoadedTo = Math.min(updatedLoadedTo, updatedTo);
+  }
 
   // Period is the average time between operations
   const updatedEstimatedPeriod =
     (updatedLoadedTo - updatedLoadedFrom) / (loadedCount - 1);
+  console.log(
+    'updatedEstimatedPeriod',
+    updatedEstimatedPeriod,
+    'updatedLoadedTo',
+    updatedLoadedTo,
+    'updatedLoadedFrom',
+    updatedLoadedFrom,
+    'loadedCount',
+    loadedCount
+  );
 
   // Estimate how many operations there is before and after what is loaded
   const estimatedAfterLoadedCount = Math.ceil(
@@ -81,8 +105,8 @@ function computeUpdatedEstimations({
     estimatedCount,
     estimatedBeforeLoadedCount,
     estimatedAfterLoadedCount,
-    from: Math.min(updatedLoadedFrom, from || TIMESTAMP_MAX),
-    to: Math.max(updatedLoadedTo, to || TIMESTAMP_MIN),
+    from: updatedFrom,
+    to: updatedTo,
     loadedFrom: updatedLoadedFrom,
     loadedTo: updatedLoadedTo
   };
@@ -96,12 +120,6 @@ function computeInitialStateFromProps(props) {
     initialOperations,
     to
   } = props;
-
-  if ((from == null || to == null) && initialOperations.length == 0) {
-    throw new Error(
-      'Unable to compute \'OperationsHistory\' initial state, either \'from\' and \'to\' should be defined or \'initialOperations\' should not be empty'
-    );
-  }
 
   const loadedOperations = preprocessOperations(
     agentConfiguration,
@@ -121,38 +139,80 @@ function computeInitialStateFromProps(props) {
   };
 }
 
+function computeStateAfterBoundsUpdate(state, { from, to }) {
+  const { estimatedPeriod, loadedFrom, loadedOperations, loadedTo } = state;
+  const newLoadedOperations = loadedOperations.filter(
+    ({ timestamp }) => timestamp >= from && timestamp <= to
+  );
+  const estimations = computeUpdatedEstimations({
+    estimatedPeriod,
+    from,
+    loadedFrom,
+    loadedOperations: newLoadedOperations,
+    loadedTo,
+    to
+  });
+  return {
+    ...state,
+    loadedOperations: newLoadedOperations,
+    ...estimations
+  };
+}
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = computeInitialStateFromProps(props);
 
+    const {
+      onRequestOperation,
+      onUpdateOperationsBounds
+    } = this._createEventHandlers.bind(this)();
+    this._onRequestOperation = onRequestOperation;
+    this._onUpdateOperationsBounds = onUpdateOperationsBounds;
+
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
-    this._loadRows = this._createLoadRows.bind(this)();
     this._estimateIndexFromTimestamp = this._estimateIndexFromTimestamp.bind(
       this
     );
   }
-  _createLoadRows() {
+  _createEventHandlers() {
     const eventEmitter = new EventEmitter();
-    const REQUEST_ROW_EVENT = 'requestRow';
+    const REQUEST_OPERATION_EVENT = 'requestOperation';
+    const UPDATE_OPERATIONS_BOUNDS_EVENT = 'updateOperationBounds';
 
     most
-      // Build a stream of all the requested operation's timestamp.
-      .fromEvent(REQUEST_ROW_EVENT, eventEmitter)
-      // Transform it to a stream of the requested timestamp bounds
+      .merge(
+        // Build a stream of all the requested operation's timestamp.
+        most
+          .fromEvent(REQUEST_OPERATION_EVENT, eventEmitter)
+          .map((requestedTimestamp) => ({ requestedTimestamp })),
+        // Build a stream of all the changes in the  operation's timestamp.
+        most.fromEvent(UPDATE_OPERATIONS_BOUNDS_EVENT, eventEmitter)
+      )
       // /!\ There is no support for "holes" in the loaded operations
       .scan(
-        ({ requestedFrom, requestedTo }, timestamp) => ({
-          requestedFrom: Math.min(requestedFrom, timestamp),
-          requestedTo: Math.max(requestedTo, timestamp)
-        }),
+        ({ requestedFrom, requestedTo }, { from, requestedTimestamp, to }) => {
+          if (requestedTimestamp) {
+            return {
+              requestedFrom: Math.min(requestedFrom, requestedTimestamp),
+              requestedTo: Math.max(requestedTo, requestedTimestamp)
+            };
+          } else {
+            return {
+              requestedFrom: Math.max(requestedFrom, from || TIMESTAMP_MAX),
+              requestedTo: Math.min(requestedTo, to || TIMESTAMP_MIN)
+            };
+          }
+        },
         {
           requestedFrom: TIMESTAMP_MAX,
           requestedTo: TIMESTAMP_MIN
         }
       )
+      .filter(({ requestedFrom, requestedTo }) => requestedTo > requestedFrom)
       // Only one event every 500ms
       .debounce(500)
       .concatMap(({ requestedFrom, requestedTo }) => {
@@ -242,14 +302,21 @@ class OperationsHistory extends React.Component {
           loadedOperations,
           loadedTo
         });
+        console.log('A - this.setState', {
+          ...estimations,
+          loadedOperations
+        });
         this.setState({
           ...estimations,
           loadedOperations
         });
       });
 
-    return (timestamp) => {
-      eventEmitter.emit(REQUEST_ROW_EVENT, timestamp);
+    return {
+      onRequestOperation: (timestamp) =>
+        eventEmitter.emit(REQUEST_OPERATION_EVENT, timestamp),
+      onUpdateOperationsBounds: ({ from, to }) =>
+        eventEmitter.emit(UPDATE_OPERATIONS_BOUNDS_EVENT, { from, to })
     };
   }
   _estimateIndexFromTimestamp(timestamp) {
@@ -295,7 +362,7 @@ class OperationsHistory extends React.Component {
     if (index < estimatedAfterLoadedCount) {
       // We try to display something that is, in time, after the loaded operations
       const estimatedTimestamp = Math.ceil(to - index * estimatedPeriod);
-      this._loadRows(estimatedTimestamp);
+      this._onRequestOperation(estimatedTimestamp);
       return (
         <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
       );
@@ -304,7 +371,7 @@ class OperationsHistory extends React.Component {
       const estimatedTimestamp = Math.floor(
         from + chronologicalIndex * estimatedPeriod
       );
-      this._loadRows(estimatedTimestamp);
+      this._onRequestOperation(estimatedTimestamp);
       return (
         <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
       );
@@ -329,15 +396,27 @@ class OperationsHistory extends React.Component {
     if (scrollToTimestamp != null) {
       // Desired offset was set to something, that triggered a scroll to the offset
       // in the child InfiniteList, now we can set it back to null.
+      console.log('B - this.setState', {
+        scrollToTimestamp: null
+      });
       this.setState({
         scrollToTimestamp: null
       });
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
       // New initial operations, it's like a new start.
-      this.setState({
-        ...computeInitialStateFromProps(this.props)
-      });
+      const newState = computeInitialStateFromProps(this.props);
+      console.log('C - this.setState', newState);
+      this.setState(newState);
+      this._onUpdateOperationsBounds({ from: newState.from, to: newState.to });
+    }
+    const { from, to } = this.props;
+    if (to !== prevProps.to || from !== prevProps.from) {
+      // Bounds has been updated.
+      const newState = computeStateAfterBoundsUpdate(this.state, { from, to });
+      console.log('D - this.setState', newState);
+      this.setState(newState);
+      this._onUpdateOperationsBounds({ from: newState.from, to: newState.to });
     }
   }
   render() {
