@@ -1,6 +1,7 @@
 import createRowComponent from './createRowComponent';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
+import last from 'lodash.last';
 import memoizeOne from 'memoize-one';
 import PlaceholderRow from './placeholderRow';
 import preprocessOperations from '../utils/preprocessOperations';
@@ -78,16 +79,6 @@ function computeUpdatedEstimations({
   // Period is the average time between operations
   const updatedEstimatedPeriod =
     (updatedLoadedTo - updatedLoadedFrom) / (loadedCount - 1);
-  console.log(
-    'updatedEstimatedPeriod',
-    updatedEstimatedPeriod,
-    'updatedLoadedTo',
-    updatedLoadedTo,
-    'updatedLoadedFrom',
-    updatedLoadedFrom,
-    'loadedCount',
-    loadedCount
-  );
 
   // Estimate how many operations there is before and after what is loaded
   const estimatedAfterLoadedCount = Math.ceil(
@@ -159,6 +150,37 @@ function computeStateAfterBoundsUpdate(state, { from, to }) {
   };
 }
 
+function computeStateAfterOperationsLoading(
+  state,
+  { loadedFrom, loadedOperationsAfter, loadedOperationsBefore, loadedTo }
+) {
+  const { from, loadedOperations, to } = state;
+  const updatedLoadedOperations = [
+    ...(loadedOperationsAfter || []),
+    ...(loadedOperations || []),
+    ...(loadedOperationsBefore || [])
+  ].filter(({ timestamp }) => timestamp >= from && timestamp <= to);
+  const updatedLoadedCount = updatedLoadedOperations.length;
+  const estimations = computeUpdatedEstimations({
+    ...state,
+    loadedFrom: Math.min(
+      updatedLoadedCount
+        ? last(updatedLoadedOperations).timestamp
+        : TIMESTAMP_MAX,
+      loadedFrom
+    ),
+    loadedOperations: updatedLoadedOperations,
+    loadedTo: Math.max(
+      updatedLoadedCount ? updatedLoadedOperations[0].timestamp : TIMESTAMP_MIN,
+      loadedTo
+    )
+  });
+  return {
+    ...estimations,
+    loadedOperations: updatedLoadedOperations
+  };
+}
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -192,15 +214,17 @@ class OperationsHistory extends React.Component {
         // Build a stream of all the changes in the  operation's timestamp.
         most.fromEvent(UPDATE_OPERATIONS_BOUNDS_EVENT, eventEmitter)
       )
-      // /!\ There is no support for "holes" in the loaded operations
       .scan(
         ({ requestedFrom, requestedTo }, { from, requestedTimestamp, to }) => {
           if (requestedTimestamp) {
+            // Update the requested bounds
+            // /!\ There is no support for "holes" in the loaded operations
             return {
               requestedFrom: Math.min(requestedFrom, requestedTimestamp),
               requestedTo: Math.max(requestedTo, requestedTimestamp)
             };
           } else {
+            // "reset" the requested bounds when a bound update occurs.
             return {
               requestedFrom: Math.max(requestedFrom, from || TIMESTAMP_MAX),
               requestedTo: Math.min(requestedTo, to || TIMESTAMP_MIN)
@@ -234,7 +258,7 @@ class OperationsHistory extends React.Component {
 
                 return {
                   loadedFrom: result.from,
-                  loadedOperations: preprocessedOperations,
+                  loadedOperationsBefore: preprocessedOperations,
                   loadedTo: result.to
                 };
               }
@@ -263,7 +287,6 @@ class OperationsHistory extends React.Component {
           ]).then(([afterResults, beforeResults]) => {
             const { agentConfiguration } = this.props;
             const { loadedFrom, loadedOperations, loadedTo } = this.state;
-
             // Let's deal with 'afterOperations'
             const lastLoadedState = loadedOperations[0].state;
             const preprocessedAfterOperations = preprocessOperations(
@@ -285,32 +308,31 @@ class OperationsHistory extends React.Component {
 
             // Return the new value for the loaded operations
             return {
-              loadedFrom: Math.min(beforeResults.from, loadedFrom),
-              loadedOperations: preprocessedAfterOperations.concat(
-                loadedOperations,
-                preprocessedBeforeOperations
-              ),
-              loadedTo: Math.max(beforeResults.to, loadedTo)
+              loadedFrom: Math.max(beforeResults.from),
+              loadedOperationsAfter: preprocessedAfterOperations,
+              loadedOperationsBefore: preprocessedBeforeOperations,
+              loadedTo: Math.min(afterResults.to)
             };
           })
         );
       })
-      .observe(({ loadedFrom, loadedOperations, loadedTo }) => {
-        const estimations = computeUpdatedEstimations({
-          ...this.state,
+      .observe(
+        ({
           loadedFrom,
-          loadedOperations,
+          loadedOperationsAfter,
+          loadedOperationsBefore,
           loadedTo
-        });
-        console.log('A - this.setState', {
-          ...estimations,
-          loadedOperations
-        });
-        this.setState({
-          ...estimations,
-          loadedOperations
-        });
-      });
+        }) => {
+          this.setState((state) =>
+            computeStateAfterOperationsLoading(state, {
+              loadedFrom,
+              loadedOperationsAfter,
+              loadedOperationsBefore,
+              loadedTo
+            })
+          );
+        }
+      );
 
     return {
       onRequestOperation: (timestamp) =>
@@ -396,27 +418,32 @@ class OperationsHistory extends React.Component {
     if (scrollToTimestamp != null) {
       // Desired offset was set to something, that triggered a scroll to the offset
       // in the child InfiniteList, now we can set it back to null.
-      console.log('B - this.setState', {
+      this.setState(() => ({
         scrollToTimestamp: null
-      });
-      this.setState({
-        scrollToTimestamp: null
-      });
+      }));
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
       // New initial operations, it's like a new start.
-      const newState = computeInitialStateFromProps(this.props);
-      console.log('C - this.setState', newState);
-      this.setState(newState);
-      this._onUpdateOperationsBounds({ from: newState.from, to: newState.to });
+      this.setState((state, props) => {
+        const newState = computeInitialStateFromProps(props);
+        this._onUpdateOperationsBounds({
+          from: newState.from,
+          to: newState.to
+        });
+        return newState;
+      });
     }
     const { from, to } = this.props;
     if (to !== prevProps.to || from !== prevProps.from) {
       // Bounds has been updated.
-      const newState = computeStateAfterBoundsUpdate(this.state, { from, to });
-      console.log('D - this.setState', newState);
-      this.setState(newState);
-      this._onUpdateOperationsBounds({ from: newState.from, to: newState.to });
+      this.setState((state) => {
+        const newState = computeStateAfterBoundsUpdate(state, { from, to });
+        this._onUpdateOperationsBounds({
+          from: newState.from,
+          to: newState.to
+        });
+        return newState;
+      });
     }
   }
   render() {
