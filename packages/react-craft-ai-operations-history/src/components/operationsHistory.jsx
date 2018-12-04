@@ -107,7 +107,6 @@ function computeUpdatedEstimations({
 function computeInitialStateFromProps(props) {
   const {
     agentConfiguration,
-    estimatedPeriod,
     focus,
     from,
     initialOperations,
@@ -122,7 +121,7 @@ function computeInitialStateFromProps(props) {
     from,
     to,
     loadedOperations,
-    estimatedPeriod
+    estimatedPeriod: agentConfiguration.time_quantum || 10 * 60 // Use time quantum or the default period
   });
 
   return {
@@ -523,11 +522,11 @@ class OperationsHistory extends React.Component {
 }
 
 OperationsHistory.defaultProps = {
-  onRequestOperations: (from, to) =>
-    Promise.reject(new Error('\'onRequestOperations\' is not defined.')),
-  onRequestState: (timestamp) =>
-    Promise.reject(new Error('\'onRequestState\' is not defined.')),
-  estimatedPeriod: 60 * 10, // 10 minutes
+  onRequestOperations: (
+    requestedFrom,
+    requestedTo,
+    requestInitialState = false
+  ) => Promise.reject(new Error('\'onRequestOperations\' is not defined.')),
   rowHeight: 45,
   height: 600,
   initialOperations: []
@@ -539,7 +538,6 @@ OperationsHistory.propTypes = {
   rowHeight: PropTypes.number,
   height: PropTypes.number,
   initialOperations: PropTypes.array,
-  estimatedPeriod: PropTypes.number,
   to: PropTypes.number,
   from: PropTypes.number,
   focus: PropTypes.number
