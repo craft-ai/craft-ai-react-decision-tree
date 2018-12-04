@@ -24,10 +24,10 @@ module.exports = {
   output: {
     filename:
       MODE === 'production'
-        ? 'react-craft-ai-decision-tree.min.js'
-        : 'react-craft-ai-decision-tree.js',
+        ? 'react-craft-ai-operations-history.min.js'
+        : 'react-craft-ai-operations-history.js',
     path: path.resolve(__dirname, 'dist'),
-    library: 'DecisionTree',
+    library: 'OperationsHistory',
     libraryTarget: 'umd',
     libraryExport: 'default'
   },

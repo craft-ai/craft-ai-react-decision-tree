@@ -1,0 +1,18 @@
+{
+  "context": {
+    "movement": {
+      "type": "continuous"
+    },
+    "light": {
+      "type": "enum"
+    },
+    "tz": {
+      "type": "timezone"
+    },
+    "time": {
+      "type": "time_of_day"
+    }
+  },
+  "output": ["light"],
+  "time_quantum": 900
+}
