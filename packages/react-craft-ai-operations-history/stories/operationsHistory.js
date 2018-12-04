@@ -147,7 +147,10 @@ storiesOf('OperationsHistory', module)
     return (
       <OperationsHistory
         agentConfiguration={ CONFIGURATION_1 }
-        initialOperations={ CONFIGURATION_1_OPERATIONS_1 }
+        initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
+          0,
+          createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 1000)
+        ) }
       />
     );
   })
