@@ -60,7 +60,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
   }
   return createPropertyCellComponent(property, ({ operation = {} }) => {
     const value = operation[property];
-    const isUndefined = value == null;
+    const isUndefined = value === undefined;
     return (
       <td
         className={ cx({
