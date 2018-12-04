@@ -114,7 +114,7 @@ InfiniteList.defaultProps = {
   className: '',
   tag: 'div',
   scrollToIndex: undefined,
-  bufferedCount: 40
+  bufferedCount: 500
 };
 
 InfiniteList.propTypes = {

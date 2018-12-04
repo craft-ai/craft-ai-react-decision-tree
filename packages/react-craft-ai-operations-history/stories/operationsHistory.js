@@ -45,6 +45,10 @@ const CONFIGURATION_2_OPERATIONS_1_STATES = orderBy(
   ['timestamp']
 );
 
+function delay(delay) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
 function createRequestOperations(operations, states) {
   return (requestedFrom, requestedTo, requestInitialState = false) => {
     const fromIndex = operations.findIndex(
@@ -57,23 +61,23 @@ function createRequestOperations(operations, states) {
       console.log(
         `Requesting operations from ${requestedFrom} to ${requestedTo}, no operations found.`
       );
-      return Promise.resolve({
+      return delay(5000).then(() => ({
         operations: [],
         from: requestedFrom,
         to: requestedTo,
         initialState: undefined
-      });
+      }));
     }
     console.log(
       `Requesting operations from ${requestedFrom} (at index ${fromIndex}) to ${requestedTo} (at index ${toIndex -
         1}).`
     );
-    return Promise.resolve({
+    return delay(5000).then(() => ({
       operations: operations.slice(fromIndex, toIndex + 1),
       from: operations[fromIndex].timestamp,
       to: operations[toIndex].timestamp,
       initialState: requestInitialState && states[fromIndex].context
-    });
+    }));
   };
 }
 
