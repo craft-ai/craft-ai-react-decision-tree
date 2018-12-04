@@ -43,7 +43,7 @@ const HeaderCell = ({ output, property, type }) => (
     <span>
       {PropertyTypeIcons[type]} {property}
     </span>
-    {output ? <small>output</small> : void 0}
+    {output ? <small>output</small> : null}
   </th>
 );
 HeaderCell.propTypes = {

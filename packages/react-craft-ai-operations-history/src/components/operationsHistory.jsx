@@ -399,7 +399,7 @@ class OperationsHistory extends React.Component {
       console.error(
         `Unable to render row at index ${index}, it should belong to [0;${estimatedCount}[`
       );
-      return void 0;
+      return null;
     }
     if (index < estimatedAfterLoadedCount) {
       // We try to display something that is, in time, after the loaded operations

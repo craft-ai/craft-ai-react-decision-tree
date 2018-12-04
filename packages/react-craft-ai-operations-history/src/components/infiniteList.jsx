@@ -104,7 +104,7 @@ class InfiniteList extends React.Component {
         {/* The placeholder after the rows */}
         {count > renderedRowsEnd
           ? renderPlaceholderRow(renderedRowsEnd, count)
-          : void 0}
+          : null}
       </Base>
     );
   }

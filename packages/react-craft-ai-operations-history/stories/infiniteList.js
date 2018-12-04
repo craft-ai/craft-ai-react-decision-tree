@@ -34,7 +34,7 @@ const createRenderPlaceholderRow = memoizeOne((rowHeight) => {
 
   return (from, to) => {
     if (from == to) {
-      return void 0;
+      return null;
     } else {
       return <PlaceholderRow key={ from } count={ to - from } />;
     }
