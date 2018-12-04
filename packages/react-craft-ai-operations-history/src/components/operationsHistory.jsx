@@ -163,19 +163,21 @@ function computeStateAfterOperationsLoading(
     ...(loadedOperationsBefore || [])
   ].filter(({ timestamp }) => timestamp >= from && timestamp <= to);
   const updatedLoadedCount = updatedLoadedOperations.length;
+  const updatedLoadedFrom = Math.min(
+    updatedLoadedCount
+      ? last(updatedLoadedOperations).timestamp
+      : TIMESTAMP_MAX,
+    loadedFrom
+  );
+  const updatedLoadedTo = Math.max(
+    updatedLoadedCount ? updatedLoadedOperations[0].timestamp : TIMESTAMP_MIN,
+    loadedTo
+  );
   const estimations = computeUpdatedEstimations({
     ...state,
-    loadedFrom: Math.min(
-      updatedLoadedCount
-        ? last(updatedLoadedOperations).timestamp
-        : TIMESTAMP_MAX,
-      loadedFrom
-    ),
+    loadedFrom: updatedLoadedFrom,
     loadedOperations: updatedLoadedOperations,
-    loadedTo: Math.max(
-      updatedLoadedCount ? updatedLoadedOperations[0].timestamp : TIMESTAMP_MIN,
-      loadedTo
-    )
+    loadedTo: updatedLoadedTo
   });
   return {
     ...estimations,
@@ -343,10 +345,10 @@ class OperationsHistory extends React.Component {
 
             // Return the new value for the loaded operations
             return {
-              loadedFrom: Math.max(beforeResults.from),
+              loadedFrom: Math.min(beforeResults.from, loadedFrom),
               loadedOperationsAfter: preprocessedAfterOperations,
               loadedOperationsBefore: preprocessedBeforeOperations,
-              loadedTo: Math.min(afterResults.to)
+              loadedTo: Math.max(afterResults.to, loadedTo)
             };
           })
         );
@@ -393,6 +395,12 @@ class OperationsHistory extends React.Component {
       this.state
     );
     const chronologicalIndex = estimatedCount - 1 - index;
+    if (index >= estimatedCount || index < 0) {
+      console.error(
+        `Unable to render row at index ${index}, it should belong to [0;${estimatedCount}[`
+      );
+      return void 0;
+    }
     if (index < estimatedAfterLoadedCount) {
       // We try to display something that is, in time, after the loaded operations
       const estimatedTimestamp = Math.ceil(to - index * estimatedPeriod);

@@ -80,7 +80,7 @@ class InfiniteList extends React.Component {
 
     const { scrollTop, visibleHeight } = this.state;
 
-    const rowOffset = Math.ceil(scrollTop / rowHeight);
+    const rowOffset = Math.min(Math.ceil(scrollTop / rowHeight), count - 1);
     const visibleCount = Math.ceil(visibleHeight / rowHeight);
 
     // Computing the index of the first visible row
