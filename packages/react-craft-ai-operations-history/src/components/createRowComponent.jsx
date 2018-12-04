@@ -80,13 +80,14 @@ export default function createRowComponent({ agentConfiguration }) {
 
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
   const Cells = properties.map(createRowCellComponent);
-  const Row = ({ index, loading, operation, state, timestamp }) => {
+  const Row = ({ focus, index, loading, operation, state, timestamp }) => {
     const classNames = cx({
       'craft-operation': true,
       [`${timestamp}`]: timestamp != null,
       loading: loading,
       odd: index % 2 === 1,
-      even: index % 2 === 0
+      even: index % 2 === 0,
+      focus: focus
     });
     if (loading) {
       return (
@@ -112,12 +113,14 @@ export default function createRowComponent({ agentConfiguration }) {
   };
   Row.defaultProps = {
     loading: false,
+    focus: false,
     operation: {},
     state: {}
   };
   Row.propTypes = {
     index: PropTypes.number.isRequired,
     loading: PropTypes.bool,
+    focus: PropTypes.bool,
     timestamp: PropTypes.number.isRequired,
     operation: PropTypes.object,
     state: PropTypes.object

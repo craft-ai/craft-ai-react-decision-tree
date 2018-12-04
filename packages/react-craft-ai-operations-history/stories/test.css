@@ -27,6 +27,10 @@
   background-color: #b0acd5;
 }
 
+.test .craft-operations-history tr.focus {
+  background-color: #99f2c5;
+}
+
 .test .craft-operations-history th {
   background-color: #42348b;
   color: white;

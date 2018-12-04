@@ -132,6 +132,7 @@ storiesOf('OperationsHistory', module)
             0,
             createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 200)
           ) }
+          focus={ number('Focus', null) }
           height={ createHeightKnob() }
           rowHeight={ createRowHeightKnob() }
         />
@@ -221,13 +222,13 @@ storiesOf('OperationsHistory', module)
             max: CONFIGURATION_2_OPERATIONS_1_TO,
             step: 1
           }) }
-          focusedTimestamp={ number('Focus', null) }
           to={ number('To', CONFIGURATION_2_OPERATIONS_1[1000].timestamp, {
             range: true,
             min: CONFIGURATION_2_OPERATIONS_1_FROM,
             max: CONFIGURATION_2_OPERATIONS_1_TO,
             step: 1
           }) }
+          focus={ number('Focus', null) }
         />
       </div>
     );

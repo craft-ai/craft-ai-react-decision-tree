@@ -20,6 +20,7 @@ const memoizedCreateRowComponent = memoizeOne((agentConfiguration) => {
 
 function computeUpdatedEstimations({
   estimatedPeriod,
+  focus,
   from,
   loadedFrom,
   loadedOperations,
@@ -107,7 +108,7 @@ function computeInitialStateFromProps(props) {
   const {
     agentConfiguration,
     estimatedPeriod,
-    focusedTimestamp,
+    focus,
     from,
     initialOperations,
     to
@@ -125,7 +126,7 @@ function computeInitialStateFromProps(props) {
   });
 
   return {
-    scrollToTimestamp: focusedTimestamp || estimations.loadedTo,
+    scrollToTimestamp: focus || estimations.loadedTo,
     loadedOperations,
     ...estimations
   };
@@ -193,7 +194,7 @@ function estimateIndexFromTimestamp(timestamp, state) {
     to
   } = state;
   if (timestamp <= from) {
-    return 0;
+    return estimatedCount - 1;
   } else if (timestamp <= loadedFrom) {
     return Math.floor((timestamp - from) / (loadedFrom - from));
   } else if (timestamp <= loadedTo) {
@@ -206,9 +207,17 @@ function estimateIndexFromTimestamp(timestamp, state) {
   } else if (timestamp <= to) {
     return Math.floor((to - timestamp) / (to - loadedTo));
   } else {
-    return estimatedCount - 1;
+    return 0;
   }
 }
+
+const memoizedComputedEstimatedFocusIndex = memoizeOne((timestamp, state) => {
+  if (timestamp == null) {
+    return null;
+  } else {
+    return estimateIndexFromTimestamp(timestamp, state);
+  }
+});
 
 class OperationsHistory extends React.Component {
   constructor(props) {
@@ -368,7 +377,7 @@ class OperationsHistory extends React.Component {
     };
   }
   _renderRow(index) {
-    const { agentConfiguration, focusedTimestamp } = this.props;
+    const { agentConfiguration, focus } = this.props;
     const {
       estimatedAfterLoadedCount,
       estimatedBeforeLoadedCount,
@@ -379,13 +388,23 @@ class OperationsHistory extends React.Component {
       to
     } = this.state;
     const Row = memoizedCreateRowComponent(agentConfiguration);
+    const estimatedFocusIndex = memoizedComputedEstimatedFocusIndex(
+      focus,
+      this.state
+    );
     const chronologicalIndex = estimatedCount - 1 - index;
     if (index < estimatedAfterLoadedCount) {
       // We try to display something that is, in time, after the loaded operations
       const estimatedTimestamp = Math.ceil(to - index * estimatedPeriod);
       this._onRequestOperation(estimatedTimestamp);
       return (
-        <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
+        <Row
+          key={ index }
+          index={ index }
+          timestamp={ estimatedTimestamp }
+          loading
+          focus={ estimatedFocusIndex === index }
+        />
       );
     } else if (chronologicalIndex < estimatedBeforeLoadedCount) {
       // We try to display something that is, in time, before the loaded operations
@@ -394,12 +413,25 @@ class OperationsHistory extends React.Component {
       );
       this._onRequestOperation(estimatedTimestamp);
       return (
-        <Row key={ index } index={ index } timestamp={ estimatedTimestamp } loading />
+        <Row
+          key={ index }
+          index={ index }
+          timestamp={ estimatedTimestamp }
+          loading
+          focus={ estimatedFocusIndex === index }
+        />
       );
     } else {
       const loadedIndex = index - estimatedAfterLoadedCount;
       const operation = loadedOperations[loadedIndex];
-      return <Row key={ index } index={ index } { ...operation } />;
+      return (
+        <Row
+          key={ index }
+          index={ index }
+          { ...operation }
+          focus={ estimatedFocusIndex === index }
+        />
+      );
     }
   }
   _renderPlaceholderRow(start, end) {
@@ -421,10 +453,10 @@ class OperationsHistory extends React.Component {
         scrollToTimestamp: null
       });
     }
-    if (this.props.focusedTimestamp != prevProps.focusedTimestamp) {
-      this.setState({
-        scrollToTimestamp: this.props.focusedTimestamp
-      });
+    if (this.props.focus != prevProps.focus) {
+      this.setState((state) => ({
+        scrollToTimestamp: this.props.focus
+      }));
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
       // New initial operations, it's like a new start.
@@ -441,7 +473,10 @@ class OperationsHistory extends React.Component {
     if (to !== prevProps.to || from !== prevProps.from) {
       // Bounds has been updated.
       this.setState((state) => {
-        const newState = computeStateAfterBoundsUpdate(state, { from, to });
+        const newState = computeStateAfterBoundsUpdate(state, {
+          from,
+          to
+        });
         this._onUpdateOperationsBounds({
           from: newState.from,
           to: newState.to
@@ -499,7 +534,7 @@ OperationsHistory.propTypes = {
   estimatedPeriod: PropTypes.number,
   to: PropTypes.number,
   from: PropTypes.number,
-  focusedTimestamp: PropTypes.number
+  focus: PropTypes.number
 };
 
 export default OperationsHistory;
