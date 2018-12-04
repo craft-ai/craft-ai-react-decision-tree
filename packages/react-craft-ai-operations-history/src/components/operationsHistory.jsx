@@ -107,6 +107,7 @@ function computeInitialStateFromProps(props) {
   const {
     agentConfiguration,
     estimatedPeriod,
+    focusedTimestamp,
     from,
     initialOperations,
     to
@@ -124,7 +125,7 @@ function computeInitialStateFromProps(props) {
   });
 
   return {
-    scrollToTimestamp: estimations.loadedTo,
+    scrollToTimestamp: focusedTimestamp || estimations.loadedTo,
     loadedOperations,
     ...estimations
   };
@@ -181,6 +182,34 @@ function computeStateAfterOperationsLoading(
   };
 }
 
+function estimateIndexFromTimestamp(timestamp, state) {
+  const {
+    estimatedAfterLoadedCount,
+    estimatedCount,
+    from,
+    loadedFrom,
+    loadedOperations,
+    loadedTo,
+    to
+  } = state;
+  if (timestamp <= from) {
+    return 0;
+  } else if (timestamp <= loadedFrom) {
+    return Math.floor((timestamp - from) / (loadedFrom - from));
+  } else if (timestamp <= loadedTo) {
+    return (
+      estimatedAfterLoadedCount +
+      loadedOperations.findIndex(
+        (operation) => timestamp >= operation.timestamp
+      )
+    );
+  } else if (timestamp <= to) {
+    return Math.floor((to - timestamp) / (to - loadedTo));
+  } else {
+    return estimatedCount - 1;
+  }
+}
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -196,9 +225,6 @@ class OperationsHistory extends React.Component {
 
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
-    this._estimateIndexFromTimestamp = this._estimateIndexFromTimestamp.bind(
-      this
-    );
   }
   _createEventHandlers() {
     const eventEmitter = new EventEmitter();
@@ -341,35 +367,8 @@ class OperationsHistory extends React.Component {
         eventEmitter.emit(UPDATE_OPERATIONS_BOUNDS_EVENT, { from, to })
     };
   }
-  _estimateIndexFromTimestamp(timestamp) {
-    const {
-      estimatedAfterLoadedCount,
-      estimatedCount,
-      from,
-      loadedFrom,
-      loadedOperations,
-      loadedTo,
-      to
-    } = this.state;
-    if (timestamp <= from) {
-      return 0;
-    } else if (timestamp <= loadedFrom) {
-      return Math.floor((timestamp - from) / (loadedFrom - from));
-    } else if (timestamp <= loadedTo) {
-      return (
-        estimatedAfterLoadedCount +
-        loadedOperations.findIndex(
-          (operation) => timestamp >= operation.timestamp
-        )
-      );
-    } else if (timestamp <= to) {
-      return Math.floor((to - timestamp) / (to - loadedTo));
-    } else {
-      return estimatedCount - 1;
-    }
-  }
   _renderRow(index) {
-    const { agentConfiguration } = this.props;
+    const { agentConfiguration, focusedTimestamp } = this.props;
     const {
       estimatedAfterLoadedCount,
       estimatedBeforeLoadedCount,
@@ -418,9 +417,14 @@ class OperationsHistory extends React.Component {
     if (scrollToTimestamp != null) {
       // Desired offset was set to something, that triggered a scroll to the offset
       // in the child InfiniteList, now we can set it back to null.
-      this.setState(() => ({
+      this.setState({
         scrollToTimestamp: null
-      }));
+      });
+    }
+    if (this.props.focusedTimestamp != prevProps.focusedTimestamp) {
+      this.setState({
+        scrollToTimestamp: this.props.focusedTimestamp
+      });
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
       // New initial operations, it's like a new start.
@@ -465,7 +469,7 @@ class OperationsHistory extends React.Component {
           renderPlaceholderRow={ this._renderPlaceholderRow }
           scrollToIndex={
             scrollToTimestamp != null
-              ? this._estimateIndexFromTimestamp(scrollToTimestamp)
+              ? estimateIndexFromTimestamp(scrollToTimestamp, this.state)
               : null
           }
           count={ estimatedCount }
@@ -489,13 +493,13 @@ OperationsHistory.defaultProps = {
 OperationsHistory.propTypes = {
   agentConfiguration: PropTypes.object.isRequired,
   onRequestOperations: PropTypes.func,
-  onRequestState: PropTypes.func,
   rowHeight: PropTypes.number,
   height: PropTypes.number,
   initialOperations: PropTypes.array,
   estimatedPeriod: PropTypes.number,
   to: PropTypes.number,
-  from: PropTypes.number
+  from: PropTypes.number,
+  focusedTimestamp: PropTypes.number
 };
 
 export default OperationsHistory;

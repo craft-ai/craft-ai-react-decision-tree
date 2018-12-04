@@ -221,6 +221,7 @@ storiesOf('OperationsHistory', module)
             max: CONFIGURATION_2_OPERATIONS_1_TO,
             step: 1
           }) }
+          focusedTimestamp={ number('Focus', null) }
           to={ number('To', CONFIGURATION_2_OPERATIONS_1[1000].timestamp, {
             range: true,
             min: CONFIGURATION_2_OPERATIONS_1_FROM,
