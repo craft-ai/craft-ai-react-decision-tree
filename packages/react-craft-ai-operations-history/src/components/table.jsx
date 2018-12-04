@@ -30,7 +30,7 @@ const Table = styled('table')`
 
     width: 120px;
     &:first-child {
-      width: 250px;
+      width: 280px;
     }
 
     padding: 10px;
