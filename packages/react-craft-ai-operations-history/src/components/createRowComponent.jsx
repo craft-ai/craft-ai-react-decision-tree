@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled, { cx } from 'react-emotion';
 import { extractProperties } from './headerRow';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
 
@@ -93,7 +95,9 @@ export default function createRowComponent({ agentConfiguration }) {
       return (
         <tr key={ index } className={ classNames }>
           <TimestampCell timestamp={ timestamp } />
-          <LoadingTd colSpan={ properties.length }>loading...</LoadingTd>
+          <LoadingTd colSpan={ properties.length }>
+            <FontAwesomeIcon icon={ faSpinner } spin />
+          </LoadingTd>
         </tr>
       );
     }
