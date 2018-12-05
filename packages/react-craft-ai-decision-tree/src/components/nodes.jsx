@@ -12,7 +12,9 @@ import {
   COLOR_LEAVES_CONFIDENCE_1,
   NODE_DEPTH,
   NODE_HEIGHT,
-  NODE_WIDTH
+  NODE_WIDTH,
+  SELECTED_BORDER_WIDTH,
+  SELECTED_COLOR_EDGES
 } from '../utils/constants';
 
 function computeLeafColor(confidence) {
@@ -40,7 +42,8 @@ class Nodes extends React.Component {
     tooltipOnPovover: false,
     tooltipText: '',
     tooltipRef: null,
-    tooltipPlacement: 'bottom'
+    tooltipPlacement: 'bottom',
+    selectedNodeId: undefined
   };
 
   hideTooltip = () => {
@@ -79,6 +82,8 @@ class Nodes extends React.Component {
   displayNode = (node, index) => {
     const setSelectedNode = () => {
       this.props.updateSelectedNode(node.treePath);
+      this.props.highlightSelectedEdgePath(node.treeNodeIdPath);
+      this.setState({ selectedNodeId: node.id });
     };
 
     const indexRef = (input) => {
@@ -120,8 +125,18 @@ class Nodes extends React.Component {
         onClick={ setSelectedNode }
         className="craft-nodes"
         style={{
-          top: node.y - NODE_HEIGHT / 3,
-          left: node.x - NODE_WIDTH / 2,
+          border:
+            this.state.selectedNodeId === node.id
+              ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
+              : '',
+          top:
+            node.y -
+            NODE_HEIGHT / 3 -
+            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
+          left:
+            node.x -
+            NODE_WIDTH / 2 -
+            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
           backgroundColor: color
         }}
       >
@@ -218,6 +233,7 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
+          style={{ pointerEvents: 'none' }} // disable click on tooltip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
@@ -232,6 +248,7 @@ class Nodes extends React.Component {
 
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
+  highlightSelectedEdgePath: PropTypes.func.isRequired,
   updateSelectedNode: PropTypes.func.isRequired,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
