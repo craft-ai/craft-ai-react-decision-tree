@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { interpreter } from 'craft-ai';
 import Leaf from './leaf';
 import Node from './node';
 import PropTypes from 'prop-types';
@@ -11,7 +12,6 @@ import {
   NODE_HEIGHT,
   NODE_WIDTH
 } from '../utils/constants';
-import { interpreter } from 'craft-ai';
 
 const Links = styled('div')`
   overflow: hidden;
@@ -55,44 +55,55 @@ class Nodes extends React.Component {
     return doUpdate;
   }
 
+  showNodeTooltip = (index, text) => (input) => {
+    this.setState({
+      showingTooltip: true,
+      tooltipText: text,
+      tooltipRef: this.nodeRef[index]
+    });
+  };
+
+  indexNodeRef = (index) => (input) => {
+    this.nodeRef[index] = input;
+  };
+
   displayNode = (node, index) => {
     if (_.isUndefined(node.children)) {
-      // leaf
       return (
         <Leaf
-          key={index}
-          height={this.props.height}
-          node={node}
-          configuration={this.props.configuration}
+          key={ index }
+          height={ this.props.height }
+          node={ node }
+          configuration={ this.props.configuration }
         />
       );
     }
     const text = node.children[0].data.decision_rule.property;
 
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.nodeRef[index]
-      });
-    };
-
-    const indexRef = (input) => {
-      this.nodeRef[index] = input;
-    };
-
     return (
       <Node
-        key={index}
-        ref={indexRef}
-        onMouseOver={showTooltip}
-        onMouseOut={this.hideTooltip}
+        key={ index }
+        ref={ this.indexNodeRef(index) }
+        onMouseOver={ this.showNodeTooltip(index, text) }
+        onMouseOut={ this.hideTooltip }
         className='craft-nodes'
         style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2 }}
       >
         {text}
       </Node>
     );
+  };
+
+  indexLinkRef = (index) => (input) => {
+    this.linkRef[index] = input;
+  };
+
+  showLinkTooltip = (index, text) => (input) => {
+    this.setState({
+      showingTooltip: true,
+      tooltipText: text,
+      tooltipRef: this.linkRef[index]
+    });
   };
 
   displayLinksText = (link, index) => {
@@ -102,14 +113,17 @@ class Nodes extends React.Component {
       if (link.source.children.length <= 2) {
         width = link.target.x - link.source.x;
         x = link.source.x;
-      } else {
+      }
+      else {
         x = link.target.x;
       }
-    } else {
+    }
+    else {
       if (link.source.children.length <= 2) {
         x = link.target.x;
         width = link.source.x - link.target.x;
-      } else {
+      }
+      else {
         x = link.target.x;
       }
     }
@@ -124,24 +138,12 @@ class Nodes extends React.Component {
       }
     ]);
 
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.linkRef[index]
-      });
-    };
-
-    const indexRef = (input) => {
-      this.linkRef[index] = input;
-    };
-
     return (
       <Links
-        key={index}
-        ref={indexRef}
-        onMouseOver={showTooltip}
-        onMouseOut={this.hideTooltip}
+        key={ index }
+        ref={ this.indexLinkRef(index) }
+        onMouseOver={ this.showLinkTooltip(index, text) }
+        onMouseOut={ this.hideTooltip }
         className='craft-links'
         style={{
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
@@ -166,10 +168,10 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
-          show={this.state.showingTooltip}
-          placement={this.state.tooltipPlacement}
-          target={this.state.tooltipRef}
-          onPlacementUpdated={this.updateTooltipPlacement}
+          show={ this.state.showingTooltip }
+          placement={ this.state.tooltipPlacement }
+          target={ this.state.tooltipRef }
+          onPlacementUpdated={ this.updateTooltipPlacement }
         >
           {this.state.tooltipText}
         </ToolTip>

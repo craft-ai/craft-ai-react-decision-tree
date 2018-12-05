@@ -151,17 +151,17 @@ class PopoverContent extends React.Component {
 
     return (
       <PopoverContentOuter
-        placement={placement}
-        onMouseEnter={this.onPopover}
-        onMouseLeave={this.notOnPopover}
-        innerRef={this.setPopoverRef}
-        className={cx('craft-popover', className, placement)}
+        placement={ placement }
+        onMouseEnter={ this.onPopover }
+        onMouseLeave={ this.notOnPopover }
+        innerRef={ this.setPopoverRef }
+        className={ cx('craft-popover', className, placement) }
         style={{ ...style }}
       >
         <PopoverContentInner className='craft-popover-content'>
           <PopoverArrow
-            placement={placement}
-            className={cx('craft-popover-arrow', placement)}
+            placement={ placement }
+            className={ cx('craft-popover-arrow', placement) }
             style={{ left: arrowOffsetLeft }}
           />
           {children}

@@ -6,12 +6,12 @@ const PlaceholderRow = ({ rowCount, rowHeight }) => {
   if (rowCount > 0) {
     return (
       <tr
-        className={cx(
+        className={ cx(
           'craft-operations-placeholder',
           css`
             height: ${rowCount * rowHeight}px !important;
           `
-        )}
+        ) }
       />
     );
   }

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import DecisionRulesPopover from './decisionRulesPopover';
+import { mix } from 'polished';
 import Node from './node';
 import Popover from 'react-craft-ai-popover';
 import PropTypes from 'prop-types';
@@ -10,7 +11,6 @@ import {
   NODE_HEIGHT,
   NODE_WIDTH
 } from '../utils/constants';
-import { mix } from 'polished';
 
 function computeLeafColor(confidence) {
   const blend = Math.pow(confidence, 3);
@@ -55,25 +55,26 @@ class Leaf extends React.Component {
     const rendererText = _.isNull(text)
       ? ''
       : _.isFinite(text)
-      ? parseFloat(text.toFixed(3)).toString()
-      : text;
+        ? parseFloat(text.toFixed(3))
+          .toString()
+        : text;
 
     const renderList = node ? (
       <DecisionRulesPopover
-        node={node}
-        context={this.props.configuration.context}
-        title={rendererText}
-        color={color}
+        node={ node }
+        context={ this.props.configuration.context }
+        title={ rendererText }
+        color={ color }
       />
     ) : null;
 
     return (
       <div>
         <Node
-          ref={this.setLeafRef}
-          onMouseEnter={this.showPopover}
-          onMouseLeave={this.hidePopover}
-          empty={_.isNull(text)}
+          ref={ this.setLeafRef }
+          onMouseEnter={ this.showPopover }
+          onMouseLeave={ this.hidePopover }
+          empty={ _.isNull(text) }
           className='craft-nodes'
           style={{
             top: node.y - NODE_HEIGHT / 3,
@@ -84,12 +85,12 @@ class Leaf extends React.Component {
           {rendererText}
         </Node>
         <Popover
-          placement={this.state.placement}
-          target={this.state.popoverRef}
-          onPopover={this.setMouseOnPopover}
-          height={this.props.height}
-          show={this.state.showingPopover || this.state.mouseOnPovover}
-          onPlacementUpdated={this.updatePopOverPlacement}
+          placement={ this.state.placement }
+          target={ this.state.popoverRef }
+          onPopover={ this.setMouseOnPopover }
+          height={ this.props.height }
+          show={ this.state.showingPopover || this.state.mouseOnPovover }
+          onPlacementUpdated={ this.updatePopOverPlacement }
         >
           {renderList}
         </Popover>

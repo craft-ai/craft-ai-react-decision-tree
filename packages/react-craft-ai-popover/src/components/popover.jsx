@@ -1,7 +1,7 @@
+import { Overlay } from 'react-overlays';
 import PopoverContent from './popoverContent';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Overlay } from 'react-overlays';
 
 class Popover extends React.Component {
   constructor(props) {
@@ -35,15 +35,15 @@ class Popover extends React.Component {
     } = this.props;
 
     return (
-      <Overlay show={this.state.show} placement={placement} target={target}>
+      <Overlay show={ this.state.show } placement={ placement } target={ target }>
         <PopoverContent
-          className={className}
-          arrowOffsetLeft={arrowOffsetLeft}
-          placement={placement}
-          height={height}
+          className={ className }
+          arrowOffsetLeft={ arrowOffsetLeft }
+          placement={ placement }
+          height={ height }
           style={{ ...style }}
-          onPopover={onPopover}
-          onPlacementUpdated={onPlacementUpdated}
+          onPopover={ onPopover }
+          onPlacementUpdated={ onPlacementUpdated }
         >
           {children}
         </PopoverContent>

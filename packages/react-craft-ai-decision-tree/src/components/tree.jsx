@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import Box from '../utils/box';
+import { cx } from 'react-emotion';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled, { cx } from 'react-emotion';
+import styled from 'react-emotion';
 import { event as d3Event, select as d3Select } from 'd3-selection';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
@@ -79,7 +80,8 @@ const TreeCanvas = styled('div')`
 `;
 
 function computeSvgSizeFromData(root, width, height) {
-  let tree = d3Tree().nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
+  let tree = d3Tree()
+    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
   const nodes = d3Hierarchy(root, (d) => d.children);
   tree(nodes);
   const links = nodes.links();
@@ -95,7 +97,8 @@ function computeSvgSizeFromData(root, width, height) {
     if (d.parent) {
       if (d.parent.decisionRules) {
         d.decisionRules = _.cloneDeep(d.parent.decisionRules);
-      } else {
+      }
+      else {
         d.decisionRules = {};
       }
       if (d.decisionRules[d.data.decision_rule.property]) {
@@ -103,7 +106,8 @@ function computeSvgSizeFromData(root, width, height) {
           operator: d.data.decision_rule.operator,
           operand: d.data.decision_rule.operand
         });
-      } else {
+      }
+      else {
         d.decisionRules[d.data.decision_rule.property] = [
           {
             operator: d.data.decision_rule.operator,
@@ -198,7 +202,8 @@ class Tree extends React.Component {
     const selection = d3Select('div.zoomed-tree');
     selection.call(
       this.zoom.transform,
-      zoomIdentity.translate(newPos[0], newPos[1]).scale(scale)
+      zoomIdentity.translate(newPos[0], newPos[1])
+        .scale(scale)
     );
   };
 
@@ -244,7 +249,7 @@ class Tree extends React.Component {
 
     return (
       <TreeCanvas
-        onDoubleClick={this.resetPosition}
+        onDoubleClick={ this.resetPosition }
         className='tree zoomed-tree'
         style={{
           height: this.props.height,
@@ -252,12 +257,12 @@ class Tree extends React.Component {
         }}
       >
         <div
-          ref={this.getTranslatedTreeRef}
-          onDoubleClick={this.resetPosition}
-          className={cx('translated-tree', {
+          ref={ this.getTranslatedTreeRef }
+          onDoubleClick={ this.resetPosition }
+          className={ cx('translated-tree', {
             unselectable: this.isPanActivated,
             selectable: !this.isPanActivated
-          })}
+          }) }
           style={{
             transformOrigin: 'left top 0px',
             transform: `translate(${this.state.newPos[0]}px,${
@@ -268,17 +273,17 @@ class Tree extends React.Component {
           }}
         >
           <Nodes
-            height={this.props.height}
-            configuration={this.props.configuration}
-            nodes={nodes}
-            links={links}
+            height={ this.props.height }
+            configuration={ this.props.configuration }
+            nodes={ nodes }
+            links={ links }
           />
           <Edges
-            treeData={this.props.treeData}
-            nodes={nodes}
-            links={links}
-            width={minSvgWidth}
-            height={minSvgHeight}
+            treeData={ this.props.treeData }
+            nodes={ nodes }
+            links={ links }
+            width={ minSvgWidth }
+            height={ minSvgHeight }
           />
         </div>
       </TreeCanvas>

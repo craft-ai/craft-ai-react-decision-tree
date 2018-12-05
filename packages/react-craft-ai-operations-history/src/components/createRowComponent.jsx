@@ -1,21 +1,26 @@
 import camelCase from 'camelcase';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled, { cx } from 'react-emotion';
 import { extractProperties } from './headerRow';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled, { cx } from 'react-emotion';
 
 function formatTimestampAsUtcDate(timestamp) {
   const date = new Date(timestamp * 1000);
-  const DD = String(date.getUTCDate()).padStart(2, '0');
-  const MM = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const DD = String(date.getUTCDate())
+    .padStart(2, '0');
+  const MM = String(date.getUTCMonth() + 1)
+    .padStart(2, '0');
   const YYYY = String(date.getUTCFullYear());
-  const hh = String(date.getUTCHours()).padStart(2, '0');
-  const mm = String(date.getUTCMinutes()).padStart(2, '0');
-  const ss = String(date.getUTCSeconds()).padStart(2, '0');
+  const hh = String(date.getUTCHours())
+    .padStart(2, '0');
+  const mm = String(date.getUTCMinutes())
+    .padStart(2, '0');
+  const ss = String(date.getUTCSeconds())
+    .padStart(2, '0');
   return `${DD}/${MM}/${YYYY} ${hh}:${mm}:${ss} UTC`;
 }
 
@@ -43,7 +48,8 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
         </td>
       );
     });
-  } else if (
+  }
+  else if (
     isGenerated ||
     GENERATED_TIME_TYPES.find((generatedType) => generatedType == type)
   ) {
@@ -63,10 +69,10 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
     const isUndefined = value === undefined;
     return (
       <td
-        className={cx({
+        className={ cx({
           'craft-property-undefined': isUndefined,
           'craft-property-output': output
-        })}
+        }) }
       >
         {isUndefined ? '-' : formatter(value)}
       </td>
@@ -94,23 +100,23 @@ export default function createRowComponent({ agentConfiguration }) {
     });
     if (loading) {
       return (
-        <tr key={index} className={classNames}>
-          <TimestampCell timestamp={timestamp} />
-          <LoadingTd colSpan={properties.length}>
-            <FontAwesomeIcon icon={faSpinner} spin />
+        <tr key={ index } className={ classNames }>
+          <TimestampCell timestamp={ timestamp } />
+          <LoadingTd colSpan={ properties.length }>
+            <FontAwesomeIcon icon={ faSpinner } spin />
           </LoadingTd>
         </tr>
       );
     }
     return (
-      <tr key={index} className={classNames}>
-        <TimestampCell timestamp={timestamp} />
+      <tr key={ index } className={ classNames }>
+        <TimestampCell timestamp={ timestamp } />
         {Cells.map((Cell, cellIndex) => (
           <Cell
-            key={cellIndex}
-            operation={operation}
-            state={state}
-            timestamp={timestamp}
+            key={ cellIndex }
+            operation={ operation }
+            state={ state }
+            timestamp={ timestamp }
           />
         ))}
       </tr>

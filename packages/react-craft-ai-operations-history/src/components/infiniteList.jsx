@@ -99,16 +99,17 @@ class InfiniteList extends React.Component {
 
     return (
       <Base
-        className={className}
-        innerRef={this._setWrapperElement}
-        onScroll={this._handleScrollEvent}
+        className={ className }
+        innerRef={ this._setWrapperElement }
+        onScroll={ this._handleScrollEvent }
       >
         {/* The placeholder before the rows */}
         {renderPlaceholderRow(0, renderedRowsStart)}
         {/* The rendered rows */}
-        {range(renderedRowsStart, renderedRowsEnd).map((index) =>
-          renderRow(index)
-        )}
+        {range(renderedRowsStart, renderedRowsEnd)
+          .map((index) =>
+            renderRow(index)
+          )}
         {/* The placeholder after the rows */}
         {count > renderedRowsEnd
           ? renderPlaceholderRow(renderedRowsEnd, count)

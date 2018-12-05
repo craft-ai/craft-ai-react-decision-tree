@@ -19,10 +19,10 @@ const DecisionTree = ({ data, height, width }) => (
     <ContainerDimensions>
       {({ height, width }) => (
         <Tree
-          height={height}
-          width={width}
-          configuration={data.configuration}
-          treeData={data.trees[_.keys(data.trees)[0]]}
+          height={ height }
+          width={ width }
+          configuration={ data.configuration }
+          treeData={ data.trees[_.keys(data.trees)[0]] }
         />
       )}
     </ContainerDimensions>

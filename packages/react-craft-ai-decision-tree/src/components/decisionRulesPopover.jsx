@@ -41,10 +41,11 @@ class DecisionRulesPopover extends React.Component {
           property: property
         }
       ]);
-      return <li key={property}>{text}</li>;
-    } catch (err) {
+      return <li key={ property }>{text}</li>;
+    }
+    catch (err) {
       return (
-        <li style={{ color: 'red' }} key={property}>
+        <li style={{ color: 'red' }} key={ property }>
           {err.message}
         </li>
       );

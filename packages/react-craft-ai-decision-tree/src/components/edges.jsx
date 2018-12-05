@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import { COLOR_EDGES } from '../utils/constants';
 import { css } from 'react-emotion';
 import { select as d3Select } from 'd3-selection';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 // make links css rules
 const linksCssClass = css`
@@ -61,7 +61,8 @@ class Edges extends React.Component {
     let i = 0;
 
     // Update the nodes…
-    let node = svg.selectAll('g.node').data(nodes, (d) => d.id || (d.id = ++i));
+    let node = svg.selectAll('g.node')
+      .data(nodes, (d) => d.id || (d.id = ++i));
 
     // Enter any new nodes at the parent's previous position.
     let nodeEnter = node
@@ -70,7 +71,8 @@ class Edges extends React.Component {
       .attr('class', 'node')
       .attr('transform', (d) => `translate(${d.x},${d.y})`);
 
-    nodeEnter.append('circle').attr('r', 1);
+    nodeEnter.append('circle')
+      .attr('r', 1);
 
     // Transition exiting nodes to the parent's new position.
     node
@@ -79,7 +81,8 @@ class Edges extends React.Component {
       .remove();
 
     // Update the links…
-    let link = svg.selectAll('path.link').data(links, (d) => d.target.id);
+    let link = svg.selectAll('path.link')
+      .data(links, (d) => d.target.id);
 
     // Enter any new links at the parent's previous position.
     link
@@ -89,14 +92,15 @@ class Edges extends React.Component {
       .attr('d', this.diagonal);
 
     // Transition exiting nodes to the parent's new position.
-    link.exit().remove();
+    link.exit()
+      .remove();
   };
 
   render() {
     // Render a blank svg node
     return (
       <div style={{ width: this.props.width, height: this.props.height }}>
-        <svg ref={this.refSvgTree} />
+        <svg ref={ this.refSvgTree } />
       </div>
     );
   }

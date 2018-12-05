@@ -100,13 +100,13 @@ class TooltipContent extends React.Component {
 
     return (
       <TooltipContentOuter
-        ref={this.setTooltipRef}
-        placement={placement}
-        className={cx('craft-tooltip', className, placement)}
+        ref={ this.setTooltipRef }
+        placement={ placement }
+        className={ cx('craft-tooltip', className, placement) }
         style={{ ...style }}
       >
         <TooltipArrow
-          placement={placement}
+          placement={ placement }
           className='craft-tooltip-arrow'
           style={{ left: arrowOffsetLeft }}
         />

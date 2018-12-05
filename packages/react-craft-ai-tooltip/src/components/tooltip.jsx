@@ -1,7 +1,7 @@
+import { Overlay } from 'react-overlays';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TooltipContent from './tooltipContent';
-import { Overlay } from 'react-overlays';
 
 const Tooltip = ({
   arrowOffsetLeft,
@@ -13,13 +13,13 @@ const Tooltip = ({
   style,
   target
 }) => (
-  <Overlay show={show} placement={placement} target={target}>
+  <Overlay show={ show } placement={ placement } target={ target }>
     <TooltipContent
-      className={className}
-      arrowOffsetLeft={arrowOffsetLeft}
-      placement={placement}
+      className={ className }
+      arrowOffsetLeft={ arrowOffsetLeft }
+      placement={ placement }
       style={{ ...style }}
-      onPlacementUpdated={onPlacementUpdated}
+      onPlacementUpdated={ onPlacementUpdated }
     >
       {children}
     </TooltipContent>
