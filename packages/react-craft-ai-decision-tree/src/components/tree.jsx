@@ -90,11 +90,15 @@ function computeSvgSizeFromData(root) {
   let maxTreeDepth = 0;
   let minSvgWidth;
   let minSvgHeight;
+  let incr = 0;
 
   // Compute the max tree depth(node which is the lowest leaf)
   const enrichTreeRecursive = (index, node) => {
+    node.id = incr++;
     // Deal with decision rules
     if (node.parent) {
+      node.treeNodeIdPath = _.clone(node.parent.treeNodeIdPath);
+      node.treeNodeIdPath.push(node.id);
       node.treePath = `${node.parent.treePath}${index}`;
       node.decisionRules = _.isEmpty(node.parent.decisionRules)
         ? {}
@@ -117,6 +121,7 @@ function computeSvgSizeFromData(root) {
     }
     else {
       // root node
+      node.treeNodeIdPath = [node.id];
       node.treePath = `${index}`;
     }
 
@@ -157,10 +162,21 @@ function computeSvgSizeFromData(root) {
 }
 
 class Tree extends React.Component {
-  state = {
-    newPos: [0, 0],
-    scale: 1
-  };
+  constructor(props) {
+    super(props);
+
+    const { links, nodes, minSvgHeight, minSvgWidth } = this.computeTree();
+
+    this.state = {
+      newPos: [0, 0],
+      scale: 1,
+      selectedEdgePath: [],
+      nodes,
+      links,
+      minSvgHeight,
+      minSvgWidth
+    };
+  }
 
   zoom = d3Zoom();
 
@@ -185,6 +201,35 @@ class Tree extends React.Component {
   componentWillUnmount() {
     clearTimeout(this.fitToScreenTimeout);
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.treeData !== this.props.treeData) {
+      console.log('update tree');
+      this.setState(this.computeTree());
+    }
+  }
+
+  computeTree = () => {
+    let root = this.props.treeData;
+    root.x = 0;
+    root.y = 0;
+
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      offsetX
+    } = computeSvgSizeFromData(root);
+
+    // place correctly the tree in the svg with the minSvgWidth
+    _.forEach(nodes, (d) => {
+      d.x = d.x + offsetX;
+      (d.y = d.y), NODE_HEIGHT / 3; // take in account the height of the node above the link
+    });
+
+    return { links, minSvgHeight, minSvgWidth, nodes };
+  };
 
   mouseWheel = () => {
     this.setState({
@@ -232,29 +277,17 @@ class Tree extends React.Component {
     this.isPanActivated = false;
   };
 
-  getTranslatedTreeRef = input => {
+  getTranslatedTreeRef = (input) => {
     this.translatedTreeRef = input;
   };
 
+  highlightSelectedEdgePath = (selectedEdgePath) => {
+    this.setState({ selectedEdgePath });
+  };
+
   render() {
-    let root = this.props.treeData;
-    root.x = 0;
-    root.y = 0;
-
-    const {
-      links,
-      minSvgHeight,
-      minSvgWidth,
-      nodes,
-      offsetX
-    } = computeSvgSizeFromData(root);
-
-    // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(nodes, (d) => {
-      d.x = d.x + offsetX;
-      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
-    });
-
+    const { links, minSvgHeight, minSvgWidth, nodes } = this.state;
+    console.log('render');
     return (
       <TreeCanvas
         onDoubleClick={this.resetPosition}
@@ -281,6 +314,7 @@ class Tree extends React.Component {
           }}
         >
           <Nodes
+            highlightSelectedEdgePath={this.highlightSelectedEdgePath}
             updateSelectedNode={this.props.updateSelectedNode}
             height={this.props.height}
             configuration={this.props.configuration}
@@ -288,6 +322,7 @@ class Tree extends React.Component {
             links={links}
           />
           <Edges
+            edgePath={this.state.selectedEdgePath}
             treeData={this.props.treeData}
             nodes={nodes}
             links={links}
