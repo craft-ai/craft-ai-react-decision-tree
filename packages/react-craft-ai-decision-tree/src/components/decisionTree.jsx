@@ -14,17 +14,17 @@ const DecisionTree = ({ data, height, width }) => (
     style={{
       height: height,
       width: width
-    }}>
+    }}
+  >
     <ContainerDimensions>
-      {
-        ({ height, width }) => (
-          <Tree
-            height={ height }
-            width={ width }
-            configuration={ data.configuration }
-            treeData={ data.trees[_.keys(data.trees)[0]] } />
-        )
-      }
+      {({ height, width }) => (
+        <Tree
+          height={height}
+          width={width}
+          configuration={data.configuration}
+          treeData={data.trees[_.keys(data.trees)[0]]}
+        />
+      )}
     </ContainerDimensions>
   </DecisionTreeContainer>
 );

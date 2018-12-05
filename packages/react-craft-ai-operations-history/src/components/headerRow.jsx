@@ -13,13 +13,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TYPES } from 'craft-ai/lib/constants';
 
 const PropertyTypeIcons = {
-  [TYPES.continuous]: <FontAwesomeIcon icon={ faTachometerAlt } />,
-  [TYPES.enum]: <FontAwesomeIcon icon={ faTags } />,
-  [TYPES.timezone]: <FontAwesomeIcon icon={ faGlobeAfrica } />,
-  [TYPES.time_of_day]: <FontAwesomeIcon icon={ faClock } />,
-  [TYPES.day_of_week]: <FontAwesomeIcon icon={ faCalendar } />,
-  [TYPES.day_of_month]: <FontAwesomeIcon icon={ faCalendar } />,
-  [TYPES.month_of_year]: <FontAwesomeIcon icon={ faCalendar } />
+  [TYPES.continuous]: <FontAwesomeIcon icon={faTachometerAlt} />,
+  [TYPES.enum]: <FontAwesomeIcon icon={faTags} />,
+  [TYPES.timezone]: <FontAwesomeIcon icon={faGlobeAfrica} />,
+  [TYPES.time_of_day]: <FontAwesomeIcon icon={faClock} />,
+  [TYPES.day_of_week]: <FontAwesomeIcon icon={faCalendar} />,
+  [TYPES.day_of_month]: <FontAwesomeIcon icon={faCalendar} />,
+  [TYPES.month_of_year]: <FontAwesomeIcon icon={faCalendar} />
 };
 
 export function extractProperties(agentConfiguration) {
@@ -58,11 +58,11 @@ const HeaderRow = ({ agentConfiguration }) => {
     <tr>
       <th>
         <span>
-          <FontAwesomeIcon icon={ faStopwatch } /> timestamp
+          <FontAwesomeIcon icon={faStopwatch} /> timestamp
         </span>
       </th>
       {properties.map((property, index) => (
-        <HeaderCell key={ index } { ...property } />
+        <HeaderCell key={index} {...property} />
       ))}
     </tr>
   );

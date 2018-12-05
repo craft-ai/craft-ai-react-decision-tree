@@ -29,19 +29,23 @@ class InfiniteList extends React.Component {
       visibleHeight: 0
     };
   }
+
   _setWrapperElement(element) {
     this.wrapperElement = element;
   }
+
   _handleScrollEvent() {
     this.setState({
       scrollTop: this.wrapperElement.scrollTop
     });
   }
+
   _handleResizeEvent() {
     this.setState({
       visibleHeight: this.wrapperElement.getBoundingClientRect().height
     });
   }
+
   componentDidMount() {
     // Update the scroll position
     const { scrollTop } = this.state;
@@ -51,10 +55,12 @@ class InfiniteList extends React.Component {
     this._handleResizeEvent();
     window.addEventListener('resize', this._handleResizeEvent);
   }
+
   componentWillUnmount() {
     // Remove the component resizing events
     window.removeEventListener('resize', this._handleResizeEvent);
   }
+
   componentDidUpdate(prevProps) {
     const { rowHeight, scrollToIndex } = this.props;
     if (scrollToIndex != prevProps.scrollToIndex && scrollToIndex != null) {
@@ -65,6 +71,7 @@ class InfiniteList extends React.Component {
       });
     }
   }
+
   render() {
     const {
       bufferedCount,
@@ -92,9 +99,10 @@ class InfiniteList extends React.Component {
 
     return (
       <Base
-        className={ className }
-        innerRef={ this._setWrapperElement }
-        onScroll={ this._handleScrollEvent }>
+        className={className}
+        innerRef={this._setWrapperElement}
+        onScroll={this._handleScrollEvent}
+      >
         {/* The placeholder before the rows */}
         {renderPlaceholderRow(0, renderedRowsStart)}
         {/* The rendered rows */}

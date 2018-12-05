@@ -15,9 +15,7 @@
         "type": "enum"
       }
     },
-    "output": [
-      "interest"
-    ]
+    "output": ["interest"]
   },
   "trees": {
     "interest": {
@@ -25,10 +23,7 @@
         {
           "confidence": 0.893635094165802,
           "decision_rule": {
-            "operand": [
-              19,
-              19.333334
-            ],
+            "operand": [19, 19.333334],
             "operator": "[in[",
             "property": "time"
           },
@@ -39,10 +34,7 @@
             {
               "confidence": 0.996995747089386,
               "decision_rule": {
-                "operand": [
-                  19.333334,
-                  8.5
-                ],
+                "operand": [19.333334, 8.5],
                 "operator": "[in[",
                 "property": "time"
               },
@@ -53,10 +45,7 @@
                 {
                   "confidence": 0.5679990649223328,
                   "decision_rule": {
-                    "operand": [
-                      8.5,
-                      9.166667
-                    ],
+                    "operand": [8.5, 9.166667],
                     "operator": "[in[",
                     "property": "time"
                   },
@@ -65,10 +54,7 @@
                 {
                   "confidence": 0.7400767803192139,
                   "decision_rule": {
-                    "operand": [
-                      9.166667,
-                      19
-                    ],
+                    "operand": [9.166667, 19],
                     "operator": "[in[",
                     "property": "time"
                   },
@@ -76,20 +62,14 @@
                 }
               ],
               "decision_rule": {
-                "operand": [
-                  8.5,
-                  19
-                ],
+                "operand": [8.5, 19],
                 "operator": "[in[",
                 "property": "time"
               }
             }
           ],
           "decision_rule": {
-            "operand": [
-              19.333334,
-              19
-            ],
+            "operand": [19.333334, 19],
             "operator": "[in[",
             "property": "time"
           }

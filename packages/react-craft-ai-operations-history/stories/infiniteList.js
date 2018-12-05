@@ -2,9 +2,9 @@ import InfiniteList from '../src/components/infiniteList.jsx';
 import memoizeOne from 'memoize-one';
 import palette from 'google-palette';
 import React from 'react';
-import styled, { css } from 'react-emotion';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import styled, { css } from 'react-emotion';
 
 const createRenderRow = memoizeOne((rowHeight) => {
   const rowPaletteSize = 50;
@@ -35,7 +35,8 @@ const createRenderPlaceholderRow = memoizeOne((rowHeight) => {
   return (from, to) => {
     if (from == to) {
       return null;
-    } else {
+    }
+    else {
       return <PlaceholderRow key={ from } count={ to - from } />;
     }
   };
@@ -86,7 +87,7 @@ storiesOf('InfiniteList', module)
             -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
           }
         ` }
-        tag="div"
+        tag='div'
         rowHeight={ rowHeight }
         renderRow={ renderRow }
         renderPlaceholderRow={ renderPlaceholderRow }

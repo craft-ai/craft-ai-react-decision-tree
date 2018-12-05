@@ -45,9 +45,7 @@
         "type": "continuous"
       }
     },
-    "output": [
-      "amount"
-    ]
+    "output": ["amount"]
   },
   "trees": {
     "amount": {
@@ -71,10 +69,7 @@
                     {
                       "confidence": 0.5,
                       "decision_rule": {
-                        "operand": [
-                          21.666666,
-                          21.75
-                        ],
+                        "operand": [21.666666, 21.75],
                         "operator": "[in[",
                         "property": "timeOfDay"
                       },
@@ -84,10 +79,7 @@
                     {
                       "confidence": 0.27614232897758484,
                       "decision_rule": {
-                        "operand": [
-                          21.75,
-                          21.666666
-                        ],
+                        "operand": [21.75, 21.666666],
                         "operator": "[in[",
                         "property": "timeOfDay"
                       },
@@ -117,10 +109,7 @@
                         {
                           "confidence": 0.5,
                           "decision_rule": {
-                            "operand": [
-                              14.883333,
-                              16.85
-                            ],
+                            "operand": [14.883333, 16.85],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           },
@@ -130,10 +119,7 @@
                         {
                           "confidence": 0.5326434969902039,
                           "decision_rule": {
-                            "operand": [
-                              16.85,
-                              18.133333
-                            ],
+                            "operand": [16.85, 18.133333],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           },
@@ -142,10 +128,7 @@
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          9,
-                          10
-                        ],
+                        "operand": [9, 10],
                         "operator": "[in[",
                         "property": "dayOfMonth"
                       }
@@ -161,10 +144,7 @@
                                     {
                                       "confidence": 0.5790260434150696,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.883333,
-                                          15.716666
-                                        ],
+                                        "operand": [14.883333, 15.716666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -174,10 +154,7 @@
                                     {
                                       "confidence": 0.6020999550819397,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.716666,
-                                          15.816667
-                                        ],
+                                        "operand": [15.716666, 15.816667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -186,10 +163,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      10,
-                                      5
-                                    ],
+                                    "operand": [10, 5],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -199,10 +173,7 @@
                                     {
                                       "confidence": 0.49785733222961426,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.883333,
-                                          15.333333
-                                        ],
+                                        "operand": [14.883333, 15.333333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -212,10 +183,7 @@
                                     {
                                       "confidence": 0.5326718091964722,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.333333,
-                                          15.816667
-                                        ],
+                                        "operand": [15.333333, 15.816667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -224,10 +192,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      5,
-                                      9
-                                    ],
+                                    "operand": [5, 9],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -244,10 +209,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      14.883333,
-                                      15.466666
-                                    ],
+                                    "operand": [14.883333, 15.466666],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -259,10 +221,7 @@
                                     {
                                       "confidence": 0.5690993666648865,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.466666,
-                                          15.75
-                                        ],
+                                        "operand": [15.466666, 15.75],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -272,10 +231,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.75,
-                                          15.816667
-                                        ],
+                                        "operand": [15.75, 15.816667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -284,10 +240,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.466666,
-                                      15.816667
-                                    ],
+                                    "operand": [15.466666, 15.816667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -301,10 +254,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              14.883333,
-                              15.816667
-                            ],
+                            "operand": [14.883333, 15.816667],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -318,10 +268,7 @@
                                     {
                                       "confidence": 0.5951545238494873,
                                       "decision_rule": {
-                                        "operand": [
-                                          4,
-                                          5
-                                        ],
+                                        "operand": [4, 5],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -331,10 +278,7 @@
                                     {
                                       "confidence": 0.598362922668457,
                                       "decision_rule": {
-                                        "operand": [
-                                          5,
-                                          4
-                                        ],
+                                        "operand": [5, 4],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -343,10 +287,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.816667,
-                                      16.083334
-                                    ],
+                                    "operand": [15.816667, 16.083334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -356,10 +297,7 @@
                                     {
                                       "confidence": 0.49007532000541687,
                                       "decision_rule": {
-                                        "operand": [
-                                          3,
-                                          4
-                                        ],
+                                        "operand": [3, 4],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -369,10 +307,7 @@
                                     {
                                       "confidence": 0.5730735659599304,
                                       "decision_rule": {
-                                        "operand": [
-                                          4,
-                                          3
-                                        ],
+                                        "operand": [4, 3],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -381,20 +316,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      16.083334,
-                                      16.5
-                                    ],
+                                    "operand": [16.083334, 16.5],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  15.816667,
-                                  16.5
-                                ],
+                                "operand": [15.816667, 16.5],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
@@ -406,10 +335,7 @@
                                     {
                                       "confidence": 0.5672350525856018,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.5,
-                                          16.65
-                                        ],
+                                        "operand": [16.5, 16.65],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -419,10 +345,7 @@
                                     {
                                       "confidence": 0.5708341002464294,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.65,
-                                          17.333334
-                                        ],
+                                        "operand": [16.65, 17.333334],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -431,10 +354,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      16.5,
-                                      17.333334
-                                    ],
+                                    "operand": [16.5, 17.333334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -463,50 +383,35 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      17.333334,
-                                      18.133333
-                                    ],
+                                    "operand": [17.333334, 18.133333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  16.5,
-                                  18.133333
-                                ],
+                                "operand": [16.5, 18.133333],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.816667,
-                              18.133333
-                            ],
+                            "operand": [15.816667, 18.133333],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          10,
-                          9
-                        ],
+                        "operand": [10, 9],
                         "operator": "[in[",
                         "property": "dayOfMonth"
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": [
-                      14.883333,
-                      18.133333
-                    ],
+                    "operand": [14.883333, 18.133333],
                     "operator": "[in[",
                     "property": "timeOfDay"
                   }
@@ -522,10 +427,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      18.133333,
-                                      8.466666
-                                    ],
+                                    "operand": [18.133333, 8.466666],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -535,10 +437,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      8.466666,
-                                      14.883333
-                                    ],
+                                    "operand": [8.466666, 14.883333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -559,10 +458,7 @@
                                     {
                                       "confidence": 0.5573881268501282,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.133333,
-                                          12
-                                        ],
+                                        "operand": [18.133333, 12],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -572,10 +468,7 @@
                                     {
                                       "confidence": 0.5388920903205872,
                                       "decision_rule": {
-                                        "operand": [
-                                          12,
-                                          14.883333
-                                        ],
+                                        "operand": [12, 14.883333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -594,10 +487,7 @@
                                     {
                                       "confidence": 0.4773557186126709,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.133333,
-                                          14.25
-                                        ],
+                                        "operand": [18.133333, 14.25],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -607,10 +497,7 @@
                                     {
                                       "confidence": 0.572045087814331,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.25,
-                                          14.883333
-                                        ],
+                                        "operand": [14.25, 14.883333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -647,10 +534,7 @@
                                     {
                                       "confidence": 0.4317862093448639,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.133333,
-                                          19.566668
-                                        ],
+                                        "operand": [18.133333, 19.566668],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -660,10 +544,7 @@
                                     {
                                       "confidence": 0.33603084087371826,
                                       "decision_rule": {
-                                        "operand": [
-                                          19.566668,
-                                          8.333333
-                                        ],
+                                        "operand": [19.566668, 8.333333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -672,10 +553,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18.133333,
-                                      8.333333
-                                    ],
+                                    "operand": [18.133333, 8.333333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -685,10 +563,7 @@
                                     {
                                       "confidence": 0.5319560170173645,
                                       "decision_rule": {
-                                        "operand": [
-                                          8.333333,
-                                          10.183333
-                                        ],
+                                        "operand": [8.333333, 10.183333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -698,10 +573,7 @@
                                     {
                                       "confidence": 0.4492068290710449,
                                       "decision_rule": {
-                                        "operand": [
-                                          10.183333,
-                                          14.883333
-                                        ],
+                                        "operand": [10.183333, 14.883333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -710,10 +582,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      8.333333,
-                                      14.883333
-                                    ],
+                                    "operand": [8.333333, 14.883333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -730,10 +599,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      18.133333,
-                                      9.016666
-                                    ],
+                                    "operand": [18.133333, 9.016666],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -743,10 +609,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      9.016666,
-                                      14.883333
-                                    ],
+                                    "operand": [9.016666, 14.883333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -769,10 +632,7 @@
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          2,
-                          14
-                        ],
+                        "operand": [2, 14],
                         "operator": "[in[",
                         "property": "dayOfMonth"
                       }
@@ -788,10 +648,7 @@
                                     {
                                       "confidence": 0.5531124472618103,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.133333,
-                                          21.366667
-                                        ],
+                                        "operand": [18.133333, 21.366667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -801,10 +658,7 @@
                                     {
                                       "confidence": 0.4831474125385285,
                                       "decision_rule": {
-                                        "operand": [
-                                          21.366667,
-                                          8.35
-                                        ],
+                                        "operand": [21.366667, 8.35],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -813,10 +667,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18.133333,
-                                      8.35
-                                    ],
+                                    "operand": [18.133333, 8.35],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -826,10 +677,7 @@
                                     {
                                       "confidence": 0.5573883652687073,
                                       "decision_rule": {
-                                        "operand": [
-                                          8.35,
-                                          8.766666
-                                        ],
+                                        "operand": [8.35, 8.766666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -839,10 +687,7 @@
                                     {
                                       "confidence": 0.5257754921913147,
                                       "decision_rule": {
-                                        "operand": [
-                                          8.766666,
-                                          10.783334
-                                        ],
+                                        "operand": [8.766666, 10.783334],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -851,10 +696,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      8.35,
-                                      10.783334
-                                    ],
+                                    "operand": [8.35, 10.783334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -873,10 +715,7 @@
                                     {
                                       "confidence": 0.5833228826522827,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.133333,
-                                          8.433333
-                                        ],
+                                        "operand": [18.133333, 8.433333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -886,10 +725,7 @@
                                     {
                                       "confidence": 0.6302556395530701,
                                       "decision_rule": {
-                                        "operand": [
-                                          8.433333,
-                                          9.016666
-                                        ],
+                                        "operand": [8.433333, 9.016666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -898,10 +734,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18.133333,
-                                      9.016666
-                                    ],
+                                    "operand": [18.133333, 9.016666],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -911,10 +744,7 @@
                                     {
                                       "confidence": 0.5885335803031921,
                                       "decision_rule": {
-                                        "operand": [
-                                          9.016666,
-                                          9.8
-                                        ],
+                                        "operand": [9.016666, 9.8],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -924,10 +754,7 @@
                                     {
                                       "confidence": 0.5574321150779724,
                                       "decision_rule": {
-                                        "operand": [
-                                          9.8,
-                                          10.783334
-                                        ],
+                                        "operand": [9.8, 10.783334],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -936,10 +763,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      9.016666,
-                                      10.783334
-                                    ],
+                                    "operand": [9.016666, 10.783334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -953,10 +777,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              18.133333,
-                              10.783334
-                            ],
+                            "operand": [18.133333, 10.783334],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -970,10 +791,7 @@
                                     {
                                       "confidence": 0.5345044136047363,
                                       "decision_rule": {
-                                        "operand": [
-                                          0,
-                                          2
-                                        ],
+                                        "operand": [0, 2],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -983,10 +801,7 @@
                                     {
                                       "confidence": 0.5219696164131165,
                                       "decision_rule": {
-                                        "operand": [
-                                          2,
-                                          0
-                                        ],
+                                        "operand": [2, 0],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -1041,10 +856,7 @@
                                 {
                                   "confidence": 0.38211390376091,
                                   "decision_rule": {
-                                    "operand": [
-                                      10.783334,
-                                      14.816667
-                                    ],
+                                    "operand": [10.783334, 14.816667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -1054,10 +866,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      14.816667,
-                                      14.883333
-                                    ],
+                                    "operand": [14.816667, 14.883333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -1073,30 +882,21 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              10.783334,
-                              14.883333
-                            ],
+                            "operand": [10.783334, 14.883333],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          14,
-                          2
-                        ],
+                        "operand": [14, 2],
                         "operator": "[in[",
                         "property": "dayOfMonth"
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": [
-                      18.133333,
-                      14.883333
-                    ],
+                    "operand": [18.133333, 14.883333],
                     "operator": "[in[",
                     "property": "timeOfDay"
                   }
@@ -1132,10 +932,7 @@
                                     {
                                       "confidence": 0.5565351843833923,
                                       "decision_rule": {
-                                        "operand": [
-                                          1,
-                                          2
-                                        ],
+                                        "operand": [1, 2],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -1145,10 +942,7 @@
                                     {
                                       "confidence": 0.6241475939750671,
                                       "decision_rule": {
-                                        "operand": [
-                                          2,
-                                          1
-                                        ],
+                                        "operand": [2, 1],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -1157,10 +951,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      14.85,
-                                      15.616667
-                                    ],
+                                    "operand": [14.85, 15.616667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -1170,10 +961,7 @@
                                     {
                                       "confidence": 0.6659396886825562,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.616667,
-                                          16.683332
-                                        ],
+                                        "operand": [15.616667, 16.683332],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1183,10 +971,7 @@
                                     {
                                       "confidence": 0.6311481595039368,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.683332,
-                                          19.05
-                                        ],
+                                        "operand": [16.683332, 19.05],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1195,20 +980,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.616667,
-                                      19.05
-                                    ],
+                                    "operand": [15.616667, 19.05],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  19,
-                                  30
-                                ],
+                                "operand": [19, 30],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -1220,10 +999,7 @@
                                     {
                                       "confidence": 0.6201542615890503,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.85,
-                                          18.266666
-                                        ],
+                                        "operand": [14.85, 18.266666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1233,10 +1009,7 @@
                                     {
                                       "confidence": 0.6383815407752991,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.266666,
-                                          19.05
-                                        ],
+                                        "operand": [18.266666, 19.05],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1255,10 +1028,7 @@
                                     {
                                       "confidence": 0.6963527798652649,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.85,
-                                          18.316668
-                                        ],
+                                        "operand": [14.85, 18.316668],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1268,10 +1038,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          18.316668,
-                                          19.05
-                                        ],
+                                        "operand": [18.316668, 19.05],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1287,20 +1054,14 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  30,
-                                  19
-                                ],
+                                "operand": [30, 19],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              14.85,
-                              19.05
-                            ],
+                            "operand": [14.85, 19.05],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -1314,10 +1075,7 @@
                                     {
                                       "confidence": 0.566135048866272,
                                       "decision_rule": {
-                                        "operand": [
-                                          19.05,
-                                          8.366667
-                                        ],
+                                        "operand": [19.05, 8.366667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1327,10 +1085,7 @@
                                     {
                                       "confidence": 0.6328082084655762,
                                       "decision_rule": {
-                                        "operand": [
-                                          8.366667,
-                                          9.3
-                                        ],
+                                        "operand": [8.366667, 9.3],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1339,10 +1094,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      19.05,
-                                      9.3
-                                    ],
+                                    "operand": [19.05, 9.3],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -1371,10 +1123,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      9.3,
-                                      14.85
-                                    ],
+                                    "operand": [9.3, 14.85],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -1393,10 +1142,7 @@
                                     {
                                       "confidence": 0.6403105854988098,
                                       "decision_rule": {
-                                        "operand": [
-                                          19.05,
-                                          13.45
-                                        ],
+                                        "operand": [19.05, 13.45],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1406,10 +1152,7 @@
                                     {
                                       "confidence": 0.6785434484481812,
                                       "decision_rule": {
-                                        "operand": [
-                                          13.45,
-                                          14.85
-                                        ],
+                                        "operand": [13.45, 14.85],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1418,10 +1161,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      1,
-                                      16
-                                    ],
+                                    "operand": [1, 16],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -1450,10 +1190,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      16,
-                                      1
-                                    ],
+                                    "operand": [16, 1],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -1467,10 +1204,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              19.05,
-                              14.85
-                            ],
+                            "operand": [19.05, 14.85],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -1493,10 +1227,7 @@
                                     {
                                       "confidence": 0.6666666269302368,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.1,
-                                          15.333333
-                                        ],
+                                        "operand": [15.1, 15.333333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1506,10 +1237,7 @@
                                     {
                                       "confidence": 0.7504749894142151,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.333333,
-                                          15.85
-                                        ],
+                                        "operand": [15.333333, 15.85],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1528,10 +1256,7 @@
                                     {
                                       "confidence": 0.6333081722259521,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.1,
-                                          15.7
-                                        ],
+                                        "operand": [15.1, 15.7],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1541,10 +1266,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.7,
-                                          15.85
-                                        ],
+                                        "operand": [15.7, 15.85],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1560,10 +1282,7 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  15,
-                                  16
-                                ],
+                                "operand": [15, 16],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -1575,10 +1294,7 @@
                                     {
                                       "confidence": 0.6068325042724609,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.1,
-                                          15.566667
-                                        ],
+                                        "operand": [15.1, 15.566667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1588,10 +1304,7 @@
                                     {
                                       "confidence": 0.6774556040763855,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.566667,
-                                          15.85
-                                        ],
+                                        "operand": [15.566667, 15.85],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1600,10 +1313,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      4,
-                                      5
-                                    ],
+                                    "operand": [4, 5],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
@@ -1613,10 +1323,7 @@
                                     {
                                       "confidence": 0.7565170526504517,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.1,
-                                          15.3
-                                        ],
+                                        "operand": [15.1, 15.3],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1626,10 +1333,7 @@
                                     {
                                       "confidence": 0.6679500341415405,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.3,
-                                          15.85
-                                        ],
+                                        "operand": [15.3, 15.85],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1638,30 +1342,21 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      5,
-                                      4
-                                    ],
+                                    "operand": [5, 4],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  16,
-                                  15
-                                ],
+                                "operand": [16, 15],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.1,
-                              15.85
-                            ],
+                            "operand": [15.1, 15.85],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -1675,10 +1370,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.85,
-                                          15.966666
-                                        ],
+                                        "operand": [15.85, 15.966666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1688,10 +1380,7 @@
                                     {
                                       "confidence": 0.7251231670379639,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.966666,
-                                          18.45
-                                        ],
+                                        "operand": [15.966666, 18.45],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1700,10 +1389,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.85,
-                                      18.45
-                                    ],
+                                    "operand": [15.85, 18.45],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -1711,10 +1397,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      18.45,
-                                      15.1
-                                    ],
+                                    "operand": [18.45, 15.1],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -1723,10 +1406,7 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  3,
-                                  4
-                                ],
+                                "operand": [3, 4],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -1738,10 +1418,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.85,
-                                          16.133333
-                                        ],
+                                        "operand": [15.85, 16.133333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1751,10 +1428,7 @@
                                     {
                                       "confidence": 0.5752323269844055,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.133333,
-                                          15.1
-                                        ],
+                                        "operand": [16.133333, 15.1],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1773,10 +1447,7 @@
                                     {
                                       "confidence": 0.6715965867042542,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.85,
-                                          16.116667
-                                        ],
+                                        "operand": [15.85, 16.116667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1786,10 +1457,7 @@
                                     {
                                       "confidence": 0.6509079933166504,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.116667,
-                                          15.1
-                                        ],
+                                        "operand": [16.116667, 15.1],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1805,20 +1473,14 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  4,
-                                  3
-                                ],
+                                "operand": [4, 3],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.85,
-                              15.1
-                            ],
+                            "operand": [15.85, 15.1],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -1850,10 +1512,7 @@
                                     {
                                       "confidence": 0.6490365862846375,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.216666,
-                                          15.5
-                                        ],
+                                        "operand": [15.216666, 15.5],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1863,10 +1522,7 @@
                                     {
                                       "confidence": 0.6114943027496338,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.5,
-                                          15.566667
-                                        ],
+                                        "operand": [15.5, 15.566667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -1875,10 +1531,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      0,
-                                      4
-                                    ],
+                                    "operand": [0, 4],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
@@ -1907,20 +1560,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      4,
-                                      0
-                                    ],
+                                    "operand": [4, 0],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  15.216666,
-                                  15.566667
-                                ],
+                                "operand": [15.216666, 15.566667],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
@@ -1930,10 +1577,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      5,
-                                      6
-                                    ],
+                                    "operand": [5, 6],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   },
@@ -1945,10 +1589,7 @@
                                     {
                                       "confidence": 0.6970604062080383,
                                       "decision_rule": {
-                                        "operand": [
-                                          6,
-                                          28
-                                        ],
+                                        "operand": [6, 28],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -1958,10 +1599,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          28,
-                                          5
-                                        ],
+                                        "operand": [28, 5],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -1970,30 +1608,21 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      6,
-                                      5
-                                    ],
+                                    "operand": [6, 5],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  15.566667,
-                                  15.6
-                                ],
+                                "operand": [15.566667, 15.6],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.216666,
-                              15.6
-                            ],
+                            "operand": [15.216666, 15.6],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -2007,10 +1636,7 @@
                                     {
                                       "confidence": 0.6430714726448059,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.6,
-                                          11.583333
-                                        ],
+                                        "operand": [15.6, 11.583333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2020,10 +1646,7 @@
                                     {
                                       "confidence": 0.5861950516700745,
                                       "decision_rule": {
-                                        "operand": [
-                                          11.583333,
-                                          15.216666
-                                        ],
+                                        "operand": [11.583333, 15.216666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2032,10 +1655,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      12,
-                                      25
-                                    ],
+                                    "operand": [12, 25],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -2064,10 +1684,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      25,
-                                      12
-                                    ],
+                                    "operand": [25, 12],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -2086,10 +1703,7 @@
                                     {
                                       "confidence": 0.6619237661361694,
                                       "decision_rule": {
-                                        "operand": [
-                                          23,
-                                          30
-                                        ],
+                                        "operand": [23, 30],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2099,10 +1713,7 @@
                                     {
                                       "confidence": 0.6770591735839844,
                                       "decision_rule": {
-                                        "operand": [
-                                          30,
-                                          23
-                                        ],
+                                        "operand": [30, 23],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2121,10 +1732,7 @@
                                     {
                                       "confidence": 0.6198627352714539,
                                       "decision_rule": {
-                                        "operand": [
-                                          1,
-                                          2
-                                        ],
+                                        "operand": [1, 2],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -2134,10 +1742,7 @@
                                     {
                                       "confidence": 0.6666637063026428,
                                       "decision_rule": {
-                                        "operand": [
-                                          2,
-                                          1
-                                        ],
+                                        "operand": [2, 1],
                                         "operator": "[in[",
                                         "property": "dayOfWeek"
                                       },
@@ -2160,10 +1765,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.6,
-                              15.216666
-                            ],
+                            "operand": [15.6, 15.216666],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -2186,10 +1788,7 @@
                                     {
                                       "confidence": 0.6064652800559998,
                                       "decision_rule": {
-                                        "operand": [
-                                          16,
-                                          21
-                                        ],
+                                        "operand": [16, 21],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2199,10 +1798,7 @@
                                     {
                                       "confidence": 0.7358216643333435,
                                       "decision_rule": {
-                                        "operand": [
-                                          21,
-                                          16
-                                        ],
+                                        "operand": [21, 16],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2211,10 +1807,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      14.866667,
-                                      15.416667
-                                    ],
+                                    "operand": [14.866667, 15.416667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2224,10 +1817,7 @@
                                     {
                                       "confidence": 0.5333282351493835,
                                       "decision_rule": {
-                                        "operand": [
-                                          14,
-                                          16
-                                        ],
+                                        "operand": [14, 16],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2237,10 +1827,7 @@
                                     {
                                       "confidence": 0.6836318373680115,
                                       "decision_rule": {
-                                        "operand": [
-                                          16,
-                                          14
-                                        ],
+                                        "operand": [16, 14],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2249,10 +1836,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.416667,
-                                      15.766666
-                                    ],
+                                    "operand": [15.416667, 15.766666],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2271,10 +1855,7 @@
                                     {
                                       "confidence": 0.7979812622070312,
                                       "decision_rule": {
-                                        "operand": [
-                                          14.866667,
-                                          15.333333
-                                        ],
+                                        "operand": [14.866667, 15.333333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2284,10 +1865,7 @@
                                     {
                                       "confidence": 0.7717676758766174,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.333333,
-                                          15.766666
-                                        ],
+                                        "operand": [15.333333, 15.766666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2296,10 +1874,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      9,
-                                      18
-                                    ],
+                                    "operand": [9, 18],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -2328,10 +1903,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18,
-                                      9
-                                    ],
+                                    "operand": [18, 9],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -2345,10 +1917,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              14.866667,
-                              15.766666
-                            ],
+                            "operand": [14.866667, 15.766666],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -2362,10 +1931,7 @@
                                     {
                                       "confidence": 0.7072893381118774,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.766666,
-                                          16.45
-                                        ],
+                                        "operand": [15.766666, 16.45],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2375,10 +1941,7 @@
                                     {
                                       "confidence": 0.7140313386917114,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.45,
-                                          14.866667
-                                        ],
+                                        "operand": [16.45, 14.866667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2387,10 +1950,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      3,
-                                      6
-                                    ],
+                                    "operand": [3, 6],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
@@ -2400,10 +1960,7 @@
                                     {
                                       "confidence": 0.7445813417434692,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.766666,
-                                          10.55
-                                        ],
+                                        "operand": [15.766666, 10.55],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2413,10 +1970,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          10.55,
-                                          14.866667
-                                        ],
+                                        "operand": [10.55, 14.866667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2425,10 +1979,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      6,
-                                      3
-                                    ],
+                                    "operand": [6, 3],
                                     "operator": "[in[",
                                     "property": "dayOfWeek"
                                   }
@@ -2447,10 +1998,7 @@
                                     {
                                       "confidence": 0.6024183034896851,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.766666,
-                                          16.066668
-                                        ],
+                                        "operand": [15.766666, 16.066668],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2460,10 +2008,7 @@
                                     {
                                       "confidence": 0.6687546968460083,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.066668,
-                                          18.35
-                                        ],
+                                        "operand": [16.066668, 18.35],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2472,10 +2017,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.766666,
-                                      18.35
-                                    ],
+                                    "operand": [15.766666, 18.35],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2504,10 +2046,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18.35,
-                                      14.866667
-                                    ],
+                                    "operand": [18.35, 14.866667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2521,10 +2060,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.766666,
-                              14.866667
-                            ],
+                            "operand": [15.766666, 14.866667],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -2584,10 +2120,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.133333,
-                                      15.416667
-                                    ],
+                                    "operand": [15.133333, 15.416667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2597,10 +2130,7 @@
                                     {
                                       "confidence": 0.649587869644165,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.416667,
-                                          15.483334
-                                        ],
+                                        "operand": [15.416667, 15.483334],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2610,10 +2140,7 @@
                                     {
                                       "confidence": 0.6695221066474915,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.483334,
-                                          15.65
-                                        ],
+                                        "operand": [15.483334, 15.65],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2622,10 +2149,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.416667,
-                                      15.65
-                                    ],
+                                    "operand": [15.416667, 15.65],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2642,10 +2166,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      15.133333,
-                                      15.383333
-                                    ],
+                                    "operand": [15.133333, 15.383333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -2676,10 +2197,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.383333,
-                                      15.65
-                                    ],
+                                    "operand": [15.383333, 15.65],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2705,10 +2223,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      15.133333,
-                                      15.366667
-                                    ],
+                                    "operand": [15.133333, 15.366667],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -2739,20 +2254,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.366667,
-                                      15.65
-                                    ],
+                                    "operand": [15.366667, 15.65],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  6,
-                                  8
-                                ],
+                                "operand": [6, 8],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -2819,10 +2328,7 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  8,
-                                  6
-                                ],
+                                "operand": [8, 6],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -2836,10 +2342,7 @@
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          15.133333,
-                          15.65
-                        ],
+                        "operand": [15.133333, 15.65],
                         "operator": "[in[",
                         "property": "timeOfDay"
                       }
@@ -2855,10 +2358,7 @@
                                     {
                                       "confidence": 0.7265415191650391,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.65,
-                                          16.883333
-                                        ],
+                                        "operand": [15.65, 16.883333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2868,10 +2368,7 @@
                                     {
                                       "confidence": 0.6953786015510559,
                                       "decision_rule": {
-                                        "operand": [
-                                          16.883333,
-                                          18.25
-                                        ],
+                                        "operand": [16.883333, 18.25],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -2880,10 +2377,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.65,
-                                      18.25
-                                    ],
+                                    "operand": [15.65, 18.25],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2893,10 +2387,7 @@
                                     {
                                       "confidence": 0.6342172622680664,
                                       "decision_rule": {
-                                        "operand": [
-                                          24,
-                                          28
-                                        ],
+                                        "operand": [24, 28],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2906,10 +2397,7 @@
                                     {
                                       "confidence": 0.7030359506607056,
                                       "decision_rule": {
-                                        "operand": [
-                                          28,
-                                          24
-                                        ],
+                                        "operand": [28, 24],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2918,10 +2406,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18.25,
-                                      15.133333
-                                    ],
+                                    "operand": [18.25, 15.133333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2940,10 +2425,7 @@
                                     {
                                       "confidence": 0.7306352257728577,
                                       "decision_rule": {
-                                        "operand": [
-                                          22,
-                                          29
-                                        ],
+                                        "operand": [22, 29],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2953,10 +2435,7 @@
                                     {
                                       "confidence": 0.7471299171447754,
                                       "decision_rule": {
-                                        "operand": [
-                                          29,
-                                          22
-                                        ],
+                                        "operand": [29, 22],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2965,10 +2444,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.65,
-                                      17.833334
-                                    ],
+                                    "operand": [15.65, 17.833334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -2978,10 +2454,7 @@
                                     {
                                       "confidence": 0.7167808413505554,
                                       "decision_rule": {
-                                        "operand": [
-                                          1,
-                                          30
-                                        ],
+                                        "operand": [1, 30],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -2991,10 +2464,7 @@
                                     {
                                       "confidence": 0.7254619598388672,
                                       "decision_rule": {
-                                        "operand": [
-                                          30,
-                                          1
-                                        ],
+                                        "operand": [30, 1],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -3003,10 +2473,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      17.833334,
-                                      15.133333
-                                    ],
+                                    "operand": [17.833334, 15.133333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -3063,10 +2530,7 @@
                                     {
                                       "confidence": 0.6416899561882019,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.65,
-                                          15.966666
-                                        ],
+                                        "operand": [15.65, 15.966666],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3076,10 +2540,7 @@
                                     {
                                       "confidence": 0.7207522988319397,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.966666,
-                                          15.133333
-                                        ],
+                                        "operand": [15.966666, 15.133333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3095,10 +2556,7 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  8,
-                                  30
-                                ],
+                                "operand": [8, 30],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -3129,10 +2587,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.65,
-                                      17.483334
-                                    ],
+                                    "operand": [15.65, 17.483334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -3161,20 +2616,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      17.483334,
-                                      15.133333
-                                    ],
+                                    "operand": [17.483334, 15.133333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  30,
-                                  8
-                                ],
+                                "operand": [30, 8],
                                 "operator": "[in[",
                                 "property": "dayOfMonth"
                               }
@@ -3188,10 +2637,7 @@
                         }
                       ],
                       "decision_rule": {
-                        "operand": [
-                          15.65,
-                          15.133333
-                        ],
+                        "operand": [15.65, 15.133333],
                         "operator": "[in[",
                         "property": "timeOfDay"
                       }
@@ -3214,10 +2660,7 @@
                                 {
                                   "confidence": 0.5,
                                   "decision_rule": {
-                                    "operand": [
-                                      7.95,
-                                      8.333333
-                                    ],
+                                    "operand": [7.95, 8.333333],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   },
@@ -3248,10 +2691,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      8.333333,
-                                      7.95
-                                    ],
+                                    "operand": [8.333333, 7.95],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -3289,10 +2729,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      18,
-                                      21
-                                    ],
+                                    "operand": [18, 21],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -3302,10 +2739,7 @@
                                     {
                                       "confidence": 0.5,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.3,
-                                          15.316667
-                                        ],
+                                        "operand": [15.3, 15.316667],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3315,10 +2749,7 @@
                                     {
                                       "confidence": 0.6503024697303772,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.316667,
-                                          15.3
-                                        ],
+                                        "operand": [15.316667, 15.3],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3327,10 +2758,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      21,
-                                      31
-                                    ],
+                                    "operand": [21, 31],
                                     "operator": "[in[",
                                     "property": "dayOfMonth"
                                   }
@@ -3344,10 +2772,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              18,
-                              31
-                            ],
+                            "operand": [18, 31],
                             "operator": "[in[",
                             "property": "dayOfMonth"
                           }
@@ -3361,10 +2786,7 @@
                                     {
                                       "confidence": 0.7864714860916138,
                                       "decision_rule": {
-                                        "operand": [
-                                          31,
-                                          17
-                                        ],
+                                        "operand": [31, 17],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -3374,10 +2796,7 @@
                                     {
                                       "confidence": 0.6096367835998535,
                                       "decision_rule": {
-                                        "operand": [
-                                          17,
-                                          18
-                                        ],
+                                        "operand": [17, 18],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -3386,10 +2805,7 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      9.3,
-                                      15.4
-                                    ],
+                                    "operand": [9.3, 15.4],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
@@ -3418,20 +2834,14 @@
                                     }
                                   ],
                                   "decision_rule": {
-                                    "operand": [
-                                      15.4,
-                                      19.983334
-                                    ],
+                                    "operand": [15.4, 19.983334],
                                     "operator": "[in[",
                                     "property": "timeOfDay"
                                   }
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  9.3,
-                                  19.983334
-                                ],
+                                "operand": [9.3, 19.983334],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
@@ -3460,20 +2870,14 @@
                                 }
                               ],
                               "decision_rule": {
-                                "operand": [
-                                  19.983334,
-                                  9.3
-                                ],
+                                "operand": [19.983334, 9.3],
                                 "operator": "[in[",
                                 "property": "timeOfDay"
                               }
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              31,
-                              18
-                            ],
+                            "operand": [31, 18],
                             "operator": "[in[",
                             "property": "dayOfMonth"
                           }
@@ -3563,10 +2967,7 @@
                                     {
                                       "confidence": 0.6102849841117859,
                                       "decision_rule": {
-                                        "operand": [
-                                          1,
-                                          13
-                                        ],
+                                        "operand": [1, 13],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -3576,10 +2977,7 @@
                                     {
                                       "confidence": 0.7534452080726624,
                                       "decision_rule": {
-                                        "operand": [
-                                          13,
-                                          1
-                                        ],
+                                        "operand": [13, 1],
                                         "operator": "[in[",
                                         "property": "dayOfMonth"
                                       },
@@ -3631,10 +3029,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              8.45,
-                              15.5
-                            ],
+                            "operand": [8.45, 15.5],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }
@@ -3648,10 +3043,7 @@
                                     {
                                       "confidence": 0.7944933176040649,
                                       "decision_rule": {
-                                        "operand": [
-                                          15.5,
-                                          17.383333
-                                        ],
+                                        "operand": [15.5, 17.383333],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3661,10 +3053,7 @@
                                     {
                                       "confidence": 0.7459747791290283,
                                       "decision_rule": {
-                                        "operand": [
-                                          17.383333,
-                                          8.45
-                                        ],
+                                        "operand": [17.383333, 8.45],
                                         "operator": "[in[",
                                         "property": "timeOfDay"
                                       },
@@ -3707,10 +3096,7 @@
                             }
                           ],
                           "decision_rule": {
-                            "operand": [
-                              15.5,
-                              8.45
-                            ],
+                            "operand": [15.5, 8.45],
                             "operator": "[in[",
                             "property": "timeOfDay"
                           }

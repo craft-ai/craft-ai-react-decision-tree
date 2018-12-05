@@ -111,24 +111,28 @@ const PopoverContentInner = styled('div')`
 `;
 
 class PopoverContent extends React.Component {
-  setPopoverRef = (input) => (this.popoverRef = input)
+  setPopoverRef = (input) => (this.popoverRef = input);
 
-  onPopover = () => (this.props.onPopover(true))
+  onPopover = () => this.props.onPopover(true);
 
-  notOnPopover = () => (this.props.onPopover(false))
+  notOnPopover = () => this.props.onPopover(false);
 
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.placement != this.props.placement ||
-           nextProps.style.left != this.props.style.left ||
-           nextProps.style.top != this.props.style.top ||
-           nextProps.height != this.props.height ||
-           nextProps.arrowOffsetLeft != this.props.arrowOffsetLeft;
+    return (
+      nextProps.placement != this.props.placement ||
+      nextProps.style.left != this.props.style.left ||
+      nextProps.style.top != this.props.style.top ||
+      nextProps.height != this.props.height ||
+      nextProps.arrowOffsetLeft != this.props.arrowOffsetLeft
+    );
   }
 
   componentDidUpdate() {
     this.props.onPlacementUpdated(
       this.popoverRef &&
-      (this.popoverRef.offsetHeight + (this.props.style ? this.props.style.top : MARGIN)) > this.props.height
+        this.popoverRef.offsetHeight +
+          (this.props.style ? this.props.style.top : MARGIN) >
+          this.props.height
     );
   }
 
@@ -147,18 +151,20 @@ class PopoverContent extends React.Component {
 
     return (
       <PopoverContentOuter
-        placement={ placement }
-        onMouseEnter={ this.onPopover }
-        onMouseLeave={ this.notOnPopover }
-        innerRef={ this.setPopoverRef }
-        className={ cx('craft-popover', className, placement) }
-        style={{ ...style }}>
+        placement={placement}
+        onMouseEnter={this.onPopover}
+        onMouseLeave={this.notOnPopover}
+        innerRef={this.setPopoverRef}
+        className={cx('craft-popover', className, placement)}
+        style={{ ...style }}
+      >
         <PopoverContentInner className='craft-popover-content'>
           <PopoverArrow
-            placement={ placement }
-            className={ cx('craft-popover-arrow', placement) }
-            style={{ left: arrowOffsetLeft }} />
-          { children }
+            placement={placement}
+            className={cx('craft-popover-arrow', placement)}
+            style={{ left: arrowOffsetLeft }}
+          />
+          {children}
         </PopoverContentInner>
       </PopoverContentOuter>
     );

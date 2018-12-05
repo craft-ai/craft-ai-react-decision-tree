@@ -4,21 +4,24 @@ import TooltipContent from './tooltipContent';
 import { Overlay } from 'react-overlays';
 
 const Tooltip = ({
-  arrowOffsetLeft, children, className,
-  onPlacementUpdated, placement, show,
-  style, target
+  arrowOffsetLeft,
+  children,
+  className,
+  onPlacementUpdated,
+  placement,
+  show,
+  style,
+  target
 }) => (
-  <Overlay
-    show={ show }
-    placement={ placement }
-    target={ target }>
+  <Overlay show={show} placement={placement} target={target}>
     <TooltipContent
-      className={ className }
-      arrowOffsetLeft={ arrowOffsetLeft }
-      placement={ placement }
+      className={className}
+      arrowOffsetLeft={arrowOffsetLeft}
+      placement={placement}
       style={{ ...style }}
-      onPlacementUpdated={ onPlacementUpdated }>
-      { children }
+      onPlacementUpdated={onPlacementUpdated}
+    >
+      {children}
     </TooltipContent>
   </Overlay>
 );

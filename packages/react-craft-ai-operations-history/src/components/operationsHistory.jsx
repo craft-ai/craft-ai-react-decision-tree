@@ -1,4 +1,5 @@
 import createRowComponent from './createRowComponent';
+import { EventEmitter } from 'events';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
 import last from 'lodash.last';
@@ -8,7 +9,6 @@ import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Table from './table';
-import { EventEmitter } from 'events';
 import * as most from 'most';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
@@ -31,7 +31,7 @@ function computeUpdatedEstimations({
 
   if ((from == null || to == null) && loadedCount == 0) {
     throw new Error(
-      'Unexpected error, either \'from\' and \'to\' should be defined or \'loadedOperations\' should not be empty'
+      "Unexpected error, either 'from' and 'to' should be defined or 'loadedOperations' should not be empty"
     );
   }
 
@@ -105,13 +105,7 @@ function computeUpdatedEstimations({
 }
 
 function computeInitialStateFromProps(props) {
-  const {
-    agentConfiguration,
-    focus,
-    from,
-    initialOperations,
-    to
-  } = props;
+  const { agentConfiguration, focus, from, initialOperations, to } = props;
 
   const loadedOperations = preprocessOperations(
     agentConfiguration,
@@ -236,6 +230,7 @@ class OperationsHistory extends React.Component {
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
   }
+
   _createEventHandlers() {
     const eventEmitter = new EventEmitter();
     const REQUEST_OPERATION_EVENT = 'requestOperation';
@@ -309,17 +304,17 @@ class OperationsHistory extends React.Component {
             requestedTo > loadedTo
               ? onRequestOperations(loadedTo, requestedTo, false)
               : Promise.resolve({
-                operations: [],
-                from: loadedTo,
-                to: requestedTo
-              }),
+                  operations: [],
+                  from: loadedTo,
+                  to: requestedTo
+                }),
             requestedFrom < loadedFrom
               ? onRequestOperations(requestedFrom, loadedFrom, true)
               : Promise.resolve({
-                operations: [],
-                from: requestedFrom,
-                to: loadedFrom
-              })
+                  operations: [],
+                  from: requestedFrom,
+                  to: loadedFrom
+                })
           ]).then(([afterResults, beforeResults]) => {
             const { agentConfiguration } = this.props;
             const { loadedFrom, loadedOperations, loadedTo } = this.state;
@@ -377,6 +372,7 @@ class OperationsHistory extends React.Component {
         eventEmitter.emit(UPDATE_OPERATIONS_BOUNDS_EVENT, { from, to })
     };
   }
+
   _renderRow(index) {
     const { agentConfiguration, focus } = this.props;
     const {
@@ -406,11 +402,11 @@ class OperationsHistory extends React.Component {
       this._onRequestOperation(estimatedTimestamp);
       return (
         <Row
-          key={ index }
-          index={ index }
-          timestamp={ estimatedTimestamp }
+          key={index}
+          index={index}
+          timestamp={estimatedTimestamp}
           loading
-          focus={ estimatedFocusIndex === index }
+          focus={estimatedFocusIndex === index}
         />
       );
     } else if (chronologicalIndex < estimatedBeforeLoadedCount) {
@@ -421,11 +417,11 @@ class OperationsHistory extends React.Component {
       this._onRequestOperation(estimatedTimestamp);
       return (
         <Row
-          key={ index }
-          index={ index }
-          timestamp={ estimatedTimestamp }
+          key={index}
+          index={index}
+          timestamp={estimatedTimestamp}
           loading
-          focus={ estimatedFocusIndex === index }
+          focus={estimatedFocusIndex === index}
         />
       );
     } else {
@@ -433,24 +429,26 @@ class OperationsHistory extends React.Component {
       const operation = loadedOperations[loadedIndex];
       return (
         <Row
-          key={ index }
-          index={ index }
-          { ...operation }
-          focus={ estimatedFocusIndex === index }
+          key={index}
+          index={index}
+          {...operation}
+          focus={estimatedFocusIndex === index}
         />
       );
     }
   }
+
   _renderPlaceholderRow(start, end) {
     const { rowHeight } = this.props;
     return (
       <PlaceholderRow
-        key={ start }
-        rowCount={ end - start }
-        rowHeight={ rowHeight }
+        key={start}
+        rowCount={end - start}
+        rowHeight={rowHeight}
       />
     );
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { scrollToTimestamp } = this.state;
     if (scrollToTimestamp != null) {
@@ -492,29 +490,31 @@ class OperationsHistory extends React.Component {
       });
     }
   }
+
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
     const { estimatedCount, scrollToTimestamp } = this.state;
 
     return (
       <Table
-        className="craft-operations-history"
-        height={ height }
-        rowHeight={ rowHeight }>
+        className='craft-operations-history'
+        height={height}
+        rowHeight={rowHeight}
+      >
         <thead>
-          <HeaderRow agentConfiguration={ agentConfiguration } />
+          <HeaderRow agentConfiguration={agentConfiguration} />
         </thead>
         <InfiniteList
-          tag="tbody"
-          rowHeight={ rowHeight }
-          renderRow={ this._renderRow }
-          renderPlaceholderRow={ this._renderPlaceholderRow }
+          tag='tbody'
+          rowHeight={rowHeight}
+          renderRow={this._renderRow}
+          renderPlaceholderRow={this._renderPlaceholderRow}
           scrollToIndex={
             scrollToTimestamp != null
               ? estimateIndexFromTimestamp(scrollToTimestamp, this.state)
               : null
           }
-          count={ estimatedCount }
+          count={estimatedCount}
         />
       </Table>
     );
@@ -526,7 +526,7 @@ OperationsHistory.defaultProps = {
     requestedFrom,
     requestedTo,
     requestInitialState = false
-  ) => Promise.reject(new Error('\'onRequestOperations\' is not defined.')),
+  ) => Promise.reject(new Error("'onRequestOperations' is not defined.")),
   rowHeight: 45,
   height: 600,
   initialOperations: []

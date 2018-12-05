@@ -23,25 +23,29 @@ class Popover extends React.Component {
 
   render() {
     const {
-      arrowOffsetLeft, children, className, height,
-      onPlacementUpdated, onPopover, placement,
-      style, target
+      arrowOffsetLeft,
+      children,
+      className,
+      height,
+      onPlacementUpdated,
+      onPopover,
+      placement,
+      style,
+      target
     } = this.props;
 
     return (
-      <Overlay
-        show={ this.state.show }
-        placement={ placement }
-        target={ target }>
+      <Overlay show={this.state.show} placement={placement} target={target}>
         <PopoverContent
-          className={ className }
-          arrowOffsetLeft={ arrowOffsetLeft }
-          placement={ placement }
-          height={ height }
+          className={className}
+          arrowOffsetLeft={arrowOffsetLeft}
+          placement={placement}
+          height={height}
           style={{ ...style }}
-          onPopover={ onPopover }
-          onPlacementUpdated={ onPlacementUpdated }>
-          { children }
+          onPopover={onPopover}
+          onPlacementUpdated={onPlacementUpdated}
+        >
+          {children}
         </PopoverContent>
       </Overlay>
     );

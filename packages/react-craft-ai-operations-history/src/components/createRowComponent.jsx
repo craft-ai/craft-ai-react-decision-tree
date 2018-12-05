@@ -51,7 +51,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
       property,
       ({ state = {}, timestamp }) => {
         return (
-          <td className="craft-property-generated-value">
+          <td className='craft-property-generated-value'>
             {formatter(state[property])}
           </td>
         );
@@ -63,10 +63,11 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
     const isUndefined = value === undefined;
     return (
       <td
-        className={ cx({
+        className={cx({
           'craft-property-undefined': isUndefined,
           'craft-property-output': output
-        }) }>
+        })}
+      >
         {isUndefined ? '-' : formatter(value)}
       </td>
     );
@@ -93,23 +94,23 @@ export default function createRowComponent({ agentConfiguration }) {
     });
     if (loading) {
       return (
-        <tr key={ index } className={ classNames }>
-          <TimestampCell timestamp={ timestamp } />
-          <LoadingTd colSpan={ properties.length }>
-            <FontAwesomeIcon icon={ faSpinner } spin />
+        <tr key={index} className={classNames}>
+          <TimestampCell timestamp={timestamp} />
+          <LoadingTd colSpan={properties.length}>
+            <FontAwesomeIcon icon={faSpinner} spin />
           </LoadingTd>
         </tr>
       );
     }
     return (
-      <tr key={ index } className={ classNames }>
-        <TimestampCell timestamp={ timestamp } />
+      <tr key={index} className={classNames}>
+        <TimestampCell timestamp={timestamp} />
         {Cells.map((Cell, cellIndex) => (
           <Cell
-            key={ cellIndex }
-            operation={ operation }
-            state={ state }
-            timestamp={ timestamp }
+            key={cellIndex}
+            operation={operation}
+            state={state}
+            timestamp={timestamp}
           />
         ))}
       </tr>

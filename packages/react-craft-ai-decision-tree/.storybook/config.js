@@ -4,7 +4,7 @@ import { homepage } from '../package.json';
 
 setOptions({
   name: 'craft ai Decision Tree',
-  url: homepage,
+  url: homepage
 });
 
 function loadStories() {

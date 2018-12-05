@@ -5,9 +5,8 @@ import OperationsHistory from '../src';
 import orderBy from 'lodash.orderby';
 import preprocessOperations from '../src/utils/preprocessOperations';
 import React from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs';
-
 import { storiesOf } from '@storybook/react';
+import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './test.css';
 
@@ -22,9 +21,10 @@ const CONFIGURATION_1_OPERATIONS_1_TO =
     .timestamp;
 
 const CONFIGURATION_1_OPERATIONS_1_STATES = orderBy(
-  preprocessOperations(CONFIGURATION_1, CONFIGURATION_1_OPERATIONS_1).map(
-    ({ state, timestamp }) => ({ context: state, timestamp })
-  ),
+  preprocessOperations(CONFIGURATION_1, CONFIGURATION_1_OPERATIONS_1)
+    .map(
+      ({ state, timestamp }) => ({ context: state, timestamp })
+    ),
   ['timestamp']
 );
 
@@ -39,9 +39,10 @@ const CONFIGURATION_2_OPERATIONS_1_TO =
     .timestamp;
 
 const CONFIGURATION_2_OPERATIONS_1_STATES = orderBy(
-  preprocessOperations(CONFIGURATION_2, CONFIGURATION_2_OPERATIONS_1).map(
-    ({ state, timestamp }) => ({ context: state, timestamp })
-  ),
+  preprocessOperations(CONFIGURATION_2, CONFIGURATION_2_OPERATIONS_1)
+    .map(
+      ({ state, timestamp }) => ({ context: state, timestamp })
+    ),
   ['timestamp']
 );
 
@@ -61,23 +62,25 @@ function createRequestOperations(operations, states) {
       console.log(
         `Requesting operations from ${requestedFrom} to ${requestedTo}, no operations found.`
       );
-      return delay(5000).then(() => ({
-        operations: [],
-        from: requestedFrom,
-        to: requestedTo,
-        initialState: undefined
-      }));
+      return delay(5000)
+        .then(() => ({
+          operations: [],
+          from: requestedFrom,
+          to: requestedTo,
+          initialState: undefined
+        }));
     }
     console.log(
       `Requesting operations from ${requestedFrom} (at index ${fromIndex}) to ${requestedTo} (at index ${toIndex -
         1}).`
     );
-    return delay(5000).then(() => ({
-      operations: operations.slice(fromIndex, toIndex + 1),
-      from: operations[fromIndex].timestamp,
-      to: operations[toIndex].timestamp,
-      initialState: requestInitialState && states[fromIndex].context
-    }));
+    return delay(5000)
+      .then(() => ({
+        operations: operations.slice(fromIndex, toIndex + 1),
+        from: operations[fromIndex].timestamp,
+        to: operations[toIndex].timestamp,
+        initialState: requestInitialState && states[fromIndex].context
+      }));
   };
 }
 
@@ -129,7 +132,7 @@ storiesOf('OperationsHistory', module)
   )
   .add('no dynamic loading (custom css)', () => {
     return (
-      <div className="test">
+      <div className='test'>
         <OperationsHistory
           agentConfiguration={ CONFIGURATION_1 }
           initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
@@ -219,7 +222,7 @@ storiesOf('OperationsHistory', module)
   })
   .add('Fully dynamic loading, irregular operations (custom css)', () => {
     return (
-      <div className="test">
+      <div className='test'>
         <OperationsHistory
           agentConfiguration={ CONFIGURATION_2 }
           onRequestOperations={ requestOperationsFromC2O1 }

@@ -9,20 +9,34 @@ import { event as d3Event, select as d3Select } from 'd3-selection';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
 import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
 import {
-  MARGIN, NODE_DEPTH, NODE_HEIGHT,
-  NODE_WIDTH, NODE_WIDTH_MARGIN, ZOOM_EXTENT
+  MARGIN,
+  NODE_DEPTH,
+  NODE_HEIGHT,
+  NODE_WIDTH,
+  NODE_WIDTH_MARGIN,
+  ZOOM_EXTENT
 } from '../utils/constants';
 
-function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scaleExtent = ZOOM_EXTENT) {
+function computeFitTransformation(
+  treeBbox,
+  canvasBbox,
+  prevTransformation,
+  scaleExtent = ZOOM_EXTENT
+) {
   // from https://developer.mozilla.org/en/docs/Web/SVG/Attribute/transform
   // worldX = localX * scaleX + translateX
   // <=>
   // localX = (worldX - translateX) / scaleX
 
   // 1 - Compute the scales to apply to have the tree match the canvas.
-  const scaleX = canvasBbox.delta.x * prevTransformation.scale / treeBbox.delta.x;
-  const scaleY = canvasBbox.delta.y * prevTransformation.scale / treeBbox.delta.y;
-  const scale = Math.max(scaleExtent[0], Math.min(Math.min(scaleX, scaleY, scaleExtent[1])));
+  const scaleX =
+    (canvasBbox.delta.x * prevTransformation.scale) / treeBbox.delta.x;
+  const scaleY =
+    (canvasBbox.delta.y * prevTransformation.scale) / treeBbox.delta.y;
+  const scale = Math.max(
+    scaleExtent[0],
+    Math.min(Math.min(scaleX, scaleY, scaleExtent[1]))
+  );
 
   // 2 - Compute the translation to apply to have the center of the two bbox match
   // canvasCenterX = treeCenterWorldX
@@ -35,8 +49,20 @@ function computeFitTransformation(treeBbox, canvasBbox, prevTransformation, scal
   // <=>
   // translateX = canvasOriginX + canvasDeltaX / 2 - (treeOriginPrevWorldX + treeDeltaPrevWorldX / 2 - prevTranslateX) / prevScaleX * scaleX
   const translate = [
-    canvasBbox.origin.x + canvasBbox.delta.x / 2 - (treeBbox.origin.x + treeBbox.delta.x / 2 - prevTransformation.newPos[0]) / prevTransformation.scale * scale,
-    canvasBbox.origin.y + canvasBbox.delta.y / 2 - (treeBbox.origin.y + treeBbox.delta.y / 2 - prevTransformation.newPos[1]) / prevTransformation.scale * scale
+    canvasBbox.origin.x +
+      canvasBbox.delta.x / 2 -
+      ((treeBbox.origin.x +
+        treeBbox.delta.x / 2 -
+        prevTransformation.newPos[0]) /
+        prevTransformation.scale) *
+        scale,
+    canvasBbox.origin.y +
+      canvasBbox.delta.y / 2 -
+      ((treeBbox.origin.y +
+        treeBbox.delta.y / 2 -
+        prevTransformation.newPos[1]) /
+        prevTransformation.scale) *
+        scale
   ];
 
   return {
@@ -69,8 +95,7 @@ function computeSvgSizeFromData(root, width, height) {
     if (d.parent) {
       if (d.parent.decisionRules) {
         d.decisionRules = _.cloneDeep(d.parent.decisionRules);
-      }
-      else {
+      } else {
         d.decisionRules = {};
       }
       if (d.decisionRules[d.data.decision_rule.property]) {
@@ -78,12 +103,13 @@ function computeSvgSizeFromData(root, width, height) {
           operator: d.data.decision_rule.operator,
           operand: d.data.decision_rule.operand
         });
-      }
-      else {
-        d.decisionRules[d.data.decision_rule.property] = [{
-          operator: d.data.decision_rule.operator,
-          operand: d.data.decision_rule.operand
-        }];
+      } else {
+        d.decisionRules[d.data.decision_rule.property] = [
+          {
+            operator: d.data.decision_rule.operator,
+            operand: d.data.decision_rule.operand
+          }
+        ];
       }
     }
 
@@ -118,21 +144,25 @@ class Tree extends React.Component {
   state = {
     newPos: [0, 0],
     scale: 1
-  }
+  };
 
   zoom = d3Zoom();
+
   isPanActivated = false;
+
   translatedTreeRef = null;
 
   componentDidMount() {
     const selection = d3Select('div.zoomed-tree');
-    selection.call(
-      this.zoom
-        .scaleExtent(ZOOM_EXTENT)
-        .on('zoom', this.mouseWheel)
-        .on('start', this.onPanningActivated)
-        .on('end', this.onPanningDeactivated)
-    ).on('dblclick.zoom', null);
+    selection
+      .call(
+        this.zoom
+          .scaleExtent(ZOOM_EXTENT)
+          .on('zoom', this.mouseWheel)
+          .on('start', this.onPanningActivated)
+          .on('end', this.onPanningDeactivated)
+      )
+      .on('dblclick.zoom', null);
     this.resetPosition();
   }
 
@@ -141,35 +171,53 @@ class Tree extends React.Component {
   }
 
   mouseWheel = () => {
-    this.setState({ scale: d3Event.transform.k, newPos: [d3Event.transform.x, d3Event.transform.y] });
-  }
+    this.setState({
+      scale: d3Event.transform.k,
+      newPos: [d3Event.transform.x, d3Event.transform.y]
+    });
+  };
 
   doFitToScreen = () => {
-    const canvasBbox = new Box(d3Select('div.zoomed-tree').node().getBoundingClientRect());
+    const canvasBbox = new Box(
+      d3Select('div.zoomed-tree')
+        .node()
+        .getBoundingClientRect()
+    );
     const marginedCanvasBbox = canvasBbox.applyMargin(MARGIN);
-    const treeBbox = new Box(d3Select('div.translated-tree').node().getBoundingClientRect());
-    const { newPos, scale } = computeFitTransformation(treeBbox, marginedCanvasBbox, this.state);
+    const treeBbox = new Box(
+      d3Select('div.translated-tree')
+        .node()
+        .getBoundingClientRect()
+    );
+    const { newPos, scale } = computeFitTransformation(
+      treeBbox,
+      marginedCanvasBbox,
+      this.state
+    );
     this.setState({ newPos, scale });
     const selection = d3Select('div.zoomed-tree');
-    selection.call(this.zoom.transform, zoomIdentity.translate(newPos[0], newPos[1]).scale(scale));
-  }
+    selection.call(
+      this.zoom.transform,
+      zoomIdentity.translate(newPos[0], newPos[1]).scale(scale)
+    );
+  };
 
   resetPosition = () => {
     this.doFitToScreen();
     this.fitToScreenTimeout = setTimeout(() => this.doFitToScreen(), 0);
-  }
+  };
 
   onPanningActivated = () => {
     this.isPanActivated = true;
-  }
+  };
 
   onPanningDeactivated = () => {
     this.isPanActivated = false;
-  }
+  };
 
   getTranslatedTreeRef = (input) => {
     this.translatedTreeRef = input;
-  }
+  };
 
   render() {
     const margin = { top: 40, bottom: 20 };
@@ -180,7 +228,13 @@ class Tree extends React.Component {
     root.x = 0;
     root.y = 0;
 
-    const { links, minSvgHeight, minSvgWidth, nodes, offsetX  } = computeSvgSizeFromData(root, width, height);
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      offsetX
+    } = computeSvgSizeFromData(root, width, height);
 
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodes, (d) => {
@@ -190,33 +244,42 @@ class Tree extends React.Component {
 
     return (
       <TreeCanvas
-        onDoubleClick={ this.resetPosition }
+        onDoubleClick={this.resetPosition}
         className='tree zoomed-tree'
         style={{
           height: this.props.height,
           width: this.props.width
-        }}>
+        }}
+      >
         <div
-          ref={ this.getTranslatedTreeRef }
-          onDoubleClick={ this.resetPosition }
-          className={ cx('translated-tree', { unselectable: this.isPanActivated, selectable: !this.isPanActivated }) }
+          ref={this.getTranslatedTreeRef}
+          onDoubleClick={this.resetPosition}
+          className={cx('translated-tree', {
+            unselectable: this.isPanActivated,
+            selectable: !this.isPanActivated
+          })}
           style={{
             transformOrigin: 'left top 0px',
-            transform: `translate(${this.state.newPos[0]}px,${this.state.newPos[1]}px) scale(${this.state.scale})`,
+            transform: `translate(${this.state.newPos[0]}px,${
+              this.state.newPos[1]
+            }px) scale(${this.state.scale})`,
             width: minSvgWidth,
             height: minSvgHeight
-          }}>
+          }}
+        >
           <Nodes
-            height={ this.props.height }
-            configuration={ this.props.configuration }
-            nodes={ nodes }
-            links={ links } />
+            height={this.props.height}
+            configuration={this.props.configuration}
+            nodes={nodes}
+            links={links}
+          />
           <Edges
-            treeData={ this.props.treeData }
-            nodes={ nodes }
-            links={ links }
-            width={ minSvgWidth }
-            height={ minSvgHeight } />
+            treeData={this.props.treeData}
+            nodes={nodes}
+            links={links}
+            width={minSvgWidth}
+            height={minSvgHeight}
+          />
         </div>
       </TreeCanvas>
     );
