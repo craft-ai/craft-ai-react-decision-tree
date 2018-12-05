@@ -101,7 +101,7 @@ echo "Increment version from v$current_major.$current_minor.$current_patch to v$
 
 TODAY=`date +%Y-%m-%d`
 
-eval node ./node_modules/lerna/bin/lerna.js publish --skip-npm --skip-git --repo-version $next_major.$next_minor.$next_patch --yes --force-publish=*
+eval node ./node_modules/.bin/lerna publish --skip-npm --skip-git --repo-version $next_major.$next_minor.$next_patch --yes --force-publish=*
 eval "sed -i.bak 's/.*[[Unreleased]].*/## [Unreleased](https:\/\/github.com\/$GH_ORG\/$GH_REPO\/compare\/v$next_major.$next_minor.$next_patch...HEAD) ##$NL$NL## [$next_major.$next_minor.$next_patch](https:\/\/github.com\/$GH_ORG\/$GH_REPO\/compare\/v$current_major.$current_minor.$current_patch...v$next_major.$next_minor.$next_patch) - $TODAY ##/g' $CHANGELOG_MD_FILE"
 
 if [ $do_git == 1 ]; then
