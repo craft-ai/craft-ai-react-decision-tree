@@ -114,11 +114,7 @@ storiesOf('Tree displayed with fixed height', module)
     </div>
   ))
   .add('width css', () => (
-<<<<<<< HEAD
     <div className='square'>
-=======
-    <div className="square">
->>>>>>> first version of node informations
       <DecisionTree data={ tree } />
     </div>
   ));

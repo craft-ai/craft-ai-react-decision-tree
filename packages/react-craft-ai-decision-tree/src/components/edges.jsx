@@ -1,6 +1,4 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
 import { css } from 'react-emotion';
 import { DEFAULT_COLOR_EDGES, SELECTED_COLOR_EDGES } from '../utils/constants';
 import { select as d3Select } from 'd3-selection';
