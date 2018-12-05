@@ -6,6 +6,8 @@
 
 ### [`react-craft-ai-decision-tree`](./packages/react-craft-ai-decision-tree) [![Version](https://img.shields.io/npm/v/react-craft-ai-decision-tree.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-decision-tree)
 
+### [`react-craft-ai-operations-history`](./packages/react-craft-ai-operations-history) [![Version](https://img.shields.io/npm/v/react-craft-ai-operations-history.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-operations-history)
+
 ### [`react-craft-ai-popover`](./packages/react-craft-ai-popover) [![Version](https://img.shields.io/npm/v/react-craft-ai-popover.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-popover)
 
 ### [`react-craft-ai-tooltip`](./packages/react-craft-ai-tooltip) [![Version](https://img.shields.io/npm/v/react-craft-ai-tooltip.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-tooltip)

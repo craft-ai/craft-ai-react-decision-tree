@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.14...HEAD)
 
+## Added
+
+- Introducing `react-craft-ai-operations-history`.
+
 ## [0.0.14](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.13...v0.0.14) - 2018-11-21
 
 ## Fixed
