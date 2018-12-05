@@ -1,4 +1,5 @@
 import createRowComponent from './createRowComponent';
+import { EventEmitter } from 'events';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
 import last from 'lodash.last';
@@ -8,7 +9,6 @@ import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Table from './table';
-import { EventEmitter } from 'events';
 import * as most from 'most';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
@@ -60,7 +60,8 @@ function computeUpdatedEstimations({
   );
   if (from == null) {
     updatedFrom = updatedLoadedFrom;
-  } else {
+  }
+  else {
     updatedFrom = from;
     updatedLoadedFrom = Math.max(updatedLoadedFrom, updatedFrom);
   }
@@ -72,7 +73,8 @@ function computeUpdatedEstimations({
   );
   if (to == null) {
     updatedTo = updatedLoadedTo;
-  } else {
+  }
+  else {
     updatedTo = to;
     updatedLoadedTo = Math.min(updatedLoadedTo, updatedTo);
   }
@@ -105,13 +107,7 @@ function computeUpdatedEstimations({
 }
 
 function computeInitialStateFromProps(props) {
-  const {
-    agentConfiguration,
-    focus,
-    from,
-    initialOperations,
-    to
-  } = props;
+  const { agentConfiguration, focus, from, initialOperations, to } = props;
 
   const loadedOperations = preprocessOperations(
     agentConfiguration,
@@ -196,18 +192,22 @@ function estimateIndexFromTimestamp(timestamp, state) {
   } = state;
   if (timestamp <= from) {
     return estimatedCount - 1;
-  } else if (timestamp <= loadedFrom) {
+  }
+  else if (timestamp <= loadedFrom) {
     return Math.floor((timestamp - from) / (loadedFrom - from));
-  } else if (timestamp <= loadedTo) {
+  }
+  else if (timestamp <= loadedTo) {
     return (
       estimatedAfterLoadedCount +
       loadedOperations.findIndex(
         (operation) => timestamp >= operation.timestamp
       )
     );
-  } else if (timestamp <= to) {
+  }
+  else if (timestamp <= to) {
     return Math.floor((to - timestamp) / (to - loadedTo));
-  } else {
+  }
+  else {
     return 0;
   }
 }
@@ -215,7 +215,8 @@ function estimateIndexFromTimestamp(timestamp, state) {
 const memoizedComputedEstimatedFocusIndex = memoizeOne((timestamp, state) => {
   if (timestamp == null) {
     return null;
-  } else {
+  }
+  else {
     return estimateIndexFromTimestamp(timestamp, state);
   }
 });
@@ -236,6 +237,7 @@ class OperationsHistory extends React.Component {
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
   }
+
   _createEventHandlers() {
     const eventEmitter = new EventEmitter();
     const REQUEST_OPERATION_EVENT = 'requestOperation';
@@ -259,7 +261,8 @@ class OperationsHistory extends React.Component {
               requestedFrom: Math.min(requestedFrom, requestedTimestamp),
               requestedTo: Math.max(requestedTo, requestedTimestamp)
             };
-          } else {
+          }
+          else {
             // "reset" the requested bounds when a bound update occurs.
             return {
               requestedFrom: Math.max(requestedFrom, from || TIMESTAMP_MAX),
@@ -282,23 +285,24 @@ class OperationsHistory extends React.Component {
         if (loadedCount == 0) {
           // Nothing already loaded
           return most.fromPromise(
-            onRequestOperations(requestedFrom, requestedTo, true).then(
-              (result) => {
-                const { agentConfiguration } = this.props;
+            onRequestOperations(requestedFrom, requestedTo, true)
+              .then(
+                (result) => {
+                  const { agentConfiguration } = this.props;
 
-                const preprocessedOperations = preprocessOperations(
-                  agentConfiguration,
-                  result.operations,
-                  result.initialState
-                );
+                  const preprocessedOperations = preprocessOperations(
+                    agentConfiguration,
+                    result.operations,
+                    result.initialState
+                  );
 
-                return {
-                  loadedFrom: result.from,
-                  loadedOperationsBefore: preprocessedOperations,
-                  loadedTo: result.to
-                };
-              }
-            )
+                  return {
+                    loadedFrom: result.from,
+                    loadedOperationsBefore: preprocessedOperations,
+                    loadedTo: result.to
+                  };
+                }
+              )
           );
         }
 
@@ -320,36 +324,37 @@ class OperationsHistory extends React.Component {
                 from: requestedFrom,
                 to: loadedFrom
               })
-          ]).then(([afterResults, beforeResults]) => {
-            const { agentConfiguration } = this.props;
-            const { loadedFrom, loadedOperations, loadedTo } = this.state;
-            // Let's deal with 'afterOperations'
-            const lastLoadedState = loadedOperations[0].state;
-            const preprocessedAfterOperations = preprocessOperations(
-              agentConfiguration,
-              afterResults.operations.filter(
-                ({ timestamp }) => timestamp > loadedTo
-              ),
-              lastLoadedState
-            );
+          ])
+            .then(([afterResults, beforeResults]) => {
+              const { agentConfiguration } = this.props;
+              const { loadedFrom, loadedOperations, loadedTo } = this.state;
+              // Let's deal with 'afterOperations'
+              const lastLoadedState = loadedOperations[0].state;
+              const preprocessedAfterOperations = preprocessOperations(
+                agentConfiguration,
+                afterResults.operations.filter(
+                  ({ timestamp }) => timestamp > loadedTo
+                ),
+                lastLoadedState
+              );
 
-            // Let's deal with 'beforeOperations' && 'beforeInitialState'
-            const preprocessedBeforeOperations = preprocessOperations(
-              agentConfiguration,
-              beforeResults.operations.filter(
-                ({ timestamp }) => timestamp < loadedFrom
-              ),
-              beforeResults.initialState
-            );
+              // Let's deal with 'beforeOperations' && 'beforeInitialState'
+              const preprocessedBeforeOperations = preprocessOperations(
+                agentConfiguration,
+                beforeResults.operations.filter(
+                  ({ timestamp }) => timestamp < loadedFrom
+                ),
+                beforeResults.initialState
+              );
 
-            // Return the new value for the loaded operations
-            return {
-              loadedFrom: Math.min(beforeResults.from, loadedFrom),
-              loadedOperationsAfter: preprocessedAfterOperations,
-              loadedOperationsBefore: preprocessedBeforeOperations,
-              loadedTo: Math.max(afterResults.to, loadedTo)
-            };
-          })
+              // Return the new value for the loaded operations
+              return {
+                loadedFrom: Math.min(beforeResults.from, loadedFrom),
+                loadedOperationsAfter: preprocessedAfterOperations,
+                loadedOperationsBefore: preprocessedBeforeOperations,
+                loadedTo: Math.max(afterResults.to, loadedTo)
+              };
+            })
         );
       })
       .observe(
@@ -377,6 +382,7 @@ class OperationsHistory extends React.Component {
         eventEmitter.emit(UPDATE_OPERATIONS_BOUNDS_EVENT, { from, to })
     };
   }
+
   _renderRow(index) {
     const { agentConfiguration, focus } = this.props;
     const {
@@ -413,7 +419,8 @@ class OperationsHistory extends React.Component {
           focus={ estimatedFocusIndex === index }
         />
       );
-    } else if (chronologicalIndex < estimatedBeforeLoadedCount) {
+    }
+    else if (chronologicalIndex < estimatedBeforeLoadedCount) {
       // We try to display something that is, in time, before the loaded operations
       const estimatedTimestamp = Math.floor(
         from + chronologicalIndex * estimatedPeriod
@@ -428,7 +435,8 @@ class OperationsHistory extends React.Component {
           focus={ estimatedFocusIndex === index }
         />
       );
-    } else {
+    }
+    else {
       const loadedIndex = index - estimatedAfterLoadedCount;
       const operation = loadedOperations[loadedIndex];
       return (
@@ -441,6 +449,7 @@ class OperationsHistory extends React.Component {
       );
     }
   }
+
   _renderPlaceholderRow(start, end) {
     const { rowHeight } = this.props;
     return (
@@ -451,6 +460,7 @@ class OperationsHistory extends React.Component {
       />
     );
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { scrollToTimestamp } = this.state;
     if (scrollToTimestamp != null) {
@@ -492,20 +502,22 @@ class OperationsHistory extends React.Component {
       });
     }
   }
+
   render() {
     const { agentConfiguration, height, rowHeight } = this.props;
     const { estimatedCount, scrollToTimestamp } = this.state;
 
     return (
       <Table
-        className="craft-operations-history"
+        className='craft-operations-history'
         height={ height }
-        rowHeight={ rowHeight }>
+        rowHeight={ rowHeight }
+      >
         <thead>
           <HeaderRow agentConfiguration={ agentConfiguration } />
         </thead>
         <InfiniteList
-          tag="tbody"
+          tag='tbody'
           rowHeight={ rowHeight }
           renderRow={ this._renderRow }
           renderPlaceholderRow={ this._renderPlaceholderRow }

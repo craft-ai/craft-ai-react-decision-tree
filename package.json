@@ -21,13 +21,16 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "lint": "lerna run lint",
-    "storybook:build": "lerna run storybook:build"
+    "lint:fix": "prettier --ignore-path .eslintignore --write \"**/*.*\" && lerna run lint:fix",
+    "storybook:build": "lerna run storybook:build",
+    "test": "npm run lint && npm run style:check"
   },
   "engines": {
     "node": ">= 6.9.1"
   },
   "devDependencies": {
     "lerna": "3.4.3",
+    "prettier": "1.15.3",
     "prop-types": "15.5.10",
     "react": "15.6.1",
     "react-dom": "15.6.1"

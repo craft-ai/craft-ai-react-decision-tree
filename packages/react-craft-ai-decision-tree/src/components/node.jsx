@@ -1,5 +1,5 @@
-import styled from 'react-emotion';
 import { COLOR_NODES } from '../utils/constants';
+import styled from 'react-emotion';
 
 const Node = styled('div')`
   position: absolute;
@@ -10,11 +10,15 @@ const Node = styled('div')`
   overflow: hidden;
   width: 100px;
   height: 30px;
-  pointerEvents: auto;
+  pointerevents: auto;
   ${({ empty = false }) => `
     box-sizing: ${empty ? 'border-box' : undefined};
     border: ${empty ? 'solid 2px #777' : undefined};
-    background: ${empty ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )' : undefined};
+    background: ${
+  empty
+    ? 'repeating-linear-gradient(-45deg, #ffffff, #ffffff 10px, #777 10px, #777 15px )'
+    : undefined
+};
   `}
 `;
 

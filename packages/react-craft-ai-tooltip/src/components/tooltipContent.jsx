@@ -9,10 +9,12 @@ const TooltipContentOuter = styled('div')`
   position: absolute;
   opacity: 1;
   display: block;
-  &.top, &.bottom {
+  &.top,
+  &.bottom {
     padding: 5px 0;
   }
-  &.left, &.right {
+  &.left,
+  &.right {
     padding: 0 5px;
   }
 `;
@@ -69,7 +71,7 @@ const TooltipContentInner = styled('div')`
   background-color: black;
   color: white;
   text-align: center;
-  maxWidth: 200px;
+  maxwidth: 200px;
 `;
 
 class TooltipContent extends React.Component {
@@ -78,7 +80,8 @@ class TooltipContent extends React.Component {
   componentDidUpdate() {
     this.props.onPlacementUpdated(
       this.tooltipRef &&
-      (this.tooltipRef.offsetHeight + this.props.style.top + MARGIN) > window.innerHeight
+        this.tooltipRef.offsetHeight + this.props.style.top + MARGIN >
+          window.innerHeight
     );
   }
 
@@ -100,13 +103,15 @@ class TooltipContent extends React.Component {
         ref={ this.setTooltipRef }
         placement={ placement }
         className={ cx('craft-tooltip', className, placement) }
-        style={{ ...style }}>
+        style={{ ...style }}
+      >
         <TooltipArrow
           placement={ placement }
           className='craft-tooltip-arrow'
-          style={{ left: arrowOffsetLeft }} />
+          style={{ left: arrowOffsetLeft }}
+        />
         <TooltipContentInner className='craft-tooltip-content'>
-          { children }
+          {children}
         </TooltipContentInner>
       </TooltipContentOuter>
     );

@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { TYPES } from 'craft-ai/lib/constants';
 import {
   faCalendar,
   faClock,
@@ -9,8 +11,6 @@ import {
   faTachometerAlt,
   faTags
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { TYPES } from 'craft-ai/lib/constants';
 
 const PropertyTypeIcons = {
   [TYPES.continuous]: <FontAwesomeIcon icon={ faTachometerAlt } />,
@@ -23,15 +23,16 @@ const PropertyTypeIcons = {
 };
 
 export function extractProperties(agentConfiguration) {
-  const properties = Object.keys(agentConfiguration.context).map(
-    (property) => ({
-      property,
-      ...agentConfiguration.context[property],
-      output: !!agentConfiguration.output.find(
-        (outputProperty) => outputProperty === property
-      )
-    })
-  );
+  const properties = Object.keys(agentConfiguration.context)
+    .map(
+      (property) => ({
+        property,
+        ...agentConfiguration.context[property],
+        output: !!agentConfiguration.output.find(
+          (outputProperty) => outputProperty === property
+        )
+      })
+    );
 
   const sortedProperties = orderBy(properties, ['output', 'property']);
 

@@ -5,27 +5,29 @@ import { storiesOf } from '@storybook/react';
 
 import './style.css';
 
+const NULL_FUN = () => null;
+
 class Button extends React.Component {
   state = {
     show: false,
     mouseOnPovover: false
-  }
+  };
 
   setRefButton = (input) => {
     this.buttonRef = input;
-  }
+  };
 
   showPopover = () => {
     this.setState({ show: true });
-  }
+  };
 
   hidePopover = () => {
     this.setState({ show: false });
-  }
+  };
 
   setMouseOnPopover = (onPopover) => {
     this.setState({ mouseOnPovover: onPopover });
-  }
+  };
 
   render() {
     return (
@@ -34,16 +36,20 @@ class Button extends React.Component {
           style={{ margin: 200 }}
           ref={ this.setRefButton }
           onMouseEnter={ this.showPopover }
-          onMouseOut={ this.hidePopover }>
+          onMouseOut={ this.hidePopover }
+        >
           hover me
         </button>
         <Popover
-          onPopover={ this.props.stayWhenHovered ? this.setMouseOnPopover : () => null }
+          onPopover={
+            this.props.stayWhenHovered ? this.setMouseOnPopover : NULL_FUN
+          }
           className={ this.props.className }
           placement={ this.props.placement }
           show={ this.state.show || this.state.mouseOnPovover }
-          target={ this.buttonRef }>
-          { this.props.content }
+          target={ this.buttonRef }
+        >
+          {this.props.content}
         </Popover>
       </div>
     );
@@ -52,7 +58,7 @@ class Button extends React.Component {
 
 Button.defaultProps = {
   stayWhenHovered: false,
-  content: (<span>Nice popover!</span>)
+  content: <span>Nice popover!</span>
 };
 
 Button.propTypes = {
@@ -63,33 +69,33 @@ Button.propTypes = {
 };
 
 storiesOf('Popover when hovering button', module)
-  .add('popover bottom', () => (<Button placement='bottom' />))
-  .add('popover top', () => (<Button placement='top' />))
-  .add('popover right', () => (<Button placement='right' />))
-  .add('popover left', () => (<Button placement='left' />))
+  .add('popover bottom', () => <Button placement='bottom' />)
+  .add('popover top', () => <Button placement='top' />)
+  .add('popover right', () => <Button placement='right' />)
+  .add('popover left', () => <Button placement='left' />)
   .add('with custom style', () => (
-    <Button
-      className='with-style'
-      placement='bottom' />
+    <Button className='with-style' placement='bottom' />
   ))
   .add('with custom content', () => (
     <Button
       content={
-        (
-          <div>
-            <div style={{
+        <div>
+          <div
+            style={{
               padding: 5,
               borderBottom: 'solid 1px black',
               textAlign: 'center'
-            }}> TITLE </div>
-            <div style={{ padding: 5 }}>NICE CONTENT</div>
+            }}
+          >
+            {' '}
+            TITLE{' '}
           </div>
-        )
+          <div style={{ padding: 5 }}>NICE CONTENT</div>
+        </div>
       }
-      placement='bottom' />
+      placement='bottom'
+    />
   ))
   .add('stayed when hovered', () => (
-    <Button
-      stayWhenHovered
-      placement='bottom' />
+    <Button stayWhenHovered placement='bottom' />
   ));
