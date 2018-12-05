@@ -1,0 +1,23 @@
+# Used also for prettier (hence some weird stuffs)
+
+# Files not supported by prettier
+*.sh
+*.lock
+.DS_Store
+*.bak
+*.log
+.editorconfig
+.eslintignore
+.gitignore
+
+# Dependencies
+/packages/*/node_modules/**/*
+
+# Build artifacts
+/packages/*/lib/**/*
+/packages/*/dist/**/*
+/site/**/*
+
+# Large data files
+/packages/react-craft-ai-operations-history/stories/configuration_1_operations_1.json
+/packages/react-craft-ai-operations-history/stories/configuration_2_operations_1.json

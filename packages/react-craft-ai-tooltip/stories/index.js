@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Tooltip from '../src/';
 import { storiesOf } from '@storybook/react';
+import Tooltip from '../src/';
 
 import './style.css';
 
 class Button extends React.Component {
   state = {
     show: false
-  }
+  };
 
   setRefButton = (input) => {
     this.buttonRef = input;
-  }
+  };
 
   showPopover = () => {
     this.setState({ show: true });
-  }
+  };
 
   hidePopover = () => {
     this.setState({ show: false });
-  }
+  };
 
   render() {
     return (
@@ -50,29 +50,19 @@ Button.propTypes = {
 };
 
 storiesOf('Toolip when hovering button', module)
-  .add('tooltip bottom', () => (<Button placement='bottom' />))
-  .add('tooltip top', () => (<Button placement='top' />))
-  .add('tooltip right', () => (<Button placement='right' />))
-  .add('tooltip left', () => (<Button placement='left' />));
+  .add('tooltip bottom', () => <Button placement="bottom" />)
+  .add('tooltip top', () => <Button placement="top" />)
+  .add('tooltip right', () => <Button placement="right" />)
+  .add('tooltip left', () => <Button placement="left" />);
 
 storiesOf('Toolip with style', module)
   .add('tooltip bottom', () => (
-    <Button
-      className='with-style'
-      placement='bottom' />
+    <Button className="with-style" placement="bottom" />
   ))
-  .add('tooltip top', () => (
-    <Button
-      className='with-style'
-      placement='top' />
-  ))
+  .add('tooltip top', () => <Button className="with-style" placement="top" />)
   .add('tooltip right', () => (
-    <Button
-      className='with-style'
-      placement='right' />
+    <Button className="with-style" placement="right" />
   ))
   .add('tooltip left', () => (
-    <Button
-      className='with-style'
-      placement='left' />
+    <Button className="with-style" placement="left" />
   ));

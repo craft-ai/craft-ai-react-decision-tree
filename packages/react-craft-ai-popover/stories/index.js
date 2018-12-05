@@ -5,6 +5,8 @@ import { storiesOf } from '@storybook/react';
 
 import './style.css';
 
+const NULL_FUN = () => null;
+
 class Button extends React.Component {
   state = {
     show: false,
@@ -38,7 +40,7 @@ class Button extends React.Component {
           hover me
         </button>
         <Popover
-          onPopover={ this.props.stayWhenHovered ? this.setMouseOnPopover : () => null }
+          onPopover={ this.props.stayWhenHovered ? this.setMouseOnPopover : NULL_FUN }
           className={ this.props.className }
           placement={ this.props.placement }
           show={ this.state.show || this.state.mouseOnPovover }
