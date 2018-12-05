@@ -169,24 +169,18 @@ function computeSvgSizeFromData(root) {
 class Tree extends React.Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
-    this.state = {
-      newPos: this.props.position,
-      scale: this.props.scale === -1 ? 1 : this.props.scale,
-      isPanActivated: false
-=======
 
     const { links, nodes, minSvgHeight, minSvgWidth } = this.computeTree();
 
     this.state = {
-      newPos: [0, 0],
-      scale: 1,
+      newPos: this.props.position,
+      scale: this.props.scale === -1 ? 1 : this.props.scale,
+      isPanActivated: false,
       selectedEdgePath: [],
       nodes,
       links,
       minSvgHeight,
       minSvgWidth
->>>>>>> f2287e9... coloring the edge path and the selected node
     };
   }
 
@@ -317,7 +311,7 @@ class Tree extends React.Component {
     const { links, minSvgHeight, minSvgWidth, nodes } = this.state;
     return (
       <TreeCanvas
-        onDoubleClick={this.resetPosition}
+        onDoubleClick={ this.resetPosition }
         className="tree zoomed-tree"
         style={{
           height: this.props.height,
@@ -343,16 +337,16 @@ class Tree extends React.Component {
             configuration={ this.props.configuration }
             nodes={ nodes }
             links={ links }
-            highlightSelectedEdgePath={this.highlightSelectedEdgePath}
-            updateSelectedNode={this.props.updateSelectedNode}
+            highlightSelectedEdgePath={ this.highlightSelectedEdgePath }
+            updateSelectedNode={ this.props.updateSelectedNode }
           />
           <Edges
-            edgePath={this.state.selectedEdgePath}
-            treeData={this.props.treeData}
-            nodes={nodes}
-            links={links}
-            width={minSvgWidth}
-            height={minSvgHeight}
+            edgePath={ this.state.selectedEdgePath }
+            treeData={ this.props.treeData }
+            nodes={ nodes }
+            links={ links }
+            width={ minSvgWidth }
+            height={ minSvgHeight }
           />
         </div>
       </TreeCanvas>
