@@ -85,7 +85,8 @@ const TreeCanvas = styled('div')`
 `;
 
 function computeSvgSizeFromData(root) {
-  const tree = d3Tree().nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
+  const tree = d3Tree()
+    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
   let nodes = d3Hierarchy(root, (d) => d.children);
   tree(nodes);
   const links = nodes.links();
@@ -206,7 +207,8 @@ class Tree extends React.Component {
       const selection = d3Select('div.zoomed-tree');
       selection.call(
         this.zoom.transform,
-        zoomIdentity.translate(this.state.newPos[0], this.state.newPos[1])
+        zoomIdentity
+          .translate(this.state.newPos[0], this.state.newPos[1])
           .scale(this.state.scale)
       );
     }
@@ -239,7 +241,7 @@ class Tree extends React.Component {
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodes, (d) => {
       d.x = d.x + offsetX;
-      (d.y = d.y), NODE_HEIGHT / 3; // take in account the height of the node above the link
+      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
 
     return { links, minSvgHeight, minSvgWidth, nodes };
