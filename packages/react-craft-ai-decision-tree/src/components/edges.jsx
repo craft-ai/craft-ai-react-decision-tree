@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { css } from 'react-emotion';
 import { DEFAULT_COLOR_EDGES, SELECTED_COLOR_EDGES } from '../utils/constants';
-import { select as d3Select } from 'd3-selection';
+import { select as d3Select } from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -104,15 +104,14 @@ class Edges extends React.Component {
       .attr('d', this.diagonal);
 
     // Transition exiting nodes to the parent's new position.
-    link.exit()
-      .remove();
+    link.exit().remove();
   };
 
   render() {
     // Render a blank svg node
     return (
       <div style={{ width: this.props.width, height: this.props.height }}>
-        <svg ref={ this.refSvgTree } />
+        <svg ref={this.refSvgTree} />
       </div>
     );
   }

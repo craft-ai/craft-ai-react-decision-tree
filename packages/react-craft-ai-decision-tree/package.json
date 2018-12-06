@@ -60,9 +60,7 @@
   },
   "dependencies": {
     "craft-ai": "1.15.4",
-    "d3-hierarchy": "1.1.5",
-    "d3-selection": "1.1.0",
-    "d3-zoom": "1.5.0",
+    "d3": "5.7.0",
     "emotion": "9.2.12",
     "lodash": "^4",
     "polished": "1.7.0",

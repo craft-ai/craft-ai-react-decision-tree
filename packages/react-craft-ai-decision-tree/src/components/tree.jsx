@@ -6,9 +6,14 @@ import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { event as d3Event, select as d3Select } from 'd3-selection';
-import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
-import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
+import {
+  event as d3Event,
+  hierarchy as d3Hierarchy,
+  select as d3Select,
+  tree as d3Tree,
+  zoom as d3Zoom,
+  zoomIdentity
+} from 'd3';
 import {
   MARGIN,
   NODE_DEPTH,
@@ -109,8 +114,7 @@ function computeSvgSizeFromData(root) {
           operator: node.data.decision_rule.operator,
           operand: node.data.decision_rule.operand
         });
-      }
-      else {
+      } else {
         node.decisionRules[node.data.decision_rule.property] = [
           {
             operator: node.data.decision_rule.operator,
@@ -118,8 +122,7 @@ function computeSvgSizeFromData(root) {
           }
         ];
       }
-    }
-    else {
+    } else {
       // root node
       node.treeNodeIdPath = [node.id];
       node.treePath = `${index}`;
@@ -259,8 +262,7 @@ class Tree extends React.Component {
     const selection = d3Select('div.zoomed-tree');
     selection.call(
       this.zoom.transform,
-      zoomIdentity.translate(newPos[0], newPos[1])
-        .scale(scale)
+      zoomIdentity.translate(newPos[0], newPos[1]).scale(scale)
     );
   };
 
@@ -287,23 +289,22 @@ class Tree extends React.Component {
 
   render() {
     const { links, minSvgHeight, minSvgWidth, nodes } = this.state;
-    console.log('render');
     return (
       <TreeCanvas
         onDoubleClick={this.resetPosition}
-        className="tree zoomed-tree"
+        className='tree zoomed-tree'
         style={{
           height: this.props.height,
           width: this.props.width
         }}
       >
         <div
-          ref={ this.getTranslatedTreeRef }
-          onDoubleClick={ this.resetPosition }
-          className={ cx('translated-tree', {
+          ref={this.getTranslatedTreeRef}
+          onDoubleClick={this.resetPosition}
+          className={cx('translated-tree', {
             unselectable: this.isPanActivated,
             selectable: !this.isPanActivated
-          }) }
+          })}
           style={{
             transformOrigin: 'left top 0px',
             transform: `translate(${this.state.newPos[0]}px,${
