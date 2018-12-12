@@ -1,6 +1,10 @@
 # `react-craft-ai-operations-history`
 
+[![Version](https://img.shields.io/npm/v/react-craft-ai-operations-history.svg?style=flat-square)](https://npmjs.org/package/react-craft-ai-operations-history) [![License](https://img.shields.io/badge/license-BSD--3--Clause-42358A.svg?style=flat-square)](https://github.com/craft-ai/react-craft-ai-components/blob/master/LICENSE)
+
 `OperationHistory` is a React component aiming at displaying the context operations of a [craft ai](https://craft.ai) agent.
+
+## [Demo](http://www.craft.ai/react-craft-ai-components/react-craft-ai-operations-history)
 
 ## Usage
 
