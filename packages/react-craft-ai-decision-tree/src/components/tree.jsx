@@ -6,9 +6,14 @@ import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { event as d3Event, select as d3Select } from 'd3-selection';
-import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3-hierarchy';
-import { zoom as d3Zoom, zoomIdentity } from 'd3-zoom';
+import {
+  event as d3Event,
+  hierarchy as d3Hierarchy,
+  select as d3Select,
+  tree as d3Tree,
+  zoom as d3Zoom,
+  zoomIdentity
+} from 'd3';
 import {
   MARGIN,
   NODE_DEPTH,
