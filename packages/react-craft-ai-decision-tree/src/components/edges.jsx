@@ -1,6 +1,6 @@
 import { COLOR_EDGES } from '../utils/constants';
 import { css } from 'react-emotion';
-import { select as d3Select } from 'd3-selection';
+import { select as d3Select } from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 
