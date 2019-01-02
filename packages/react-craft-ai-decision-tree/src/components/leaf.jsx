@@ -26,11 +26,15 @@ class Leaf extends React.Component {
   };
 
   showPopover = () => {
-    this.setState({ showingPopover: true, popoverRef: this.leafRef });
+    if (this.props.selectable && !this.state.showingPopover) {
+      this.setState({ showingPopover: true, popoverRef: this.leafRef });
+    }
   };
 
   hidePopover = () => {
-    this.setState({ showingPopover: false, placement: 'bottom' });
+    if (this.props.selectable && this.state.showingPopover) {
+      this.setState({ showingPopover: false, placement: 'bottom' });
+    }
   };
 
   setLeafRef = (input) => {
@@ -100,6 +104,7 @@ class Leaf extends React.Component {
 }
 
 Leaf.propTypes = {
+  selectable: PropTypes.bool.isRequired,
   node: PropTypes.object.isRequired,
   configuration: PropTypes.object,
   height: PropTypes.number

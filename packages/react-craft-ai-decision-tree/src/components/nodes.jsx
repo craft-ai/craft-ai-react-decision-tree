@@ -56,11 +56,13 @@ class Nodes extends React.Component {
   }
 
   showNodeTooltip = (index, text) => (input) => {
-    this.setState({
-      showingTooltip: true,
-      tooltipText: text,
-      tooltipRef: this.nodeRef[index]
-    });
+    if (this.props.selectable) {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.nodeRef[index]
+      });
+    }
   };
 
   indexNodeRef = (index) => (input) => {
@@ -75,6 +77,7 @@ class Nodes extends React.Component {
           height={ this.props.height }
           node={ node }
           configuration={ this.props.configuration }
+          selectable={ this.props.selectable }
         />
       );
     }
@@ -99,11 +102,13 @@ class Nodes extends React.Component {
   };
 
   showLinkTooltip = (index, text) => (input) => {
-    this.setState({
-      showingTooltip: true,
-      tooltipText: text,
-      tooltipRef: this.linkRef[index]
-    });
+    if (this.props.selectable) {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.linkRef[index]
+      });
+    }
   };
 
   displayLinksText = (link, index) => {
@@ -181,6 +186,7 @@ class Nodes extends React.Component {
 }
 
 Nodes.propTypes = {
+  selectable: PropTypes.bool.isRequired,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
