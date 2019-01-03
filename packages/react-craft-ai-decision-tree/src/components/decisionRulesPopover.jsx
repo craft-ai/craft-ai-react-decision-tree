@@ -1,8 +1,8 @@
 import _ from 'lodash';
+import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { interpreter, Properties } from 'craft-ai';
 
 const PopoverTitle = styled('div')`
   text-align: center;
@@ -30,18 +30,17 @@ class DecisionRulesPopover extends React.Component {
 
   displayConditions = (property) => {
     try {
-      const decisionRule = Properties.reduceDecisionRule(
+      const decisionRule = interpreter.reduceDecisionRules(
         this.props.node.decisionRules[property]
       );
-      const propertyType = this.props.context[property].type;
-      const text = interpreter.formatDecisionRules([
-        {
-          ...decisionRule,
-          type: propertyType,
-          property: property
-        }
-      ]);
-      return <li key={ property }>{text}</li>;
+      // Add the type to format properly the decision rule
+      decisionRule[0].type = this.props.context[property].type;
+      const text = interpreter.formatDecisionRules(decisionRule);
+      return (
+        <li key={ property }>
+          {property}: {text}
+        </li>
+      );
     }
     catch (err) {
       return (

@@ -152,12 +152,11 @@ function computeSvgSizeFromData(root, width, height) {
 class Tree extends React.Component {
   state = {
     newPos: [0, 0],
-    scale: 1
+    scale: 1,
+    isPanActivated: false
   };
 
   zoom = d3Zoom();
-
-  isPanActivated = false;
 
   translatedTreeRef = null;
 
@@ -218,11 +217,15 @@ class Tree extends React.Component {
   };
 
   onPanningActivated = () => {
-    this.isPanActivated = true;
+    if (!this.state.isPanActivated) {
+      this.setState({ isPanActivated: true });
+    }
   };
 
   onPanningDeactivated = () => {
-    this.isPanActivated = false;
+    if (this.state.isPanActivated) {
+      this.setState({ isPanActivated: false });
+    }
   };
 
   getTranslatedTreeRef = (input) => {
@@ -252,6 +255,8 @@ class Tree extends React.Component {
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
 
+    const panActivated = this.state.isPanActivated;
+
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
@@ -264,10 +269,7 @@ class Tree extends React.Component {
         <div
           ref={ this.getTranslatedTreeRef }
           onDoubleClick={ this.resetPosition }
-          className={ cx('translated-tree', {
-            unselectable: this.isPanActivated,
-            selectable: !this.isPanActivated
-          }) }
+          className={ 'translated-tree' }
           style={{
             transformOrigin: 'left top 0px',
             transform: `translate(${this.state.newPos[0]}px,${
@@ -278,6 +280,7 @@ class Tree extends React.Component {
           }}
         >
           <Nodes
+            selectable={ !panActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
             nodes={ nodes }
