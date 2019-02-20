@@ -4,6 +4,7 @@ import bigTree from './bigTree.json';
 import DecisionTree from '../src/';
 import React from 'react';
 import smallTree from './smallTree.json';
+import Storage from './testComponent';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
 import { number, withKnobs } from '@storybook/addon-knobs';
@@ -37,7 +38,12 @@ storiesOf('Tree displayed with fixed height', module)
       width={ number('Width', 600, sizeBoundOptions) }
       height={ number('Height', 500, sizeBoundOptions) }
       data={ tree }
+      position={ [0, 0] }
+      scale={ 1 }
     />
+  ))
+  .add('saving props', () => (
+    <Storage />
   ))
   .add('fixed width', () => (
     <div
@@ -78,6 +84,7 @@ storiesOf('Tree displayed with fixed height', module)
     <div className='square'>
       <DecisionTree data={ tree } />
     </div>
+    
   ));
 
 storiesOf('Tree displayed with fixed width', module)

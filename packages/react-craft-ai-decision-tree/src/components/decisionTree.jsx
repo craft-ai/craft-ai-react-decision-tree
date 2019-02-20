@@ -9,7 +9,7 @@ const DecisionTreeContainer = styled('div')`
   height: 100%;
 `;
 
-const DecisionTree = ({ data, height, width }) => (
+const DecisionTree = ({ data, height, width, scale, position, updatePositionAndZoom }) => (
   <DecisionTreeContainer
     style={{
       height: height,
@@ -23,6 +23,9 @@ const DecisionTree = ({ data, height, width }) => (
           width={ width }
           configuration={ data.configuration }
           treeData={ data.trees[_.keys(data.trees)[0]] }
+          position={ position }
+          scale={ scale }
+          updatePositionAndZoom={ updatePositionAndZoom }
         />
       )}
     </ContainerDimensions>
@@ -30,13 +33,19 @@ const DecisionTree = ({ data, height, width }) => (
 );
 
 DecisionTree.defaultProps = {
-  auto: false
+  position: [0, 0],
+  scale: 1,
+  auto: false,
+  updatePositionAndZoom: null
 };
 
 DecisionTree.propTypes = {
+  scale: PropTypes.number.isRequired,
+  position: PropTypes.array.isRequired,
   data: PropTypes.object.isRequired,
   height: PropTypes.number,
-  width: PropTypes.number
+  width: PropTypes.number,
+  updatePositionAndZoom: PropTypes.func
 };
 
 export default DecisionTree;

@@ -151,8 +151,8 @@ function computeSvgSizeFromData(root, width, height) {
 
 class Tree extends React.Component {
   state = {
-    newPos: [0, 0],
-    scale: 1,
+    newPos: this.props.position,
+    scale: this.props.scale,
     isPanActivated: false
   };
 
@@ -183,6 +183,9 @@ class Tree extends React.Component {
       scale: d3Event.transform.k,
       newPos: [d3Event.transform.x, d3Event.transform.y]
     });
+    if (this.props.updatePositionAndZoom) {
+      this.props.updatePositionAndZoom(this.state.newPos, this.state.scale);
+    }
   };
 
   doFitToScreen = () => {
@@ -236,7 +239,6 @@ class Tree extends React.Component {
     const margin = { top: 40, bottom: 20 };
     const width = this.props.width;
     const height = this.props.height - margin.top - margin.bottom;
-
     let root = this.props.treeData;
     root.x = 0;
     root.y = 0;
@@ -303,7 +305,10 @@ Tree.propTypes = {
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired
+  width: PropTypes.number.isRequired,
+  position: PropTypes.array.isRequired,
+  scale: PropTypes.number.isRequired,
+  updatePositionAndZoom: PropTypes.func
 };
 
 export default Tree;
