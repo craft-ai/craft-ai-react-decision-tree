@@ -38,8 +38,15 @@ storiesOf('Tree displayed with fixed height', module)
       width={ number('Width', 600, sizeBoundOptions) }
       height={ number('Height', 500, sizeBoundOptions) }
       data={ tree }
+    />
+  ))
+  .add('test zoomed tree', () => (
+    <DecisionTree
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
       position={ [0, 0] }
-      scale={ 1 }
+      scale={ 0.25 }
+      data={ tree }
     />
   ))
   .add('saving props', () => (
@@ -84,7 +91,6 @@ storiesOf('Tree displayed with fixed height', module)
     <div className='square'>
       <DecisionTree data={ tree } />
     </div>
-    
   ));
 
 storiesOf('Tree displayed with fixed width', module)

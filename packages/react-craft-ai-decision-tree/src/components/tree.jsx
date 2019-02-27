@@ -160,7 +160,7 @@ class Tree extends React.Component {
 
   translatedTreeRef = null;
 
-  componentDidMount() {
+  componentWillMount() {
     const selection = d3Select('div.zoomed-tree');
     selection
       .call(
@@ -171,7 +171,9 @@ class Tree extends React.Component {
           .on('end', this.onPanningDeactivated)
       )
       .on('dblclick.zoom', null);
-    this.resetPosition();
+    if (this.state.scale == -1){
+      this.resetPosition();
+    }
   }
 
   componentWillUnmount() {
@@ -189,6 +191,10 @@ class Tree extends React.Component {
   };
 
   doFitToScreen = () => {
+    // Set the scale to an admissible value
+    this.setState({
+      scale: 1
+    });
     const canvasBbox = new Box(
       d3Select('div.zoomed-tree')
         .node()
@@ -258,10 +264,8 @@ class Tree extends React.Component {
     });
 
     const panActivated = this.state.isPanActivated;
-
     return (
       <TreeCanvas
-        onDoubleClick={ this.resetPosition }
         className='tree zoomed-tree'
         style={{
           height: this.props.height,

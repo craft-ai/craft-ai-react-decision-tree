@@ -9,9 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Added
 
-Add two new props for tree and decision trees:
-- Scale
-- Position
+- Expose the scale and the position of the tree.
 
 ## [0.0.17](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.16...v0.0.17) - 2019-01-03 ##
 
