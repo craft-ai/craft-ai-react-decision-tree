@@ -35,7 +35,6 @@ const DecisionTree = ({ data, height, width, scale, position, updatePositionAndZ
 DecisionTree.defaultProps = {
   position: [0, 0],
   scale: -1,
-  auto: false,
   updatePositionAndZoom: null
 };
 

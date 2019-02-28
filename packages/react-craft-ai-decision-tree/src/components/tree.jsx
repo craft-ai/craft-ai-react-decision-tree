@@ -150,11 +150,14 @@ function computeSvgSizeFromData(root, width, height) {
 }
 
 class Tree extends React.Component {
-  state = {
-    newPos: this.props.position,
-    scale: this.props.scale === -1 ? 1 : this.props.scale,
-    isPanActivated: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      newPos: this.props.position,
+      scale: this.props.scale === -1 ? 1 : this.props.scale,
+      isPanActivated: false
+    };
+  }
 
   zoom = d3Zoom();
 
@@ -173,6 +176,14 @@ class Tree extends React.Component {
       .on('dblclick.zoom', null);
     if (this.props.scale == -1) {
       this.resetPosition();
+    }
+    else {
+      const selection = d3Select('div.zoomed-tree');
+      selection.call(
+        this.zoom.transform,
+        zoomIdentity.translate(this.state.newPos[0], this.state.newPos[1])
+          .scale(this.state.scale)
+      );
     }
   }
 
