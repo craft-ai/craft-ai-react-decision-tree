@@ -152,7 +152,7 @@ function computeSvgSizeFromData(root, width, height) {
 class Tree extends React.Component {
   state = {
     newPos: this.props.position,
-    scale: this.props.scale,
+    scale: this.props.scale === -1 ? 1 : this.props.scale,
     isPanActivated: false
   };
 
@@ -160,7 +160,7 @@ class Tree extends React.Component {
 
   translatedTreeRef = null;
 
-  componentWillMount() {
+  componentDidMount() {
     const selection = d3Select('div.zoomed-tree');
     selection
       .call(
@@ -171,7 +171,7 @@ class Tree extends React.Component {
           .on('end', this.onPanningDeactivated)
       )
       .on('dblclick.zoom', null);
-    if (this.state.scale == -1){
+    if (this.props.scale == -1) {
       this.resetPosition();
     }
   }
@@ -191,10 +191,6 @@ class Tree extends React.Component {
   };
 
   doFitToScreen = () => {
-    // Set the scale to an admissible value
-    this.setState({
-      scale: 1
-    });
     const canvasBbox = new Box(
       d3Select('div.zoomed-tree')
         .node()
@@ -266,6 +262,7 @@ class Tree extends React.Component {
     const panActivated = this.state.isPanActivated;
     return (
       <TreeCanvas
+        onDoubleClick={ this.resetPosition }
         className='tree zoomed-tree'
         style={{
           height: this.props.height,
