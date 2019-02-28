@@ -150,11 +150,14 @@ function computeSvgSizeFromData(root, width, height) {
 }
 
 class Tree extends React.Component {
-  state = {
-    newPos: [0, 0],
-    scale: 1,
-    isPanActivated: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      newPos: this.props.position,
+      scale: this.props.scale === -1 ? 1 : this.props.scale,
+      isPanActivated: false
+    };
+  }
 
   zoom = d3Zoom();
 
@@ -171,7 +174,17 @@ class Tree extends React.Component {
           .on('end', this.onPanningDeactivated)
       )
       .on('dblclick.zoom', null);
-    this.resetPosition();
+    if (this.props.scale == -1) {
+      this.resetPosition();
+    }
+    else {
+      const selection = d3Select('div.zoomed-tree');
+      selection.call(
+        this.zoom.transform,
+        zoomIdentity.translate(this.state.newPos[0], this.state.newPos[1])
+          .scale(this.state.scale)
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -183,6 +196,9 @@ class Tree extends React.Component {
       scale: d3Event.transform.k,
       newPos: [d3Event.transform.x, d3Event.transform.y]
     });
+    if (this.props.updatePositionAndZoom) {
+      this.props.updatePositionAndZoom(this.state.newPos, this.state.scale);
+    }
   };
 
   doFitToScreen = () => {
@@ -236,7 +252,6 @@ class Tree extends React.Component {
     const margin = { top: 40, bottom: 20 };
     const width = this.props.width;
     const height = this.props.height - margin.top - margin.bottom;
-
     let root = this.props.treeData;
     root.x = 0;
     root.y = 0;
@@ -256,7 +271,6 @@ class Tree extends React.Component {
     });
 
     const panActivated = this.state.isPanActivated;
-
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
@@ -303,7 +317,10 @@ Tree.propTypes = {
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired
+  width: PropTypes.number.isRequired,
+  position: PropTypes.array.isRequired,
+  scale: PropTypes.number.isRequired,
+  updatePositionAndZoom: PropTypes.func
 };
 
 export default Tree;
