@@ -8,6 +8,7 @@ import smallTree from './smallTree.json';
 import Storage from './testComponent';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import treeV2 from './treeV2-regression.json';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './test.css';
@@ -88,9 +89,7 @@ storiesOf('Tree displayed with fixed height', module)
       data={ tree }
     />
   ))
-  .add('saving props', () => (
-    <Storage />
-  ))
+  .add('saving props', () => <Storage />)
   .add('fixed width', () => (
     <div
       style={{
@@ -127,8 +126,21 @@ storiesOf('Tree displayed with fixed height', module)
     </div>
   ))
   .add('width css', () => (
-    <div className='square'>
+    <div className="square">
       <DecisionTree data={ tree } />
+    </div>
+  ))
+  .add('display tree v2', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: 500,
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTree data={ treeV2 } />
+      </div>
     </div>
   ));
 

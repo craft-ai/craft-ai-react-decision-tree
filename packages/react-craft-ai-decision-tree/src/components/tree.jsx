@@ -220,7 +220,6 @@ class Tree extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.treeData !== this.props.treeData) {
-      console.log('update tree');
       this.setState(this.computeTree());
     }
   }
@@ -334,6 +333,7 @@ class Tree extends React.Component {
           }}
         >
           <Nodes
+            version={ this.props.version }
             selectable={ !panActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
@@ -357,6 +357,7 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
+  version: PropTypes.string.isRequired,
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,

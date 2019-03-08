@@ -1,6 +1,6 @@
 import _ from 'lodash';
+import { computeLeafColor } from '../utils/utils';
 import { interpreter } from 'craft-ai';
-import { mix } from 'polished';
 import Node from './node';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,19 +8,12 @@ import styled from 'react-emotion';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
   COLOR_EDGES_CAPTION_BG,
-  COLOR_LEAVES_CONFIDENCE_0,
-  COLOR_LEAVES_CONFIDENCE_1,
   NODE_DEPTH,
   NODE_HEIGHT,
   NODE_WIDTH,
   SELECTED_BORDER_WIDTH,
   SELECTED_COLOR_EDGES
 } from '../utils/constants';
-
-function computeLeafColor(confidence) {
-  const blend = Math.pow(confidence, 3);
-  return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
-}
 
 const Links = styled('div')`
   overflow: hidden;
@@ -93,19 +86,37 @@ class Nodes extends React.Component {
     let text;
     let color;
 
-    if (_.isUndefined(node.children)) {
-      // leaf
-      color = computeLeafColor(node.data.confidence);
-      text = _.isNull(node.data.predicted_value)
-        ? ''
-        : _.isFinite(node.data.predicted_value)
-          ? parseFloat(node.data.predicted_value.toFixed(3))
-            .toString()
-          : node.data.predicted_value;
+    if (this.props.version == '2') {
+      if (!_.isUndefined(node.data.prediction)) {
+        // leaf
+        color = computeLeafColor(node.data.prediction.confidence);
+        text = _.isNull(node.data.prediction.value)
+          ? ''
+          : _.isFinite(node.data.prediction.value)
+            ? parseFloat(node.data.prediction.value.toFixed(3))
+              .toString()
+            : node.data.prediction.value;
+      }
+      else {
+        // node
+        text = node.data.children[0].decision_rule.property;
+      }
     }
     else {
-      // node
-      text = node.children[0].data.decision_rule.property;
+      if (_.isUndefined(node.children)) {
+        // leaf
+        color = computeLeafColor(node.data.confidence);
+        text = _.isNull(node.data.predicted_value)
+          ? ''
+          : _.isFinite(node.data.predicted_value)
+            ? parseFloat(node.data.predicted_value.toFixed(3))
+              .toString()
+            : node.data.predicted_value;
+      }
+      else {
+        // node
+        text = node.children[0].data.decision_rule.property;
+      }
     }
 
     const showTooltip = () => {
@@ -253,7 +264,8 @@ Nodes.propTypes = {
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
-  height: PropTypes.number.isRequired
+  height: PropTypes.number.isRequired,
+  version: PropTypes.string.isRequired
 };
 
 export default Nodes;

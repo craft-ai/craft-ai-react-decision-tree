@@ -1,11 +1,13 @@
 import _ from 'lodash';
+import { computeLeafColor } from '../utils/utils';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
+import { height } from 'window-size';
 
 const NodeInformationsContainer = styled('div')`
-  width: 200;
+  width: 200px;
   display: flex;
   flex-direction: column;
   float: left;
@@ -16,34 +18,95 @@ const NodeInformationsContainer = styled('div')`
   border-right: solid 1px;
 `;
 
-const NodePredictions = ({ node }) => {
+const NodePredictions = ({ node, treeVersion, configuration }) => {
+  let confidence;
+  let std;
+  let value;
+  if (treeVersion == '1') {
+    confidence = node.confidence;
+    std = node.standard_deviation;
+    value = node.predicted_value;
+  }
+  else {
+    if (node.prediction) {
+      confidence = node.prediction.confidence;
+      std = node.prediction.distribution
+        ? node.prediction.distribution.standard_deviation
+        : undefined;
+      value = node.prediction.value;
+    }
+  }
   return (
-    <div className='node-predictions '>
-      <h2>Predictions</h2>
-      <ul>
-        <li>Value: {node.predicted_value}</li>
-        <li>Confidence: {(node.confidence * 100).toFixed(2)}%</li>
-        {!_.isUndefined(node.standard_deviation) ? (
-          <li>Standard deviation: {node.standard_deviation.toFixed(2)}</li>
-        ) : null}
-      </ul>
+    <div className="node-predictions">
+      {value ? (
+        <div
+          style={{
+            backgroundColor: computeLeafColor(confidence),
+            padding: '10px',
+            textAlign: 'center',
+            marginTop: 10
+          }}
+        >
+          <div style={{ fontSize: '1.3em', marginBottom: 5 }}>
+            <code>{configuration.output[0]}</code> {value}
+          </div>
+          <div>Confidence {(confidence * 100).toFixed(2)}%</div>
+          <div>Standard deviation {std.toFixed(2)}</div>
+        </div>
+      ) : null}
     </div>
   );
 };
 
 NodePredictions.propTypes = {
+  node: PropTypes.object.isRequired,
+  configuration: PropTypes.object.isRequired,
+  treeVersion: PropTypes.string.isRequired
+};
+
+const NodeStatistics = ({ node }) => {
+  if (node.nb_samples) {
+    return (
+      <div className="node-predictions">
+        <h3 style={{ textAlign: 'center' }}>Statistics</h3>
+        <ul style={{ listStyle: 'none', paddingInlineStart: 0 }}>
+          <li>{node.nb_samples} samples</li>
+        </ul>
+      </div>
+    );
+  }
+  return <div />;
+};
+
+NodeStatistics.propTypes = {
   node: PropTypes.object.isRequired
 };
 
 class NodeDecisionRules extends React.Component {
-  displayConditions = (key) => {
+  displayConditions = (key, index) => {
     const decisionRule = interpreter.reduceDecisionRules(
       this.props.node.decisionRules[key]
     );
     // Add the type to format properly the decision rule
     decisionRule[0].type = this.props.context[key].type;
-    const text = interpreter.formatDecisionRules(decisionRule);
-    return <li key={ key }>{`${key}: ${text}`}</li>;
+    const text = interpreter
+      .formatDecisionRules(decisionRule)
+      .replace(/ /g, '\u00a0');
+    console.log('index', index);
+    return (
+      <tr key={ key }>
+        <td
+          style={{
+            borderTop: index !== 0 ? 'solid 1px black' : 'none'
+          }}
+        >
+          <code>{key}</code>
+        </td>
+        <td style={{ borderTop: index !== 0 ? 'solid 1px black' : 'none' }}>
+          {text}
+        </td>
+      </tr>
+    );
   };
 
   render() {
@@ -51,12 +114,14 @@ class NodeDecisionRules extends React.Component {
       ? _.keys(this.props.node.decisionRules)
       : [];
     return (
-      <div className='node-decision-rules'>
-        <h2>Decision rules</h2>
+      <div className="node-decision-rules">
+        <h3 style={{ textAlign: 'center' }}>Decision rules</h3>
         {!decisionRulesKeys.length ? (
-          <p>This is the root node</p>
+          <div>N/A (root node)</div>
         ) : (
-          <ul>{_.map(decisionRulesKeys, this.displayConditions)}</ul>
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <tbody>{_.map(decisionRulesKeys, this.displayConditions)}</tbody>
+          </table>
         )}
       </div>
     );
@@ -80,22 +145,37 @@ class NodeSplit extends React.Component {
           type: propertyType
         }
       ]);
-      return <li key={ key }>{`${child.decision_rule.property}: ${text}`}</li>;
+      return (
+        <tr key={ key }>
+          <td style={{ borderTop: key !== 0 ? 'solid 1px black' : 'none' }}>
+            {child.decision_rule.property}
+          </td>
+          <td style={{ borderTop: key !== 0 ? 'solid 1px black' : 'none' }}>
+            {text}
+          </td>
+        </tr>
+      );
     }
     catch (err) {
       return (
-        <li style={{ color: 'red' }} key={ key }>
-          {err.message}
-        </li>
+        <tr style={{ color: 'red' }} key={ key }>
+          <td>{err.message}</td>
+        </tr>
       );
     }
   };
 
   render() {
     return (
-      <div className='node-split'>
-        <h2>Split</h2>
-        <ul>{_.map(this.props.node.children, this.displaySplit)}</ul>
+      <div className="node-split">
+        <h3 style={{ textAlign: 'center' }}>Splits</h3>
+        {!this.props.node.children ? (
+          <p>N/A (leaf node)</p>
+        ) : (
+          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <tbody>{_.map(this.props.node.children, this.displaySplit)}</tbody>
+          </table>
+        )}
       </div>
     );
   }
@@ -170,7 +250,10 @@ class NodeInformations extends React.Component {
         this.props.treeData
       );
       return (
-        <NodeInformationsContainer className='node-informations'>
+        <NodeInformationsContainer
+          className="node-informations"
+          style={{ height: this.props.height }}
+        >
           <div
             style={{
               display: 'flex',
@@ -184,24 +267,25 @@ class NodeInformations extends React.Component {
               X
             </button>
           </div>
-          {selectedNode.predicted_value ? ( // we are in a leaf
-            <NodePredictions node={ selectedNode } /> // we are in a node
-          ) : null}
-          {selectedNode.predicted_value ? null : ( // we are in a leaf
-            <NodeSplit
-              context={ this.props.configuration.context }
-              node={ selectedNode }
-            /> // we are in a node
-          )}
+          <NodePredictions
+            configuration={ this.props.configuration }
+            node={ selectedNode }
+            treeVersion={ this.props.treeVersion }
+          />
           <NodeDecisionRules
             context={ this.props.configuration.context }
             node={ selectedNode }
           />
+          <NodeSplit
+            context={ this.props.configuration.context }
+            node={ selectedNode }
+          />
+          <NodeStatistics node={ selectedNode } />
         </NodeInformationsContainer>
       );
     }
     else {
-      return <div className='node-informations' />;
+      return <div className="node-informations" />;
     }
   }
 }
@@ -209,8 +293,10 @@ class NodeInformations extends React.Component {
 NodeInformations.propTypes = {
   updateSelectedNode: PropTypes.func.isRequired,
   configuration: PropTypes.object.isRequired,
+  treeVersion: PropTypes.string.isRequired,
   treeData: PropTypes.object.isRequired,
-  selectedNode: PropTypes.string.isRequired
+  selectedNode: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired
 };
 
 export default NodeInformations;

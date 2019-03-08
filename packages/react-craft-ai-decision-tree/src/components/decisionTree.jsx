@@ -31,7 +31,17 @@ class DecisionTree extends React.Component {
   }
 
   render() {
-    const { data, height, position, scale, updatePositionAndZoom, width } = this.props;
+    const {
+      data,
+      height,
+      position,
+      scale,
+      updatePositionAndZoom,
+      width
+    } = this.props;
+
+    const treeVersion = data._version.split('.')[0];
+
     return (
       <DecisionTreeContainer
         style={{
@@ -41,6 +51,8 @@ class DecisionTree extends React.Component {
         }}
       >
         <NodeInformations
+          height={ height }
+          treeVersion={ treeVersion }
           updateSelectedNode={ this.updateSelectedNode }
           configuration={ data.configuration }
           treeData={ data.trees[_.keys(data.trees)[0]] }
@@ -49,6 +61,7 @@ class DecisionTree extends React.Component {
         <ContainerDimensions>
           {({ height, width }) => (
             <Tree
+              version={ treeVersion }
               updateSelectedNode={ this.updateSelectedNode }
               height={ height }
               width={ width }
