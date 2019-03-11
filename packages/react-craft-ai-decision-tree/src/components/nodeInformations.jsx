@@ -4,7 +4,6 @@ import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { height } from 'window-size';
 
 const NodeInformationsContainer = styled('div')`
   width: 200px;
@@ -36,8 +35,9 @@ const NodePredictions = ({ node, treeVersion, configuration }) => {
       value = node.prediction.value;
     }
   }
+
   return (
-    <div className="node-predictions">
+    <div className='node-predictions'>
       {value ? (
         <div
           style={{
@@ -51,7 +51,7 @@ const NodePredictions = ({ node, treeVersion, configuration }) => {
             <code>{configuration.output[0]}</code> {value}
           </div>
           <div>Confidence {(confidence * 100).toFixed(2)}%</div>
-          <div>Standard deviation {std.toFixed(2)}</div>
+          {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
         </div>
       ) : null}
     </div>
@@ -67,7 +67,7 @@ NodePredictions.propTypes = {
 const NodeStatistics = ({ node }) => {
   if (node.nb_samples) {
     return (
-      <div className="node-predictions">
+      <div className='node-predictions'>
         <h3 style={{ textAlign: 'center' }}>Statistics</h3>
         <ul style={{ listStyle: 'none', paddingInlineStart: 0 }}>
           <li>{node.nb_samples} samples</li>
@@ -114,7 +114,7 @@ class NodeDecisionRules extends React.Component {
       ? _.keys(this.props.node.decisionRules)
       : [];
     return (
-      <div className="node-decision-rules">
+      <div className='node-decision-rules'>
         <h3 style={{ textAlign: 'center' }}>Decision rules</h3>
         {!decisionRulesKeys.length ? (
           <div>N/A (root node)</div>
@@ -167,7 +167,7 @@ class NodeSplit extends React.Component {
 
   render() {
     return (
-      <div className="node-split">
+      <div className='node-split'>
         <h3 style={{ textAlign: 'center' }}>Splits</h3>
         {!this.props.node.children ? (
           <p>N/A (leaf node)</p>
@@ -250,42 +250,46 @@ class NodeInformations extends React.Component {
         this.props.treeData
       );
       return (
-        <NodeInformationsContainer
-          className="node-informations"
-          style={{ height: this.props.height }}
-        >
+        <NodeInformationsContainer className='node-informations'>
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'flex-end'
+              flexDirection: 'column',
+              flex: '1 1 auto'
             }}
           >
-            <button
-              style={{ cursor: 'pointer' }}
-              onClick={ this.closeNodeInformation }
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end'
+              }}
             >
-              X
-            </button>
+              <button
+                style={{ cursor: 'pointer' }}
+                onClick={ this.closeNodeInformation }
+              >
+                X
+              </button>
+            </div>
+            <NodePredictions
+              configuration={ this.props.configuration }
+              node={ selectedNode }
+              treeVersion={ this.props.treeVersion }
+            />
+            <NodeDecisionRules
+              context={ this.props.configuration.context }
+              node={ selectedNode }
+            />
+            <NodeSplit
+              context={ this.props.configuration.context }
+              node={ selectedNode }
+            />
+            <NodeStatistics node={ selectedNode } />
           </div>
-          <NodePredictions
-            configuration={ this.props.configuration }
-            node={ selectedNode }
-            treeVersion={ this.props.treeVersion }
-          />
-          <NodeDecisionRules
-            context={ this.props.configuration.context }
-            node={ selectedNode }
-          />
-          <NodeSplit
-            context={ this.props.configuration.context }
-            node={ selectedNode }
-          />
-          <NodeStatistics node={ selectedNode } />
         </NodeInformationsContainer>
       );
     }
     else {
-      return <div className="node-informations" />;
+      return <div className='node-informations' />;
     }
   }
 }

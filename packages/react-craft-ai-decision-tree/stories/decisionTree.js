@@ -5,8 +5,8 @@ import DecisionTree from '../src/';
 import PropTypes from 'prop-types';
 import React from 'react';
 import smallTree from './smallTree.json';
-import Storage from './testComponent';
 import { storiesOf } from '@storybook/react';
+import TestComponent from './TestComponent';
 import tree from './tree.json';
 import treeV2 from './treeV2-regression.json';
 import { number, withKnobs } from '@storybook/addon-knobs';
@@ -80,16 +80,6 @@ storiesOf('Tree displayed with fixed height', module)
       data={ tree }
     />
   ))
-  .add('test zoomed tree', () => (
-    <DecisionTree
-      width={ number('Width', 600, sizeBoundOptions) }
-      height={ number('Height', 500, sizeBoundOptions) }
-      position={ [0, 0] }
-      scale={ 0.25 }
-      data={ tree }
-    />
-  ))
-  .add('saving props', () => <Storage />)
   .add('fixed width', () => (
     <div
       style={{
@@ -126,7 +116,7 @@ storiesOf('Tree displayed with fixed height', module)
     </div>
   ))
   .add('width css', () => (
-    <div className="square">
+    <div className='square'>
       <DecisionTree data={ tree } />
     </div>
   ))
@@ -142,6 +132,16 @@ storiesOf('Tree displayed with fixed height', module)
         <DecisionTree data={ treeV2 } />
       </div>
     </div>
+  ))
+  .add('saving zoom and pan in parent component', () => <TestComponent />)
+  .add('with initial zoom tree', () => (
+    <DecisionTree
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
+      position={ [0, 0] }
+      scale={ 0.25 }
+      data={ tree }
+    />
   ));
 
 storiesOf('Tree displayed with fixed width', module)

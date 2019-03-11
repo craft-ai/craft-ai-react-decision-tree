@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import Box from '../utils/box';
-import { cx } from 'react-emotion';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';

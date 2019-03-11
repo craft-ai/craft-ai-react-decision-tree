@@ -1,8 +1,8 @@
-import DecisionTree from '../src/';
+import DecisionTree from '../src';
 import React from 'react';
 import tree from './tree.json';
 
-class Storage extends React.Component{
+class TestComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ class Storage extends React.Component{
       saveNewZoom: zoom,
       saveNewPos: pos
     });
-  }
+  };
 
   render() {
     return (
@@ -29,12 +29,22 @@ class Storage extends React.Component{
           scale={ this.state.saveNewZoom }
           position={ this.state.saveNewPos }
         />
-        <text>Current zoom value {this.state.saveNewZoom}<br></br>
-        Current position x :{this.state.saveNewPos[0]} y : {this.state.saveNewPos[1]}</text>
+        <div
+          style={{
+            backgroundColor: 'white',
+            border: 'solid 2px, black'
+          }}
+        >
+          <h4>Value of zoom and pan</h4>
+          <p>Current zoom value: {this.state.saveNewZoom}</p>
+          <p>
+            Current position: [{this.state.saveNewPos[0]},
+            {this.state.saveNewPos[1]}]
+          </p>
+        </div>
       </div>
     );
   }
 }
 
-export default Storage;
- 
+export default TestComponent;
