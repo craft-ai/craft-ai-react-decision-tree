@@ -104,7 +104,7 @@ function computeSvgSizeFromData(root) {
     if (node.parent) {
       node.treeNodeIdPath = _.clone(node.parent.treeNodeIdPath);
       node.treeNodeIdPath.push(node.id);
-      node.treePath = `${node.parent.treePath}${index}`;
+      node.treePath = `${node.parent.treePath};${index}`;
       node.decisionRules = _.isEmpty(node.parent.decisionRules)
         ? {}
         : _.cloneDeep(node.parent.decisionRules);
@@ -312,7 +312,7 @@ class Tree extends React.Component {
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
-        className="tree zoomed-tree"
+        className='tree zoomed-tree'
         style={{
           height: this.props.height,
           width: this.props.width

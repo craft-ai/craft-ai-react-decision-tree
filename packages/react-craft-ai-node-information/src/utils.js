@@ -1,24 +1,12 @@
-import _ from 'lodash';
-import { mix } from 'polished';
-import {
-  COLOR_LEAVES_CONFIDENCE_0,
-  COLOR_LEAVES_CONFIDENCE_1
-} from './constants';
-
-export function computeLeafColor(confidence) {
-  const blend = Math.pow(confidence, 3);
-  return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
-}
-
-export function findSelectedNode(path, tree) {
-  let pathArray = path.split(';');
+export default function findSelectedNode(path, tree) {
   // making the root node an exception
   if (path == '0') {
     return tree;
   }
   else {
     // remove the first element of the path because it is the root path;
-    return findSelectedNodeRecursion(_.tail(pathArray), tree, {});
+    let childrenPath = path.substr(1);
+    return findSelectedNodeRecursion(childrenPath, tree, {});
   }
 }
 
@@ -41,9 +29,9 @@ function findSelectedNodeRecursion(path, tree, decisionRules) {
     }
   }
   if (path.length !== 0) {
-    const indexChild = parseInt(path[0]);
+    const indexChild = parseInt(path.charAt(0));
     return findSelectedNodeRecursion(
-      _.tail(path),
+      path.substr(1),
       tree.children[indexChild],
       decisionRules
     );

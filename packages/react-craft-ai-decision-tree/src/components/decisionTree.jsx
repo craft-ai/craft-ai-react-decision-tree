@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
-import NodeInformations from './nodeInformations';
+import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';

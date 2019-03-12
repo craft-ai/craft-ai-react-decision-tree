@@ -134,7 +134,7 @@ class Nodes extends React.Component {
         onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltip }
         onClick={ setSelectedNode }
-        className="craft-nodes"
+        className='craft-nodes'
         style={{
           border:
             this.state.selectedNodeId === node.id
@@ -220,7 +220,7 @@ class Nodes extends React.Component {
         ref={ indexRef }
         onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltips }
-        className="craft-links"
+        className='craft-links'
         style={{
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
           left: x,
