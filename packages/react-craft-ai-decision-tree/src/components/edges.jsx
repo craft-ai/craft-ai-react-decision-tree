@@ -87,11 +87,11 @@ class Edges extends React.Component {
       .attr('transform', (d) => `translate(${d.x},${d.y})`)
       .remove();
 
-    // Update the links… (they are ordred)
+    // Update the links… (they are ordered)
     let link = svg.selectAll('path.link')
       .data(links, (d) => {
         d.linkClass = defaultLinksCssClass;
-        if (_.indexOf(edgePath, d.target.id) !== -1) {
+        if (edgePath.indexOf(d.target.id) !== -1) {
           d.linkClass = selectedLinksCssClass;
         }
         return d.target.id;

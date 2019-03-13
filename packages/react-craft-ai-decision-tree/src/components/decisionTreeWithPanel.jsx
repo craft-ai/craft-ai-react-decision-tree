@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
@@ -46,7 +45,7 @@ const DecisionTreeWithPanel = ({
             scale={ scale }
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
-            treeData={ data.trees[_.keys(data.trees)[0]] }
+            treeData={ data.trees[Object.keys(data.trees)[0]] }
           />
         )}
       </ContainerDimensions>
