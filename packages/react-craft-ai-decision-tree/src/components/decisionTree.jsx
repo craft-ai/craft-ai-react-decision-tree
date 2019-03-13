@@ -2,6 +2,7 @@ import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
 import PropTypes from 'prop-types';
 import React from 'react';
+import semver from 'semver';
 import styled from 'react-emotion';
 import Tree from './tree';
 
@@ -18,7 +19,7 @@ const DecisionTree = ({
   updateSelectedNode,
   updatePositionAndZoom
 }) => {
-  const treeVersion = data._version.split('.')[0];
+  const treeVersion = semver.major(data._version);
 
   return (
     <DecisionTreeContainer

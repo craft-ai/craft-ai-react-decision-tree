@@ -3,6 +3,7 @@ import { findSelectedNode } from '../../utils/utils';
 import Prediction from './prediction';
 import PropTypes from 'prop-types';
 import React from 'react';
+import semver from 'semver';
 import Split from './split';
 import Statistics from './statistics';
 import styled from 'react-emotion';
@@ -27,6 +28,7 @@ const NodeInformation = ({
   selectedNodePath
 }) => {
   if (selectedNodePath) {
+    const treeVersion = semver.major(tree._version);
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
 
     return (

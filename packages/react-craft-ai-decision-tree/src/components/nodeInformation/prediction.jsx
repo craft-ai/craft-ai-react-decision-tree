@@ -6,7 +6,7 @@ const Prediction = ({ node, treeVersion, configuration }) => {
   let confidence;
   let std;
   let value;
-  if (treeVersion == '1') {
+  if (treeVersion == 1) {
     confidence = node.confidence;
     std = node.standard_deviation;
     value = node.predicted_value;
@@ -46,7 +46,7 @@ const Prediction = ({ node, treeVersion, configuration }) => {
 Prediction.propTypes = {
   node: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
-  treeVersion: PropTypes.string.isRequired
+  treeVersion: PropTypes.number.isRequired
 };
 
 export default Prediction;

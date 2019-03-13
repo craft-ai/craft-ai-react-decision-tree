@@ -2,6 +2,7 @@ import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
+import semver from 'semver';
 import styled from 'react-emotion';
 import Tree from './tree';
 import React, { useState } from 'react';
@@ -19,7 +20,7 @@ const DecisionTreeWithPanel = ({
   updatePositionAndZoom
 }) => {
   const [selectedNode, setSelectedNode] = useState('');
-  const treeVersion = data._version.split('.')[0];
+  const treeVersion = semver.major(data._version);
 
   return (
     <DecisionTreeContainer
