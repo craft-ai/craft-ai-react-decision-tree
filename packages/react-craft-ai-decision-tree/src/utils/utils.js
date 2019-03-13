@@ -2,7 +2,8 @@ import _ from 'lodash';
 import { mix } from 'polished';
 import {
   COLOR_LEAVES_CONFIDENCE_0,
-  COLOR_LEAVES_CONFIDENCE_1
+  COLOR_LEAVES_CONFIDENCE_1,
+  NODE_PATH_SEPARATOR
 } from './constants';
 
 export function computeLeafColor(confidence) {
@@ -11,7 +12,7 @@ export function computeLeafColor(confidence) {
 }
 
 export function findSelectedNode(path, tree) {
-  let pathArray = path.split(';');
+  let pathArray = path.split(NODE_PATH_SEPARATOR);
   // making the root node an exception
   if (path == '0') {
     return tree;

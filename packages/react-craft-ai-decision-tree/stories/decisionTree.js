@@ -367,15 +367,15 @@ storiesOf('Using separate component', module)
   .add('Tree v1 node information - internal node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      selectedNodePath='0;0;1'
       tree={ tree }
+      selectedNodePath='0-0-1'
     />
   ))
   .add('Tree v1 node information - leaf node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      selectedNodePath='0;0;1;1;1;0;1'
       tree={ tree }
+      selectedNodePath='0-0-1-1-1-0-1'
     />
   ))
   .add('Tree v2 node information - root node', () => (
@@ -388,14 +388,14 @@ storiesOf('Using separate component', module)
   .add('Tree v2 node information - internal node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      selectedNodePath='0;0;1'
       tree={ treeV2 }
+      selectedNodePath='0-0-1'
     />
   ))
   .add('Tree v2 node information - leaf node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      selectedNodePath='0;0;1;0;0;0'
       tree={ treeV2 }
+      selectedNodePath='0-0-1-0-0-0'
     />
   ));

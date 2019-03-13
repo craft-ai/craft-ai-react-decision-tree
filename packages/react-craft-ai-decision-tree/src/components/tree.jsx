@@ -17,6 +17,7 @@ import {
   MARGIN,
   NODE_DEPTH,
   NODE_HEIGHT,
+  NODE_PATH_SEPARATOR,
   NODE_WIDTH,
   NODE_WIDTH_MARGIN,
   ZOOM_EXTENT
@@ -104,7 +105,7 @@ function computeSvgSizeFromData(root) {
     if (node.parent) {
       node.treeNodeIdPath = _.clone(node.parent.treeNodeIdPath);
       node.treeNodeIdPath.push(node.id);
-      node.treePath = `${node.parent.treePath};${index}`;
+      node.treePath = `${node.parent.treePath}${NODE_PATH_SEPARATOR}${index}`;
       node.decisionRules = _.isEmpty(node.parent.decisionRules)
         ? {}
         : _.cloneDeep(node.parent.decisionRules);
