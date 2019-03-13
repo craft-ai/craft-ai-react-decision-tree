@@ -101,7 +101,13 @@ class Edges extends React.Component {
     link
       .enter()
       .insert('path', 'g')
-      .attr('class', (d) => d.linkClass)
+      .attr(
+        'class',
+        (d) =>
+          `${d.linkClass} ${
+            d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
+          }`
+      )
       .attr('d', this.diagonal);
 
     // Transition exiting nodes to the parent's new position.
