@@ -3,13 +3,14 @@ import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class DecisionRules extends React.Component {
-  displayConditions = (key, index) => {
+const DecisionRules = ({ context, node }) => {
+  const displayConditions = (key, index) => {
+    console.log('node', node);
     const decisionRule = interpreter.reduceDecisionRules(
-      this.props.node.decisionRules[key]
+      node.decisionRules[key]
     );
     // Add the type to format properly the decision rule
-    decisionRule[0].type = this.props.context[key].type;
+    decisionRule[0].type = context[key].type;
     const text = interpreter
       .formatDecisionRules(decisionRule)
       .replace(/ /g, '\u00a0');
@@ -29,24 +30,20 @@ class DecisionRules extends React.Component {
     );
   };
 
-  render() {
-    const decisionRulesKeys = this.props.node
-      ? _.keys(this.props.node.decisionRules)
-      : [];
-    return (
-      <div className='node-decision-rules'>
-        <h3 style={{ textAlign: 'center' }}>Decision rules</h3>
-        {!decisionRulesKeys.length ? (
-          <div>N/A (root node)</div>
-        ) : (
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <tbody>{_.map(decisionRulesKeys, this.displayConditions)}</tbody>
-          </table>
-        )}
-      </div>
-    );
-  }
-}
+  const decisionRulesKeys = node ? _.keys(node.decisionRules) : [];
+  return (
+    <div className='node-decision-rules'>
+      <h3 style={{ textAlign: 'center' }}>Decision rules</h3>
+      {!decisionRulesKeys.length ? (
+        <div>N/A (root node)</div>
+      ) : (
+        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+          <tbody>{_.map(decisionRulesKeys, displayConditions)}</tbody>
+        </table>
+      )}
+    </div>
+  );
+};
 
 DecisionRules.propTypes = {
   context: PropTypes.object.isRequired,

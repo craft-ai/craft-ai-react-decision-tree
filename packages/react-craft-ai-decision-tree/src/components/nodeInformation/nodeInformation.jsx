@@ -19,76 +19,59 @@ const NodeInformationContainer = styled('div')`
   border-right: solid 1px;
 `;
 
-class NodeInformation extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showNodeInformations: false
-    };
-  }
-
-  closeNodeInformation = () => {
-    this.props.updateSelectedNode();
-  };
-
-  render() {
-    if (this.props.selectedNode) {
-      const selectedNode = findSelectedNode(
-        this.props.selectedNode,
-        this.props.treeData
-      );
-      return (
-        <NodeInformationContainer className='node-informations'>
+const NodeInformation = ({
+  updateSelectedNode,
+  configuration,
+  treeVersion,
+  treeData,
+  selectedNodePath
+}) => {
+  if (selectedNodePath) {
+    console.log('selectedNode NI', selectedNodePath);
+    console.log('Lets find a selected node');
+    const selectedNode = findSelectedNode(selectedNodePath, treeData);
+    console.log('selectedNode', selectedNode);
+    return (
+      <NodeInformationContainer className='node-informations'>
+        <div
+          style={{
+            flexDirection: 'column',
+            flex: '1 1 auto'
+          }}
+        >
           <div
             style={{
-              flexDirection: 'column',
-              flex: '1 1 auto'
+              display: 'flex',
+              justifyContent: 'flex-end'
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <button
-                style={{ cursor: 'pointer' }}
-                onClick={ this.closeNodeInformation }
-              >
-                X
-              </button>
-            </div>
-            <Prediction
-              configuration={ this.props.configuration }
-              node={ selectedNode }
-              treeVersion={ this.props.treeVersion }
-            />
-            <DecisionRules
-              context={ this.props.configuration.context }
-              node={ selectedNode }
-            />
-            <Split
-              context={ this.props.configuration.context }
-              node={ selectedNode }
-            />
-            <Statistics node={ selectedNode } />
+            <button style={{ cursor: 'pointer' }} onClick={ updateSelectedNode }>
+              X
+            </button>
           </div>
-        </NodeInformationContainer>
-      );
-    }
-    else {
-      return <div className='node-informations' />;
-    }
+          <Prediction
+            configuration={ configuration }
+            node={ selectedNode }
+            treeVersion={ treeVersion }
+          />
+          <DecisionRules context={ configuration.context } node={ selectedNode } />
+          <Split context={ configuration.context } node={ selectedNode } />
+          <Statistics node={ selectedNode } />
+        </div>
+      </NodeInformationContainer>
+    );
   }
-}
+  else {
+    return <div className='node-informations' />;
+  }
+};
 
 NodeInformation.propTypes = {
   updateSelectedNode: PropTypes.func.isRequired,
   configuration: PropTypes.object.isRequired,
   treeVersion: PropTypes.string.isRequired,
   treeData: PropTypes.object.isRequired,
-  selectedNode: PropTypes.string.isRequired
+  selectedNodePath: PropTypes.string.isRequired
 };
 
 export default NodeInformation;

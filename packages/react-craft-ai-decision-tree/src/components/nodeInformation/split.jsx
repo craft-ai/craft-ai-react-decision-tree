@@ -3,11 +3,10 @@ import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class Split extends React.Component {
-  displaySplit = (child, key) => {
+const Split = ({ context, node }) => {
+  const displaySplit = (child, key) => {
     try {
-      const propertyType = this.props.context[child.decision_rule.property]
-        .type;
+      const propertyType = context[child.decision_rule.property].type;
       const text = interpreter.formatDecisionRules([
         {
           operand: child.decision_rule.operand,
@@ -35,21 +34,19 @@ class Split extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <div className='node-split'>
-        <h3 style={{ textAlign: 'center' }}>Splits</h3>
-        {!this.props.node.children ? (
-          <p>N/A (leaf node)</p>
-        ) : (
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <tbody>{_.map(this.props.node.children, this.displaySplit)}</tbody>
-          </table>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className='node-split'>
+      <h3 style={{ textAlign: 'center' }}>Splits</h3>
+      {!node.children ? (
+        <p>N/A (leaf node)</p>
+      ) : (
+        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+          <tbody>{_.map(node.children, displaySplit)}</tbody>
+        </table>
+      )}
+    </div>
+  );
+};
 
 Split.propTypes = {
   node: PropTypes.object.isRequired,

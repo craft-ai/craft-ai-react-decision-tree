@@ -11,6 +11,7 @@ export function computeLeafColor(confidence) {
 }
 
 export function findSelectedNode(path, tree) {
+  console.log('path', path);
   let pathArray = path.split(';');
   // making the root node an exception
   if (path == '0') {

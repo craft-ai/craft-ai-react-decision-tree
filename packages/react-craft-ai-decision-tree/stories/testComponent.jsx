@@ -1,4 +1,4 @@
-import DecisionTree from '../src';
+import DecisionTreeWithPanel from '../src';
 import React from 'react';
 import tree from './tree.json';
 
@@ -21,7 +21,7 @@ class TestComponent extends React.Component {
   render() {
     return (
       <div>
-        <DecisionTree
+        <DecisionTreeWithPanel
           width={ 600 }
           height={ 400 }
           data={ tree }
