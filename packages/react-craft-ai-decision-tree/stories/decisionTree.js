@@ -360,54 +360,42 @@ storiesOf('Using separate component', module)
   .add('Tree v1 node information - root node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ tree.configuration }
-      treeVersion={ tree._version.split('.')[0] }
-      treeData={ tree.trees[_.keys(tree.trees)[0]] }
+      tree={ tree }
       selectedNodePath='0'
     />
   ))
   .add('Tree v1 node information - internal node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ tree.configuration }
-      treeVersion={ tree._version.split('.')[0] }
-      treeData={ tree.trees[_.keys(tree.trees)[0]] }
       selectedNodePath='0;0;1'
+      tree={ tree }
     />
   ))
   .add('Tree v1 node information - leaf node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ tree.configuration }
-      treeVersion={ tree._version.split('.')[0] }
-      treeData={ tree.trees[_.keys(tree.trees)[0]] }
       selectedNodePath='0;0;1;1;1;0;1'
+      tree={ tree }
     />
   ))
   .add('Tree v2 node information - root node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ treeV2.configuration }
-      treeVersion={ treeV2._version.split('.')[0] }
-      treeData={ treeV2.trees[_.keys(treeV2.trees)[0]] }
+      tree={ treeV2 }
       selectedNodePath='0'
     />
   ))
   .add('Tree v2 node information - internal node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ treeV2.configuration }
-      treeVersion={ treeV2._version.split('.')[0] }
-      treeData={ treeV2.trees[_.keys(treeV2.trees)[0]] }
       selectedNodePath='0;0;1'
+      tree={ treeV2 }
     />
   ))
   .add('Tree v2 node information - leaf node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      configuration={ treeV2.configuration }
-      treeVersion={ treeV2._version.split('.')[0] }
-      treeData={ treeV2.trees[_.keys(treeV2.trees)[0]] }
       selectedNodePath='0;0;1;0;0;0'
+      tree={ treeV2 }
     />
   ));

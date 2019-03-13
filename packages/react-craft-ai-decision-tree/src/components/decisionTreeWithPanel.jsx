@@ -31,12 +31,9 @@ const DecisionTreeWithPanel = ({
       }}
     >
       <NodeInformations
-        height={ height }
-        treeVersion={ treeVersion }
-        updateSelectedNode={ setSelectedNode }
-        configuration={ data.configuration }
-        treeData={ data.trees[_.keys(data.trees)[0]] }
+        tree={ data }
         selectedNodePath={ selectedNode }
+        updateSelectedNode={ setSelectedNode }
       />
       <ContainerDimensions>
         {({ height, width }) => (

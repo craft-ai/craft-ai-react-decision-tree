@@ -20,15 +20,10 @@ const NodeInformationContainer = styled('div')`
   border-right: solid 1px;
 `;
 
-const NodeInformation = ({
-  updateSelectedNode,
-  configuration,
-  treeVersion,
-  treeData,
-  selectedNodePath
-}) => {
+const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
   if (selectedNodePath) {
     const treeVersion = semver.major(tree._version);
+    const treeData = tree.trees[Object.keys(tree.trees)[0]];
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
 
     return (
@@ -50,12 +45,15 @@ const NodeInformation = ({
             </button>
           </div>
           <Prediction
-            configuration={ configuration }
+            configuration={ tree.configuration }
             node={ selectedNode }
             treeVersion={ treeVersion }
           />
-          <DecisionRules context={ configuration.context } node={ selectedNode } />
-          <Split context={ configuration.context } node={ selectedNode } />
+          <DecisionRules
+            context={ tree.configuration.context }
+            node={ selectedNode }
+          />
+          <Split context={ tree.configuration.context } node={ selectedNode } />
           <Statistics node={ selectedNode } />
         </div>
       </NodeInformationContainer>
@@ -68,9 +66,7 @@ const NodeInformation = ({
 
 NodeInformation.propTypes = {
   updateSelectedNode: PropTypes.func.isRequired,
-  configuration: PropTypes.object.isRequired,
-  treeVersion: PropTypes.string.isRequired,
-  treeData: PropTypes.object.isRequired,
+  tree: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string.isRequired
 };
 
