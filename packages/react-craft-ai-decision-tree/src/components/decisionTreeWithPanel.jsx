@@ -20,7 +20,6 @@ const DecisionTreeWithPanel = ({
 }) => {
   const [selectedNode, setSelectedNode] = useState('');
   const treeVersion = data._version.split('.')[0];
-  console.log('selectedNode DT', selectedNode);
 
   return (
     <DecisionTreeContainer
@@ -56,8 +55,6 @@ const DecisionTreeWithPanel = ({
     </DecisionTreeContainer>
   );
 };
-
-console.log('DecisionTreeWithPanel', DecisionTreeWithPanel);
 
 DecisionTreeWithPanel.defaultProps = {
   position: [0, 0],

@@ -5,7 +5,6 @@ import React from 'react';
 
 const DecisionRules = ({ context, node }) => {
   const displayConditions = (key, index) => {
-    console.log('node', node);
     const decisionRule = interpreter.reduceDecisionRules(
       node.decisionRules[key]
     );

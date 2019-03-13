@@ -27,10 +27,8 @@ const NodeInformation = ({
   selectedNodePath
 }) => {
   if (selectedNodePath) {
-    console.log('selectedNode NI', selectedNodePath);
-    console.log('Lets find a selected node');
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
-    console.log('selectedNode', selectedNode);
+
     return (
       <NodeInformationContainer className='node-informations'>
         <div
