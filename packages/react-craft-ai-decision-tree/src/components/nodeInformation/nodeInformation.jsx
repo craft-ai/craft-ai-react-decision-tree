@@ -1,5 +1,7 @@
 import DecisionRules from './decisionRules';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { findSelectedNode } from '../../utils/utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Prediction from './prediction';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -26,6 +28,8 @@ const InformationContainer = styled('div')`
 
 const CloseButton = styled('button')`
   cursor: pointer;
+  border: none;
+  outline: none;
 `;
 
 const CloseButtonDiv = styled('div')`
@@ -40,11 +44,17 @@ const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
     const treeData = tree.trees[Object.keys(tree.trees)[0]];
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
 
+    const closeNodeInformation = () => {
+      updateSelectedNode(undefined);
+    };
+
     return (
       <NodeInformationContainer className='node-informations'>
         <InformationContainer>
           <CloseButtonDiv>
-            <CloseButton onClick={ updateSelectedNode }>X</CloseButton>
+            <CloseButton onClick={ closeNodeInformation }>
+              <FontAwesomeIcon icon={ faTimes } />
+            </CloseButton>
           </CloseButtonDiv>
           <Prediction
             configuration={ tree.configuration }

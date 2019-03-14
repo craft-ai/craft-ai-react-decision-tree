@@ -1,7 +1,11 @@
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { H3NodeInformation, TdNodeInformation } from './utils';
+import {
+  H3NodeInformation,
+  TableNodeInformation,
+  TdNodeInformation
+} from './utils';
 
 const DecisionRules = ({ context, node }) => {
   const displayConditions = (key, index) => {
@@ -40,9 +44,9 @@ const DecisionRules = ({ context, node }) => {
       {!decisionRulesKeys.length ? (
         <div>N/A (root node)</div>
       ) : (
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <TableNodeInformation>
           <tbody>{decisionRulesKeys.map(displayConditions)}</tbody>
-        </table>
+        </TableNodeInformation>
       )}
     </div>
   );

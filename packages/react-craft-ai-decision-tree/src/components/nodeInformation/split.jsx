@@ -1,7 +1,11 @@
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { H3NodeInformation, TdNodeInformation } from './utils';
+import {
+  H3NodeInformation,
+  TableNodeInformation,
+  TdNodeInformation
+} from './utils';
 
 const Split = ({ context, node }) => {
   const displaySplit = (child, key) => {
@@ -46,9 +50,9 @@ const Split = ({ context, node }) => {
       {!node.children ? (
         <p>N/A (leaf node)</p>
       ) : (
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <TableNodeInformation>
           <tbody>{node.children.map(displaySplit)}</tbody>
-        </table>
+        </TableNodeInformation>
       )}
     </div>
   );

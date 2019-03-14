@@ -265,7 +265,7 @@ Nodes.propTypes = {
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
-  version: PropTypes.string.isRequired
+  version: PropTypes.number.isRequired
 };
 
 export default Nodes;

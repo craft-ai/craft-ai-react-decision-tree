@@ -357,7 +357,7 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
-  version: PropTypes.string.isRequired,
+  version: PropTypes.number.isRequired,
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,

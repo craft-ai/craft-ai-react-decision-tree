@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
 import bigTree from './bigTree.json';
+import ParentComponent from './ParentComponent';
 import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
-import TestComponent from './TestComponent';
 import tree from './tree.json';
 import treeV2 from './treeV2-regression.json';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
@@ -125,7 +125,7 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
-  .add('saving zoom and pan in parent component', () => <TestComponent />)
+  .add('saving zoom and pan in parent component', () => <ParentComponent />)
   .add('with initial zoom tree', () => (
     <DecisionTreeWithPanel
       width={ number('Width', 600, sizeBoundOptions) }
