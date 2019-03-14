@@ -1,7 +1,7 @@
-import _ from 'lodash';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { H3NodeInformation, TdNodeInformation } from './utils';
 
 const DecisionRules = ({ context, node }) => {
   const displayConditions = (key, index) => {
@@ -13,31 +13,35 @@ const DecisionRules = ({ context, node }) => {
     const text = interpreter
       .formatDecisionRules(decisionRule)
       .replace(/ /g, '\u00a0');
+    if (index !== 0) {
+      return (
+        <tr key={ key }>
+          <TdNodeInformation>
+            <code>{key}</code>
+          </TdNodeInformation>
+          <TdNodeInformation>{text}</TdNodeInformation>
+        </tr>
+      );
+    }
     return (
       <tr key={ key }>
-        <td
-          style={{
-            borderTop: index !== 0 ? 'solid 1px black' : 'none'
-          }}
-        >
+        <td>
           <code>{key}</code>
         </td>
-        <td style={{ borderTop: index !== 0 ? 'solid 1px black' : 'none' }}>
-          {text}
-        </td>
+        <td>{text}</td>
       </tr>
     );
   };
 
-  const decisionRulesKeys = node ? _.keys(node.decisionRules) : [];
+  const decisionRulesKeys = node ? Object.keys(node.decisionRules) : [];
   return (
     <div className='node-decision-rules'>
-      <h3 style={{ textAlign: 'center' }}>Decision rules</h3>
+      <H3NodeInformation>Decision rules</H3NodeInformation>
       {!decisionRulesKeys.length ? (
         <div>N/A (root node)</div>
       ) : (
         <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-          <tbody>{_.map(decisionRulesKeys, displayConditions)}</tbody>
+          <tbody>{decisionRulesKeys.map(displayConditions)}</tbody>
         </table>
       )}
     </div>

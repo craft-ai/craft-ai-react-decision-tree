@@ -1,7 +1,7 @@
-import _ from 'lodash';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { H3NodeInformation, TdNodeInformation } from './utils';
 
 const Split = ({ context, node }) => {
   const displaySplit = (child, key) => {
@@ -14,14 +14,20 @@ const Split = ({ context, node }) => {
           type: propertyType
         }
       ]);
+      if (key !== 0) {
+        return (
+          <tr key={ key }>
+            <TdNodeInformation>
+              {child.decision_rule.property}
+            </TdNodeInformation>
+            <TdNodeInformation>{text}</TdNodeInformation>
+          </tr>
+        );
+      }
       return (
         <tr key={ key }>
-          <td style={{ borderTop: key !== 0 ? 'solid 1px black' : 'none' }}>
-            {child.decision_rule.property}
-          </td>
-          <td style={{ borderTop: key !== 0 ? 'solid 1px black' : 'none' }}>
-            {text}
-          </td>
+          <td>{child.decision_rule.property}</td>
+          <td>{text}</td>
         </tr>
       );
     }
@@ -36,12 +42,12 @@ const Split = ({ context, node }) => {
 
   return (
     <div className='node-split'>
-      <h3 style={{ textAlign: 'center' }}>Splits</h3>
+      <H3NodeInformation>Splits</H3NodeInformation>
       {!node.children ? (
         <p>N/A (leaf node)</p>
       ) : (
         <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-          <tbody>{_.map(node.children, displaySplit)}</tbody>
+          <tbody>{node.children.map(displaySplit)}</tbody>
         </table>
       )}
     </div>

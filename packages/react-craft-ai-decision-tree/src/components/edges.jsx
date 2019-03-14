@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { css } from 'react-emotion';
 import { select as d3Select } from 'd3';
 import PropTypes from 'prop-types';

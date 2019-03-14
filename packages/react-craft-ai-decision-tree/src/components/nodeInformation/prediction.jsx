@@ -1,6 +1,12 @@
 import { computeLeafColor } from '../../utils/utils';
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from '@emotion/styled';
+
+const OutputDiv = styled('div')`
+  font-size: 1.3em;
+  margin-bottom: 5px;
+`;
 
 const Prediction = ({ node, treeVersion, configuration }) => {
   let confidence;
@@ -21,23 +27,23 @@ const Prediction = ({ node, treeVersion, configuration }) => {
     }
   }
 
+  const PredictionDiv = styled('div')`
+    background-color: ${computeLeafColor(confidence)};
+    padding: 10px;
+    text-align: center;
+    margin-top: 10;
+  `;
+
   return (
     <div className='node-predictions'>
       {value ? (
-        <div
-          style={{
-            backgroundColor: computeLeafColor(confidence),
-            padding: '10px',
-            textAlign: 'center',
-            marginTop: 10
-          }}
-        >
-          <div style={{ fontSize: '1.3em', marginBottom: 5 }}>
+        <PredictionDiv>
+          <OutputDiv>
             <code>{configuration.output[0]}</code> {value}
-          </div>
+          </OutputDiv>
           <div>Confidence {(confidence * 100).toFixed(2)}%</div>
           {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
-        </div>
+        </PredictionDiv>
       ) : null}
     </div>
   );

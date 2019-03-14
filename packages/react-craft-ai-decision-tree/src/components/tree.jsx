@@ -4,7 +4,7 @@ import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {
   event as d3Event,
   hierarchy as d3Hierarchy,

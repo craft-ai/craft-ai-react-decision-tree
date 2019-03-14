@@ -1,9 +1,8 @@
-import _ from 'lodash';
 import ContainerDimensions from 'react-container-dimensions';
 import PropTypes from 'prop-types';
 import React from 'react';
 import semver from 'semver';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Tree from './tree';
 
 const DecisionTreeContainer = styled('div')`
@@ -40,7 +39,7 @@ const DecisionTree = ({
             scale={ scale }
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
-            treeData={ data.trees[_.keys(data.trees)[0]] }
+            treeData={ data.trees[Object.keys(data.trees)[0]] }
           />
         )}
       </ContainerDimensions>

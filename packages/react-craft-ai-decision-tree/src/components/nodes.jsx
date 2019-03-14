@@ -4,7 +4,7 @@ import { interpreter } from 'craft-ai';
 import Node from './node';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
   COLOR_EDGES_CAPTION_BG,
@@ -86,23 +86,7 @@ class Nodes extends React.Component {
     let text;
     let color;
 
-    if (this.props.version == '2') {
-      if (!_.isUndefined(node.data.prediction)) {
-        // leaf
-        color = computeLeafColor(node.data.prediction.confidence);
-        text = _.isNull(node.data.prediction.value)
-          ? ''
-          : _.isFinite(node.data.prediction.value)
-            ? parseFloat(node.data.prediction.value.toFixed(3))
-              .toString()
-            : node.data.prediction.value;
-      }
-      else {
-        // node
-        text = node.data.children[0].decision_rule.property;
-      }
-    }
-    else {
+    if (this.props.version == 1) {
       if (_.isUndefined(node.children)) {
         // leaf
         color = computeLeafColor(node.data.confidence);
@@ -116,6 +100,22 @@ class Nodes extends React.Component {
       else {
         // node
         text = node.children[0].data.decision_rule.property;
+      }
+    }
+    else {
+      if (!_.isUndefined(node.data.prediction)) {
+        // leaf
+        color = computeLeafColor(node.data.prediction.confidence);
+        text = _.isNull(node.data.prediction.value)
+          ? ''
+          : _.isFinite(node.data.prediction.value)
+            ? parseFloat(node.data.prediction.value.toFixed(3))
+              .toString()
+            : node.data.prediction.value;
+      }
+      else {
+        // node
+        text = node.data.children[0].decision_rule.property;
       }
     }
 
@@ -134,7 +134,7 @@ class Nodes extends React.Component {
         onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltip }
         onClick={ setSelectedNode }
-        className='craft-nodes'
+        className='craft-nodes '
         style={{
           border:
             this.state.selectedNodeId === node.id

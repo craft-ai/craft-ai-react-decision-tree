@@ -20,6 +20,20 @@ const NodeInformationContainer = styled('div')`
   border-right: solid 1px;
 `;
 
+const InformationContainer = styled('div')`
+  flex: 1 1 auto;
+`;
+
+const CloseButton = styled('button')`
+  cursor: pointer;
+`;
+
+const CloseButtonDiv = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+`;
+
 const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
   if (selectedNodePath) {
     const treeVersion = semver.major(tree._version);
@@ -28,22 +42,10 @@ const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
 
     return (
       <NodeInformationContainer className='node-informations'>
-        <div
-          style={{
-            flexDirection: 'column',
-            flex: '1 1 auto'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end'
-            }}
-          >
-            <button style={{ cursor: 'pointer' }} onClick={ updateSelectedNode }>
-              X
-            </button>
-          </div>
+        <InformationContainer>
+          <CloseButtonDiv>
+            <CloseButton onClick={ updateSelectedNode }>X</CloseButton>
+          </CloseButtonDiv>
           <Prediction
             configuration={ tree.configuration }
             node={ selectedNode }
@@ -55,7 +57,7 @@ const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
           />
           <Split context={ tree.configuration.context } node={ selectedNode } />
           <Statistics node={ selectedNode } />
-        </div>
+        </InformationContainer>
       </NodeInformationContainer>
     );
   }

@@ -1,5 +1,5 @@
 import { COLOR_NODES } from '../utils/constants';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 const Node = styled('div')`
   position: absolute;

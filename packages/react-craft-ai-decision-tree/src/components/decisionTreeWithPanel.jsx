@@ -2,7 +2,7 @@ import ContainerDimensions from 'react-container-dimensions';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import semver from 'semver';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Tree from './tree';
 import React, { useState } from 'react';
 
