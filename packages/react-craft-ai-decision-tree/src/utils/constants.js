@@ -16,7 +16,6 @@ export const NODE_HEIGHT = 30;
 export const NODE_DEPTH = 100;
 
 // Color of the nodes and edges
-export const COLOR_EDGES_CAPTION_BG = 'rgba(255, 255, 255, 0.5)';
 export const SELECTED_COLOR_EDGES = '#FF7F00';
 export const DEFAULT_COLOR_EDGES = '#ddd';
 export const COLOR_NODES = '#ddd';
@@ -28,3 +27,9 @@ export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';
 
 // Node path
 export const NODE_PATH_SEPARATOR = '-';
+
+// Edges width
+export const DEFAULT_STROKE_WIDTH_RATIO = 30;
+export const ADDITIONAL_SELECTED_STROKE_WIDTH = 1;
+export const DEFAULT_MINIMUM_STROKE_WIDTH = 1.5;
+export const DEFAULT_SELECTED_MINIMUM_STROKE_WIDTH = 2;

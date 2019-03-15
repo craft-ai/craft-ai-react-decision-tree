@@ -125,6 +125,32 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
+  .add('display tree v2 - absolute width', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: 500,
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeV2 } edgeType='absolute' />
+      </div>
+    </div>
+  ))
+  .add('display tree v2 - relative width', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: 500,
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeV2 } edgeType='relative' />
+      </div>
+    </div>
+  ))
   .add('saving zoom and pan in parent component', () => <ParentComponent />)
   .add('with initial zoom tree', () => (
     <DecisionTreeWithPanel

@@ -16,7 +16,8 @@ const DecisionTree = ({
   height,
   width,
   updateSelectedNode,
-  updatePositionAndZoom
+  updatePositionAndZoom,
+  edgeType
 }) => {
   const treeVersion = semver.major(data._version);
 
@@ -40,6 +41,7 @@ const DecisionTree = ({
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
             treeData={ data.trees[Object.keys(data.trees)[0]] }
+            edgeType={ edgeType }
           />
         )}
       </ContainerDimensions>
@@ -52,7 +54,8 @@ DecisionTree.defaultProps = {
   scale: -1,
   updatePositionAndZoom: null,
   auto: false,
-  updateSelectedNode: undefined
+  updateSelectedNode: undefined,
+  edgeType: 'constant'
 };
 
 DecisionTree.propTypes = {
@@ -62,7 +65,8 @@ DecisionTree.propTypes = {
   data: PropTypes.object.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
-  updatePositionAndZoom: PropTypes.func
+  updatePositionAndZoom: PropTypes.func,
+  edgeType: PropTypes.string
 };
 
 export default DecisionTree;
