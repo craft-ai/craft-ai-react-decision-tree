@@ -68,8 +68,8 @@
                                                 "operator": "<",
                                                 "property": "weight"
                                               },
-                                              "nb_samples": 101,
                                               "prediction": {
+                                                "nb_samples": 101,
                                                 "confidence": 0.8678370118141174,
                                                 "distribution": [
                                                   0.8910891089108911,
@@ -94,8 +94,8 @@
                                                 "operator": ">=",
                                                 "property": "weight"
                                               },
-                                              "nb_samples": 8,
                                               "prediction": {
+                                                "nb_samples": 8,
                                                 "confidence": 0.7727745771408081,
                                                 "distribution": [
                                                   0.125,
@@ -127,8 +127,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 6,
                                           "prediction": {
+                                            "nb_samples": 6,
                                             "confidence": 0.9264835119247437,
                                             "distribution": [
                                               0.0,
@@ -164,8 +164,8 @@
                                                 "operator": "<",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 6,
                                               "prediction": {
+                                                "nb_samples": 6,
                                                 "confidence": 0.5260117053985596,
                                                 "distribution": [
                                                   0.0,
@@ -190,8 +190,8 @@
                                                 "operator": ">=",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 21,
                                               "prediction": {
+                                                "nb_samples": 21,
                                                 "confidence": 0.642105221748352,
                                                 "distribution": [
                                                   0.7142857142857143,
@@ -223,8 +223,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 4,
                                           "prediction": {
+                                            "nb_samples": 4,
                                             "confidence": 0.893635094165802,
                                             "distribution": [
                                               0.0,
@@ -265,8 +265,8 @@
                                         "operator": "<",
                                         "property": "upper margin"
                                       },
-                                      "nb_samples": 7,
                                       "prediction": {
+                                        "nb_samples": 7,
                                         "confidence": 0.9363170862197876,
                                         "distribution": [
                                           0.0,
@@ -295,8 +295,8 @@
                                                 "operator": "<",
                                                 "property": "interlinear spacing"
                                               },
-                                              "nb_samples": 2,
                                               "prediction": {
+                                                "nb_samples": 2,
                                                 "confidence": 0.8077218532562256,
                                                 "distribution": [
                                                   0.0,
@@ -321,8 +321,8 @@
                                                 "operator": ">=",
                                                 "property": "interlinear spacing"
                                               },
-                                              "nb_samples": 10,
                                               "prediction": {
+                                                "nb_samples": 10,
                                                 "confidence": 0.9545537233352661,
                                                 "distribution": [
                                                   1.0,
@@ -354,8 +354,8 @@
                                             "operator": ">=",
                                             "property": "exploitation"
                                           },
-                                          "nb_samples": 3,
                                           "prediction": {
+                                            "nb_samples": 3,
                                             "confidence": 0.8630361557006836,
                                             "distribution": [
                                               0.0,
@@ -405,8 +405,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 5,
                                       "prediction": {
+                                        "nb_samples": 5,
                                         "confidence": 0.9130585789680481,
                                         "distribution": [
                                           1.0,
@@ -431,8 +431,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 6,
                                       "prediction": {
+                                        "nb_samples": 6,
                                         "confidence": 0.9264835119247437,
                                         "distribution": [
                                           0.0,
@@ -464,8 +464,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 9,
                                   "prediction": {
+                                    "nb_samples": 9,
                                     "confidence": 0.9497578144073486,
                                     "distribution": [
                                       0.0,
@@ -508,8 +508,8 @@
                                     "operator": "<",
                                     "property": "peak number"
                                   },
-                                  "nb_samples": 5,
                                   "prediction": {
+                                    "nb_samples": 5,
                                     "confidence": 0.9130585789680481,
                                     "distribution": [
                                       0.0,
@@ -536,8 +536,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -562,8 +562,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 2,
                                       "prediction": {
+                                        "nb_samples": 2,
                                         "confidence": 0.8077218532562256,
                                         "distribution": [
                                           0.0,
@@ -604,8 +604,8 @@
                                     "operator": "<",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 2,
                                   "prediction": {
+                                    "nb_samples": 2,
                                     "confidence": 0.8077218532562256,
                                     "distribution": [
                                       0.0,
@@ -632,8 +632,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -658,8 +658,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           1.0,
@@ -718,8 +718,8 @@
                                     "operator": "<",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 10,
                                   "prediction": {
+                                    "nb_samples": 10,
                                     "confidence": 0.9545537233352661,
                                     "distribution": [
                                       0.0,
@@ -744,8 +744,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 8,
                                   "prediction": {
+                                    "nb_samples": 8,
                                     "confidence": 0.9438303112983704,
                                     "distribution": [
                                       0.0,
@@ -785,8 +785,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 12,
                                               "prediction": {
+                                                "nb_samples": 12,
                                                 "confidence": 0.9618390202522278,
                                                 "distribution": [
                                                   0.0,
@@ -811,8 +811,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 9,
                                               "prediction": {
+                                                "nb_samples": 9,
                                                 "confidence": 0.44134944677352905,
                                                 "distribution": [
                                                   0.4444444444444444,
@@ -846,8 +846,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 187,
                                               "prediction": {
+                                                "nb_samples": 187,
                                                 "confidence": 0.6660423874855042,
                                                 "distribution": [
                                                   0.27807486631016043,
@@ -872,8 +872,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 31,
                                               "prediction": {
+                                                "nb_samples": 31,
                                                 "confidence": 0.518724799156189,
                                                 "distribution": [
                                                   0.0,
@@ -916,8 +916,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 142,
                                               "prediction": {
+                                                "nb_samples": 142,
                                                 "confidence": 0.5344974994659424,
                                                 "distribution": [
                                                   0.0,
@@ -942,8 +942,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 5,
                                               "prediction": {
+                                                "nb_samples": 5,
                                                 "confidence": 0.9130585789680481,
                                                 "distribution": [
                                                   1.0,
@@ -975,8 +975,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 5,
                                           "prediction": {
+                                            "nb_samples": 5,
                                             "confidence": 0.9130585789680481,
                                             "distribution": [
                                               0.0,
@@ -1019,8 +1019,8 @@
                                             "operator": "<",
                                             "property": "intercolumnar distance"
                                           },
-                                          "nb_samples": 35,
                                           "prediction": {
+                                            "nb_samples": 35,
                                             "confidence": 0.9865797162055969,
                                             "distribution": [
                                               0.0,
@@ -1047,8 +1047,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 4,
                                               "prediction": {
+                                                "nb_samples": 4,
                                                 "confidence": 0.893635094165802,
                                                 "distribution": [
                                                   0.0,
@@ -1073,8 +1073,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 5,
                                               "prediction": {
+                                                "nb_samples": 5,
                                                 "confidence": 0.9130585789680481,
                                                 "distribution": [
                                                   0.0,
@@ -1115,8 +1115,8 @@
                                             "operator": "<",
                                             "property": "row number"
                                           },
-                                          "nb_samples": 3,
                                           "prediction": {
+                                            "nb_samples": 3,
                                             "confidence": 0.8630361557006836,
                                             "distribution": [
                                               0.0,
@@ -1141,8 +1141,8 @@
                                             "operator": ">=",
                                             "property": "row number"
                                           },
-                                          "nb_samples": 6,
                                           "prediction": {
+                                            "nb_samples": 6,
                                             "confidence": 0.9264835119247437,
                                             "distribution": [
                                               1.0,
@@ -1201,8 +1201,8 @@
                                         "operator": "<",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -1227,8 +1227,8 @@
                                         "operator": ">=",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 10,
                                       "prediction": {
+                                        "nb_samples": 10,
                                         "confidence": 0.9545537233352661,
                                         "distribution": [
                                           0.0,
@@ -1264,8 +1264,8 @@
                                             "operator": "<",
                                             "property": "intercolumnar distance"
                                           },
-                                          "nb_samples": 2,
                                           "prediction": {
+                                            "nb_samples": 2,
                                             "confidence": 0.8077218532562256,
                                             "distribution": [
                                               0.0,
@@ -1290,8 +1290,8 @@
                                             "operator": ">=",
                                             "property": "intercolumnar distance"
                                           },
-                                          "nb_samples": 14,
                                           "prediction": {
+                                            "nb_samples": 14,
                                             "confidence": 0.9671112895011902,
                                             "distribution": [
                                               1.0,
@@ -1327,8 +1327,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -1353,8 +1353,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 9,
                                               "prediction": {
+                                                "nb_samples": 9,
                                                 "confidence": 0.9497578144073486,
                                                 "distribution": [
                                                   0.0,
@@ -1386,8 +1386,8 @@
                                             "operator": ">=",
                                             "property": "modular ratio"
                                           },
-                                          "nb_samples": 4,
                                           "prediction": {
+                                            "nb_samples": 4,
                                             "confidence": 0.893635094165802,
                                             "distribution": [
                                               0.0,
@@ -1433,8 +1433,8 @@
                                 "operator": ">=",
                                 "property": "exploitation"
                               },
-                              "nb_samples": 10,
                               "prediction": {
+                                "nb_samples": 10,
                                 "confidence": 0.9545537233352661,
                                 "distribution": [
                                   0.0,
@@ -1494,8 +1494,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 13,
                                               "prediction": {
+                                                "nb_samples": 13,
                                                 "confidence": 0.6799573302268982,
                                                 "distribution": [
                                                   0.23076923076923078,
@@ -1520,8 +1520,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 226,
                                               "prediction": {
+                                                "nb_samples": 226,
                                                 "confidence": 0.7318804264068604,
                                                 "distribution": [
                                                   0.7522123893805309,
@@ -1555,8 +1555,8 @@
                                                 "operator": "<",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 22,
                                               "prediction": {
+                                                "nb_samples": 22,
                                                 "confidence": 0.9788175225257874,
                                                 "distribution": [
                                                   0.0,
@@ -1581,8 +1581,8 @@
                                                 "operator": ">=",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 8,
                                               "prediction": {
+                                                "nb_samples": 8,
                                                 "confidence": 0.9438303112983704,
                                                 "distribution": [
                                                   0.0,
@@ -1623,8 +1623,8 @@
                                             "operator": "<",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 98,
                                           "prediction": {
+                                            "nb_samples": 98,
                                             "confidence": 0.9198500514030457,
                                             "distribution": [
                                               0.9387755102040817,
@@ -1649,8 +1649,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 5,
                                           "prediction": {
+                                            "nb_samples": 5,
                                             "confidence": 0.9130585789680481,
                                             "distribution": [
                                               0.0,
@@ -1695,8 +1695,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 3,
                                               "prediction": {
+                                                "nb_samples": 3,
                                                 "confidence": 0.8630361557006836,
                                                 "distribution": [
                                                   0.0,
@@ -1721,8 +1721,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 67,
                                               "prediction": {
+                                                "nb_samples": 67,
                                                 "confidence": 0.6462624073028564,
                                                 "distribution": [
                                                   0.0,
@@ -1756,8 +1756,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 18,
                                               "prediction": {
+                                                "nb_samples": 18,
                                                 "confidence": 0.5865777730941772,
                                                 "distribution": [
                                                   0.6666666666666666,
@@ -1782,8 +1782,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 210,
                                               "prediction": {
+                                                "nb_samples": 210,
                                                 "confidence": 0.566882848739624,
                                                 "distribution": [
                                                   0.35714285714285715,
@@ -1826,8 +1826,8 @@
                                                 "operator": "<",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 250,
                                               "prediction": {
+                                                "nb_samples": 250,
                                                 "confidence": 0.8026309013366699,
                                                 "distribution": [
                                                   0.18,
@@ -1852,8 +1852,8 @@
                                                 "operator": ">=",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 190,
                                               "prediction": {
+                                                "nb_samples": 190,
                                                 "confidence": 0.6018112897872925,
                                                 "distribution": [
                                                   0.6263157894736842,
@@ -1887,8 +1887,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 347,
                                               "prediction": {
+                                                "nb_samples": 347,
                                                 "confidence": 0.8037320375442505,
                                                 "distribution": [
                                                   0.8184438040345822,
@@ -1913,8 +1913,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 11,
                                               "prediction": {
+                                                "nb_samples": 11,
                                                 "confidence": 0.9585137963294983,
                                                 "distribution": [
                                                   0.0,
@@ -1967,8 +1967,8 @@
                                 "operator": ">=",
                                 "property": "exploitation"
                               },
-                              "nb_samples": 111,
                               "prediction": {
+                                "nb_samples": 111,
                                 "confidence": 0.9957291483879089,
                                 "distribution": [
                                   1.0,
@@ -2010,8 +2010,8 @@
                                                 "operator": "<",
                                                 "property": "modular ratio"
                                               },
-                                              "nb_samples": 2,
                                               "prediction": {
+                                                "nb_samples": 2,
                                                 "confidence": 0.8077218532562256,
                                                 "distribution": [
                                                   0.0,
@@ -2036,8 +2036,8 @@
                                                 "operator": ">=",
                                                 "property": "modular ratio"
                                               },
-                                              "nb_samples": 25,
                                               "prediction": {
+                                                "nb_samples": 25,
                                                 "confidence": 0.9813119173049927,
                                                 "distribution": [
                                                   1.0,
@@ -2069,8 +2069,8 @@
                                             "operator": ">=",
                                             "property": "peak number"
                                           },
-                                          "nb_samples": 12,
                                           "prediction": {
+                                            "nb_samples": 12,
                                             "confidence": 0.9618390202522278,
                                             "distribution": [
                                               0.0,
@@ -2106,8 +2106,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 20,
                                               "prediction": {
+                                                "nb_samples": 20,
                                                 "confidence": 0.6779040694236755,
                                                 "distribution": [
                                                   0.0,
@@ -2132,8 +2132,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 59,
                                               "prediction": {
+                                                "nb_samples": 59,
                                                 "confidence": 0.7581441402435303,
                                                 "distribution": [
                                                   0.7966101694915254,
@@ -2165,8 +2165,8 @@
                                             "operator": ">=",
                                             "property": "exploitation"
                                           },
-                                          "nb_samples": 288,
                                           "prediction": {
+                                            "nb_samples": 288,
                                             "confidence": 0.8864037394523621,
                                             "distribution": [
                                               0.8993055555555556,
@@ -2209,8 +2209,8 @@
                                             "operator": "<",
                                             "property": "peak number"
                                           },
-                                          "nb_samples": 705,
                                           "prediction": {
+                                            "nb_samples": 705,
                                             "confidence": 0.5558823347091675,
                                             "distribution": [
                                               0.5687943262411348,
@@ -2237,8 +2237,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 64,
                                               "prediction": {
+                                                "nb_samples": 64,
                                                 "confidence": 0.380010187625885,
                                                 "distribution": [
                                                   0.421875,
@@ -2263,8 +2263,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 76,
                                               "prediction": {
+                                                "nb_samples": 76,
                                                 "confidence": 0.7416713237762451,
                                                 "distribution": [
                                                   0.19736842105263158,
@@ -2305,8 +2305,8 @@
                                             "operator": "<",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 16,
                                           "prediction": {
+                                            "nb_samples": 16,
                                             "confidence": 0.9711036086082458,
                                             "distribution": [
                                               1.0,
@@ -2333,8 +2333,8 @@
                                                 "operator": "<",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 72,
                                               "prediction": {
+                                                "nb_samples": 72,
                                                 "confidence": 0.9934309124946594,
                                                 "distribution": [
                                                   0.0,
@@ -2359,8 +2359,8 @@
                                                 "operator": ">=",
                                                 "property": "lower margin"
                                               },
-                                              "nb_samples": 5,
                                               "prediction": {
+                                                "nb_samples": 5,
                                                 "confidence": 0.4465939402580261,
                                                 "distribution": [
                                                   0.4,
@@ -2421,8 +2421,8 @@
                                                 "operator": "<",
                                                 "property": "row number"
                                               },
-                                              "nb_samples": 8,
                                               "prediction": {
+                                                "nb_samples": 8,
                                                 "confidence": 0.9438303112983704,
                                                 "distribution": [
                                                   1.0,
@@ -2447,8 +2447,8 @@
                                                 "operator": ">=",
                                                 "property": "row number"
                                               },
-                                              "nb_samples": 169,
                                               "prediction": {
+                                                "nb_samples": 169,
                                                 "confidence": 0.6672989130020142,
                                                 "distribution": [
                                                   0.17159763313609466,
@@ -2482,8 +2482,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 3,
                                               "prediction": {
+                                                "nb_samples": 3,
                                                 "confidence": 0.8630361557006836,
                                                 "distribution": [
                                                   0.0,
@@ -2508,8 +2508,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 28,
                                               "prediction": {
+                                                "nb_samples": 28,
                                                 "confidence": 0.9832807183265686,
                                                 "distribution": [
                                                   1.0,
@@ -2552,8 +2552,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 16,
                                               "prediction": {
+                                                "nb_samples": 16,
                                                 "confidence": 0.47634655237197876,
                                                 "distribution": [
                                                   0.0,
@@ -2578,8 +2578,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 8,
                                               "prediction": {
+                                                "nb_samples": 8,
                                                 "confidence": 0.9438303112983704,
                                                 "distribution": [
                                                   0.0,
@@ -2611,8 +2611,8 @@
                                             "operator": ">=",
                                             "property": "intercolumnar distance"
                                           },
-                                          "nb_samples": 22,
                                           "prediction": {
+                                            "nb_samples": 22,
                                             "confidence": 0.9788175225257874,
                                             "distribution": [
                                               1.0,
@@ -2655,8 +2655,8 @@
                                             "operator": "<",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 5,
                                           "prediction": {
+                                            "nb_samples": 5,
                                             "confidence": 0.9130585789680481,
                                             "distribution": [
                                               0.0,
@@ -2681,8 +2681,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 4,
                                           "prediction": {
+                                            "nb_samples": 4,
                                             "confidence": 0.893635094165802,
                                             "distribution": [
                                               0.0,
@@ -2714,8 +2714,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 8,
                                       "prediction": {
+                                        "nb_samples": 8,
                                         "confidence": 0.9438303112983704,
                                         "distribution": [
                                           0.0,
@@ -2774,8 +2774,8 @@
                                     "operator": "<",
                                     "property": "intercolumnar distance"
                                   },
-                                  "nb_samples": 22,
                                   "prediction": {
+                                    "nb_samples": 22,
                                     "confidence": 0.9788175225257874,
                                     "distribution": [
                                       0.0,
@@ -2802,8 +2802,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 4,
                                       "prediction": {
+                                        "nb_samples": 4,
                                         "confidence": 0.893635094165802,
                                         "distribution": [
                                           1.0,
@@ -2828,8 +2828,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 4,
                                       "prediction": {
+                                        "nb_samples": 4,
                                         "confidence": 0.893635094165802,
                                         "distribution": [
                                           0.0,
@@ -2872,8 +2872,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 6,
                                       "prediction": {
+                                        "nb_samples": 6,
                                         "confidence": 0.9264835119247437,
                                         "distribution": [
                                           0.0,
@@ -2902,8 +2902,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 6,
                                               "prediction": {
+                                                "nb_samples": 6,
                                                 "confidence": 0.9264835119247437,
                                                 "distribution": [
                                                   0.0,
@@ -2928,8 +2928,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 16,
                                               "prediction": {
+                                                "nb_samples": 16,
                                                 "confidence": 0.9711036086082458,
                                                 "distribution": [
                                                   0.0,
@@ -2963,8 +2963,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 9,
                                               "prediction": {
+                                                "nb_samples": 9,
                                                 "confidence": 0.9497578144073486,
                                                 "distribution": [
                                                   0.0,
@@ -2989,8 +2989,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 10,
                                               "prediction": {
+                                                "nb_samples": 10,
                                                 "confidence": 0.9545537233352661,
                                                 "distribution": [
                                                   1.0,
@@ -3038,8 +3038,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 21,
                                       "prediction": {
+                                        "nb_samples": 21,
                                         "confidence": 0.9778311848640442,
                                         "distribution": [
                                           0.0,
@@ -3068,8 +3068,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 3,
                                               "prediction": {
+                                                "nb_samples": 3,
                                                 "confidence": 0.8630361557006836,
                                                 "distribution": [
                                                   0.0,
@@ -3094,8 +3094,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 4,
                                               "prediction": {
+                                                "nb_samples": 4,
                                                 "confidence": 0.893635094165802,
                                                 "distribution": [
                                                   0.0,
@@ -3129,8 +3129,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 2,
                                               "prediction": {
+                                                "nb_samples": 2,
                                                 "confidence": 0.8077218532562256,
                                                 "distribution": [
                                                   0.0,
@@ -3155,8 +3155,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 9,
                                               "prediction": {
+                                                "nb_samples": 9,
                                                 "confidence": 0.9497578144073486,
                                                 "distribution": [
                                                   0.0,
@@ -3216,8 +3216,8 @@
                             "operator": ">=",
                             "property": "exploitation"
                           },
-                          "nb_samples": 16,
                           "prediction": {
+                            "nb_samples": 16,
                             "confidence": 0.9711036086082458,
                             "distribution": [
                               1.0,
@@ -3275,8 +3275,8 @@
                                         "operator": "<",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 3,
                                       "prediction": {
+                                        "nb_samples": 3,
                                         "confidence": 0.8630361557006836,
                                         "distribution": [
                                           0.0,
@@ -3303,8 +3303,8 @@
                                             "operator": "<",
                                             "property": "exploitation"
                                           },
-                                          "nb_samples": 2,
                                           "prediction": {
+                                            "nb_samples": 2,
                                             "confidence": 0.8077218532562256,
                                             "distribution": [
                                               0.0,
@@ -3329,8 +3329,8 @@
                                             "operator": ">=",
                                             "property": "exploitation"
                                           },
-                                          "nb_samples": 1,
                                           "prediction": {
+                                            "nb_samples": 1,
                                             "confidence": 0.6774609088897705,
                                             "distribution": [
                                               0.0,
@@ -3371,8 +3371,8 @@
                                         "operator": "<",
                                         "property": "upper margin"
                                       },
-                                      "nb_samples": 5,
                                       "prediction": {
+                                        "nb_samples": 5,
                                         "confidence": 0.9130585789680481,
                                         "distribution": [
                                           0.0,
@@ -3399,8 +3399,8 @@
                                             "operator": "<",
                                             "property": "modular ratio/interlinear spacing"
                                           },
-                                          "nb_samples": 132,
                                           "prediction": {
+                                            "nb_samples": 132,
                                             "confidence": 0.9067816138267517,
                                             "distribution": [
                                               0.0,
@@ -3427,8 +3427,8 @@
                                                 "operator": "<",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 2,
                                               "prediction": {
+                                                "nb_samples": 2,
                                                 "confidence": 0.28075236082077026,
                                                 "distribution": [
                                                   0.0,
@@ -3453,8 +3453,8 @@
                                                 "operator": ">=",
                                                 "property": "intercolumnar distance"
                                               },
-                                              "nb_samples": 3,
                                               "prediction": {
+                                                "nb_samples": 3,
                                                 "confidence": 0.8630361557006836,
                                                 "distribution": [
                                                   0.0,
@@ -3511,8 +3511,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -3537,8 +3537,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -3570,8 +3570,8 @@
                                     "operator": ">=",
                                     "property": "row number"
                                   },
-                                  "nb_samples": 12,
                                   "prediction": {
+                                    "nb_samples": 12,
                                     "confidence": 0.9618390202522278,
                                     "distribution": [
                                       0.0,
@@ -3620,8 +3620,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 4,
                                               "prediction": {
+                                                "nb_samples": 4,
                                                 "confidence": 0.893635094165802,
                                                 "distribution": [
                                                   0.0,
@@ -3646,8 +3646,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   1.0,
@@ -3681,8 +3681,8 @@
                                                 "operator": "<",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 2,
                                               "prediction": {
+                                                "nb_samples": 2,
                                                 "confidence": 0.8077218532562256,
                                                 "distribution": [
                                                   0.0,
@@ -3707,8 +3707,8 @@
                                                 "operator": ">=",
                                                 "property": "upper margin"
                                               },
-                                              "nb_samples": 16,
                                               "prediction": {
+                                                "nb_samples": 16,
                                                 "confidence": 0.9711036086082458,
                                                 "distribution": [
                                                   0.0,
@@ -3749,8 +3749,8 @@
                                             "operator": "<",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 4,
                                           "prediction": {
+                                            "nb_samples": 4,
                                             "confidence": 0.893635094165802,
                                             "distribution": [
                                               1.0,
@@ -3775,8 +3775,8 @@
                                             "operator": ">=",
                                             "property": "lower margin"
                                           },
-                                          "nb_samples": 3,
                                           "prediction": {
+                                            "nb_samples": 3,
                                             "confidence": 0.8630361557006836,
                                             "distribution": [
                                               0.0,
@@ -3817,8 +3817,8 @@
                                         "operator": "<",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -3843,8 +3843,8 @@
                                         "operator": ">=",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 14,
                                       "prediction": {
+                                        "nb_samples": 14,
                                         "confidence": 0.9671112895011902,
                                         "distribution": [
                                           0.0,
@@ -3891,8 +3891,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -3917,8 +3917,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -3950,8 +3950,8 @@
                                             "operator": ">=",
                                             "property": "peak number"
                                           },
-                                          "nb_samples": 12,
                                           "prediction": {
+                                            "nb_samples": 12,
                                             "confidence": 0.9618390202522278,
                                             "distribution": [
                                               0.0,
@@ -3985,8 +3985,8 @@
                                             "operator": "<",
                                             "property": "exploitation"
                                           },
-                                          "nb_samples": 2,
                                           "prediction": {
+                                            "nb_samples": 2,
                                             "confidence": 0.8077218532562256,
                                             "distribution": [
                                               0.0,
@@ -4013,8 +4013,8 @@
                                                 "operator": "<",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -4039,8 +4039,8 @@
                                                 "operator": ">=",
                                                 "property": "exploitation"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -4088,8 +4088,8 @@
                                         "operator": "<",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -4114,8 +4114,8 @@
                                         "operator": ">=",
                                         "property": "interlinear spacing"
                                       },
-                                      "nb_samples": 8,
                                       "prediction": {
+                                        "nb_samples": 8,
                                         "confidence": 0.9438303112983704,
                                         "distribution": [
                                           0.0,
@@ -4176,8 +4176,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 2,
                                       "prediction": {
+                                        "nb_samples": 2,
                                         "confidence": 0.8077218532562256,
                                         "distribution": [
                                           0.0,
@@ -4202,8 +4202,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 5,
                                       "prediction": {
+                                        "nb_samples": 5,
                                         "confidence": 0.9130585789680481,
                                         "distribution": [
                                           0.0,
@@ -4235,8 +4235,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 3,
                                   "prediction": {
+                                    "nb_samples": 3,
                                     "confidence": 0.8630361557006836,
                                     "distribution": [
                                       0.0,
@@ -4272,8 +4272,8 @@
                                         "operator": "<",
                                         "property": "upper margin"
                                       },
-                                      "nb_samples": 2,
                                       "prediction": {
+                                        "nb_samples": 2,
                                         "confidence": 0.8077218532562256,
                                         "distribution": [
                                           0.0,
@@ -4298,8 +4298,8 @@
                                         "operator": ">=",
                                         "property": "upper margin"
                                       },
-                                      "nb_samples": 3,
                                       "prediction": {
+                                        "nb_samples": 3,
                                         "confidence": 0.8630361557006836,
                                         "distribution": [
                                           0.0,
@@ -4333,8 +4333,8 @@
                                         "operator": "<",
                                         "property": "row number"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -4361,8 +4361,8 @@
                                             "operator": "<",
                                             "property": "row number"
                                           },
-                                          "nb_samples": 121,
                                           "prediction": {
+                                            "nb_samples": 121,
                                             "confidence": 0.9960806965827942,
                                             "distribution": [
                                               0.0,
@@ -4389,8 +4389,8 @@
                                                 "operator": "<",
                                                 "property": "interlinear spacing"
                                               },
-                                              "nb_samples": 1,
                                               "prediction": {
+                                                "nb_samples": 1,
                                                 "confidence": 0.6774609088897705,
                                                 "distribution": [
                                                   0.0,
@@ -4415,8 +4415,8 @@
                                                 "operator": ">=",
                                                 "property": "interlinear spacing"
                                               },
-                                              "nb_samples": 13,
                                               "prediction": {
+                                                "nb_samples": 13,
                                                 "confidence": 0.8558614253997803,
                                                 "distribution": [
                                                   0.0,
@@ -4480,8 +4480,8 @@
                                     "operator": "<",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 1,
                                   "prediction": {
+                                    "nb_samples": 1,
                                     "confidence": 0.6774609088897705,
                                     "distribution": [
                                       0.0,
@@ -4506,8 +4506,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 1,
                                   "prediction": {
+                                    "nb_samples": 1,
                                     "confidence": 0.6774609088897705,
                                     "distribution": [
                                       0.0,
@@ -4539,8 +4539,8 @@
                                 "operator": ">=",
                                 "property": "intercolumnar distance"
                               },
-                              "nb_samples": 2,
                               "prediction": {
+                                "nb_samples": 2,
                                 "confidence": 0.8077218532562256,
                                 "distribution": [
                                   0.0,
@@ -4594,8 +4594,8 @@
                                     "operator": "<",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 1,
                                   "prediction": {
+                                    "nb_samples": 1,
                                     "confidence": 0.6774609088897705,
                                     "distribution": [
                                       0.0,
@@ -4620,8 +4620,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 10,
                                   "prediction": {
+                                    "nb_samples": 10,
                                     "confidence": 0.9545537233352661,
                                     "distribution": [
                                       1.0,
@@ -4655,8 +4655,8 @@
                                     "operator": "<",
                                     "property": "intercolumnar distance"
                                   },
-                                  "nb_samples": 3,
                                   "prediction": {
+                                    "nb_samples": 3,
                                     "confidence": 0.8630361557006836,
                                     "distribution": [
                                       0.0,
@@ -4683,8 +4683,8 @@
                                         "operator": "<",
                                         "property": "intercolumnar distance"
                                       },
-                                      "nb_samples": 2,
                                       "prediction": {
+                                        "nb_samples": 2,
                                         "confidence": 0.8077218532562256,
                                         "distribution": [
                                           1.0,
@@ -4709,8 +4709,8 @@
                                         "operator": ">=",
                                         "property": "intercolumnar distance"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -4760,8 +4760,8 @@
                                     "operator": "<",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 2,
                                   "prediction": {
+                                    "nb_samples": 2,
                                     "confidence": 0.8077218532562256,
                                     "distribution": [
                                       0.0,
@@ -4786,8 +4786,8 @@
                                     "operator": ">=",
                                     "property": "exploitation"
                                   },
-                                  "nb_samples": 10,
                                   "prediction": {
+                                    "nb_samples": 10,
                                     "confidence": 0.9545537233352661,
                                     "distribution": [
                                       1.0,
@@ -4819,8 +4819,8 @@
                                 "operator": ">=",
                                 "property": "row number"
                               },
-                              "nb_samples": 27,
                               "prediction": {
+                                "nb_samples": 27,
                                 "confidence": 0.9826722145080566,
                                 "distribution": [
                                   0.0,
@@ -4861,8 +4861,8 @@
                             "operator": "<",
                             "property": "exploitation"
                           },
-                          "nb_samples": 1,
                           "prediction": {
+                            "nb_samples": 1,
                             "confidence": 0.6774609088897705,
                             "distribution": [
                               0.0,
@@ -4887,8 +4887,8 @@
                             "operator": ">=",
                             "property": "exploitation"
                           },
-                          "nb_samples": 12,
                           "prediction": {
+                            "nb_samples": 12,
                             "confidence": 0.9618390202522278,
                             "distribution": [
                               0.0,
@@ -4945,8 +4945,8 @@
                     "operator": "<",
                     "property": "row number"
                   },
-                  "nb_samples": 6,
                   "prediction": {
+                    "nb_samples": 6,
                     "confidence": 0.9264835119247437,
                     "distribution": [
                       0.0,
@@ -4971,8 +4971,8 @@
                     "operator": ">=",
                     "property": "row number"
                   },
-                  "nb_samples": 374,
                   "prediction": {
+                    "nb_samples": 374,
                     "confidence": 0.9987286329269409,
                     "distribution": [
                       0.0,
@@ -5008,8 +5008,8 @@
                         "operator": "<",
                         "property": "upper margin"
                       },
-                      "nb_samples": 3,
                       "prediction": {
+                        "nb_samples": 3,
                         "confidence": 0.8630361557006836,
                         "distribution": [
                           0.0,
@@ -5036,8 +5036,8 @@
                             "operator": "<",
                             "property": "intercolumnar distance"
                           },
-                          "nb_samples": 2,
                           "prediction": {
+                            "nb_samples": 2,
                             "confidence": 0.8077218532562256,
                             "distribution": [
                               0.0,
@@ -5064,8 +5064,8 @@
                                 "operator": "<",
                                 "property": "row number"
                               },
-                              "nb_samples": 2,
                               "prediction": {
+                                "nb_samples": 2,
                                 "confidence": 0.8077218532562256,
                                 "distribution": [
                                   0.0,
@@ -5094,8 +5094,8 @@
                                         "operator": "<",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -5120,8 +5120,8 @@
                                         "operator": ">=",
                                         "property": "exploitation"
                                       },
-                                      "nb_samples": 1,
                                       "prediction": {
+                                        "nb_samples": 1,
                                         "confidence": 0.6774609088897705,
                                         "distribution": [
                                           0.0,
@@ -5153,8 +5153,8 @@
                                     "operator": ">=",
                                     "property": "peak number"
                                   },
-                                  "nb_samples": 84,
                                   "prediction": {
+                                    "nb_samples": 84,
                                     "confidence": 0.9943640828132629,
                                     "distribution": [
                                       0.0,
@@ -5211,8 +5211,8 @@
                             "operator": "<",
                             "property": "exploitation"
                           },
-                          "nb_samples": 1,
                           "prediction": {
+                            "nb_samples": 1,
                             "confidence": 0.6774609088897705,
                             "distribution": [
                               0.0,
@@ -5237,8 +5237,8 @@
                             "operator": ">=",
                             "property": "exploitation"
                           },
-                          "nb_samples": 23,
                           "prediction": {
+                            "nb_samples": 23,
                             "confidence": 0.9797198176383972,
                             "distribution": [
                               0.0,
@@ -5270,8 +5270,8 @@
                         "operator": ">=",
                         "property": "lower margin"
                       },
-                      "nb_samples": 6,
                       "prediction": {
+                        "nb_samples": 6,
                         "confidence": 0.9264835119247437,
                         "distribution": [
                           0.0,

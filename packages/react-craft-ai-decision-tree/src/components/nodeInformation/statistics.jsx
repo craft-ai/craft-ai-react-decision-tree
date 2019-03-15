@@ -9,12 +9,12 @@ const Ul = styled('ul')`
 `;
 
 const Statistics = ({ node }) => {
-  if (node.nb_samples) {
+  if (node.prediction) {
     return (
       <div className='node-predictions'>
         <H3NodeInformation>Statistics</H3NodeInformation>
         <Ul>
-          <li>{node.nb_samples} samples</li>
+          <li>{node.prediction.nb_samples} samples</li>
         </Ul>
       </div>
     );

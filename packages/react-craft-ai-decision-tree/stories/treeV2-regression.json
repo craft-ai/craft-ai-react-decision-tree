@@ -61,8 +61,8 @@
                             "operator": "<",
                             "property": "free sulfur dioxide"
                           },
-                          "nb_samples": 8,
                           "prediction": {
+                            "nb_samples": 8,
                             "confidence": 0.7610452771186829,
                             "distribution": {
                               "standard_deviation": 0.75592893
@@ -76,8 +76,8 @@
                             "operator": ">=",
                             "property": "free sulfur dioxide"
                           },
-                          "nb_samples": 606,
                           "prediction": {
+                            "nb_samples": 606,
                             "confidence": 0.8899880051612854,
                             "distribution": {
                               "standard_deviation": 0.7243284
@@ -100,8 +100,8 @@
                             "operator": "<",
                             "property": "citric acid"
                           },
-                          "nb_samples": 61,
                           "prediction": {
+                            "nb_samples": 61,
                             "confidence": 0.8985923528671265,
                             "distribution": {
                               "standard_deviation": 0.6689851
@@ -115,8 +115,8 @@
                             "operator": ">=",
                             "property": "citric acid"
                           },
-                          "nb_samples": 56,
                           "prediction": {
+                            "nb_samples": 56,
                             "confidence": 0.883011519908905,
                             "distribution": {
                               "standard_deviation": 0.68376344
@@ -148,8 +148,8 @@
                             "operator": "<",
                             "property": "residual sugar"
                           },
-                          "nb_samples": 250,
                           "prediction": {
+                            "nb_samples": 250,
                             "confidence": 0.8896894454956055,
                             "distribution": {
                               "standard_deviation": 0.65300053
@@ -163,8 +163,8 @@
                             "operator": ">=",
                             "property": "residual sugar"
                           },
-                          "nb_samples": 188,
                           "prediction": {
+                            "nb_samples": 188,
                             "confidence": 0.8901800513267517,
                             "distribution": {
                               "standard_deviation": 0.6751907
@@ -187,8 +187,8 @@
                             "operator": "<",
                             "property": "sulphates"
                           },
-                          "nb_samples": 121,
                           "prediction": {
+                            "nb_samples": 121,
                             "confidence": 0.8893059492111206,
                             "distribution": {
                               "standard_deviation": 0.6562897
@@ -202,8 +202,8 @@
                             "operator": ">=",
                             "property": "sulphates"
                           },
-                          "nb_samples": 185,
                           "prediction": {
+                            "nb_samples": 185,
                             "confidence": 0.8897466659545898,
                             "distribution": {
                               "standard_deviation": 0.71042275
@@ -244,8 +244,8 @@
                             "operator": "<",
                             "property": "volatile acidity"
                           },
-                          "nb_samples": 31,
                           "prediction": {
+                            "nb_samples": 31,
                             "confidence": 0.8344518542289734,
                             "distribution": {
                               "standard_deviation": 0.77875006
@@ -259,8 +259,8 @@
                             "operator": ">=",
                             "property": "volatile acidity"
                           },
-                          "nb_samples": 20,
                           "prediction": {
+                            "nb_samples": 20,
                             "confidence": 0.8251354694366455,
                             "distribution": {
                               "standard_deviation": 0.6708204
@@ -283,8 +283,8 @@
                             "operator": "<",
                             "property": "density"
                           },
-                          "nb_samples": 51,
                           "prediction": {
+                            "nb_samples": 51,
                             "confidence": 0.8648616671562195,
                             "distribution": {
                               "standard_deviation": 0.7200218
@@ -298,8 +298,8 @@
                             "operator": ">=",
                             "property": "density"
                           },
-                          "nb_samples": 133,
                           "prediction": {
+                            "nb_samples": 133,
                             "confidence": 0.8897929191589355,
                             "distribution": {
                               "standard_deviation": 0.5773502
@@ -331,8 +331,8 @@
                             "operator": "<",
                             "property": "volatile acidity"
                           },
-                          "nb_samples": 1075,
                           "prediction": {
+                            "nb_samples": 1075,
                             "confidence": 0.8989134430885315,
                             "distribution": {
                               "standard_deviation": 0.5982493
@@ -346,8 +346,8 @@
                             "operator": ">=",
                             "property": "volatile acidity"
                           },
-                          "nb_samples": 50,
                           "prediction": {
+                            "nb_samples": 50,
                             "confidence": 0.8487614393234253,
                             "distribution": {
                               "standard_deviation": 0.74751294
@@ -370,8 +370,8 @@
                             "operator": "<",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 168,
                           "prediction": {
+                            "nb_samples": 168,
                             "confidence": 0.8793544173240662,
                             "distribution": {
                               "standard_deviation": 0.77582437
@@ -385,8 +385,8 @@
                             "operator": ">=",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 82,
                           "prediction": {
+                            "nb_samples": 82,
                             "confidence": 0.8650503754615784,
                             "distribution": {
                               "standard_deviation": 0.767548
@@ -434,8 +434,8 @@
                         "operator": "<",
                         "property": "alcohol"
                       },
-                      "nb_samples": 8,
                       "prediction": {
+                        "nb_samples": 8,
                         "confidence": 0.8888888955116272,
                         "distribution": {
                           "standard_deviation": 0.0
@@ -449,8 +449,8 @@
                         "operator": ">=",
                         "property": "alcohol"
                       },
-                      "nb_samples": 1,
                       "prediction": {
+                        "nb_samples": 1,
                         "confidence": 0.5,
                         "distribution": {
                           "standard_deviation": 0.0
@@ -475,8 +475,8 @@
                             "operator": "<",
                             "property": "density"
                           },
-                          "nb_samples": 18,
                           "prediction": {
+                            "nb_samples": 18,
                             "confidence": 0.7999383211135864,
                             "distribution": {
                               "standard_deviation": 0.8498365
@@ -490,8 +490,8 @@
                             "operator": ">=",
                             "property": "density"
                           },
-                          "nb_samples": 38,
                           "prediction": {
+                            "nb_samples": 38,
                             "confidence": 0.8338564038276672,
                             "distribution": {
                               "standard_deviation": 0.92230135
@@ -514,8 +514,8 @@
                             "operator": "<",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 1,
                           "prediction": {
+                            "nb_samples": 1,
                             "confidence": 0.5,
                             "distribution": {
                               "standard_deviation": 0.0
@@ -529,8 +529,8 @@
                             "operator": ">=",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 48,
                           "prediction": {
+                            "nb_samples": 48,
                             "confidence": 0.8605713248252869,
                             "distribution": {
                               "standard_deviation": 0.82406193
@@ -571,8 +571,8 @@
                             "operator": "<",
                             "property": "pH"
                           },
-                          "nb_samples": 522,
                           "prediction": {
+                            "nb_samples": 522,
                             "confidence": 0.8869389891624451,
                             "distribution": {
                               "standard_deviation": 0.7675097
@@ -586,8 +586,8 @@
                             "operator": ">=",
                             "property": "pH"
                           },
-                          "nb_samples": 290,
                           "prediction": {
+                            "nb_samples": 290,
                             "confidence": 0.8867453336715698,
                             "distribution": {
                               "standard_deviation": 0.7913215
@@ -610,8 +610,8 @@
                             "operator": "<",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 8,
                           "prediction": {
+                            "nb_samples": 8,
                             "confidence": 0.7737107276916504,
                             "distribution": {
                               "standard_deviation": 0.7071068
@@ -625,8 +625,8 @@
                             "operator": ">=",
                             "property": "total sulfur dioxide"
                           },
-                          "nb_samples": 2,
                           "prediction": {
+                            "nb_samples": 2,
                             "confidence": 0.6666666269302368,
                             "distribution": {
                               "standard_deviation": 0.0
@@ -658,8 +658,8 @@
                             "operator": "<",
                             "property": "residual sugar"
                           },
-                          "nb_samples": 214,
                           "prediction": {
+                            "nb_samples": 214,
                             "confidence": 0.8895719051361084,
                             "distribution": {
                               "standard_deviation": 0.7634538
@@ -673,8 +673,8 @@
                             "operator": ">=",
                             "property": "residual sugar"
                           },
-                          "nb_samples": 623,
                           "prediction": {
+                            "nb_samples": 623,
                             "confidence": 0.8966243863105774,
                             "distribution": {
                               "standard_deviation": 0.7608425
@@ -697,8 +697,8 @@
                             "operator": "<",
                             "property": "free sulfur dioxide"
                           },
-                          "nb_samples": 10,
                           "prediction": {
+                            "nb_samples": 10,
                             "confidence": 0.7725644111633301,
                             "distribution": {
                               "standard_deviation": 0.9189366
@@ -712,8 +712,8 @@
                             "operator": ">=",
                             "property": "free sulfur dioxide"
                           },
-                          "nb_samples": 30,
                           "prediction": {
+                            "nb_samples": 30,
                             "confidence": 0.8937973380088806,
                             "distribution": {
                               "standard_deviation": 0.5074163
