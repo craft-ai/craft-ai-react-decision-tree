@@ -37,7 +37,10 @@ const DecisionRules = ({ context, node }) => {
     );
   };
 
-  const decisionRulesKeys = node ? Object.keys(node.decisionRules) : [];
+  const decisionRulesKeys = node.decisionRules
+    ? Object.keys(node.decisionRules)
+    : [];
+
   return (
     <div className='node-decision-rules'>
       <H3NodeInformation>Decision rules</H3NodeInformation>
