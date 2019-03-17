@@ -2,6 +2,7 @@ import DecisionRules from './decisionRules';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { findSelectedNode } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { interpreter } from 'craft-ai';
 import Prediction from './prediction';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,8 +11,10 @@ import Split from './split';
 import Statistics from './statistics';
 import styled from 'react-emotion';
 
+const width = '200px';
+
 const NodeInformationContainer = styled('div')`
-  width: 200px;
+  width: ${width};
   display: flex;
   flex-direction: column;
   float: left;
@@ -43,6 +46,13 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
     const treeVersion = semver.major(tree._version);
     const treeData = tree.trees[Object.keys(tree.trees)[0]];
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
+    let min = undefined;
+    let max = undefined;
+    if (treeVersion == '2') {
+      const res = interpreter.distribution(treeData);
+      min = res.min;
+      max = res.max;
+    }
 
     return (
       <NodeInformationContainer className='node-informations'>
@@ -64,7 +74,11 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
             node={ selectedNode }
           />
           <Split context={ tree.configuration.context } node={ selectedNode } />
-          <Statistics node={ selectedNode } />
+          <Statistics
+            node={ selectedNode }
+            totalMin={ min }
+            totalMax={ max }
+          />
         </InformationContainer>
       </NodeInformationContainer>
     );

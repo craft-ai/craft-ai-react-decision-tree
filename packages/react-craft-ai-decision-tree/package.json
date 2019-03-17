@@ -64,7 +64,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.15",
     "@fortawesome/free-solid-svg-icons": "5.7.2",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "craft-ai": "1.15.4",
+    "craft-ai": "file:../../../craft-ai-client-js",
     "d3": "5.7.0",
     "emotion": "9.2.12",
     "lodash": "^4",

@@ -4380,10 +4380,8 @@ craft-ai@1.15.2:
     semver "5.5.0"
     whatwg-fetch "2.0.4"
 
-craft-ai@1.15.4:
+"craft-ai@file:../craft-ai-client-js":
   version "1.15.4"
-  resolved "https://registry.yarnpkg.com/craft-ai/-/craft-ai-1.15.4.tgz#8c8bf7f1ce0faf16cb47311f5015c87afa03b713"
-  integrity sha512-O/rEg5QcduGHcCvA34FrKm2G75O0fZmEVX8FbGMgbwRXRMqw44xOWn17cp9uy97QgAqdpDO7fpP36pBrV+vCXQ==
   dependencies:
     debug "3.1.0"
     http-proxy-agent "2.1.0"
