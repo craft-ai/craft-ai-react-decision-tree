@@ -48,7 +48,8 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
     let min = undefined;
     let max = undefined;
-    if (treeVersion == '2') {
+    console.log(interpreter);
+    if (treeVersion == 2) {
       const res = interpreter.distribution(treeData);
       min = res.min;
       max = res.max;
@@ -78,6 +79,8 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
             node={ selectedNode }
             totalMin={ min }
             totalMax={ max }
+            treeVersion={ treeVersion }
+            outputValues={ treeData.output_values }
           />
         </InformationContainer>
       </NodeInformationContainer>
