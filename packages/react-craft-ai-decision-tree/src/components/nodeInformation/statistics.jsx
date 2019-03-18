@@ -17,30 +17,37 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
     const plot = () => {
       const { value, standard_deviation, min, max, size } = interpreter.distribution(node);
       interpreter.distribution(node);
+      const samplesIt = <Ul>
+        <li>{size} samples</li>
+      </Ul>;
       if (_.isUndefined(standard_deviation)) {
-        return <Histogram
-          distribution={ value }
-          outputValues={ outputValues }
-        ></Histogram>;
+        return <div>
+          {samplesIt}
+          <Histogram
+            distribution={ value }
+            outputValues={ outputValues }
+            size={ size }
+          ></Histogram>
+        </div>;
       }
       else {
-        return <BoxPlot
-          mean={ value }
-          std={ standard_deviation }
-          min={ min }
-          max={ max }
-          size={ size }
-          totalMin={ totalMin }
-          totalMax={ totalMax }
-        ></BoxPlot>;
+        return <div>
+          {samplesIt}
+          <BoxPlot
+            mean={ value }
+            std={ standard_deviation }
+            min={ min }
+            max={ max }
+            size={ size }
+            totalMin={ totalMin }
+            totalMax={ totalMax }
+          ></BoxPlot>
+        </div>;
       }
     };
     return (
       <div className='node-predictions'>
         <H3NodeInformation>Statistics</H3NodeInformation>
-        <Ul>
-          {!_.isUndefined(node.prediction) ? <li>{node.prediction.nb_samples} samples</li> : null}
-        </Ul>
         {plot()}
       </div>
     );
@@ -50,8 +57,8 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
 
 Statistics.propTypes = {
   node: PropTypes.object.isRequired,
-  totalMin: PropTypes.number.isRequired,
-  totalMax: PropTypes.number.isRequired,
+  totalMin: PropTypes.number,
+  totalMax: PropTypes.number,
   treeVersion: PropTypes.number.isRequired,
   outputValues: PropTypes.array
 };
