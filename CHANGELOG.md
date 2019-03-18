@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Added
 
-- Diplay the number of samples on the leaves
+- Display the number of samples on the leaves
 - Add the possibility to import separate component:
   - DecisionTree with panel by default
   - DecisionTree alone
