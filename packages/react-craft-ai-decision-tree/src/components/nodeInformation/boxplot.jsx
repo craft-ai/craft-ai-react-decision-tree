@@ -1,8 +1,7 @@
 import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { select as d3Select, event, scaleLinear } from 'd3';
-import { get } from 'https';
+import { select as d3Select, scaleLinear } from 'd3';
 
 const rectangleCssClass = css`
   stroke-width: 2;
@@ -24,9 +23,6 @@ const tooltipCssClass = css`
   white-space: nowrap;
 `;
 
-const width = 200;
-const height = 100;
-const rectHeight = 20;
 const margin = {
   top: 5,
   down: 5,
@@ -41,7 +37,7 @@ class BoxPlot extends React.Component {
   }
 
   componentDidMount() {
-    const { totalMin, totalMax } = this.props;
+    const { totalMin, totalMax, width, height } = this.props;
     this.scaleX = scaleLinear()
       .domain([totalMin, totalMax])
       .range([margin.left, width - margin.right]);
@@ -98,12 +94,12 @@ class BoxPlot extends React.Component {
     this.createBoxPlot(this.props);
   }
 
-  createBoxPlot = ({ mean, std, min, max }) => {
+  createBoxPlot = ({ mean, std, min, max, width, height }) => {
     const node = this.node;
     const scaleX = this.scaleX;
     const scaleY = this.scaleY;
     const scaleVal = this.scaleVal;
-    const tooltip = this.tooltip;
+    const rectHeight = 20;
 
     d3Select(node)
       .selectAll('g')
@@ -209,29 +205,6 @@ class BoxPlot extends React.Component {
       .attr('y', (height - rectHeight) / 2)
       .attr('width', 2 * scaleVal(std))
       .attr('height', rectHeight);
-    
-    // // Add fake rectangle for hover
-    // container
-    //   .append('rect')
-    //   .attr('class', rectangleCssClass)
-    //   .attr('x', scaleX(mean) - scaleVal(std))
-    //   .attr('y', scaleY(0))
-    //   .attr('width', 30)
-    //   .attr('height', height)
-    //   .style('opacity', 0)
-    //   .on('mouseover', function() {
-    //     tooltip.transition()
-    //       .duration(200)
-    //       .style('opacity', 0.9);
-    //     return tooltip.html(`mean ${Math.round(mean * 100) / 100}<br/>standard deviation ${Math.round(std * 100) / 100}`)
-    //       .style('left', `${scaleX(mean)}px`)		
-    //       .style('top', `${(height - rectHeight) / 2}px`);	
-    //   })
-    //   .on('mouseout', function() {
-    //     return tooltip.transition()
-    //       .duration(200)
-    //       .style('opacity', 0);
-    //   });
 
     // Add the mean line
     container
@@ -250,7 +223,6 @@ class BoxPlot extends React.Component {
       .attr('y', (height - rectHeight) / 2 - 10)
       .attr('x', scaleX(mean))
       .text((Math.round(mean * 100) / 100));
-
   }
 
   render() {
@@ -261,6 +233,11 @@ class BoxPlot extends React.Component {
   }
 }
 
+BoxPlot.defaultProps = {
+  width: 200,
+  height: 100
+};
+
 BoxPlot.propTypes = {
   mean: PropTypes.number.isRequired,
   std: PropTypes.number.isRequired,
@@ -268,7 +245,9 @@ BoxPlot.propTypes = {
   max: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   totalMin: PropTypes.number,
-  totalMax: PropTypes.number
+  totalMax: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number
 };
 
 export default BoxPlot;

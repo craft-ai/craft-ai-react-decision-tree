@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { axisBottom, axisLeft, select as d3Select, scaleLinear } from 'd3';
 
-const width = 200;
-const height = 200;
-
 const margin = {
   top: 10,
   down: 30,
@@ -18,7 +15,7 @@ const width_ratio = 0.5;
 const tooltipCssClass = css`
   position: absolute;
   text-align: center;
-  margin-top: 3px;
+  margin-top: 10px;
   font: 12px sans-serif;
   background: lightsteelblue;
   border: 0px;
@@ -36,6 +33,7 @@ class Histogram extends React.Component {
   }
 
   componentDidMount() {
+    const { width, height } = this.props;
     d3Select(this.node)
       .attr('width', width)
       .attr('height', height);
@@ -58,6 +56,7 @@ class Histogram extends React.Component {
       .scale(this.scaleX);
     
     const yAxis = axisLeft()
+      .ticks(3)
       .scale(this.scaleY);
 
     d3Select(this.node)
@@ -154,10 +153,17 @@ class Histogram extends React.Component {
   }
 }
 
+Histogram.defaultProps = {
+  width: 200,
+  height: 100
+};
+
 Histogram.propTypes = {
   distribution: PropTypes.array.isRequired,
   outputValues: PropTypes.array.isRequired,
-  size: PropTypes.number.isRequired
+  size: PropTypes.number.isRequired,
+  width: PropTypes.number,
+  height: PropTypes.number  
 };
 
 export default Histogram;
