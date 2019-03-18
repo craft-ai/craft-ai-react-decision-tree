@@ -2,25 +2,37 @@ import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { select as d3Select, event, scaleLinear } from 'd3';
+import { get } from 'https';
 
 const rectangleCssClass = css`
   stroke-width: 2;
-  stroke: black;
+  stroke: none;
   fill: rgba(46,204,113,0.5);
 `;
 
 const tooltipCssClass = css`
-  position: absolute;			
-  text-align: center;			
-  width: 60px;					
-  height: 28px;					
-  padding: 2px;				
-  font: 12px sans-serif;		
-  background: lightsteelblue;	
-  border: 0px;		
+  position: absolute;
+  text-align: center;
+  margin-top: 3px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
   border-radius: 8px;			
-  pointer-events: none;			
+  pointer-events: none;
+  transform: translateX(-50%);
+  padding: 1px 10px 1px 10px;
+  white-space: nowrap;
 `;
+
+const width = 200;
+const height = 100;
+const rectHeight = 20;
+const margin = {
+  top: 5,
+  down: 5,
+  left: 15,
+  right: 15
+};
 
 class BoxPlot extends React.Component {
   constructor(props){
@@ -29,6 +41,56 @@ class BoxPlot extends React.Component {
   }
 
   componentDidMount() {
+    const { totalMin, totalMax } = this.props;
+    this.scaleX = scaleLinear()
+      .domain([totalMin, totalMax])
+      .range([margin.left, width - margin.right]);
+    
+    this.scaleY = scaleLinear()
+      .domain([0, 1])
+      .range([margin.top, height - margin.down]);
+    
+    this.scaleVal = scaleLinear()
+      .domain([0, Math.abs(totalMax - totalMin)])
+      .range([0, width]);
+
+    // Add the TotalMin - TotalMax line
+    d3Select(this.node)
+      .append('line')
+      .attr('stroke-width', 2)
+      .attr('stroke', 'black')
+      .attr('opacity', 0.3)
+      .attr('x1', this.scaleX(totalMin))
+      .attr('x2', this.scaleX(totalMax))
+      .attr('y1', this.scaleY(0.5))
+      .attr('y2', this.scaleY(0.5));
+
+    // Add Total Min text
+    d3Select(this.node)
+      .append('text')
+      .attr('y', this.scaleY(0.5) - 5)
+      .attr('opacity', 0.3)
+      .attr('x', this.scaleX(totalMin))
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 10)
+      .text((Math.round(totalMin * 100) / 100));
+  
+    // Add Total Max text
+    d3Select(this.node)
+      .append('text')
+      .attr('y', this.scaleY(0.5) - 5)
+      .attr('opacity', 0.3)
+      .attr('x', this.scaleX(totalMax))
+      .attr('font-size', 10)
+      .attr('text-anchor', 'middle')
+      .text((Math.round(totalMax * 100) / 100));
+    
+    // Define the div for the tooltip
+    this.tooltip = d3Select(this.div)
+      .append('div')	
+      .attr('class', tooltipCssClass)				
+      .style('opacity', 0);
+  
     this.createBoxPlot(this.props);
   }
 
@@ -36,120 +98,166 @@ class BoxPlot extends React.Component {
     this.createBoxPlot(this.props);
   }
 
-  createBoxPlot = ({ mean, std, min, max, totalMin, totalMax }) => {
-    const width = 200;
-    const height = 25;
-    const margin = 15;
-
+  createBoxPlot = ({ mean, std, min, max }) => {
     const node = this.node;
-    const scaleX = scaleLinear()
-      .domain([totalMin, totalMax])
-      .range([margin, width - margin]);
-    
-    const scaleVal = scaleLinear()
-      .domain([0, Math.abs(totalMax - totalMin)])
-      .range([0, width]);
-    
-    d3Select(node)
-      .selectAll('*')
-      .data(this.props)
-      .exit()
-      .remove();
-    
-    d3Select(node)
-      .selectAll('*')
-      .data(this.props)
-      .enter();
+    const scaleX = this.scaleX;
+    const scaleY = this.scaleY;
+    const scaleVal = this.scaleVal;
+    const tooltip = this.tooltip;
 
     d3Select(node)
+      .selectAll('g')
+      .remove();
+
+    let container = d3Select(node)
+      .append('g')
       .attr('width', width)
       .attr('height', height);
     
-    // Add the TotalMin - TotalMax line
-    d3Select(node)
-      .append('line')
-      .attr('stroke-width', 2)
-      .attr('stroke', 'black')
-      .attr('x1', scaleX(totalMin))
-      .attr('x2', scaleX(totalMax))
-      .attr('y1', height / 2)
-      .attr('y2', height / 2);
-
-    // Add Total Min text
-    d3Select(node)
-      .append('text')
-      .attr('y', height)
-      .attr('x', scaleX(totalMin))
-      .attr('text-anchor', 'middle')
-      .attr('font-size', 10)
-      .text((Math.round(totalMin * 100) / 100));
-    
-    // Add Total Max text
-    d3Select(node)
-      .append('text')
-      .attr('y', height)
-      .attr('x', scaleX(totalMax))
-      .attr('font-size', 10)
-      .attr('text-anchor', 'middle')
-      .text((Math.round(totalMax * 100) / 100));
-    
     // Add the min - max line
-    d3Select(node)
+    container
       .append('line')
       .attr('stroke-width', 4)
       .attr('stroke', 'black')
       .attr('x1', scaleX(min))
       .attr('x2', scaleX(max))
-      .attr('y1', height / 2)
-      .attr('y2', height / 2);
+      .attr('y1', scaleY(0.5))
+      .attr('y2', scaleY(0.5));
     
+    let minMaxTip = container
+      .append('g');
+    if (scaleX(max) - scaleX(min) > 20) {
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(min))
+        .attr('x2', scaleX(min))
+        .attr('y1', scaleY(0.5))
+        .attr('y2', scaleY(0.6));
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(max))
+        .attr('x2', scaleX(max))
+        .attr('y1', scaleY(0.5))
+        .attr('y2', scaleY(0.6));
+      minMaxTip.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 10)
+        .attr('y', scaleY(0.6) + 10)
+        .attr('x', scaleX(min))
+        .text((Math.round(min * 100) / 100));
+      minMaxTip.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 10)
+        .attr('y', scaleY(0.6) + 10)
+        .attr('x', scaleX(max))
+        .text((Math.round(max * 100) / 100));
+    }
+    else if (scaleX(max) - scaleX(min) > 0) {
+      const shift = 15;
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(min))
+        .attr('x2', scaleX(min) - shift)
+        .attr('y1', scaleY(0.5))
+        .attr('y2', scaleY(0.6));
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(min) - shift)
+        .attr('x2', scaleX(min) - shift)
+        .attr('y1', scaleY(0.6))
+        .attr('y2', scaleY(0.65));
+
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(max))
+        .attr('x2', scaleX(max) + shift)
+        .attr('y1', scaleY(0.5))
+        .attr('y2', scaleY(0.6));
+      minMaxTip.append('line')
+        .attr('stroke-width', 1)
+        .attr('stroke', 'black')
+        .attr('x1', scaleX(max) + shift)
+        .attr('x2', scaleX(max) + shift)
+        .attr('y1', scaleY(0.6))
+        .attr('y2', scaleY(0.65));
+      
+      minMaxTip.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 10)
+        .attr('y', scaleY(0.65) + 10)
+        .attr('x', scaleX(min) - shift)
+        .text((Math.round(min * 100) / 100));
+
+      minMaxTip.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 10)
+        .attr('y', scaleY(0.65) + 10)
+        .attr('x', scaleX(max) + shift)
+        .text((Math.round(max * 100) / 100));
+    }
+
     // Add the standard deviation rectangle
-    d3Select(node)
+    container
       .append('rect')
       .attr('class', rectangleCssClass)
       .attr('x', scaleX(mean) - scaleVal(std))
-      .attr('y', 0)
+      .attr('y', (height - rectHeight) / 2)
       .attr('width', 2 * scaleVal(std))
-      .attr('height', height);
-
-    // Define the div for the tooltip
-    const div = d3Select('body')
-      .append('div')	
-      .attr('class', tooltipCssClass)				
-      .style('opacity', 0);
+      .attr('height', rectHeight);
+    
+    // // Add fake rectangle for hover
+    // container
+    //   .append('rect')
+    //   .attr('class', rectangleCssClass)
+    //   .attr('x', scaleX(mean) - scaleVal(std))
+    //   .attr('y', scaleY(0))
+    //   .attr('width', 30)
+    //   .attr('height', height)
+    //   .style('opacity', 0)
+    //   .on('mouseover', function() {
+    //     tooltip.transition()
+    //       .duration(200)
+    //       .style('opacity', 0.9);
+    //     return tooltip.html(`mean ${Math.round(mean * 100) / 100}<br/>standard deviation ${Math.round(std * 100) / 100}`)
+    //       .style('left', `${scaleX(mean)}px`)		
+    //       .style('top', `${(height - rectHeight) / 2}px`);	
+    //   })
+    //   .on('mouseout', function() {
+    //     return tooltip.transition()
+    //       .duration(200)
+    //       .style('opacity', 0);
+    //   });
 
     // Add the mean line
-    d3Select(node)
+    container
       .append('line')
       .attr('stroke-width', 2)
       .attr('stroke', 'coral')
       .attr('x1', scaleX(mean))
       .attr('x2', scaleX(mean))
-      .attr('y1', 0)
-      .attr('y2', height)
-      .on('mouseover', function() {
-        div.transition()
-          .duration(200)
-          .style('opacity', 0.9);
-        return div.html(`mean<br/>${Math.round(mean * 100) / 100}`)
-          .style('left', `${event.pageX}px`)		
-          .style('top', `${event.pageY}px`);	
-      })
-      .on('mouseout', function() {
-        return div.transition()
-          .duration(200)
-          .style('opacity', 0);
-      });
+      .attr('y1', (height - rectHeight) / 2 - 2)
+      .attr('y2', (height + rectHeight) / 2 + 2);
+    
+    container
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 10)
+      .attr('y', (height - rectHeight) / 2 - 10)
+      .attr('x', scaleX(mean))
+      .text((Math.round(mean * 100) / 100));
 
-    d3Select(node)
-      .exit()
-      .remove();
   }
 
   render() {
-    // eslint-disable-next-line react/jsx-no-bind
-    return <svg ref={ (node) => this.node = node }>
-    </svg>;
+    return <div ref={ (div) => this.div = div } style={{ position: 'relative' }}>
+      <svg ref={ (node) => this.node = node }>
+      </svg>
+    </div>;
   }
 }
 
