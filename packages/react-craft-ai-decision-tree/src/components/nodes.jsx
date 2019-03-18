@@ -74,9 +74,11 @@ class Nodes extends React.Component {
 
   displayNode = (node, index) => {
     const setSelectedNode = () => {
-      this.props.updateSelectedNode(node.treePath);
-      this.props.highlightSelectedEdgePath(node.treeNodeIdPath);
-      this.setState({ selectedNodeId: node.id });
+      if (this.props.updateSelectedNode) {
+        this.props.updateSelectedNode(node.treePath);
+        this.props.highlightSelectedEdgePath(node.treeNodeIdPath);
+        this.setState({ selectedNodeId: node.id });
+      }
     };
 
     const indexRef = (input) => {
@@ -260,7 +262,7 @@ class Nodes extends React.Component {
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
   highlightSelectedEdgePath: PropTypes.func.isRequired,
-  updateSelectedNode: PropTypes.func.isRequired,
+  updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,

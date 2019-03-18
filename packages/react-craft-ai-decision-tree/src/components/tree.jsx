@@ -365,7 +365,7 @@ Tree.propTypes = {
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
   updatePositionAndZoom: PropTypes.func,
-  updateSelectedNode: PropTypes.func.isRequired
+  updateSelectedNode: PropTypes.func
 };
 
 export default Tree;

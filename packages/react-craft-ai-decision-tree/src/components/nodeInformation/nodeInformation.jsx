@@ -38,24 +38,22 @@ const CloseButtonDiv = styled('div')`
   margin-bottom: 10px;
 `;
 
-const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
+const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
   if (selectedNodePath) {
     const treeVersion = semver.major(tree._version);
     const treeData = tree.trees[Object.keys(tree.trees)[0]];
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
 
-    const closeNodeInformation = () => {
-      updateSelectedNode(undefined);
-    };
-
     return (
       <NodeInformationContainer className='node-informations'>
         <InformationContainer>
-          <CloseButtonDiv>
-            <CloseButton onClick={ closeNodeInformation }>
-              <FontAwesomeIcon icon={ faTimes } />
-            </CloseButton>
-          </CloseButtonDiv>
+          {closeNodeInformation ? (
+            <CloseButtonDiv>
+              <CloseButton onClick={ closeNodeInformation }>
+                <FontAwesomeIcon icon={ faTimes } />
+              </CloseButton>
+            </CloseButtonDiv>
+          ) : null}
           <Prediction
             configuration={ tree.configuration }
             node={ selectedNode }
@@ -77,7 +75,7 @@ const NodeInformation = ({ updateSelectedNode, tree, selectedNodePath }) => {
 };
 
 NodeInformation.propTypes = {
-  updateSelectedNode: PropTypes.func.isRequired,
+  closeNodeInformation: PropTypes.func,
   tree: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string.isRequired
 };

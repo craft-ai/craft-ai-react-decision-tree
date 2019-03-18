@@ -21,6 +21,10 @@ const DecisionTreeWithPanel = ({
   const [selectedNode, setSelectedNode] = useState('');
   const treeVersion = semver.major(data._version);
 
+  const closeNodeInformation = () => {
+    setSelectedNode(undefined);
+  };
+
   return (
     <DecisionTreeContainer
       style={{
@@ -32,7 +36,7 @@ const DecisionTreeWithPanel = ({
       <NodeInformations
         tree={ data }
         selectedNodePath={ selectedNode }
-        updateSelectedNode={ setSelectedNode }
+        closeNodeInformation={ closeNodeInformation }
       />
       <ContainerDimensions>
         {({ height, width }) => (
