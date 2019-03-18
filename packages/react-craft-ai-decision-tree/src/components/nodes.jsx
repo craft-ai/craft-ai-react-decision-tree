@@ -1,16 +1,18 @@
 import _ from 'lodash';
+import { computeLeafColor } from '../utils/utils';
 import { interpreter } from 'craft-ai';
-import Leaf from './leaf';
 import Node from './node';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
   COLOR_EDGES_CAPTION_BG,
   NODE_DEPTH,
   NODE_HEIGHT,
-  NODE_WIDTH
+  NODE_WIDTH,
+  SELECTED_BORDER_WIDTH,
+  SELECTED_COLOR_EDGES
 } from '../utils/constants';
 
 const Links = styled('div')`
@@ -33,7 +35,8 @@ class Nodes extends React.Component {
     tooltipOnPovover: false,
     tooltipText: '',
     tooltipRef: null,
-    tooltipPlacement: 'bottom'
+    tooltipPlacement: 'bottom',
+    selectedNodeId: undefined
   };
 
   hideTooltip = () => {
@@ -70,27 +73,85 @@ class Nodes extends React.Component {
   };
 
   displayNode = (node, index) => {
-    if (_.isUndefined(node.children)) {
-      return (
-        <Leaf
-          key={ index }
-          height={ this.props.height }
-          node={ node }
-          configuration={ this.props.configuration }
-          selectable={ this.props.selectable }
-        />
-      );
+    const setSelectedNode = () => {
+      if (this.props.updateSelectedNode) {
+        this.props.updateSelectedNode(node.treePath);
+        this.props.highlightSelectedEdgePath(node.treeNodeIdPath);
+        this.setState({ selectedNodeId: node.id });
+      }
+    };
+
+    const indexRef = (input) => {
+      this.nodeRef[index] = input;
+    };
+
+    let text;
+    let color;
+
+    if (this.props.version == 1) {
+      if (_.isUndefined(node.children)) {
+        // leaf
+        color = computeLeafColor(node.data.confidence);
+        text = _.isNull(node.data.predicted_value)
+          ? ''
+          : _.isFinite(node.data.predicted_value)
+            ? parseFloat(node.data.predicted_value.toFixed(3))
+              .toString()
+            : node.data.predicted_value;
+      }
+      else {
+        // node
+        text = node.children[0].data.decision_rule.property;
+      }
     }
-    const text = node.children[0].data.decision_rule.property;
+    else {
+      if (!_.isUndefined(node.data.prediction)) {
+        // leaf
+        color = computeLeafColor(node.data.prediction.confidence);
+        text = _.isNull(node.data.prediction.value)
+          ? ''
+          : _.isFinite(node.data.prediction.value)
+            ? parseFloat(node.data.prediction.value.toFixed(3))
+              .toString()
+            : node.data.prediction.value;
+      }
+      else {
+        // node
+        text = node.data.children[0].decision_rule.property;
+      }
+    }
+
+    const showTooltip = () => {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.nodeRef[index]
+      });
+    };
 
     return (
       <Node
         key={ index }
-        ref={ this.indexNodeRef(index) }
-        onMouseOver={ this.showNodeTooltip(index, text) }
+        ref={ indexRef }
+        onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltip }
-        className='craft-nodes'
-        style={{ top: node.y - NODE_HEIGHT / 3, left: node.x - NODE_WIDTH / 2 }}
+        onClick={ setSelectedNode }
+        className='craft-nodes '
+        style={{
+          border:
+            this.state.selectedNodeId === node.id
+              ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
+              : '',
+          top:
+            node.y -
+            NODE_HEIGHT / 3 -
+            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
+          left:
+            node.x -
+            NODE_WIDTH / 2 -
+            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
+          backgroundColor: color
+        }}
       >
         {text}
       </Node>
@@ -143,12 +204,24 @@ class Nodes extends React.Component {
       }
     ]);
 
+    const showTooltip = () => {
+      this.setState({
+        showingTooltip: true,
+        tooltipText: text,
+        tooltipRef: this.linkRef[index]
+      });
+    };
+
+    const indexRef = (input) => {
+      this.linkRef[index] = input;
+    };
+
     return (
       <Links
         key={ index }
-        ref={ this.indexLinkRef(index) }
-        onMouseOver={ this.showLinkTooltip(index, text) }
-        onMouseOut={ this.hideTooltip }
+        ref={ indexRef }
+        onMouseOver={ showTooltip }
+        onMouseOut={ this.hideTooltips }
         className='craft-links'
         style={{
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
@@ -173,6 +246,7 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
+          style={{ pointerEvents: 'none' }} // disable click on tooltip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
@@ -187,10 +261,13 @@ class Nodes extends React.Component {
 
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
+  highlightSelectedEdgePath: PropTypes.func.isRequired,
+  updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
-  height: PropTypes.number.isRequired
+  height: PropTypes.number.isRequired,
+  version: PropTypes.number.isRequired
 };
 
 export default Nodes;

@@ -1,13 +1,15 @@
 import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
 import bigTree from './bigTree.json';
-import DecisionTree from '../src/';
-import React from 'react';
+import ParentComponent from './ParentComponent';
+import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
-import Storage from './testComponent';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import treeV2 from './treeV2-regression.json';
+import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import { number, withKnobs } from '@storybook/addon-knobs';
+import React, { useState } from 'react';
 
 import './test.css';
 
@@ -25,6 +27,36 @@ const confidenceBoundOptions = {
   step: 0.05
 };
 
+const CustomComponent = ({ tree, height, width }) => {
+  const [selectedNode, setSelectedNode] = useState('');
+
+  return (
+    <div>
+      <div
+        style={{
+          backgroundColor: 'white',
+          padding: 5,
+          marginBottom: 10
+        }}
+      >
+        SelectedNode: {selectedNode}
+      </div>
+      <DecisionTree
+        updateSelectedNode={ setSelectedNode }
+        width={ width }
+        height={ height }
+        data={ tree }
+      />
+    </div>
+  );
+};
+
+CustomComponent.propTypes = {
+  tree: PropTypes.object.isRequired,
+  height: PropTypes.number,
+  width: PropTypes.number
+};
+
 storiesOf('Tree displayed with fixed height', module)
   .addDecorator(withKnobs)
   .addDecorator(
@@ -34,23 +66,11 @@ storiesOf('Tree displayed with fixed height', module)
     ])
   )
   .add('only tree', () => (
-    <DecisionTree
+    <DecisionTreeWithPanel
       width={ number('Width', 600, sizeBoundOptions) }
       height={ number('Height', 500, sizeBoundOptions) }
       data={ tree }
     />
-  ))
-  .add('test zoomed tree', () => (
-    <DecisionTree
-      width={ number('Width', 600, sizeBoundOptions) }
-      height={ number('Height', 500, sizeBoundOptions) }
-      position={ [0, 0] }
-      scale={ 0.25 }
-      data={ tree }
-    />
-  ))
-  .add('saving props', () => (
-    <Storage />
   ))
   .add('fixed width', () => (
     <div
@@ -60,7 +80,7 @@ storiesOf('Tree displayed with fixed height', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
   .add('flexbox row', () => (
@@ -72,7 +92,7 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTree data={ tree } />
+        <DecisionTreeWithPanel data={ tree } />
       </div>
     </div>
   ))
@@ -84,13 +104,36 @@ storiesOf('Tree displayed with fixed height', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
   .add('width css', () => (
     <div className='square'>
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
     </div>
+  ))
+  .add('display tree v2', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: 500,
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeV2 } />
+      </div>
+    </div>
+  ))
+  .add('saving zoom and pan in parent component', () => <ParentComponent />)
+  .add('with initial zoom tree', () => (
+    <DecisionTreeWithPanel
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
+      position={ [0, 0] }
+      scale={ 0.25 }
+      data={ tree }
+    />
   ));
 
 storiesOf('Tree displayed with fixed width', module)
@@ -102,7 +145,7 @@ storiesOf('Tree displayed with fixed width', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
   .add('height 100%', () => (
@@ -113,7 +156,7 @@ storiesOf('Tree displayed with fixed width', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
     </div>
   ));
 
@@ -127,7 +170,7 @@ storiesOf('Small tree', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ smallTree } />
+      <DecisionTreeWithPanel data={ smallTree } />
     </div>
   ))
   .add('flexbox row', () => {
@@ -146,7 +189,7 @@ storiesOf('Small tree', module)
         }}
       >
         <div style={{ flexGrow: 1 }}>
-          <DecisionTree data={ parametrizedTree } />
+          <DecisionTreeWithPanel data={ parametrizedTree } />
         </div>
       </div>
     );
@@ -159,7 +202,7 @@ storiesOf('Small tree', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ smallTree } />
+      <DecisionTreeWithPanel data={ smallTree } />
     </div>
   ));
 
@@ -173,7 +216,7 @@ storiesOf('Big tree', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ bigTree } />
+      <DecisionTreeWithPanel data={ bigTree } />
     </div>
   ))
   .add('width 100%', () => (
@@ -184,7 +227,7 @@ storiesOf('Big tree', module)
         border: 'solid 1px black'
       }}
     >
-      <DecisionTree data={ bigTree } />
+      <DecisionTreeWithPanel data={ bigTree } />
     </div>
   ));
 
@@ -217,7 +260,7 @@ storiesOf('Tree in content', module)
         blandit pellentesque massa nec fermentum. Integer velit eros, malesuada
         ut tortor id, efficitur scelerisque nibh.
       </p>
-      <DecisionTree data={ tree } height={ 300 } />
+      <DecisionTreeWithPanel data={ tree } height={ 300 } />
       <p>
         Phasellus gravida urna mi, luctus sagittis dolor scelerisque eu.
         Pellentesque aliquam justo non ultricies pretium. Vestibulum ante ipsum
@@ -264,7 +307,7 @@ storiesOf('Tree in content', module)
         blandit pellentesque massa nec fermentum. Integer velit eros, malesuada
         ut tortor id, efficitur scelerisque nibh.
       </p>
-      <DecisionTree data={ tree } />
+      <DecisionTreeWithPanel data={ tree } />
       <p>
         Phasellus gravida urna mi, luctus sagittis dolor scelerisque eu.
         Pellentesque aliquam justo non ultricies pretium. Vestibulum ante ipsum
@@ -281,4 +324,78 @@ storiesOf('Tree in content', module)
         ante.
       </p>
     </div>
+  ));
+
+storiesOf('Custom component for displaying nodes', module)
+  .addDecorator(withKnobs)
+  .addDecorator(
+    backgrounds([
+      { name: 'craft', value: '#42348b', default: true },
+      { name: 'pink', value: '#d54267' }
+    ])
+  )
+  .add('tree', () => (
+    <CustomComponent
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
+      tree={ tree }
+    />
+  ));
+
+storiesOf('Using separate component', module)
+  .addDecorator(withKnobs)
+  .addDecorator(
+    backgrounds([
+      { name: 'craft', value: '#42348b', default: true },
+      { name: 'pink', value: '#d54267' }
+    ])
+  )
+  .add('tree', () => (
+    <DecisionTree
+      width={ number('Width', 600, sizeBoundOptions) }
+      height={ number('Height', 500, sizeBoundOptions) }
+      data={ tree }
+    />
+  ))
+  .add('Tree v1 node information - root node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ tree }
+      selectedNodePath='0'
+    />
+  ))
+  .add('Tree v1 node information - internal node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ tree }
+      selectedNodePath='0-0-1'
+    />
+  ))
+  .add('Tree v1 node information - leaf node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ tree }
+      selectedNodePath='0-0-1-1-1-0-1'
+    />
+  ))
+  .add('Tree v2 node information - root node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ treeV2 }
+      selectedNodePath='0'
+    />
+  ))
+  .add('Tree v2 node information - internal node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ treeV2 }
+      selectedNodePath='0-0-1'
+    />
+  ))
+  .add('Tree v2 node information - leaf node', () => (
+    <NodeInformation
+      updateSelectedNode={ () => {} }
+      tree={ treeV2 }
+      selectedNodePath='0-0-1-0-0-0'
+    />
   ));

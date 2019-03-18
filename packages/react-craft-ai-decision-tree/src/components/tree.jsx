@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import Box from '../utils/box';
-import { cx } from 'react-emotion';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {
   event as d3Event,
   hierarchy as d3Hierarchy,
@@ -18,6 +17,7 @@ import {
   MARGIN,
   NODE_DEPTH,
   NODE_HEIGHT,
+  NODE_PATH_SEPARATOR,
   NODE_WIDTH,
   NODE_WIDTH_MARGIN,
   ZOOM_EXTENT
@@ -84,10 +84,10 @@ const TreeCanvas = styled('div')`
   position: absolute;
 `;
 
-function computeSvgSizeFromData(root, width, height) {
-  let tree = d3Tree()
+function computeSvgSizeFromData(root) {
+  const tree = d3Tree()
     .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
-  const nodes = d3Hierarchy(root, (d) => d.children);
+  let nodes = d3Hierarchy(root, (d) => d.children);
   tree(nodes);
   const links = nodes.links();
 
@@ -96,46 +96,64 @@ function computeSvgSizeFromData(root, width, height) {
   let maxTreeDepth = 0;
   let minSvgWidth;
   let minSvgHeight;
+  let incr = 0;
 
   // Compute the max tree depth(node which is the lowest leaf)
-  _.forEach(nodes.descendants(), (d) => {
-    if (d.parent) {
-      if (d.parent.decisionRules) {
-        d.decisionRules = _.cloneDeep(d.parent.decisionRules);
-      }
-      else {
-        d.decisionRules = {};
-      }
-      if (d.decisionRules[d.data.decision_rule.property]) {
-        d.decisionRules[d.data.decision_rule.property].push({
-          operator: d.data.decision_rule.operator,
-          operand: d.data.decision_rule.operand
+  const enrichTreeRecursive = (index, node) => {
+    node.id = incr++;
+    // Deal with decision rules
+    if (node.parent) {
+      node.treeNodeIdPath = _.clone(node.parent.treeNodeIdPath);
+      node.treeNodeIdPath.push(node.id);
+      node.treePath = `${node.parent.treePath}${NODE_PATH_SEPARATOR}${index}`;
+      node.decisionRules = _.isEmpty(node.parent.decisionRules)
+        ? {}
+        : _.cloneDeep(node.parent.decisionRules);
+      // adding decision rules of the node
+      if (node.decisionRules[node.data.decision_rule.property]) {
+        node.decisionRules[node.data.decision_rule.property].push({
+          operator: node.data.decision_rule.operator,
+          operand: node.data.decision_rule.operand
         });
       }
       else {
-        d.decisionRules[d.data.decision_rule.property] = [
+        node.decisionRules[node.data.decision_rule.property] = [
           {
-            operator: d.data.decision_rule.operator,
-            operand: d.data.decision_rule.operand
+            operator: node.data.decision_rule.operator,
+            operand: node.data.decision_rule.operand
           }
         ];
       }
     }
+    else {
+      // root node
+      node.treeNodeIdPath = [node.id];
+      node.treePath = `${index}`;
+    }
 
-    if (d.depth > maxTreeDepth) {
-      maxTreeDepth = d.depth;
+    if (node.depth > maxTreeDepth) {
+      maxTreeDepth = node.depth;
     }
 
     // Normalize for fixed-depth.
-    d.y = d.depth * NODE_DEPTH;
+    node.y = node.depth * NODE_DEPTH;
 
-    if (_.isUndefined(dxMin) || d.x < dxMin) {
-      dxMin = d.x;
+    if (_.isUndefined(dxMin) || node.x < dxMin) {
+      dxMin = node.x;
     }
-    if (_.isUndefined(dxMax) || d.x > dxMax) {
-      dxMax = d.x;
+    if (_.isUndefined(dxMax) || node.x > dxMax) {
+      dxMax = node.x;
     }
-  });
+
+    if (node.children) {
+      node.children.map((child, childIndex) => {
+        return enrichTreeRecursive(childIndex, child);
+      });
+    }
+    return node;
+  };
+
+  nodes = enrichTreeRecursive(0, nodes);
 
   minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
   minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
@@ -152,10 +170,18 @@ function computeSvgSizeFromData(root, width, height) {
 class Tree extends React.Component {
   constructor(props) {
     super(props);
+
+    const { links, nodes, minSvgHeight, minSvgWidth } = this.computeTree();
+
     this.state = {
       newPos: this.props.position,
       scale: this.props.scale === -1 ? 1 : this.props.scale,
-      isPanActivated: false
+      isPanActivated: false,
+      selectedEdgePath: [],
+      nodes,
+      links,
+      minSvgHeight,
+      minSvgWidth
     };
   }
 
@@ -181,7 +207,8 @@ class Tree extends React.Component {
       const selection = d3Select('div.zoomed-tree');
       selection.call(
         this.zoom.transform,
-        zoomIdentity.translate(this.state.newPos[0], this.state.newPos[1])
+        zoomIdentity
+          .translate(this.state.newPos[0], this.state.newPos[1])
           .scale(this.state.scale)
       );
     }
@@ -190,6 +217,34 @@ class Tree extends React.Component {
   componentWillUnmount() {
     clearTimeout(this.fitToScreenTimeout);
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.treeData !== this.props.treeData) {
+      this.setState(this.computeTree());
+    }
+  }
+
+  computeTree = () => {
+    let root = this.props.treeData;
+    root.x = 0;
+    root.y = 0;
+
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      offsetX
+    } = computeSvgSizeFromData(root);
+
+    // place correctly the tree in the svg with the minSvgWidth
+    _.forEach(nodes, (d) => {
+      d.x = d.x + offsetX;
+      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
+    });
+
+    return { links, minSvgHeight, minSvgWidth, nodes };
+  };
 
   mouseWheel = () => {
     this.setState({
@@ -248,29 +303,13 @@ class Tree extends React.Component {
     this.translatedTreeRef = input;
   };
 
+  highlightSelectedEdgePath = (selectedEdgePath) => {
+    this.setState({ selectedEdgePath });
+  };
+
   render() {
-    const margin = { top: 40, bottom: 20 };
-    const width = this.props.width;
-    const height = this.props.height - margin.top - margin.bottom;
-    let root = this.props.treeData;
-    root.x = 0;
-    root.y = 0;
-
-    const {
-      links,
-      minSvgHeight,
-      minSvgWidth,
-      nodes,
-      offsetX
-    } = computeSvgSizeFromData(root, width, height);
-
-    // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(nodes, (d) => {
-      d.x = d.x + offsetX;
-      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
-    });
-
     const panActivated = this.state.isPanActivated;
+    const { links, minSvgHeight, minSvgWidth, nodes } = this.state;
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
@@ -294,13 +333,17 @@ class Tree extends React.Component {
           }}
         >
           <Nodes
+            version={ this.props.version }
             selectable={ !panActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
             nodes={ nodes }
             links={ links }
+            highlightSelectedEdgePath={ this.highlightSelectedEdgePath }
+            updateSelectedNode={ this.props.updateSelectedNode }
           />
           <Edges
+            edgePath={ this.state.selectedEdgePath }
             treeData={ this.props.treeData }
             nodes={ nodes }
             links={ links }
@@ -314,13 +357,15 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
+  version: PropTypes.number.isRequired,
   treeData: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
-  updatePositionAndZoom: PropTypes.func
+  updatePositionAndZoom: PropTypes.func,
+  updateSelectedNode: PropTypes.func
 };
 
 export default Tree;

@@ -1,5 +1,5 @@
 import { COLOR_NODES } from '../utils/constants';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 const Node = styled('div')`
   position: absolute;
@@ -11,6 +11,7 @@ const Node = styled('div')`
   width: 100px;
   height: 30px;
   pointerevents: auto;
+  cursor: pointer;
   ${({ empty = false }) => `
     box-sizing: ${empty ? 'border-box' : undefined};
     border: ${empty ? 'solid 2px #777' : undefined};
