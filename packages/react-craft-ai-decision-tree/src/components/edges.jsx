@@ -1,31 +1,77 @@
 import { css } from 'react-emotion';
-import { select as d3Select } from 'd3';
-import { NODE_HEIGHT } from '../utils/constants';
+import { select as d3Select, interpolate, arc } from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ADDITIONAL_SELECTED_STROKE_WIDTH,
   DEFAULT_COLOR_EDGES,
   DEFAULT_MINIMUM_STROKE_WIDTH,
   DEFAULT_STROKE_WIDTH_RATIO,
-  SELECTED_COLOR_EDGES } from '../utils/constants';
+  SELECTED_COLOR_EDGES,
+  NODE_HEIGHT,
+  NODE_WIDTH,
+  COLOR_NODES } from '../utils/constants';
 
 // make links css rules
 const defaultLinksCssClass = css`
+  position: relative;
   fill: none;
   stroke: ${DEFAULT_COLOR_EDGES};
 `;
 
 const selectedLinksCssClass = css`
+  position: relative;
   fill: none;
   stroke: ${SELECTED_COLOR_EDGES};
 `;
 
+
+const TRANSITION_DURATION = 1000;
+
 class Edges extends React.Component {
+  
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedNode: undefined
+    };
+  }
+
+  expand(node) {
+    node.children = node._children;
+    node._children = null;
+    this.props.onClickNode();
+    if (node.children !== undefined) {
+      node.children.map((n) => this.expand(n));
+    }
+  }
+
+  onClickExpand(node) {
+    if (!_.isNull(node.children)) {
+      node._children = node.children;
+      node.children = null;
+      this.setState({
+        selectedNode: node
+      });
+      this.props.onClickNode(node);  
+    }
+    else {
+      node.children = node._children;
+      node._children = null;
+      this.setState({
+        selectedNode: {
+          x: node.x,
+          y: node.y
+        }
+      });
+      this.props.onClickNode(node);
+    }      
+  }
+
   componentDidMount() {
     // Render the tree using d3 after first component mount
     this.renderTree(
       this.props.treeData,
-      this.svgTreeRef,
       this.props.nodes,
       this.props.links,
       this.props.edgePath,
@@ -36,20 +82,22 @@ class Edges extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextState);
     // Delegate rendering the tree to a d3 function on prop change
     this.renderTree(
       nextProps.treeData,
-      this.svgTreeRef,
       nextProps.nodes,
       nextProps.links,
       nextProps.edgePath,
       this.props.totalNbSamples,
       this.props.version,
-      this.props.edgeType
+      this.props.edgeType,
+      nextProps.width,
+      nextProps.height
     );
 
     // Do not allow react to render the component on prop change
-    return false;
+    return true;
   }
 
   diagonal(source, target) {
@@ -64,39 +112,63 @@ class Edges extends React.Component {
     this.svgTreeRef = input;
   };
 
-  renderTree = (treeData, svgDomNode, nodes, links, edgePath, totalNbSamples, version, edgeType) => {
-    // Cleans up the SVG on re-render
+  renderTree = (treeData, svgDomNode, nodes, links, edgePath, totalNbSamples, version, edgeType, width, height) => {
+    const selectedNode = this.state.selectedNode;
+    console.log('clicked', this.state.selectedNode);
     d3Select(svgDomNode)
-      .selectAll('*')
-      .remove();
-
-    let svg = d3Select(svgDomNode)
-      .attr('width', this.props.width)
-      .attr('height', this.props.height)
-      .append('g');
-
-    // Update the nodes…
-    let node = svg.selectAll('g.node')
+      .attr('width', width)
+      .attr('height', height);
+  
+    // Update the links… (they are ordered)
+    let nodesSvg = d3Select(svgDomNode)
+      .selectAll('g.node')
       .data(nodes, (d) => d.id);
-
-    // Enter any new nodes at the parent's previous position.
-    let nodeEnter = node
+    
+    let nodeEnter = nodesSvg
       .enter()
       .append('g')
       .attr('class', 'node')
+      .attr('opacity', 0.5)
+      .attr('transform', (d) => {
+        if (selectedNode) {
+          return `translate(${selectedNode.x},${selectedNode.y})`;
+        }
+        else {
+          if (d.parent) {
+            return `translate(${d.parent.x},${d.parent.y})`;
+          }
+          return `translate(${d.x},${d.y})`;
+        }
+      });
+
+    // UPDATE
+    let nodesUpdate = nodeEnter.merge(nodesSvg);
+    
+    nodesUpdate.transition()
+      .duration(TRANSITION_DURATION)
+      .attr('opacity', 1)
       .attr('transform', (d) => `translate(${d.x},${d.y})`);
 
-    nodeEnter.append('circle')
-      .attr('r', 1);
-
-    // Transition exiting nodes to the parent's new position.
-    node
-      .exit()
-      .attr('transform', (d) => `translate(${d.x},${d.y})`)
+    nodeEnter.append('rect')
+      .attr('x', -NODE_WIDTH / 2) 
+      .attr('y', -NODE_HEIGHT / 2)
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('fill', COLOR_NODES)
+      .on('click', (d) => this.onClickExpand(d));
+    
+    nodesSvg.exit()
+      .transition()
+      .duration(TRANSITION_DURATION)
+      .attr('transform', (d) => {
+        return `translate(${selectedNode.x},${selectedNode.y})`;
+      })
+      .attr('opacity', 0.5)
       .remove();
 
     // Update the links… (they are ordered)
-    let link = svg.selectAll('path.link')
+    let link = d3Select(svgDomNode)
+      .selectAll('path')
       .data(links, (d) => {
         d.linkClass = defaultLinksCssClass;
         if (edgePath.indexOf(d.target.id) !== -1) {
@@ -104,17 +176,18 @@ class Edges extends React.Component {
         }
         return d.target.id;
       });
-
+    
     // Enter any new links at the parent's previous position.
-    link
+    const linkEnter = link
       .enter()
-      .insert('path', 'g')
+      .append('path')
       .attr(
         'class',
-        (d) =>
-          `${d.linkClass} ${
+        (d) => {
+          return `${d.linkClass} ${
             d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
-          }`
+          }`;
+        }
       )
       .attr('stroke-width', (d) => {
         if (version == 1 || edgeType == 'constant') {
@@ -142,20 +215,51 @@ class Edges extends React.Component {
           );
         }
       })
+      .attr('opacity', 0)
+      .attr('d', (d) => {
+        let source = {
+          x: d.source.x,
+          y: d.source.y + NODE_HEIGHT / 2
+        };
+        if (selectedNode) {
+          source = {
+            x: selectedNode.x,
+            y: selectedNode.y + NODE_HEIGHT / 2
+          };
+        }
+        return this.diagonal(source, source);
+      });
+    
+    let linkUpdate = linkEnter.merge(link);
+
+    // Transition back to the parent element position
+    linkUpdate.transition()
+      .duration(TRANSITION_DURATION)
+      .attr('opacity', 1)
       .attr('d', (d) => {
         const source = {
           x: d.source.x,
-          y: d.source.y + (2 * NODE_HEIGHT / 3)
+          y: d.source.y + NODE_HEIGHT / 2
         };
         const target = {
           x: d.target.x,
-          y: d.target.y - NODE_HEIGHT / 3
+          y: d.target.y - NODE_HEIGHT / 2
         };
         return this.diagonal(source, target);
       });
-
+   
     // Transition exiting nodes to the parent's new position.
     link.exit()
+      .transition()
+      .duration(TRANSITION_DURATION)
+      .delay((d) => 1 / d.target.depth)
+      .attr('d', (d) => {
+        const source = {
+          x: selectedNode.x,
+          y: selectedNode.y + NODE_HEIGHT / 2
+        };
+        return this.diagonal(source, source);
+      })
       .remove();
   };
 
@@ -178,7 +282,8 @@ Edges.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   totalNbSamples: PropTypes.number,
-  edgeType: PropTypes.string
+  edgeType: PropTypes.string,
+  onClickNode: PropTypes.func
 };
 
 export default Edges;

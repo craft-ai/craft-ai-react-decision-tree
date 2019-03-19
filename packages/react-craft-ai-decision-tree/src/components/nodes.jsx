@@ -50,8 +50,8 @@ class Nodes extends React.Component {
       this.props.configuration != nextProps.configuration ||
       _.isEqual(this.props.nodes, nextProps.nodes) ||
       _.isEqual(this.props.links, nextProps.links) ||
+      _.isEqual(this.state.nodes, nextState.nodes) ||
       this.props.height != nextProps.height;
-
     return doUpdate;
   }
 
@@ -74,6 +74,18 @@ class Nodes extends React.Component {
       if (this.props.updateSelectedNode) {
         this.props.updateSelectedNode(node.treePath);
       }
+    };
+
+    const onClickExpand = () => {
+      if (!_.isNull(node.children)) {
+        node._children = node.children;
+        node.children = null;
+      }
+      else {
+        node.children = node._children;
+        node._children = null;
+      }      
+      this.props.onClickNode();
     };
 
     const indexRef = (input) => {
@@ -130,7 +142,10 @@ class Nodes extends React.Component {
         ref={ indexRef }
         onMouseOver={ showTooltip }
         onMouseOut={ this.hideTooltip }
-        onClick={ setSelectedNode }
+        onClick={ (event) => { 
+          setSelectedNode();
+          onClickExpand(); 
+        } }
         className='craft-nodes '
         style={{
           border:
@@ -262,7 +277,8 @@ Nodes.propTypes = {
   links: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
   version: PropTypes.number.isRequired,
-  selectedNode: PropTypes.string
+  selectedNode: PropTypes.string,
+  onClickNode: PropTypes.func.isRequired
 };
 
 export default Nodes;

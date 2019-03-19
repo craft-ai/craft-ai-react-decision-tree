@@ -31,10 +31,36 @@ const TreeCanvas = styled('div')`
   position: absolute;
 `;
 
-function computeSvgSizeFromData(root) {
+
+function computeSvgSizeFromData(root, update) {
   const tree = d3Tree()
     .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
-  let nodes = d3Hierarchy(root, (d) => d.children);
+  let nodes;
+  
+  // Collapse the node and all it's children
+  function collapse(node) {
+    if (node.depth > 0) {
+      node._children = node.children;
+      node.children = null;
+      if (node._children) {
+        node._children.forEach(collapse);
+      }
+    }
+    else {
+      if (node.children) {
+        node.children.forEach(collapse);
+      }
+    }
+  }
+
+  if (!update) {
+    nodes = d3Hierarchy(root, (d) => d.children);
+    nodes.children.forEach(collapse);
+  }
+  else {
+    nodes = root;
+  }
+
   tree(nodes);
   const links = nodes.links();
   let dxMin;
@@ -106,6 +132,11 @@ function computeSvgSizeFromData(root) {
         0
       );
     }
+    if (node._children) {
+      node._children.map((child, childIndex) => {
+        return enrichTreeRecursive(childIndex, child);
+      });
+    }
     return node;
   };
 
@@ -119,11 +150,13 @@ function computeSvgSizeFromData(root) {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
     nodes: nodeDescendantsArray,
+    hierarchy: nodes,
     links,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
   };
 }
+
 
 class Tree extends React.Component {
   constructor(props) {
@@ -134,6 +167,7 @@ class Tree extends React.Component {
       nodes,
       minSvgHeight,
       minSvgWidth,
+      hierarchy,
       totalNbSamples
     } = this.computeTree();
 
@@ -147,7 +181,8 @@ class Tree extends React.Component {
       minSvgHeight,
       minSvgWidth,
       totalNbSamples,
-      edgeType: this.props.edgeType
+      edgeType: this.props.edgeType,
+      hierarchy: hierarchy
     };
   }
 
@@ -196,6 +231,41 @@ class Tree extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const doUpdate = !_.isEqual(nextProps, this.props) 
+      || !_.isEqual(this.state.newPos, nextState.newPos)
+      || !_.isEqual(this.state.nodes, nextState.nodes);
+    return doUpdate;
+  }
+
+  onClickNode = (node) => {
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      offsetX,
+      hierarchy
+    } = computeSvgSizeFromData(this.state.hierarchy, true);
+  
+    // place correctly the tree in the svg with the minSvgWidth
+    _.forEach(nodes, (d) => {
+      d.x = d.x + offsetX;
+      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
+    });
+    console.log("CLICK", node);
+    this.setState(
+      {
+        nodes: nodes,
+        links: links,
+        minSvgHeight: minSvgHeight,
+        minSvgWidth: minSvgWidth,
+        hierarchy: hierarchy,
+        clickedNode: node
+      }
+    );
+  };
+
   computeTree = () => {
     let root = this.props.treeData;
     root.x = 0;
@@ -208,7 +278,8 @@ class Tree extends React.Component {
       minSvgWidth,
       nodes,
       offsetX,
-      totalNbSamples
+      totalNbSamples,
+      hierarchy
     } = computeSvgSizeFromData(root);
 
     // place correctly the tree in the svg with the minSvgWidth
@@ -223,6 +294,7 @@ class Tree extends React.Component {
       minSvgWidth,
       nodes,
       selectedNodeId,
+      hierarchy,
       totalNbSamples
     };
   };
@@ -328,6 +400,7 @@ class Tree extends React.Component {
       minSvgHeight,
       minSvgWidth,
       nodes,
+      clickedNode,
       totalNbSamples
     } = this.state;
     return (
@@ -352,7 +425,7 @@ class Tree extends React.Component {
             height: minSvgHeight
           }}
         >
-          <Nodes
+          {/* <Nodes
             version={ this.props.version }
             selectable={ !panActivated }
             height={ this.props.height }
@@ -361,7 +434,8 @@ class Tree extends React.Component {
             links={ links }
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
-          />
+            onClickNode={ this.onClickNode }
+          /> */}
           <Edges
             version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
@@ -372,6 +446,8 @@ class Tree extends React.Component {
             height={ minSvgHeight }
             totalNbSamples={ totalNbSamples }
             edgeType={ this.props.edgeType }
+            onClickNode={ this.onClickNode }
+            clickedNode={ clickedNode }
           />
         </div>
       </TreeCanvas>
