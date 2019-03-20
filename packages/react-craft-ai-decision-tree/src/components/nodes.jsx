@@ -144,7 +144,7 @@ class Nodes extends React.Component {
         onMouseOut={ this.hideTooltip }
         onClick={ (event) => { 
           setSelectedNode();
-          onClickExpand(); 
+          onClickExpand();
         } }
         className='craft-nodes '
         style={{

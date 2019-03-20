@@ -253,7 +253,6 @@ class Tree extends React.Component {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
-    console.log("CLICK", node);
     this.setState(
       {
         nodes: nodes,
@@ -425,7 +424,7 @@ class Tree extends React.Component {
             height: minSvgHeight
           }}
         >
-          {/* <Nodes
+          <Nodes
             version={ this.props.version }
             selectable={ !panActivated }
             height={ this.props.height }
@@ -435,7 +434,7 @@ class Tree extends React.Component {
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
             onClickNode={ this.onClickNode }
-          /> */}
+          />
           <Edges
             version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
