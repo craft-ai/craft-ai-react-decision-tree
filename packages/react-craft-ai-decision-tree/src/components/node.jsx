@@ -2,7 +2,7 @@ import { COLOR_NODES } from '../utils/constants';
 import styled from '@emotion/styled';
 
 const Node = styled('div')`
-  position: absolute;
+  position: relative;
   background-color: ${COLOR_NODES};
   text-align: center;
   line-height: 1.75;
