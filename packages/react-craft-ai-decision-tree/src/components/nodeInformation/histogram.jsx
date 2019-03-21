@@ -32,40 +32,6 @@ const tooltipCssClass = css`
 class Histogram extends React.Component {
   // Draw here svg components that are static and have therefore to be drawn only once
   componentDidMount() {
-    const { width, height } = this.props;
-    d3Select(this.node)
-      .attr('width', width)
-      .attr('height', height);
-
-    this.fullBarWidth = (width - margin.right - margin.left) / this.props.distribution.length;
-    this.barWidth = barWidthRatio * this.fullBarWidth;
-
-    this.scaleX = scaleLinear()
-      .domain([0, this.props.distribution.length])
-      .range([margin.left, width - margin.right]);
-
-    this.scaleY = scaleLinear()
-      .domain([0, 1])
-      .range([height - margin.top, margin.down]);
-
-    const xAxis = axisBottom()
-      .tickFormat('')
-      .scale(this.scaleX);
-    
-    const yAxis = axisLeft()
-      .ticks(3)
-      .scale(this.scaleY);
-
-    d3Select(this.node)
-      .append('g')
-      .attr('transform', `translate(0, ${this.scaleY(0)})`)
-      .call(xAxis);
-    
-    d3Select(this.node)
-      .append('g')
-      .attr('transform', `translate(${margin.left}, 0)`)
-      .call(yAxis);
-    
     this.createHistogram(this.props);
   }
 
@@ -77,11 +43,39 @@ class Histogram extends React.Component {
     return false;
   }
 
-  createHistogram = ({ distribution, outputValues, size }) => { 
-    const scaleX = this.scaleX;
-    const scaleY = this.scaleY;
-    const barWidth = this.barWidth;
-    const fullBarWidth = this.fullBarWidth;
+  createHistogram = ({ distribution, outputValues, size, width, height }) => { 
+    d3Select(this.node)
+      .attr('width', width)
+      .attr('height', height);
+
+    const fullBarWidth = (width - margin.right - margin.left) / distribution.length;
+    const barWidth = barWidthRatio * fullBarWidth;
+
+    const scaleX = scaleLinear()
+      .domain([0, distribution.length])
+      .range([margin.left, width - margin.right]);
+
+    const scaleY = scaleLinear()
+      .domain([0, 1])
+      .range([height - margin.top, margin.down]);
+
+    const xAxis = axisBottom()
+      .tickFormat('')
+      .scale(scaleX);
+    
+    const yAxis = axisLeft()
+      .ticks(3)
+      .scale(scaleY);
+
+    d3Select(this.node)
+      .append('g')
+      .attr('transform', `translate(0, ${scaleY(0)})`)
+      .call(xAxis);
+    
+    d3Select(this.node)
+      .append('g')
+      .attr('transform', `translate(${margin.left}, 0)`)
+      .call(yAxis);
     
     // Define the div for the tooltip
     const div = d3Select(this.div)
