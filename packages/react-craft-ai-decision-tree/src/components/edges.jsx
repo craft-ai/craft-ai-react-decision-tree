@@ -6,7 +6,6 @@ import React from 'react';
 import { ADDITIONAL_SELECTED_STROKE_WIDTH,
   DEFAULT_COLOR_EDGES,
   DEFAULT_MINIMUM_STROKE_WIDTH,
-  DEFAULT_SELECTED_MINIMUM_STROKE_WIDTH,
   DEFAULT_STROKE_WIDTH_RATIO,
   SELECTED_COLOR_EDGES } from '../utils/constants';
 
@@ -120,7 +119,8 @@ class Edges extends React.Component {
       .attr('stroke-width', (d) => {
         if (version == 1 || (edgeType != 'relative' && edgeType != 'absolute')) {
           return d.linkClass == selectedLinksCssClass ?
-            DEFAULT_SELECTED_MINIMUM_STROKE_WIDTH : DEFAULT_MINIMUM_STROKE_WIDTH;
+            DEFAULT_MINIMUM_STROKE_WIDTH + ADDITIONAL_SELECTED_STROKE_WIDTH :
+            DEFAULT_MINIMUM_STROKE_WIDTH;
         }
         else {
           // Relative ratio
@@ -129,13 +129,13 @@ class Edges extends React.Component {
             // Absolute ratio
             branchRatio = d.source.nbSamples / totalNbSamples;
           }
-          const strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
+          let strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
+          strokeWidth = strokeWidth < DEFAULT_MINIMUM_STROKE_WIDTH ?
+            DEFAULT_MINIMUM_STROKE_WIDTH : strokeWidth;
           if (d.linkClass == selectedLinksCssClass) {
-            return strokeWidth < DEFAULT_SELECTED_MINIMUM_STROKE_WIDTH ?
-              DEFAULT_SELECTED_MINIMUM_STROKE_WIDTH : strokeWidth + ADDITIONAL_SELECTED_STROKE_WIDTH;
+            return strokeWidth + ADDITIONAL_SELECTED_STROKE_WIDTH;
           }
-          return strokeWidth < DEFAULT_MINIMUM_STROKE_WIDTH ?
-            DEFAULT_MINIMUM_STROKE_WIDTH : strokeWidth ;
+          return strokeWidth ;
         }
       })
       .attr('d', (d) => {
