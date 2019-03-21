@@ -125,7 +125,7 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
-  .add('display tree v2 - absolute width', () => (
+  .add('display tree v2 - absolute link thickness', () => (
     <div
       style={{
         display: 'flex',
@@ -138,7 +138,7 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
-  .add('display tree v2 - relative width', () => (
+  .add('display tree v2 - relative link thickness', () => (
     <div
       style={{
         display: 'flex',
