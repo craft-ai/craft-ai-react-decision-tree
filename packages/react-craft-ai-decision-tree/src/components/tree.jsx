@@ -90,7 +90,6 @@ function computeSvgSizeFromData(root) {
   let nodes = d3Hierarchy(root, (d) => d.children);
   tree(nodes);
   const links = nodes.links();
-
   let dxMin;
   let dxMax;
   let maxTreeDepth = 0;
@@ -124,6 +123,12 @@ function computeSvgSizeFromData(root) {
           }
         ];
       }
+      if (node.data.prediction) {
+        node.nbSamples = node.data.prediction.nb_samples;
+      }
+      else {
+        node.nbSamples = 0;
+      }
     }
     else {
       // root node
@@ -146,9 +151,10 @@ function computeSvgSizeFromData(root) {
     }
 
     if (node.children) {
-      node.children.map((child, childIndex) => {
-        return enrichTreeRecursive(childIndex, child);
+      node.children.forEach((child, childIndex) => {
+        enrichTreeRecursive(childIndex, child);
       });
+      node.nbSamples = node.children.reduce((acc, child) => acc + child.nbSamples, 0);
     }
     return node;
   };
@@ -157,12 +163,14 @@ function computeSvgSizeFromData(root) {
 
   minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
   minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+  const nodeDescendantsArray = nodes.descendants();
 
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
-    nodes: nodes.descendants(),
+    nodes: nodeDescendantsArray,
     links: links,
+    totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
   };
 }
@@ -171,7 +179,7 @@ class Tree extends React.Component {
   constructor(props) {
     super(props);
 
-    const { links, nodes, minSvgHeight, minSvgWidth } = this.computeTree();
+    const { links, nodes, minSvgHeight, minSvgWidth, totalNbSamples } = this.computeTree();
 
     this.state = {
       newPos: this.props.position,
@@ -181,7 +189,9 @@ class Tree extends React.Component {
       nodes,
       links,
       minSvgHeight,
-      minSvgWidth
+      minSvgWidth,
+      totalNbSamples,
+      edgeType: this.props.edgeType
     };
   }
 
@@ -234,7 +244,8 @@ class Tree extends React.Component {
       minSvgHeight,
       minSvgWidth,
       nodes,
-      offsetX
+      offsetX,
+      totalNbSamples
     } = computeSvgSizeFromData(root);
 
     // place correctly the tree in the svg with the minSvgWidth
@@ -243,7 +254,7 @@ class Tree extends React.Component {
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
 
-    return { links, minSvgHeight, minSvgWidth, nodes };
+    return { links, minSvgHeight, minSvgWidth, nodes, totalNbSamples };
   };
 
   mouseWheel = () => {
@@ -309,7 +320,7 @@ class Tree extends React.Component {
 
   render() {
     const panActivated = this.state.isPanActivated;
-    const { links, minSvgHeight, minSvgWidth, nodes } = this.state;
+    const { links, minSvgHeight, minSvgWidth, nodes, totalNbSamples } = this.state;
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
@@ -343,12 +354,15 @@ class Tree extends React.Component {
             updateSelectedNode={ this.props.updateSelectedNode }
           />
           <Edges
+            version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
             treeData={ this.props.treeData }
             nodes={ nodes }
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight }
+            totalNbSamples={ totalNbSamples }
+            edgeType={ this.props.edgeType }
           />
         </div>
       </TreeCanvas>
@@ -365,7 +379,8 @@ Tree.propTypes = {
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
   updatePositionAndZoom: PropTypes.func,
-  updateSelectedNode: PropTypes.func
+  updateSelectedNode: PropTypes.func.isRequired,
+  edgeType: PropTypes.string
 };
 
 export default Tree;

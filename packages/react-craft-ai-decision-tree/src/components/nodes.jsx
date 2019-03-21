@@ -7,7 +7,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
 import {
-  COLOR_EDGES_CAPTION_BG,
   NODE_DEPTH,
   NODE_HEIGHT,
   NODE_WIDTH,
@@ -22,7 +21,6 @@ const Links = styled('div')`
   text-align: center;
   font-size: smaller;
   pointer-events: auto;
-  background-color: ${COLOR_EDGES_CAPTION_BG};
 `;
 
 class Nodes extends React.Component {

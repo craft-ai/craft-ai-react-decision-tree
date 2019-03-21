@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - DecisionTree with panel by default
   - DecisionTree alone
   - Component of the panel (NodeInformation, Split, DecisionRules, Prediction and Statistics)
+- Edges width can be 'constant', 'absolute' or 'relative' with the parameter `edgeType`
 
 ## Updated
 

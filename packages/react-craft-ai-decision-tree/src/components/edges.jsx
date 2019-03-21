@@ -1,20 +1,23 @@
 import { css } from 'react-emotion';
 import { select as d3Select } from 'd3';
+import { NODE_HEIGHT } from '../utils/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DEFAULT_COLOR_EDGES, SELECTED_COLOR_EDGES } from '../utils/constants';
+import { ADDITIONAL_SELECTED_STROKE_WIDTH,
+  DEFAULT_COLOR_EDGES,
+  DEFAULT_MINIMUM_STROKE_WIDTH,
+  DEFAULT_STROKE_WIDTH_RATIO,
+  SELECTED_COLOR_EDGES } from '../utils/constants';
 
 // make links css rules
 const defaultLinksCssClass = css`
   fill: none;
   stroke: ${DEFAULT_COLOR_EDGES};
-  stroke-width: 1.5;
 `;
 
 const selectedLinksCssClass = css`
   fill: none;
   stroke: ${SELECTED_COLOR_EDGES};
-  stroke-width: 2;
 `;
 
 class Edges extends React.Component {
@@ -25,7 +28,10 @@ class Edges extends React.Component {
       this.svgTreeRef,
       this.props.nodes,
       this.props.links,
-      this.props.edgePath
+      this.props.edgePath,
+      this.props.totalNbSamples,
+      this.props.version,
+      this.props.edgeType
     );
   }
 
@@ -36,18 +42,21 @@ class Edges extends React.Component {
       this.svgTreeRef,
       nextProps.nodes,
       nextProps.links,
-      nextProps.edgePath
+      nextProps.edgePath,
+      this.props.totalNbSamples,
+      this.props.version,
+      this.props.edgeType
     );
 
     // Do not allow react to render the component on prop change
     return false;
   }
 
-  diagonal(d) {
-    return `M${d.source.x},${d.source.y}C${d.source.x},${(d.source.y +
-      d.target.y) /
-      2} ${d.target.x},${(d.source.y + d.target.y) / 2} ${d.target.x},${
-      d.target.y
+  diagonal(source, target) {
+    return `M${source.x},${source.y}C${source.x},${(source.y +
+      target.y) /
+      2} ${target.x},${(source.y + target.y) / 2} ${target.x},${
+      target.y
     }`;
   }
 
@@ -55,7 +64,7 @@ class Edges extends React.Component {
     this.svgTreeRef = input;
   };
 
-  renderTree = (treeData, svgDomNode, nodes, links, edgePath) => {
+  renderTree = (treeData, svgDomNode, nodes, links, edgePath, totalNbSamples, version, edgeType) => {
     // Cleans up the SVG on re-render
     d3Select(svgDomNode)
       .selectAll('*')
@@ -107,7 +116,43 @@ class Edges extends React.Component {
             d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
           }`
       )
-      .attr('d', this.diagonal);
+      .attr('stroke-width', (d) => {
+        if (version == 1 || edgeType == 'constant') {
+          return d.linkClass == selectedLinksCssClass ?
+            DEFAULT_MINIMUM_STROKE_WIDTH + ADDITIONAL_SELECTED_STROKE_WIDTH :
+            DEFAULT_MINIMUM_STROKE_WIDTH;
+        }
+        else if (edgeType == 'absolute' || edgeType == 'relative') {
+          // Relative ratio
+          let branchRatio = d.target.nbSamples / d.source.nbSamples;
+          if (edgeType == 'absolute') {
+            // Absolute ratio
+            branchRatio = d.source.nbSamples / totalNbSamples;
+          }
+          const strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio < DEFAULT_MINIMUM_STROKE_WIDTH ?
+            DEFAULT_MINIMUM_STROKE_WIDTH : DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
+          if (d.linkClass == selectedLinksCssClass) {
+            return strokeWidth + ADDITIONAL_SELECTED_STROKE_WIDTH;
+          }
+          return strokeWidth ;
+        }
+        else {
+          throw new Error(
+            'Unexpected edgeType variable, only \'constant\', \'relative\' or \'absolute\' values are accepted.'
+          );
+        }
+      })
+      .attr('d', (d) => {
+        const source = {
+          x: d.source.x,
+          y: d.source.y + (2 * NODE_HEIGHT / 3)
+        };
+        const target = {
+          x: d.target.x,
+          y: d.target.y - NODE_HEIGHT / 3
+        };
+        return this.diagonal(source, target);
+      });
 
     // Transition exiting nodes to the parent's new position.
     link.exit()
@@ -125,12 +170,15 @@ class Edges extends React.Component {
 }
 
 Edges.propTypes = {
+  version: PropTypes.number.isRequired,
   edgePath: PropTypes.array.isRequired,
   treeData: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
   width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
+  totalNbSamples: PropTypes.number,
+  edgeType: PropTypes.string
 };
 
 export default Edges;
