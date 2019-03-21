@@ -1,5 +1,6 @@
 import { css } from 'react-emotion';
 import { select as d3Select } from 'd3';
+import { NODE_HEIGHT } from '../utils/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ADDITIONAL_SELECTED_STROKE_WIDTH,
@@ -52,11 +53,11 @@ class Edges extends React.Component {
     return false;
   }
 
-  diagonal(d) {
-    return `M${d.source.x},${d.source.y}C${d.source.x},${(d.source.y +
-      d.target.y) /
-      2} ${d.target.x},${(d.source.y + d.target.y) / 2} ${d.target.x},${
-      d.target.y
+  diagonal(source, target) {
+    return `M${source.x},${source.y}C${source.x},${(source.y +
+      target.y) /
+      2} ${target.x},${(source.y + target.y) / 2} ${target.x},${
+      target.y
     }`;
   }
 
@@ -137,7 +138,17 @@ class Edges extends React.Component {
             DEFAULT_MINIMUM_STROKE_WIDTH : strokeWidth ;
         }
       })
-      .attr('d', this.diagonal);
+      .attr('d', (d) => {
+        const source = {
+          x: d.source.x,
+          y: d.source.y + (2 * NODE_HEIGHT / 3)
+        };
+        const target = {
+          x: d.target.x,
+          y: d.target.y - NODE_HEIGHT / 3
+        };
+        return this.diagonal(source, target);
+      });
 
     // Transition exiting nodes to the parent's new position.
     link.exit()
