@@ -30,11 +30,7 @@ const tooltipCssClass = css`
 
 
 class Histogram extends React.Component {
-  constructor(props){
-    super(props);
-    this.createHistogram = this.createHistogram.bind(this);
-  }
-
+  // Draw here svg components that are static and have therefore to be drawn only once
   componentDidMount() {
     const { width, height } = this.props;
     d3Select(this.node)
@@ -51,8 +47,6 @@ class Histogram extends React.Component {
     this.scaleY = scaleLinear()
       .domain([0, 1])
       .range([height - margin.top, margin.down]);
-
-    this.createHistogram(this.props);
 
     const xAxis = axisBottom()
       .tickFormat('')
@@ -71,10 +65,16 @@ class Histogram extends React.Component {
       .append('g')
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(yAxis);
+    
+    this.createHistogram(this.props);
   }
 
-  componentDidUpdate() {
-    this.createHistogram(this.props);
+  shouldComponentUpdate(nextProps, nextState) {
+    // Delegate rendering the tree to a d3 function on prop change
+    this.createHistogram(nextProps);
+
+    // Do not allow react to render the component on prop change
+    return false;
   }
 
   createHistogram = ({ distribution, outputValues, size }) => { 
