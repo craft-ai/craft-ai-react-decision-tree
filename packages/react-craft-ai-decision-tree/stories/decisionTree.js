@@ -148,7 +148,7 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2 } edgeType='absolute' />
+        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='absolute' />
       </div>
     </div>
   ))
@@ -161,7 +161,7 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2 } edgeType='relative' />
+        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='relative' />
       </div>
     </div>
   ))
