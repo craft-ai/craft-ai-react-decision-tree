@@ -10,14 +10,16 @@ const margin = {
   right: 10
 };
 
-const width_ratio = 0.5;
+const barWidthRatio = 0.5;
+const rectColor = 'rgb(0,178,103)';
 
 const tooltipCssClass = css`
   position: absolute;
   text-align: center;
   margin-top: 10px;
   font: 12px sans-serif;
-  background: lightsteelblue;
+  background: ${rectColor};
+  color: white;
   border: 0px;
   border-radius: 8px;			
   pointer-events: none;
@@ -25,6 +27,7 @@ const tooltipCssClass = css`
   padding: 1px 10px 1px 10px;
   white-space: nowrap;
 `;
+
 
 class Histogram extends React.Component {
   constructor(props){
@@ -39,7 +42,7 @@ class Histogram extends React.Component {
       .attr('height', height);
 
     this.fullBarWidth = (width - margin.right - margin.left) / this.props.distribution.length;
-    this.barWidth = width_ratio * this.fullBarWidth;
+    this.barWidth = barWidthRatio * this.fullBarWidth;
 
     this.scaleX = scaleLinear()
       .domain([0, this.props.distribution.length])
@@ -74,11 +77,7 @@ class Histogram extends React.Component {
     this.createHistogram(this.props);
   }
 
-  createHistogram = ({ distribution, outputValues, size }) => {
-    let rect = d3Select(this.node)
-      .selectAll('rect')
-      .data(distribution);
-    
+  createHistogram = ({ distribution, outputValues, size }) => { 
     const scaleX = this.scaleX;
     const scaleY = this.scaleY;
     const barWidth = this.barWidth;
@@ -90,26 +89,44 @@ class Histogram extends React.Component {
       .attr('class', tooltipCssClass)	
       .style('opacity', 0);
 
+    let histogram = d3Select(this.node)
+      .selectAll('rect')
+      .data(distribution, (d, i) => i);
+
     // Define the rectangle drawing the distribution
-    rect.enter()
+    const histEnter = histogram.enter()
       .append('rect')
-      .merge(rect)
-      .style('fill', 'steelblue')
+      .style('fill', `${rectColor}`)
       .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
       .attr('y', (d) => scaleY(d))
       .attr('width', barWidth)
       .attr('height', (d) => scaleY(0) - scaleY(d));
     
+    const histUpdate = histEnter.merge(histogram);
+
+    histUpdate
+      .transition()
+      .duration(1000)
+      .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
+      .attr('y', (d) => scaleY(d))
+      .attr('width', barWidth)
+      .attr('height', (d) => scaleY(0) - scaleY(d));
+
+    histogram
+      .exit()
+      .remove();
+  
     // Define the rectangle to hover the drawn distribution
     let rectback = d3Select(this.node)
-      .selectAll('fake')
-      .data(distribution);
+      .selectAll('rect.fake')
+      .data(distribution, (d, i) => i);
 
-    rectback.enter()
+    rectback
+      .enter()
       .append('rect')
-      .merge(rectback)
+      .attr('class', 'fake')
       .attr('opacity', 0.0)
-      .style('fill', 'steelblue')
+      .style('fill', `${rectColor}`)
       .attr('x', (d, i) => scaleX(i))
       .attr('y', scaleY(1))
       .attr('width', this.fullBarWidth)
@@ -139,10 +156,6 @@ class Histogram extends React.Component {
     rectback
       .exit()
       .remove();
-
-    rect
-      .exit()
-      .remove();
   }
 
   render() {
@@ -155,7 +168,7 @@ class Histogram extends React.Component {
 
 Histogram.defaultProps = {
   width: 200,
-  height: 100
+  height: 200
 };
 
 Histogram.propTypes = {

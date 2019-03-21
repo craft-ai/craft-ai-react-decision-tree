@@ -48,7 +48,6 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
     const selectedNode = findSelectedNode(selectedNodePath, treeData);
     let min = undefined;
     let max = undefined;
-    console.log(interpreter);
     if (treeVersion == 2) {
       const res = interpreter.distribution(treeData);
       min = res.min;
