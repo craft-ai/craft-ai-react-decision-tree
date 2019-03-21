@@ -39,7 +39,7 @@ function computeSvgSizeFromData(root, update) {
   
   // Collapse the node and all it's children
   function collapse(node) {
-    if (node.depth > 0) {
+    if (node.depth > 20) {
       node._children = node.children;
       node.children = null;
       if (node._children) {

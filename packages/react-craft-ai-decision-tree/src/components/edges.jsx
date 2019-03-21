@@ -6,9 +6,9 @@ import { ADDITIONAL_SELECTED_STROKE_WIDTH,
   DEFAULT_COLOR_EDGES,
   DEFAULT_MINIMUM_STROKE_WIDTH,
   DEFAULT_STROKE_WIDTH_RATIO,
-  SELECTED_COLOR_EDGES,
   NODE_HEIGHT,
-  NODE_WIDTH
+  NODE_WIDTH,
+  SELECTED_COLOR_EDGES
 } from '../utils/constants';
 
 // make links css rules
@@ -129,25 +129,6 @@ class Edges extends React.Component {
     const linkEnter = link
       .enter()
       .append('path')
-      .attr('d', (d) => {
-        const source = {
-          x: d.source.x,
-          y: d.source.y + NODE_HEIGHT / 2
-        };
-        return this.diagonal(source, source);
-      });
-    
-    const linkUpdate = linkEnter.merge(link);
-
-    linkUpdate
-      .attr(
-        'class',
-        (d) => {
-          return `${d.linkClass} ${
-            d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
-          }`;
-        }
-      )
       .attr('stroke-width', (d) => {
         if (version == 1 || edgeType == 'constant') {
           return d.linkClass == selectedLinksCssClass ?
@@ -174,6 +155,7 @@ class Edges extends React.Component {
           );
         }
       })
+      .merge(link)
       .attr('d', (d) => {
         const source = {
           x: d.source.x,
@@ -184,7 +166,15 @@ class Edges extends React.Component {
           y: d.target.y - NODE_HEIGHT / 3
         };
         return this.diagonal(source, target);
-      });
+      })
+      .attr(
+        'class',
+        (d) => {
+          return `${d.linkClass} ${
+            d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
+          }`;
+        }
+      );
    
     link.exit()
       .remove();
