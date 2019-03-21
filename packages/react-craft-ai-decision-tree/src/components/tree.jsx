@@ -234,7 +234,8 @@ class Tree extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const doUpdate = !_.isEqual(nextProps, this.props) 
       || !_.isEqual(this.state.newPos, nextState.newPos)
-      || !_.isEqual(this.state.nodes, nextState.nodes);
+      || !_.isEqual(this.state.nodes, nextState.nodes)
+      || !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath);
     return doUpdate;
   }
 
