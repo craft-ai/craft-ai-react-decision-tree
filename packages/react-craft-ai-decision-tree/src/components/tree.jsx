@@ -96,7 +96,6 @@ function computeSvgSizeFromData(root) {
   let minSvgWidth;
   let minSvgHeight;
   let incr = 0;
-  let totalNbSamples = 0;
 
   // Compute the max tree depth(node which is the lowest leaf)
   const enrichTreeRecursive = (index, node) => {
@@ -125,9 +124,7 @@ function computeSvgSizeFromData(root) {
         ];
       }
       if (node.data.prediction) {
-        const nbSamples = node.data.prediction.nb_samples;
-        totalNbSamples += nbSamples;
-        node.nbSamples = nbSamples;
+        node.nbSamples = node.data.prediction.nb_samples;
       }
       else {
         node.nbSamples = 0;
@@ -154,7 +151,7 @@ function computeSvgSizeFromData(root) {
     }
 
     if (node.children) {
-      node.children.map((child, childIndex) => {
+      node.children.forEach((child, childIndex) => {
         enrichTreeRecursive(childIndex, child);
       });
       node.nbSamples = node.children.reduce((acc, child) => acc + child.nbSamples, 0);
@@ -166,13 +163,14 @@ function computeSvgSizeFromData(root) {
 
   minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
   minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+  const nodeDescendantsArray = nodes.descendants();
 
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
-    nodes: nodes.descendants(),
+    nodes: nodeDescendantsArray,
     links: links,
-    totalNbSamples: totalNbSamples,
+    totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
   };
 }
