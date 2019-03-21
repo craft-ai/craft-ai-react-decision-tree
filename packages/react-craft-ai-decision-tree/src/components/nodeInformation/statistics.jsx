@@ -20,28 +20,31 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
         <li>{size} samples</li>
       </Ul>;
       if (_.isUndefined(standard_deviation)) {
-        return <div>
-          {samplesIt}
-          <Histogram
-            distribution={ value }
-            outputValues={ outputValues }
-            size={ size }
-          ></Histogram>
-        </div>;
+        return (
+          <div>
+            {samplesIt}
+            <Histogram
+              distribution={ value }
+              outputValues={ outputValues }
+              size={ size }
+            />
+          </div>
+        );
       }
       else {
-        return <div>
-          {samplesIt}
-          <BoxPlot
-            mean={ value }
-            std={ standard_deviation }
-            min={ min }
-            max={ max }
-            size={ size }
-            totalMin={ totalMin }
-            totalMax={ totalMax }
-          ></BoxPlot>
-        </div>;
+        return (
+          <div>
+            {samplesIt}
+            <BoxPlot
+              mean={ value }
+              std={ standard_deviation }
+              min={ min }
+              max={ max }
+              size={ size }
+              totalMin={ totalMin }
+              totalMax={ totalMax } />
+          </div>
+        );
       }
     };
     return (

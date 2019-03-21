@@ -11,10 +11,8 @@ import Split from './split';
 import Statistics from './statistics';
 import styled from 'react-emotion';
 
-const width = '200px';
-
 const NodeInformationContainer = styled('div')`
-  width: ${width};
+  width: 200px;
   display: flex;
   flex-direction: column;
   float: left;
