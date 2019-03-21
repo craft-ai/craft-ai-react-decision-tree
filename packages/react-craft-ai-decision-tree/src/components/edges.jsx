@@ -117,25 +117,29 @@ class Edges extends React.Component {
           }`
       )
       .attr('stroke-width', (d) => {
-        if (version == 1 || (edgeType != 'relative' && edgeType != 'absolute')) {
+        if (version == 1 || edgeType == 'constant') {
           return d.linkClass == selectedLinksCssClass ?
             DEFAULT_MINIMUM_STROKE_WIDTH + ADDITIONAL_SELECTED_STROKE_WIDTH :
             DEFAULT_MINIMUM_STROKE_WIDTH;
         }
-        else {
+        else if (edgeType == 'absolute' || edgeType == 'relative') {
           // Relative ratio
           let branchRatio = d.target.nbSamples / d.source.nbSamples;
           if (edgeType == 'absolute') {
             // Absolute ratio
             branchRatio = d.source.nbSamples / totalNbSamples;
           }
-          let strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
-          strokeWidth = strokeWidth < DEFAULT_MINIMUM_STROKE_WIDTH ?
-            DEFAULT_MINIMUM_STROKE_WIDTH : strokeWidth;
+          const strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio < DEFAULT_MINIMUM_STROKE_WIDTH ?
+            DEFAULT_MINIMUM_STROKE_WIDTH : DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
           if (d.linkClass == selectedLinksCssClass) {
             return strokeWidth + ADDITIONAL_SELECTED_STROKE_WIDTH;
           }
           return strokeWidth ;
+        }
+        else {
+          throw new Error(
+            'Unexpected edgeType variable, only \'constant\', \'relative\' or \'absolute\' values are accepted.'
+          );
         }
       })
       .attr('d', (d) => {
