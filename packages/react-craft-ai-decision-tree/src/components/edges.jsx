@@ -1,5 +1,5 @@
 import { css } from 'react-emotion';
-import { select as d3Select, interpolate, arc } from 'd3';
+import { select as d3Select } from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ADDITIONAL_SELECTED_STROKE_WIDTH,
@@ -8,8 +8,8 @@ import { ADDITIONAL_SELECTED_STROKE_WIDTH,
   DEFAULT_STROKE_WIDTH_RATIO,
   SELECTED_COLOR_EDGES,
   NODE_HEIGHT,
-  NODE_WIDTH,
-  COLOR_NODES } from '../utils/constants';
+  NODE_WIDTH
+} from '../utils/constants';
 
 // make links css rules
 const defaultLinksCssClass = css`
@@ -26,7 +26,6 @@ const selectedLinksCssClass = css`
 
 
 class Edges extends React.Component {
-  
   constructor(props) {
     super(props);
   }

@@ -96,7 +96,7 @@ class Nodes extends React.Component {
     let color;
 
     if (this.props.version == 1) {
-      if (_.isUndefined(node.children)) {
+      if (!_.isUndefined(node.data.predicted_value)) {
         // leaf
         color = computeLeafColor(node.data.confidence);
         text = _.isNull(node.data.predicted_value)
@@ -108,7 +108,7 @@ class Nodes extends React.Component {
       }
       else {
         // node
-        text = node.children[0].data.decision_rule.property;
+        text = node.data.children[0].decision_rule.property;
       }
     }
     else {
