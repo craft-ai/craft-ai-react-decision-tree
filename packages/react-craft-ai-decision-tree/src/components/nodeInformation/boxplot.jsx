@@ -32,17 +32,16 @@ const boxPlotMargin = {
 const stdRectangleHeight = 20;
 
 class BoxPlot extends React.Component {
-  constructor(props){
-    super(props);
-    this.createBoxPlot = this.createBoxPlot.bind(this);
-  }
-
   componentDidMount() {
     this.createBoxPlot(this.props);
   }
 
-  componentDidUpdate() {
-    this.createBoxPlot(this.props);
+  shouldComponentUpdate(nextProps, nextState) {
+    // Delegate rendering the tree to a d3 function on prop change
+    this.createBoxPlot(nextProps);
+
+    // Do not allow react to render the component on prop change
+    return false;
   }
 
   diagonal(source, target) {
@@ -50,7 +49,7 @@ class BoxPlot extends React.Component {
       target.y) /
       2} ${target.x},${(source.y + target.y) / 2} ${target.x},${
       target.y
-    }`;x
+    }`;
   }
 
   createBoxPlot = ({ totalMin, totalMax, mean, std, min, max, width, height }) => {
@@ -71,20 +70,19 @@ class BoxPlot extends React.Component {
     const scaleVal = scaleLinear()
       .domain([0, Math.abs(totalMax - totalMin)])
       .range([0, width]);
+
+    // Since there is no animation, we clean the svg:
+    d3Select(this.node)
+      .selectAll('*')
+      .remove();
     
     // Begin here to define the svg:
     let svg = d3Select(this.node)
       .attr('width', width)
-      .attr('height', height)
-      .selectAll('g')
-      .data([this.props], (d) => d.mean);
-
-    const svgEnter = svg
-      .enter()
-      .append('g');
+      .attr('height', height); // identifier
 
     // Add the TotalMin - TotalMax line
-    svgEnter
+    svg
       .append('line')
       .attr('class', basicLineCssClass(2))
       .attr('opacity', 0.3)
@@ -94,7 +92,7 @@ class BoxPlot extends React.Component {
       .attr('y2', middleY);
 
     // Add Total Min text
-    svgEnter
+    svg
       .append('text')
       .attr('class', totalTextCssClass)
       .attr('y', middleY - 5)
@@ -102,7 +100,7 @@ class BoxPlot extends React.Component {
       .text((Math.round(totalMin * 100) / 100));
 
     // Add Total Max text
-    svgEnter
+    svg
       .append('text')
       .attr('class', totalTextCssClass)
       .attr('y', middleY - 5)
@@ -110,7 +108,7 @@ class BoxPlot extends React.Component {
       .text((Math.round(totalMax * 100) / 100));
 
     // Add the min - max line
-    svgEnter
+    svg
       .append('line')
       .attr('class', basicLineCssClass(4))
       .attr('x1', minPosX)
@@ -120,27 +118,27 @@ class BoxPlot extends React.Component {
 
     // Add lines and text to show local min/max
     if (maxPosX - minPosX > 20) {
-      svgEnter
+      svg
         .append('line')
         .attr('class', basicLineCssClass(1))
         .attr('x1', minPosX)
         .attr('x2', minPosX)
         .attr('y1', middleY)
         .attr('y2', scaleY(0.6));
-      svgEnter
+      svg
         .append('line')
         .attr('class', basicLineCssClass(1))
         .attr('x1', maxPosX)
         .attr('x2', maxPosX)
         .attr('y1', middleY)
         .attr('y2', scaleY(0.6));
-      svgEnter
+      svg
         .append('text')
         .attr('class', localTextCssClass)
         .attr('y', scaleY(0.6) + 10)
         .attr('x', minPosX)
         .text((Math.round(min * 100) / 100));
-      svgEnter
+      svg
         .append('text')
         .attr('class', localTextCssClass)
         .attr('y', scaleY(0.6) + 10)
@@ -151,7 +149,7 @@ class BoxPlot extends React.Component {
     else if (maxPosX - minPosX > 0) {
       const shift = 15;
   
-      svgEnter
+      svg
         .append('path')
         .attr('d', () => {
           const source = {
@@ -168,7 +166,7 @@ class BoxPlot extends React.Component {
         .attr('stroke-width', 1)
         .attr('stroke', 'black');
 
-      svgEnter
+      svg
         .append('path', 'g')
         .attr('d', () => {
           const source = {
@@ -185,14 +183,14 @@ class BoxPlot extends React.Component {
         .attr('stroke-width', 1)
         .attr('stroke', 'black');
 
-      svgEnter
+      svg
         .append('text')
         .attr('class', localTextCssClass)
         .attr('y', scaleY(0.65) + 10)
         .attr('x', minPosX - shift)
         .text((Math.round(min * 100) / 100));
 
-      svgEnter
+      svg
         .append('text')
         .attr('class', localTextCssClass)
         .attr('y', scaleY(0.65) + 10)
@@ -201,7 +199,7 @@ class BoxPlot extends React.Component {
     }
 
     // Add the standard deviation rectangle
-    svgEnter
+    svg
       .append('rect')
       .attr('class', rectangleCssClass)
       .attr('x', scaleX(mean) - scaleVal(std))
@@ -210,7 +208,7 @@ class BoxPlot extends React.Component {
       .attr('height', stdRectangleHeight);
 
     // Add the mean line
-    svgEnter
+    svg
       .append('line')
       .attr('stroke-width', 2)
       .attr('stroke', 'coral')
@@ -219,16 +217,12 @@ class BoxPlot extends React.Component {
       .attr('y1', (height - stdRectangleHeight) / 2 - 2)
       .attr('y2', (height + stdRectangleHeight) / 2 + 2);
 
-    svgEnter
+    svg
       .append('text')
       .attr('class', localTextCssClass)
       .attr('y', (height - stdRectangleHeight) / 2 - 10)
       .attr('x', scaleX(mean))
       .text((Math.round(mean * 100) / 100));
-
-    svg
-      .exit()
-      .remove();
   }
 
   render() {
@@ -246,7 +240,6 @@ BoxPlot.propTypes = {
   std: PropTypes.number.isRequired,
   min: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
-  size: PropTypes.number.isRequired,
   totalMin: PropTypes.number,
   totalMax: PropTypes.number,
   width: PropTypes.number,
