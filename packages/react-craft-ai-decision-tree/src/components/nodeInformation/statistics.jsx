@@ -16,7 +16,6 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
   if (treeVersion == 2) {
     const plot = () => {
       const { value, standard_deviation, min, max, size } = interpreter.distribution(node);
-      interpreter.distribution(node);
       const samplesIt = <Ul>
         <li>{size} samples</li>
       </Ul>;
