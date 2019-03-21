@@ -127,7 +127,7 @@ class Edges extends React.Component {
           let branchRatio = d.target.nbSamples / d.source.nbSamples;
           if (edgeType == 'absolute') {
             // Absolute ratio
-            branchRatio = d.source.nbSamples / totalNbSamples;
+            branchRatio = d.target.nbSamples / totalNbSamples;
           }
           const strokeWidth = DEFAULT_STROKE_WIDTH_RATIO * branchRatio < DEFAULT_MINIMUM_STROKE_WIDTH ?
             DEFAULT_MINIMUM_STROKE_WIDTH : DEFAULT_STROKE_WIDTH_RATIO * branchRatio;
