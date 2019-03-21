@@ -226,7 +226,9 @@ class BoxPlot extends React.Component {
   }
 
   render() {
-    return <svg ref={ (node) => this.node = node }></svg>;
+    return (
+      <svg ref={ (node) => this.node = node } />
+    );
   }
 }
 

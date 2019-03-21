@@ -42,7 +42,8 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
               max={ max }
               size={ size }
               totalMin={ totalMin }
-              totalMax={ totalMax } />
+              totalMax={ totalMax }
+            />
           </div>
         );
       }
