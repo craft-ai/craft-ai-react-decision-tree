@@ -126,7 +126,7 @@ class Edges extends React.Component {
       });
     
     // Enter any new links at the parent's previous position.
-    const linkEnter = link
+    link
       .enter()
       .append('path')
       .attr('stroke-width', (d) => {
