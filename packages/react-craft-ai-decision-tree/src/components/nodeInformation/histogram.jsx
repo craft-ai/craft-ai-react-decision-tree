@@ -30,7 +30,6 @@ const tooltipCssClass = css`
 
 
 class Histogram extends React.Component {
-  // Draw here svg components that are static and have therefore to be drawn only once
   componentDidMount() {
     this.createHistogram(this.props);
   }
@@ -88,7 +87,8 @@ class Histogram extends React.Component {
       .data(distribution, (d, i) => i);
 
     // Define the rectangle drawing the distribution
-    const histEnter = histogram.enter()
+    const histEnter = histogram
+      .enter()
       .append('rect')
       .style('fill', `${rectColor}`)
       .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
@@ -123,14 +123,15 @@ class Histogram extends React.Component {
       .style('fill', `${rectColor}`)
       .attr('x', (d, i) => scaleX(i))
       .attr('y', scaleY(1))
-      .attr('width', this.fullBarWidth)
+      .attr('width', fullBarWidth)
       .attr('height', scaleY(0) - scaleY(1))
       .on('mouseover', function(d, i) {
         d3Select(this)
           .transition()
           .duration(100)
           .style('opacity', 0.2);
-        div.transition()
+        div
+          .transition()
           .duration(100)
           .style('opacity', 0.9);
         return div.html(`${outputValues[i]}</br>${Math.round(d * 100) / 100}</br>${Math.floor(size * d)} samples`)
@@ -142,7 +143,8 @@ class Histogram extends React.Component {
           .transition()
           .duration(100)
           .style('opacity', 0.0);
-        return div.transition()
+        return div
+          .transition()
           .duration(100)
           .style('opacity', 0);
       });
