@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - DecisionTree alone
   - Component of the panel (NodeInformation, Split, DecisionRules, Prediction and Statistics)
 - Edges width can be 'constant', 'absolute' or 'relative' with the parameter `edgeType`
+- Add Histograms for Classification and Boxplots for Regression in the panel in every node.
 
 ## Updated
 
