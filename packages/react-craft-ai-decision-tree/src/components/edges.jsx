@@ -199,8 +199,7 @@ Edges.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   totalNbSamples: PropTypes.number,
-  edgeType: PropTypes.string,
-  onClickNode: PropTypes.func
+  edgeType: PropTypes.string
 };
 
 export default Edges;

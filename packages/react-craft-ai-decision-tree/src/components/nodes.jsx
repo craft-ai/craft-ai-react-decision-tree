@@ -14,7 +14,8 @@ import {
   SELECTED_COLOR_EDGES
 } from '../utils/constants';
 
-const BUTTON_RADIUS = 20;
+const BUTTON_RADIUS = 21;
+const BUTTON_BORDER = 2;
 
 const Links = styled('div')`
   overflow: hidden;
@@ -26,20 +27,23 @@ const Links = styled('div')`
 `;
 
 const Button = styled('button')`
-  position: relative;
+  position: fixed;
   height: ${BUTTON_RADIUS}px;
   width: ${BUTTON_RADIUS}px;
-  border: 2px solid #f5f5f5;
+  border: ${BUTTON_BORDER}px solid white;
   border-radius: 50%;
-  color:grey;
-  text-align:center;
-  text-decoration:none;
-  background: #ffe066;
+  color: black;
+  text-align: center;
+  text-decoration: none;
   box-shadow: 0 0 3px gray;
-  font-size:10px;
-  visibility:hidden 
-  font-weight:bold;
-  transition: background-color 0.2s;
+  float: left;
+  font-size: 12px;
+  visibility: hidden 
+  font-weight: bold;
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  padding: 0px;
+  transition: background-color 0.1s;
   &:hover {
     background: #ffcc00;
   }
@@ -49,27 +53,32 @@ const Button = styled('button')`
   &:active {
     background: ${SELECTED_COLOR_EDGES};
   }
-  display: inline-block;
-  transform: translate(-50%, -50%);
-  padding: 0px;
 `;
 
 
-const NodeButton = ({ node, setSelectedNode, isVisible }) => {
-  return (
-    <Button
-      style={{
-        top: -NODE_HEIGHT,
-        visibility: isVisible ? 'visible' : 'hidden'
-      }}
-      onClick={ setSelectedNode }
-    >
-    </Button>
-  );
+const NodeButton = ({ node, refButton, setSelectedNode, isVisible }) => {
+  if (!_.isUndefined(node.data.children)) {
+    const text = _.isNull(node.children) ? '+' : '-';
+    return (
+      <Button
+        ref={ refButton }
+        style={{
+          top: node.y + NODE_HEIGHT - BUTTON_RADIUS / 2,
+          left: node.x,
+          visibility: isVisible ? 'visible' : 'hidden'
+        }}
+        onClick={ setSelectedNode }
+      >
+        { text }
+      </Button>
+    );
+  }
+  return null;
 };
 
 NodeButton.propTypes = {
   node: PropTypes.object.isRequired,
+  refButton: PropTypes.func.isRequired,
   setSelectedNode: PropTypes.func.isRequired,
   isVisible: PropTypes.string.isRequired
 };
@@ -78,6 +87,8 @@ class Nodes extends React.Component {
   linkRef = {};
 
   nodeRef = {};
+
+  buttonRef = {};
 
   state = {
     showingTooltip: false,
@@ -108,20 +119,6 @@ class Nodes extends React.Component {
     return doUpdate;
   }
 
-  showNodeTooltip = (index, text) => (input) => {
-    if (this.props.selectable) {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.nodeRef[index]
-      });
-    }
-  };
-
-  indexNodeRef = (index) => (input) => {
-    this.nodeRef[index] = input;
-  };
-
   displayNode = (node, index) => {
     const setSelectedNode = () => {
       if (this.props.updateSelectedNode) {
@@ -143,6 +140,10 @@ class Nodes extends React.Component {
 
     const indexRef = (input) => {
       this.nodeRef[index] = input;
+    };
+
+    const nodeButtonRef = (input) => {
+      this.buttonRef[index] = input;
     };
 
     let text;
@@ -185,10 +186,12 @@ class Nodes extends React.Component {
       this.setState({
         showingTooltip: true,
         tooltipText: text,
-        tooltipRef: this.nodeRef[index]
+        tooltipRef: !_.isUndefined(node.data.children) ? this.buttonRef[index] : this.nodeRef[index]
       });
     };
+
     const PADDING = 15;
+
     return (
       <div 
         key={ index }
@@ -210,16 +213,12 @@ class Nodes extends React.Component {
         <Node
           ref={ indexRef }
           onMouseOver={ () => {
-            this.setState({ showingNodeButtonId: index });
             showTooltip();
           } }
           onMouseOut={ () => {
-            this.setState({ showingNodeButtonId: undefined });
             this.hideTooltip();
           } }
-          onClick={ (event) => {
-            onClickExpand();
-          } }
+          onClick={ setSelectedNode }
           className='craft-nodes'
           style={{
             border:
@@ -234,9 +233,11 @@ class Nodes extends React.Component {
           {text}
         </Node>
         <NodeButton
+          refButton={ nodeButtonRef }
           node={ node }
-          setSelectedNode={ setSelectedNode }
-          isVisible={ index === this.state.showingNodeButtonId } />
+          setSelectedNode={ onClickExpand }
+          isVisible={ index === this.state.showingNodeButtonId }  
+        />
       </div>
     );
   };
@@ -329,7 +330,9 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
-          style={{ pointerEvents: 'none' }} // disable click on tooltip
+          style={{ 
+            pointerEvents: 'none'
+          }} // disable click on tooltip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }

@@ -70,7 +70,7 @@ function adjustTreePosition(tree) {
 function updateTree(nodes) {
   const tree = d3Tree()
     .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
-  console.log(nodes);
+
   tree(nodes);
 
   const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(nodes);
@@ -86,7 +86,6 @@ function updateTree(nodes) {
     offsetX: offsetX
   };
 }
-
 
 function computeSvgSizeFromData(root) {
   const tree = d3Tree()
@@ -472,7 +471,6 @@ class Tree extends React.Component {
             height={ minSvgHeight }
             totalNbSamples={ totalNbSamples }
             edgeType={ this.props.edgeType }
-            onClickNode={ this.onClickNode }
             clickedNode={ clickedNode }
           />
         </div>
