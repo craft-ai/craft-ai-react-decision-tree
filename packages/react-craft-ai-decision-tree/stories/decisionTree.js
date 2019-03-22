@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
-import treeV2 from './treeV2-regression.json';
+import treeV2Classif from './treeV2.json';
+import treeV2Reg from './treeV2-regression.json';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import { number, withKnobs } from '@storybook/addon-knobs';
 import React, { useState } from 'react';
@@ -112,16 +113,29 @@ storiesOf('Tree displayed with fixed height', module)
       <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
-  .add('display tree v2', () => (
+  .add('display tree v2 regression', () => (
     <div
       style={{
         display: 'flex',
-        height: 500,
+        height: '100%',
         border: 'solid 1px black'
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2 } />
+        <DecisionTreeWithPanel data={ treeV2Reg } />
+      </div>
+    </div>
+  ))
+  .add('display tree v2 classification', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeV2Classif } />
       </div>
     </div>
   ))
@@ -134,7 +148,7 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2 } edgeType='absolute' />
+        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='absolute' />
       </div>
     </div>
   ))
@@ -147,7 +161,7 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2 } edgeType='relative' />
+        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='relative' />
       </div>
     </div>
   ))
@@ -407,21 +421,21 @@ storiesOf('Using separate component', module)
   .add('Tree v2 node information - root node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      tree={ treeV2 }
+      tree={ treeV2Reg }
       selectedNodePath='0'
     />
   ))
   .add('Tree v2 node information - internal node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      tree={ treeV2 }
+      tree={ treeV2Reg }
       selectedNodePath='0-0-1'
     />
   ))
   .add('Tree v2 node information - leaf node', () => (
     <NodeInformation
       updateSelectedNode={ () => {} }
-      tree={ treeV2 }
+      tree={ treeV2Reg }
       selectedNodePath='0-0-1-0-0-0'
     />
   ));

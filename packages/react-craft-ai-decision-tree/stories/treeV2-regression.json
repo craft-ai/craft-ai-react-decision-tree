@@ -1,51 +1,32 @@
 {
   "_version": "2.0.0",
   "configuration": {
+    "time_quantum": 86400,
+    "learning_period": 1296000000,
     "context": {
-      "fixed acidity": {
-        "type": "continuous"
+      "day_off": {
+        "type": "enum"
       },
-      "volatile acidity": {
-        "type": "continuous"
+      "next_day_off": {
+        "type": "enum"
       },
-      "citric acid": {
-        "type": "continuous"
+      "sleep_at_home": {
+        "type": "enum"
       },
-      "residual sugar": {
-        "type": "continuous"
+      "sleep_start": {
+        "type": "time_of_day",
+        "is_generated": false
       },
-      "chlorides": {
-        "type": "continuous"
-      },
-      "free sulfur dioxide": {
-        "type": "continuous"
-      },
-      "total sulfur dioxide": {
-        "type": "continuous"
-      },
-      "density": {
-        "type": "continuous"
-      },
-      "pH": {
-        "type": "continuous"
-      },
-      "sulphates": {
-        "type": "continuous"
-      },
-      "alcohol": {
-        "type": "continuous"
-      },
-      "quality": {
+      "sleep": {
         "type": "continuous"
       }
     },
-    "output": ["quality"],
-    "deactivate_forgetting": true,
-    "operations_as_events": true,
-    "tree_max_operations": 55000
+    "output": [
+      "sleep"
+    ]
   },
   "trees": {
-    "quality": {
+    "sleep": {
       "children": [
         {
           "children": [
@@ -54,182 +35,83 @@
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 6.5,
-                            "operator": "<",
-                            "property": "free sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 8,
-                            "confidence": 0.7610452771186829,
-                            "distribution": {
-                              "standard_deviation": 0.75592893
-                            },
-                            "value": 4.5
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 6.5,
-                            "operator": ">=",
-                            "property": "free sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 606,
-                            "confidence": 0.8899880051612854,
-                            "distribution": {
-                              "standard_deviation": 0.7243284
-                            },
-                            "value": 5.9488435
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 0.99788,
-                        "operator": "<",
-                        "property": "density"
+                        "operand": [
+                          0.05,
+                          0.23333333
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.6800363659858704,
+                        "distribution": {
+                          "max": 9.350000381469728,
+                          "min": 6.066666603088379,
+                          "standard_deviation": 1.3473141
+                        },
+                        "nb_samples": 4,
+                        "value": 7.6375
                       }
                     },
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.305,
-                            "operator": "<",
-                            "property": "citric acid"
-                          },
-                          "prediction": {
-                            "nb_samples": 61,
-                            "confidence": 0.8985923528671265,
-                            "distribution": {
-                              "standard_deviation": 0.6689851
-                            },
-                            "value": 7.04918
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.305,
-                            "operator": ">=",
-                            "property": "citric acid"
-                          },
-                          "prediction": {
-                            "nb_samples": 56,
-                            "confidence": 0.883011519908905,
-                            "distribution": {
-                              "standard_deviation": 0.68376344
-                            },
-                            "value": 6.071428
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 0.99788,
-                        "operator": ">=",
-                        "property": "density"
+                        "operand": [
+                          0.23333333,
+                          11.533334
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8383409976959229,
+                        "distribution": {
+                          "max": 7.349999904632568,
+                          "min": 4.916666507720947,
+                          "standard_deviation": 0.7433748
+                        },
+                        "nb_samples": 17,
+                        "value": 5.8735294
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": 0.2075,
-                    "operator": "<",
-                    "property": "volatile acidity"
+                    "operand": [
+                      0.05,
+                      11.533334
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
                   }
                 },
                 {
-                  "children": [
-                    {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 13.05,
-                            "operator": "<",
-                            "property": "residual sugar"
-                          },
-                          "prediction": {
-                            "nb_samples": 250,
-                            "confidence": 0.8896894454956055,
-                            "distribution": {
-                              "standard_deviation": 0.65300053
-                            },
-                            "value": 5.464001
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 13.05,
-                            "operator": ">=",
-                            "property": "residual sugar"
-                          },
-                          "prediction": {
-                            "nb_samples": 188,
-                            "confidence": 0.8901800513267517,
-                            "distribution": {
-                              "standard_deviation": 0.6751907
-                            },
-                            "value": 5.7500005
-                          }
-                        }
-                      ],
-                      "decision_rule": {
-                        "operand": 9.85,
-                        "operator": "<",
-                        "property": "alcohol"
-                      }
-                    },
-                    {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.475,
-                            "operator": "<",
-                            "property": "sulphates"
-                          },
-                          "prediction": {
-                            "nb_samples": 121,
-                            "confidence": 0.8893059492111206,
-                            "distribution": {
-                              "standard_deviation": 0.6562897
-                            },
-                            "value": 5.6942153
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.475,
-                            "operator": ">=",
-                            "property": "sulphates"
-                          },
-                          "prediction": {
-                            "nb_samples": 185,
-                            "confidence": 0.8897466659545898,
-                            "distribution": {
-                              "standard_deviation": 0.71042275
-                            },
-                            "value": 6.0270286
-                          }
-                        }
-                      ],
-                      "decision_rule": {
-                        "operand": 9.85,
-                        "operator": ">=",
-                        "property": "alcohol"
-                      }
-                    }
-                  ],
                   "decision_rule": {
-                    "operand": 0.2075,
-                    "operator": ">=",
-                    "property": "volatile acidity"
+                    "operand": [
+                      11.533334,
+                      21.05
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
+                  },
+                  "prediction": {
+                    "confidence": 0.5,
+                    "distribution": {
+                      "max": 1.8166667222976685,
+                      "min": 1.8166667222976685,
+                      "standard_deviation": 0
+                    },
+                    "nb_samples": 1,
+                    "value": 1.8166667
                   }
                 }
               ],
               "decision_rule": {
-                "operand": 0.2525,
-                "operator": "<",
-                "property": "volatile acidity"
+                "operand": [
+                  0.05,
+                  21.05
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
               }
             },
             {
@@ -237,189 +119,116 @@
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.35500002,
-                            "operator": "<",
-                            "property": "volatile acidity"
-                          },
-                          "prediction": {
-                            "nb_samples": 31,
-                            "confidence": 0.8344518542289734,
-                            "distribution": {
-                              "standard_deviation": 0.77875006
-                            },
-                            "value": 4.8387094
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.35500002,
-                            "operator": ">=",
-                            "property": "volatile acidity"
-                          },
-                          "prediction": {
-                            "nb_samples": 20,
-                            "confidence": 0.8251354694366455,
-                            "distribution": {
-                              "standard_deviation": 0.6708204
-                            },
-                            "value": 4.3499994
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 8.5,
-                        "operator": "<",
-                        "property": "free sulfur dioxide"
+                        "operand": "False",
+                        "operator": "is",
+                        "property": "next_day_off"
+                      },
+                      "prediction": {
+                        "confidence": 0.5,
+                        "distribution": {
+                          "max": 8.166666984558105,
+                          "min": 8.166666984558105,
+                          "standard_deviation": 0
+                        },
+                        "nb_samples": 1,
+                        "value": 8.166667
                       }
                     },
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.99283004,
-                            "operator": "<",
-                            "property": "density"
-                          },
-                          "prediction": {
-                            "nb_samples": 51,
-                            "confidence": 0.8648616671562195,
-                            "distribution": {
-                              "standard_deviation": 0.7200218
-                            },
-                            "value": 5.3725495
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.99283004,
-                            "operator": ">=",
-                            "property": "density"
-                          },
-                          "prediction": {
-                            "nb_samples": 133,
-                            "confidence": 0.8897929191589355,
-                            "distribution": {
-                              "standard_deviation": 0.5773502
-                            },
-                            "value": 4.9999995
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 8.5,
-                        "operator": ">=",
-                        "property": "free sulfur dioxide"
+                        "operand": "True",
+                        "operator": "is",
+                        "property": "next_day_off"
+                      },
+                      "prediction": {
+                        "confidence": 0.5,
+                        "distribution": {
+                          "max": 9,
+                          "min": 9,
+                          "standard_deviation": 0
+                        },
+                        "nb_samples": 1,
+                        "value": 9
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": 17.5,
-                    "operator": "<",
-                    "property": "free sulfur dioxide"
+                    "operand": [
+                      21.05,
+                      22.516666
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
                   }
                 },
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.555,
-                            "operator": "<",
-                            "property": "volatile acidity"
-                          },
-                          "prediction": {
-                            "nb_samples": 1075,
-                            "confidence": 0.8989134430885315,
-                            "distribution": {
-                              "standard_deviation": 0.5982493
-                            },
-                            "value": 5.3693013
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.555,
-                            "operator": ">=",
-                            "property": "volatile acidity"
-                          },
-                          "prediction": {
-                            "nb_samples": 50,
-                            "confidence": 0.8487614393234253,
-                            "distribution": {
-                              "standard_deviation": 0.74751294
-                            },
-                            "value": 4.82
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 10.25,
-                        "operator": "<",
-                        "property": "alcohol"
+                        "operand": [
+                          22.516666,
+                          23.9
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8521174192428589,
+                        "distribution": {
+                          "max": 10.233333587646484,
+                          "min": 5.75,
+                          "standard_deviation": 0.98185086
+                        },
+                        "nb_samples": 32,
+                        "value": 7.115625
                       }
                     },
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 160.5,
-                            "operator": "<",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 168,
-                            "confidence": 0.8793544173240662,
-                            "distribution": {
-                              "standard_deviation": 0.77582437
-                            },
-                            "value": 5.9464297
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 160.5,
-                            "operator": ">=",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 82,
-                            "confidence": 0.8650503754615784,
-                            "distribution": {
-                              "standard_deviation": 0.767548
-                            },
-                            "value": 5.4024396
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 10.25,
-                        "operator": ">=",
-                        "property": "alcohol"
+                        "operand": [
+                          23.9,
+                          0.05
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8435721397399902,
+                        "distribution": {
+                          "max": 6.800000190734863,
+                          "min": 6.050000190734863,
+                          "standard_deviation": 0.2384361
+                        },
+                        "nb_samples": 7,
+                        "value": 6.3999996
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": 17.5,
-                    "operator": ">=",
-                    "property": "free sulfur dioxide"
+                    "operand": [
+                      22.516666,
+                      0.05
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
                   }
                 }
               ],
               "decision_rule": {
-                "operand": 0.2525,
-                "operator": ">=",
-                "property": "volatile acidity"
+                "operand": [
+                  21.05,
+                  0.05
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
               }
             }
           ],
           "decision_rule": {
-            "operand": 10.85,
-            "operator": "<",
-            "property": "alcohol"
+            "operand": "False",
+            "operator": "is",
+            "property": "day_off"
           }
         },
         {
@@ -427,326 +236,158 @@
             {
               "children": [
                 {
-                  "children": [
-                    {
-                      "decision_rule": {
-                        "operand": 13.55,
-                        "operator": "<",
-                        "property": "alcohol"
-                      },
-                      "prediction": {
-                        "nb_samples": 8,
-                        "confidence": 0.8888888955116272,
-                        "distribution": {
-                          "standard_deviation": 0.0
-                        },
-                        "value": 4.0
-                      }
-                    },
-                    {
-                      "decision_rule": {
-                        "operand": 13.55,
-                        "operator": ">=",
-                        "property": "alcohol"
-                      },
-                      "prediction": {
-                        "nb_samples": 1,
-                        "confidence": 0.5,
-                        "distribution": {
-                          "standard_deviation": 0.0
-                        },
-                        "value": 5.0
-                      }
-                    }
-                  ],
                   "decision_rule": {
-                    "operand": 0.2,
-                    "operator": "<",
-                    "property": "citric acid"
+                    "operand": [
+                      0,
+                      0.11666667
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
+                  },
+                  "prediction": {
+                    "confidence": 0.5,
+                    "distribution": {
+                      "max": 11.016666412353516,
+                      "min": 11.016666412353516,
+                      "standard_deviation": 0
+                    },
+                    "nb_samples": 1,
+                    "value": 11.016666
                   }
                 },
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 0.991575,
-                            "operator": "<",
-                            "property": "density"
-                          },
-                          "prediction": {
-                            "nb_samples": 18,
-                            "confidence": 0.7999383211135864,
-                            "distribution": {
-                              "standard_deviation": 0.8498365
-                            },
-                            "value": 4.6111107
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 0.991575,
-                            "operator": ">=",
-                            "property": "density"
-                          },
-                          "prediction": {
-                            "nb_samples": 38,
-                            "confidence": 0.8338564038276672,
-                            "distribution": {
-                              "standard_deviation": 0.92230135
-                            },
-                            "value": 5.4736834
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 11.85,
-                        "operator": "<",
-                        "property": "alcohol"
+                        "operand": "False",
+                        "operator": "is",
+                        "property": "next_day_off"
+                      },
+                      "prediction": {
+                        "confidence": 0.7612020373344421,
+                        "distribution": {
+                          "max": 12.06666660308838,
+                          "min": 6.150000095367432,
+                          "standard_deviation": 1.7872038
+                        },
+                        "nb_samples": 12,
+                        "value": 8.404167
                       }
                     },
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 21.5,
-                            "operator": "<",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 1,
-                            "confidence": 0.5,
-                            "distribution": {
-                              "standard_deviation": 0.0
-                            },
-                            "value": 3.0
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 21.5,
-                            "operator": ">=",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 48,
-                            "confidence": 0.8605713248252869,
-                            "distribution": {
-                              "standard_deviation": 0.82406193
-                            },
-                            "value": 5.958333
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 11.85,
-                        "operator": ">=",
-                        "property": "alcohol"
+                        "operand": "True",
+                        "operator": "is",
+                        "property": "next_day_off"
+                      },
+                      "prediction": {
+                        "confidence": 0.8161180019378662,
+                        "distribution": {
+                          "max": 12.783333778381348,
+                          "min": 6.7166666984558105,
+                          "standard_deviation": 1.449383
+                        },
+                        "nb_samples": 17,
+                        "value": 9.217648
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": 0.2,
-                    "operator": ">=",
-                    "property": "citric acid"
+                    "operand": [
+                      0.11666667,
+                      23.633333
+                    ],
+                    "operator": "[in[",
+                    "property": "sleep_start"
                   }
                 }
               ],
               "decision_rule": {
-                "operand": 11.5,
-                "operator": "<",
-                "property": "free sulfur dioxide"
+                "operand": [
+                  0,
+                  23.633333
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
               }
             },
             {
               "children": [
                 {
-                  "children": [
-                    {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 3.245,
-                            "operator": "<",
-                            "property": "pH"
-                          },
-                          "prediction": {
-                            "nb_samples": 522,
-                            "confidence": 0.8869389891624451,
-                            "distribution": {
-                              "standard_deviation": 0.7675097
-                            },
-                            "value": 6.124522
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 3.245,
-                            "operator": ">=",
-                            "property": "pH"
-                          },
-                          "prediction": {
-                            "nb_samples": 290,
-                            "confidence": 0.8867453336715698,
-                            "distribution": {
-                              "standard_deviation": 0.7913215
-                            },
-                            "value": 6.3896537
-                          }
-                        }
-                      ],
-                      "decision_rule": {
-                        "operand": 0.48000002,
-                        "operator": "<",
-                        "property": "volatile acidity"
-                      }
-                    },
-                    {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 252.25,
-                            "operator": "<",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 8,
-                            "confidence": 0.7737107276916504,
-                            "distribution": {
-                              "standard_deviation": 0.7071068
-                            },
-                            "value": 4.7499995
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 252.25,
-                            "operator": ">=",
-                            "property": "total sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 2,
-                            "confidence": 0.6666666269302368,
-                            "distribution": {
-                              "standard_deviation": 0.0
-                            },
-                            "value": 3.0
-                          }
-                        }
-                      ],
-                      "decision_rule": {
-                        "operand": 0.48000002,
-                        "operator": ">=",
-                        "property": "volatile acidity"
-                      }
-                    }
-                  ],
                   "decision_rule": {
-                    "operand": 11.741667,
-                    "operator": "<",
-                    "property": "alcohol"
+                    "operand": "False",
+                    "operator": "is",
+                    "property": "next_day_off"
+                  },
+                  "prediction": {
+                    "confidence": 0.5,
+                    "distribution": {
+                      "max": 10.983333587646484,
+                      "min": 10.983333587646484,
+                      "standard_deviation": 0
+                    },
+                    "nb_samples": 1,
+                    "value": 10.983334
                   }
                 },
                 {
                   "children": [
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 1.775,
-                            "operator": "<",
-                            "property": "residual sugar"
-                          },
-                          "prediction": {
-                            "nb_samples": 214,
-                            "confidence": 0.8895719051361084,
-                            "distribution": {
-                              "standard_deviation": 0.7634538
-                            },
-                            "value": 6.420562
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 1.775,
-                            "operator": ">=",
-                            "property": "residual sugar"
-                          },
-                          "prediction": {
-                            "nb_samples": 623,
-                            "confidence": 0.8966243863105774,
-                            "distribution": {
-                              "standard_deviation": 0.7608425
-                            },
-                            "value": 6.7030487
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 8.15,
-                        "operator": "<",
-                        "property": "fixed acidity"
+                        "operand": "False",
+                        "operator": "is",
+                        "property": "sleep_at_home"
+                      },
+                      "prediction": {
+                        "confidence": 0.721132755279541,
+                        "distribution": {
+                          "max": 10.083333015441896,
+                          "min": 9.399999618530272,
+                          "standard_deviation": 0.3945228
+                        },
+                        "nb_samples": 3,
+                        "value": 9.855556
                       }
                     },
                     {
-                      "children": [
-                        {
-                          "decision_rule": {
-                            "operand": 20.0,
-                            "operator": "<",
-                            "property": "free sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 10,
-                            "confidence": 0.7725644111633301,
-                            "distribution": {
-                              "standard_deviation": 0.9189366
-                            },
-                            "value": 5.2000003
-                          }
-                        },
-                        {
-                          "decision_rule": {
-                            "operand": 20.0,
-                            "operator": ">=",
-                            "property": "free sulfur dioxide"
-                          },
-                          "prediction": {
-                            "nb_samples": 30,
-                            "confidence": 0.8937973380088806,
-                            "distribution": {
-                              "standard_deviation": 0.5074163
-                            },
-                            "value": 6.133333
-                          }
-                        }
-                      ],
                       "decision_rule": {
-                        "operand": 8.15,
-                        "operator": ">=",
-                        "property": "fixed acidity"
+                        "operand": "True",
+                        "operator": "is",
+                        "property": "sleep_at_home"
+                      },
+                      "prediction": {
+                        "confidence": 0.5,
+                        "distribution": {
+                          "max": 10.31666660308838,
+                          "min": 10.31666660308838,
+                          "standard_deviation": 0
+                        },
+                        "nb_samples": 1,
+                        "value": 10.316667
                       }
                     }
                   ],
                   "decision_rule": {
-                    "operand": 11.741667,
-                    "operator": ">=",
-                    "property": "alcohol"
+                    "operand": "True",
+                    "operator": "is",
+                    "property": "next_day_off"
                   }
                 }
               ],
               "decision_rule": {
-                "operand": 11.5,
-                "operator": ">=",
-                "property": "free sulfur dioxide"
+                "operand": [
+                  23.633333,
+                  0
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
               }
             }
           ],
           "decision_rule": {
-            "operand": 10.85,
-            "operator": ">=",
-            "property": "alcohol"
+            "operand": "True",
+            "operator": "is",
+            "property": "day_off"
           }
         }
       ]
