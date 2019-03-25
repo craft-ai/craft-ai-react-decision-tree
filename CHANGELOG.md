@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - `react-craft-ai-operations-history` now supports horizontal scroll and has a `width` property.
 
+## Fixed
+
+- `react-craft-ai-operations-history` now throw an error if the given `onRequestOperations` does not behave properly.
+
 ## [0.0.19](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.18...v0.0.19) - 2019-03-22
 
 ## Added

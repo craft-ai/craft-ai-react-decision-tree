@@ -94,6 +94,25 @@ const requestOperationsFromC2O1 = createRequestOperations(
   CONFIGURATION_2_OPERATIONS_1_STATES
 );
 
+const requestOperationsBadC1 = (
+  requestedFrom,
+  requestedTo,
+  requestInitialState = false
+) => {
+  console.log(
+    `Requesting operations from ${requestedFrom} to ${requestedTo}...`
+  );
+  return delay(100)
+    .then(() => {
+      const operations = CONFIGURATION_1_OPERATIONS_1.slice(0, 20);
+      return Promise.resolve({
+        operations,
+        from: operations[0].timestamp,
+        to: operations[19].timestamp
+      });
+    });
+};
+
 function createHeightKnob() {
   return number('Height', 600, {
     range: true,
@@ -252,5 +271,15 @@ storiesOf('OperationsHistory', module)
           focus={ number('Focus', null) }
         />
       </div>
+    );
+  })
+  .add('Faulty request operations callback', () => {
+    return (
+      <OperationsHistory
+        agentConfiguration={ CONFIGURATION_1 }
+        onRequestOperations={ requestOperationsBadC1 }
+        from={ CONFIGURATION_1_OPERATIONS_1_TO }
+        to={ CONFIGURATION_1_OPERATIONS_1_TO + 1500 }
+      />
     );
   });

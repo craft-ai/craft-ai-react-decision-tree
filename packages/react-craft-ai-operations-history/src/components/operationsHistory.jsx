@@ -302,6 +302,12 @@ class OperationsHistory extends React.Component {
                 (result) => {
                   const { agentConfiguration } = this.props;
 
+                  if (result.to < requestedFrom) {
+                    throw new Error(
+                      '\'onRequestOperations\' returned operations not overlapping with the requested range.'
+                    );
+                  }
+
                   const preprocessedOperations = preprocessOperations(
                     agentConfiguration,
                     result.operations,
@@ -338,6 +344,15 @@ class OperationsHistory extends React.Component {
               })
           ])
             .then(([afterResults, beforeResults]) => {
+              if (
+                afterResults.to < loadedTo ||
+              beforeResults.to < requestedFrom
+              ) {
+                throw new Error(
+                  '\'onRequestOperations\' returned operations not overlapping with the requested range.'
+                );
+              }
+
               const { agentConfiguration } = this.props;
               const { loadedFrom, loadedOperations, loadedTo } = this.state;
               // Let's deal with 'afterOperations'
@@ -385,7 +400,13 @@ class OperationsHistory extends React.Component {
             })
           );
         }
-      );
+      )
+      .catch((error) => {
+        this.setState((state) => ({
+          ...state,
+          error: state.error || error
+        }));
+      });
 
     return {
       onRequestOperation: (timestamp) =>
@@ -517,7 +538,11 @@ class OperationsHistory extends React.Component {
 
   render() {
     const { agentConfiguration, height, rowHeight, width } = this.props;
-    const { estimatedCount, scrollToTimestamp } = this.state;
+    const { error, estimatedCount, scrollToTimestamp } = this.state;
+
+    if (error) {
+      throw error;
+    }
 
     return (
       <Table
