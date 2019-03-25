@@ -2,20 +2,36 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
 
+export const CELL_WIDTH = 120;
+export const TIMESTAMP_CELL_WIDTH = 280;
+
 const Table = styled('table')`
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
   border-spacing: 0px;
   border-collapse: collapse;
 
   thead {
     display: block;
+    width: ${({ width }) => (width == null ? 'auto' : `${width}px`)};
+
+    overflow-x: hidden;
   }
   tbody {
     display: block;
     height: ${({ height, rowHeight }) => `${height - rowHeight}px`};
+    width: ${({ width }) => (width == null ? 'auto' : `${width}px`)};
+
+    overflow-x: scroll;
+    overflow-y: scroll;
   }
 
   tr {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     height: ${({ rowHeight }) => rowHeight}px;
   }
@@ -28,9 +44,9 @@ const Table = styled('table')`
     align-items: center;
     justify-content: center;
 
-    width: 120px;
+    width: ${CELL_WIDTH}px;
     &:first-child {
-      width: 280px;
+      width: ${TIMESTAMP_CELL_WIDTH}px;
     }
 
     padding: 10px;
@@ -45,9 +61,6 @@ const Table = styled('table')`
     small {
       font-size: 0.7em;
     }
-  }
-  tbody {
-    overflow-y: scroll;
   }
 `;
 

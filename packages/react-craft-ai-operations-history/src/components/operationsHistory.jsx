@@ -227,6 +227,10 @@ class OperationsHistory extends React.Component {
 
     this.state = computeInitialStateFromProps(props);
 
+    this.wrapperElement = null;
+
+    this._setHeaderElement = this._setHeaderElement.bind(this);
+    this._onHorizontalScroll = this._onHorizontalScroll.bind(this);
     const {
       onRequestOperation,
       onUpdateOperationsBounds
@@ -236,6 +240,14 @@ class OperationsHistory extends React.Component {
 
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
+  }
+
+  _setHeaderElement(element) {
+    this.headerElement = element;
+  }
+
+  _onHorizontalScroll(scrollLeft) {
+    this.headerElement.scrollLeft = scrollLeft;
   }
 
   _createEventHandlers() {
@@ -504,7 +516,7 @@ class OperationsHistory extends React.Component {
   }
 
   render() {
-    const { agentConfiguration, height, rowHeight } = this.props;
+    const { agentConfiguration, height, rowHeight, width } = this.props;
     const { estimatedCount, scrollToTimestamp } = this.state;
 
     return (
@@ -512,8 +524,9 @@ class OperationsHistory extends React.Component {
         className='craft-operations-history'
         height={ height }
         rowHeight={ rowHeight }
+        width={ width }
       >
-        <thead>
+        <thead ref={ this._setHeaderElement }>
           <HeaderRow agentConfiguration={ agentConfiguration } />
         </thead>
         <InfiniteList
@@ -526,6 +539,7 @@ class OperationsHistory extends React.Component {
               ? estimateIndexFromTimestamp(scrollToTimestamp, this.state)
               : null
           }
+          onHorizontalScroll={ this._onHorizontalScroll }
           count={ estimatedCount }
         />
       </Table>
@@ -549,6 +563,7 @@ OperationsHistory.propTypes = {
   onRequestOperations: PropTypes.func,
   rowHeight: PropTypes.number,
   height: PropTypes.number,
+  width: PropTypes.number,
   initialOperations: PropTypes.array,
   to: PropTypes.number,
   from: PropTypes.number,

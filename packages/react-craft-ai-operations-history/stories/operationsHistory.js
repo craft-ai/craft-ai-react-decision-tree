@@ -103,6 +103,15 @@ function createHeightKnob() {
   });
 }
 
+function createWidthKnob() {
+  return number('Width', 600, {
+    range: true,
+    min: 60,
+    max: 1000,
+    step: 1
+  });
+}
+
 function createRowHeightKnob() {
   return number('Row Height', 45, {
     range: true,
@@ -141,6 +150,7 @@ storiesOf('OperationsHistory', module)
           ) }
           focus={ number('Focus', null) }
           height={ createHeightKnob() }
+          width={ createWidthKnob() }
           rowHeight={ createRowHeightKnob() }
         />
       </div>
@@ -217,6 +227,7 @@ storiesOf('OperationsHistory', module)
         onRequestOperations={ requestOperationsFromC2O1 }
         from={ CONFIGURATION_2_OPERATIONS_1_FROM }
         to={ CONFIGURATION_2_OPERATIONS_1_TO }
+        width={ createWidthKnob() }
       />
     );
   })
