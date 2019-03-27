@@ -69,7 +69,7 @@ The height, in pixels, of the full table.
 
 ### `width` (default is `undefined`)
 
-The height, in pixels, of the full table, if `undefined` the table will take the full available width.
+The width, in pixels, of the full table, if `undefined` the table will take the full available width.
 
 ### `initialOperations`
 
