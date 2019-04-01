@@ -172,6 +172,22 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
+  .add('collapsed after depth=3 ', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel 
+          data={ treeV2Classif }
+          collapsedDepth={ 3 }
+        />
+      </div>
+    </div>
+  ))
   .add('display tree v2 - absolute link thickness', () => (
     <div
       style={{

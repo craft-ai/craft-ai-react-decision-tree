@@ -87,7 +87,7 @@ function updateTree(nodes) {
   };
 }
 
-function computeSvgSizeFromData(root) {
+function computeSvgSizeFromData(root, collapsedDepth) {
   const tree = d3Tree()
     .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
   let nodes;
@@ -148,23 +148,25 @@ function computeSvgSizeFromData(root) {
 
   nodes = enrichHierarchyRecursive(0, nodes);
 
-  // Collapse the node and all it's children
-  const collapse = (node) => {
-    if (node.depth > 1) {
-      node._children = node.children;
-      node.children = null;
-      if (node._children) {
-        node._children.forEach(collapse);
+  if (!_.isUndefined(collapsedDepth)) {
+    // Collapse the node and all it's children
+    const collapse = (node) => {
+      if (node.depth > collapsedDepth) {
+        node._children = node.children;
+        node.children = null;
+        if (node._children) {
+          node._children.forEach(collapse);
+        }
       }
-    }
-    else {
-      if (node.children) {
-        node.children.forEach(collapse);
+      else {
+        if (node.children) {
+          node.children.forEach(collapse);
+        }
       }
-    }
-  };
+    };
 
-  nodes.children.forEach(collapse);
+    nodes.children.forEach(collapse);
+  }
 
   tree(nodes);
 
@@ -175,7 +177,7 @@ function computeSvgSizeFromData(root) {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
     descendantTreeNodes: nodeDescendantsArray,
-    links,
+    links: nodes.links(),
     treeHierarchy: nodes,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: offsetX
@@ -305,7 +307,7 @@ class Tree extends React.Component {
       offsetX,
       totalNbSamples,
       treeHierarchy
-    } = computeSvgSizeFromData(root);
+    } = computeSvgSizeFromData(root, this.props.collapsedDepth);
 
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(descendantTreeNodes, (d) => {
@@ -490,7 +492,8 @@ Tree.propTypes = {
   updatePositionAndZoom: PropTypes.func,
   updateSelectedNode: PropTypes.func.isRequired,
   edgeType: PropTypes.string,
-  selectedNode: PropTypes.string
+  selectedNode: PropTypes.string,
+  collapsedDepth: PropTypes.number
 };
 
 export default Tree;
