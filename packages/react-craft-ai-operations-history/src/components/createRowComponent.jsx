@@ -1,4 +1,5 @@
 import camelCase from 'camelcase';
+import { CELL_WIDTH } from './table';
 import { extractProperties } from './headerRow';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -81,7 +82,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
 }
 
 const LoadingTd = styled('td')`
-  flex-grow: 1 !important;
+  width: ${({ span }) => span * CELL_WIDTH}px !important;
 `;
 
 export default function createRowComponent({ agentConfiguration }) {
@@ -102,7 +103,7 @@ export default function createRowComponent({ agentConfiguration }) {
       return (
         <tr key={ index } className={ classNames }>
           <TimestampCell timestamp={ timestamp } />
-          <LoadingTd colSpan={ properties.length }>
+          <LoadingTd colSpan={ properties.length } span={ properties.length }>
             <FontAwesomeIcon icon={ faSpinner } spin />
           </LoadingTd>
         </tr>

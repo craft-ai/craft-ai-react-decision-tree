@@ -227,6 +227,10 @@ class OperationsHistory extends React.Component {
 
     this.state = computeInitialStateFromProps(props);
 
+    this.wrapperElement = null;
+
+    this._setHeaderElement = this._setHeaderElement.bind(this);
+    this._onHorizontalScroll = this._onHorizontalScroll.bind(this);
     const {
       onRequestOperation,
       onUpdateOperationsBounds
@@ -236,6 +240,14 @@ class OperationsHistory extends React.Component {
 
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
+  }
+
+  _setHeaderElement(element) {
+    this.headerElement = element;
+  }
+
+  _onHorizontalScroll(scrollLeft) {
+    this.headerElement.scrollLeft = scrollLeft;
   }
 
   _createEventHandlers() {
@@ -290,6 +302,12 @@ class OperationsHistory extends React.Component {
                 (result) => {
                   const { agentConfiguration } = this.props;
 
+                  if (result.to < requestedFrom) {
+                    throw new Error(
+                      '\'onRequestOperations\' returned operations not overlapping with the requested range.'
+                    );
+                  }
+
                   const preprocessedOperations = preprocessOperations(
                     agentConfiguration,
                     result.operations,
@@ -326,6 +344,15 @@ class OperationsHistory extends React.Component {
               })
           ])
             .then(([afterResults, beforeResults]) => {
+              if (
+                afterResults.to < loadedTo ||
+              beforeResults.to < requestedFrom
+              ) {
+                throw new Error(
+                  '\'onRequestOperations\' returned operations not overlapping with the requested range.'
+                );
+              }
+
               const { agentConfiguration } = this.props;
               const { loadedFrom, loadedOperations, loadedTo } = this.state;
               // Let's deal with 'afterOperations'
@@ -373,7 +400,13 @@ class OperationsHistory extends React.Component {
             })
           );
         }
-      );
+      )
+      .catch((error) => {
+        this.setState((state) => ({
+          ...state,
+          error: state.error || error
+        }));
+      });
 
     return {
       onRequestOperation: (timestamp) =>
@@ -504,16 +537,21 @@ class OperationsHistory extends React.Component {
   }
 
   render() {
-    const { agentConfiguration, height, rowHeight } = this.props;
-    const { estimatedCount, scrollToTimestamp } = this.state;
+    const { agentConfiguration, height, rowHeight, width } = this.props;
+    const { error, estimatedCount, scrollToTimestamp } = this.state;
+
+    if (error) {
+      throw error;
+    }
 
     return (
       <Table
         className='craft-operations-history'
         height={ height }
         rowHeight={ rowHeight }
+        width={ width }
       >
-        <thead>
+        <thead ref={ this._setHeaderElement }>
           <HeaderRow agentConfiguration={ agentConfiguration } />
         </thead>
         <InfiniteList
@@ -526,6 +564,7 @@ class OperationsHistory extends React.Component {
               ? estimateIndexFromTimestamp(scrollToTimestamp, this.state)
               : null
           }
+          onHorizontalScroll={ this._onHorizontalScroll }
           count={ estimatedCount }
         />
       </Table>
@@ -549,6 +588,7 @@ OperationsHistory.propTypes = {
   onRequestOperations: PropTypes.func,
   rowHeight: PropTypes.number,
   height: PropTypes.number,
+  width: PropTypes.number,
   initialOperations: PropTypes.array,
   to: PropTypes.number,
   from: PropTypes.number,
