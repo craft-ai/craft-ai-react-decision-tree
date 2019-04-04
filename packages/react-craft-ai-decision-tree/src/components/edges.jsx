@@ -24,12 +24,7 @@ const selectedLinksCssClass = css`
   stroke: ${SELECTED_COLOR_EDGES};
 `;
 
-
 class Edges extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     // Render the tree using d3 after first component mount
     this.renderTree(
@@ -74,19 +69,18 @@ class Edges extends React.Component {
   };
 
   renderTree = (treeData, nodes, links, edgePath, totalNbSamples, version, edgeType, width, height) => {
-    const svgDomNode = this.svgTreeRef;
-    d3Select(svgDomNode)
+    d3Select(this.svgTreeRef)
       .attr('width', width)
       .attr('height', height);
   
     // ------------ NODES ------------
 
     // Update the nodes
-    let nodesSvg = d3Select(svgDomNode)
+    const nodesSvg = d3Select(this.svgTreeRef)
       .selectAll('g.node')
       .data(nodes, (d) => d.id);
     
-    let nodeEnter = nodesSvg
+    const nodeEnter = nodesSvg
       .enter()
       .append('g')
       .attr('class', 'node')
@@ -97,7 +91,7 @@ class Edges extends React.Component {
         return `translate(${d.x},${d.y})`;
       });
 
-    let nodesUpdate = nodeEnter.merge(nodesSvg);
+    const nodesUpdate = nodeEnter.merge(nodesSvg);
     
     nodesUpdate.transition()
       .attr('transform', (d) => `translate(${d.x},${d.y})`);
@@ -115,7 +109,7 @@ class Edges extends React.Component {
     // ------------ LINKS ------------
 
     // Update the links
-    let link = d3Select(svgDomNode)
+    const link = d3Select(this.svgTreeRef)
       .selectAll('path')
       .data(links, (d) => {
         d.linkClass = defaultLinksCssClass;
@@ -124,7 +118,7 @@ class Edges extends React.Component {
         }
         return d.target.id;
       });
-    
+
     // Enter any new links at the parent's previous position.
     link
       .enter()

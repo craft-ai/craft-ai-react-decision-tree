@@ -55,7 +55,6 @@ const Button = styled('button')`
   }
 `;
 
-
 const NodeButton = ({ node, refButton, setSelectedNode, isVisible }) => {
   if (!_.isUndefined(node.data.children)) {
     const text = _.isNull(node.children) ? '+' : '-';

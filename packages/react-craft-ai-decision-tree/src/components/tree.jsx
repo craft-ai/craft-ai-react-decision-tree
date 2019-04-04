@@ -79,9 +79,9 @@ function updateTree(nodes) {
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
-    descendantTreeNodes: nodeDescendantsArray,
+    nodeDescendantsArray: nodeDescendantsArray,
     links: nodes.links(),
-    treeHierarchy: nodes,
+    treed3: nodes,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: offsetX
   };
@@ -96,7 +96,7 @@ function computeSvgSizeFromData(root, collapsedDepth) {
   nodes = d3Hierarchy(root, (d) => d.children);
 
   // Add the necessary information into the created d3Hierachy
-  const enrichHierarchyRecursive = (index, node) => {
+  const enrichTreeRecursive = (index, node) => {
     node.id = incr++;
     // Deal with decision rules
     if (node.parent) {
@@ -136,7 +136,7 @@ function computeSvgSizeFromData(root, collapsedDepth) {
 
     if (node.children) {
       node.children.forEach((child, childIndex) => {
-        enrichHierarchyRecursive(childIndex, child);
+        enrichTreeRecursive(childIndex, child);
       });
       node.nbSamples = node.children.reduce(
         (acc, child) => acc + child.nbSamples,
@@ -146,7 +146,7 @@ function computeSvgSizeFromData(root, collapsedDepth) {
     return node;
   };
 
-  nodes = enrichHierarchyRecursive(0, nodes);
+  nodes = enrichTreeRecursive(0, nodes);
 
   if (!_.isUndefined(collapsedDepth)) {
     // Collapse the node and all it's children
@@ -176,9 +176,9 @@ function computeSvgSizeFromData(root, collapsedDepth) {
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
-    descendantTreeNodes: nodeDescendantsArray,
+    nodeDescendantsArray: nodeDescendantsArray,
     links: nodes.links(),
-    treeHierarchy: nodes,
+    treed3: nodes,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: offsetX
   };
@@ -191,10 +191,10 @@ class Tree extends React.Component {
 
     const {
       links,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
-      treeHierarchy,
+      treed3,
       totalNbSamples
     } = this.computeTree();
 
@@ -204,12 +204,12 @@ class Tree extends React.Component {
       isPanActivated: false,
       selectedEdgePath: [],
       links,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
       totalNbSamples,
       edgeType: this.props.edgeType,
-      treeHierarchy: treeHierarchy
+      treed3: treed3
     };
   }
 
@@ -259,11 +259,10 @@ class Tree extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const doUpdate = !_.isEqual(nextProps, this.props) 
+    return !_.isEqual(nextProps, this.props) 
       || !_.isEqual(this.state.newPos, nextState.newPos)
-      || !_.isEqual(this.state.descendantTreeNodes, nextState.descendantTreeNodes)
+      || !_.isEqual(this.state.nodeDescendantsArray, nextState.nodeDescendantsArray)
       || !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath);
-    return doUpdate;
   }
 
   onClickNode = (node) => {
@@ -271,23 +270,23 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       offsetX,
-      treeHierarchy
-    } = updateTree(this.state.treeHierarchy);
+      treed3
+    } = updateTree(this.state.treed3);
   
     // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(descendantTreeNodes, (d) => {
+    _.forEach(nodeDescendantsArray, (d) => {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
     this.setState(
       {
-        descendantTreeNodes: descendantTreeNodes,
+        nodeDescendantsArray: nodeDescendantsArray,
         links: links,
         minSvgHeight: minSvgHeight,
         minSvgWidth: minSvgWidth,
-        treeHierarchy: treeHierarchy,
+        treed3: treed3,
         clickedNode: node
       }
     );
@@ -303,14 +302,14 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       offsetX,
       totalNbSamples,
-      treeHierarchy
+      treed3
     } = computeSvgSizeFromData(root, this.props.collapsedDepth);
 
     // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(descendantTreeNodes, (d) => {
+    _.forEach(nodeDescendantsArray, (d) => {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
@@ -319,9 +318,9 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       selectedNodeId,
-      treeHierarchy,
+      treed3,
       totalNbSamples
     };
   };
@@ -426,7 +425,7 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      descendantTreeNodes,
+      nodeDescendantsArray,
       clickedNode,
       totalNbSamples
     } = this.state;
@@ -457,7 +456,7 @@ class Tree extends React.Component {
             selectable={ !panActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
-            nodes={ descendantTreeNodes }
+            nodes={ nodeDescendantsArray }
             links={ links }
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
@@ -467,7 +466,7 @@ class Tree extends React.Component {
             version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
             treeData={ this.props.treeData }
-            nodes={ descendantTreeNodes }
+            nodes={ nodeDescendantsArray }
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight }
