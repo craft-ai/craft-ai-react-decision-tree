@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { computeLeafColor } from '../../utils/utils';
+import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
@@ -9,14 +10,14 @@ const OutputDiv = styled('div')`
   margin-bottom: 5px;
 `;
 
-const Prediction = ({ node, treeVersion, configuration }) => {
+const Prediction = ({ node, treeVersion, configuration, outputValues }) => {
   let confidence;
   let std;
-  let value;
+  let outputValue;
   if (treeVersion == 1) {
     confidence = node.confidence;
     std = node.standard_deviation;
-    value = node.predicted_value;
+    outputValue = node.predicted_value;
   }
   else {
     if (!_.isUndefined(node.prediction)) {
@@ -24,7 +25,19 @@ const Prediction = ({ node, treeVersion, configuration }) => {
       std = node.prediction.distribution
         ? node.prediction.distribution.standard_deviation
         : undefined;
-      value = node.prediction.value;
+      outputValue = node.prediction.value;
+    }
+    else {
+      const { value, standard_deviation } = interpreter.distribution(node);
+      if (!standard_deviation) {
+        const argmax = value.map((x, i) => [x, i])
+          .reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+        outputValue = outputValues[argmax];
+      }
+      else {
+        std = standard_deviation;
+        outputValue = value;
+      }
     }
   }
 
@@ -37,13 +50,13 @@ const Prediction = ({ node, treeVersion, configuration }) => {
 
   return (
     <div className='node-predictions'>
-      {value ? (
+      {outputValue ? (
         <PredictionDiv>
           <OutputDiv>
-            <code>{configuration.output[0]}</code> {value}
+            <code>{configuration.output[0]}</code> {outputValue}
           </OutputDiv>
-          <div>Confidence: {(confidence * 100).toFixed(2)}%</div>
-          {std ? <div>Standard deviation: {std.toFixed(2)}</div> : null}
+          {confidence ? <div>Confidence {(confidence * 100).toFixed(2)}%</div> : null}
+          {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
         </PredictionDiv>
       ) : null}
     </div>
@@ -53,7 +66,8 @@ const Prediction = ({ node, treeVersion, configuration }) => {
 Prediction.propTypes = {
   node: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
-  treeVersion: PropTypes.number.isRequired
+  treeVersion: PropTypes.number.isRequired,
+  outputValues: PropTypes.array
 };
 
 export default Prediction;

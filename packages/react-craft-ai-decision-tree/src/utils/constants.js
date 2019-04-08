@@ -24,6 +24,7 @@ export const SELECTED_BORDER_WIDTH = 5;
 // Color of the leaves
 export const COLOR_LEAVES_CONFIDENCE_0 = '#FEF3C2';
 export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';
+export const COLOR_LEAVES_CONFIDENCE_UNDEFINED = '#ddd';
 
 // Node path
 export const NODE_PATH_SEPARATOR = '-';
