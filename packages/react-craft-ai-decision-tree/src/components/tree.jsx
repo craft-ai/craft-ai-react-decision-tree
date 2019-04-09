@@ -336,7 +336,10 @@ class Tree extends React.Component {
 
   findAndHightlightSelectedNodePath = () => {
     // Check validity of the selectedNode
-    if (/^0(-[0-1])*$/g.test(this.props.selectedNode)) {
+    if (!this.props.selectedNode) {
+      this.setState({ selectedEdgePath: [] });
+    }
+    else if (/^0(-[0-1])*$/g.test(this.props.selectedNode)) {
       const findSelectedNodeRecursion = (path, node) => {
         if (path.length !== 0) {
           const indexChild = parseInt(path[0]);
