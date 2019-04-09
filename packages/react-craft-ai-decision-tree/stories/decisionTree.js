@@ -137,7 +137,7 @@ storiesOf('Tree displayed with fixed height', module)
     <div
       style={{
         display: 'flex',
-        height: '100%',
+        height: 500,
         border: 'solid 1px black'
       }}
     >
