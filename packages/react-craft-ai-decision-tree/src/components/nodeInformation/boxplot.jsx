@@ -1,6 +1,9 @@
 import { css } from 'react-emotion';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ToolTip from 'react-craft-ai-tooltip';
 import { select as d3Select, scaleLinear } from 'd3';
 
 const rectangleCssClass = css`
@@ -32,6 +35,13 @@ const boxPlotMargin = {
 const stdRectangleHeight = 20;
 
 class BoxPlot extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltipShown: false
+    };
+  }
+
   componentDidMount() {
     this.createBoxPlot(this.props);
   }
@@ -41,7 +51,7 @@ class BoxPlot extends React.Component {
     this.createBoxPlot(nextProps);
 
     // Do not allow react to render the component on prop change
-    return false;
+    return nextState.tooltipShown != this.state.tooltipShown;
   }
 
   diagonal(source, target) {
@@ -51,6 +61,12 @@ class BoxPlot extends React.Component {
       target.y
     }`;
   }
+
+  showTooltip = () => {
+    this.setState({
+      tooltipShown: !this.state.tooltipShown
+    });
+  };
 
   createBoxPlot = ({ totalMin, totalMax, mean, std, min, max, width, height }) => {
     // Scalers 
@@ -227,7 +243,28 @@ class BoxPlot extends React.Component {
 
   render() {
     return (
-      <svg ref={ (node) => this.node = node } />
+      <div style={{ display: 'inline-flex' }} >
+        <svg ref={ (node) => this.node = node } />
+        <div ref={ (info) => this.info = info }>
+          <FontAwesomeIcon
+            icon={ faInfoCircle }
+            onMouseEnter={ this.showTooltip }
+            onMouseLeave={ this.showTooltip } />
+        </div>
+        <ToolTip
+          // disable click on tooltip
+          style={{ pointerEvents: 'none', fontFamily: 'monospace', whiteSpace: 'pre' }} 
+          show={ this.state.tooltipShown }
+          placement={ 'top' }
+          target={ this.info }
+        >
+            -std ______ +std<br />
+global min      |  ||  |      global max<br />
+     |----|=====|  ||  |=====|----|<br />
+         min    |__||__|    max<br />
+                  mean<br />
+        </ToolTip>
+      </div>
     );
   }
 }
