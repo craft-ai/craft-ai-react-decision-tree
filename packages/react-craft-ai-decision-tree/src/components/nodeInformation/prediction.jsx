@@ -41,8 +41,8 @@ const Prediction = ({ node, treeVersion, configuration }) => {
           <OutputDiv>
             <code>{configuration.output[0]}</code> {value}
           </OutputDiv>
-          <div>Confidence {(confidence * 100).toFixed(2)}%</div>
-          {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
+          <div>Confidence: {(confidence * 100).toFixed(2)}%</div>
+          {std ? <div>Standard deviation: {std.toFixed(2)}</div> : null}
         </PredictionDiv>
       ) : null}
     </div>
