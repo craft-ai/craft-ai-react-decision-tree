@@ -28,7 +28,6 @@ const tooltipCssClass = css`
   white-space: nowrap;
 `;
 
-
 class Histogram extends React.Component {
   componentDidMount() {
     this.createHistogram(this.props);
@@ -60,6 +59,7 @@ class Histogram extends React.Component {
 
     const xAxis = axisBottom()
       .tickFormat('')
+      .ticks(distribution.length)
       .scale(scaleX);
     
     const yAxis = axisLeft()
