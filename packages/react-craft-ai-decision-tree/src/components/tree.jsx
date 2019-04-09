@@ -17,6 +17,7 @@ import {
   MARGIN,
   NODE_DEPTH,
   NODE_HEIGHT,
+  NODE_PATH_REGEXP,
   NODE_PATH_SEPARATOR,
   NODE_WIDTH,
   NODE_WIDTH_MARGIN,
@@ -173,7 +174,7 @@ function computeSvgSizeFromData(root) {
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
   };
-};
+}
 
 class Tree extends React.Component {
   constructor(props) {
@@ -335,11 +336,11 @@ class Tree extends React.Component {
   };
 
   findAndHightlightSelectedNodePath = () => {
-    // Check validity of the selectedNode
     if (!this.props.selectedNode) {
       this.setState({ selectedEdgePath: [] });
     }
-    else if (/^0(-[0-1])*$/g.test(this.props.selectedNode)) {
+    // Check validity of the selectedNode
+    else if (NODE_PATH_REGEXP.test(this.props.selectedNode)) {
       const findSelectedNodeRecursion = (path, node) => {
         if (path.length !== 0) {
           const indexChild = parseInt(path[0]);
@@ -354,7 +355,7 @@ class Tree extends React.Component {
       };
 
       // making the root node an exception
-      if (this.props.selectedNode == '0') {
+      if (this.props.selectedNode === '0') {
         this.setState({ selectedEdgePath: this.state.nodes[0].treeNodeIdPath });
       }
       else {

@@ -27,6 +27,7 @@ export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';
 
 // Node path
 export const NODE_PATH_SEPARATOR = '-';
+export const NODE_PATH_REGEXP = new RegExp(`^0(${NODE_PATH_SEPARATOR}[0-1])*$`);
 
 // Edges width
 export const DEFAULT_STROKE_WIDTH_RATIO = 30;

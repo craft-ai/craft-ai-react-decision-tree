@@ -35,8 +35,6 @@ const CustomComponent = ({ tree, height, width }) => {
     setSelectedNode(event.target.value);
   };
 
-  console.log('selectedNode custom', selectedNode);
-
   return (
     <div>
       <div
