@@ -33,8 +33,7 @@ class Nodes extends React.Component {
     tooltipOnPovover: false,
     tooltipText: '',
     tooltipRef: null,
-    tooltipPlacement: 'bottom',
-    selectedNodeId: undefined
+    tooltipPlacement: 'bottom'
   };
 
   hideTooltip = () => {
@@ -74,8 +73,6 @@ class Nodes extends React.Component {
     const setSelectedNode = () => {
       if (this.props.updateSelectedNode) {
         this.props.updateSelectedNode(node.treePath);
-        this.props.highlightSelectedEdgePath(node.treeNodeIdPath);
-        this.setState({ selectedNodeId: node.id });
       }
     };
 
@@ -137,17 +134,17 @@ class Nodes extends React.Component {
         className='craft-nodes '
         style={{
           border:
-            this.state.selectedNodeId === node.id
+            this.props.selectedNode === node.treePath
               ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
               : '',
           top:
             node.y -
             NODE_HEIGHT / 3 -
-            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
+            (this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
           left:
             node.x -
             NODE_WIDTH / 2 -
-            (this.state.selectedNodeId === node.id ? SELECTED_BORDER_WIDTH : 0),
+            (this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
           backgroundColor: color
         }}
       >
@@ -259,13 +256,13 @@ class Nodes extends React.Component {
 
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
-  highlightSelectedEdgePath: PropTypes.func.isRequired,
   updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   links: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
-  version: PropTypes.number.isRequired
+  version: PropTypes.number.isRequired,
+  selectedNode: PropTypes.number
 };
 
 export default Nodes;

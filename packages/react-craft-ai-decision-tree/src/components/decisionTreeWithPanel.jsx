@@ -52,6 +52,7 @@ const DecisionTreeWithPanel = ({
             configuration={ data.configuration }
             treeData={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
+            selectedNode={ selectedNode }
           />
         )}
       </ContainerDimensions>

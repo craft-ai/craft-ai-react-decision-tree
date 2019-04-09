@@ -169,17 +169,23 @@ function computeSvgSizeFromData(root) {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
     nodes: nodeDescendantsArray,
-    links: links,
+    links,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
     offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
   };
-}
+};
 
 class Tree extends React.Component {
   constructor(props) {
     super(props);
 
-    const { links, nodes, minSvgHeight, minSvgWidth, totalNbSamples } = this.computeTree();
+    const {
+      links,
+      nodes,
+      minSvgHeight,
+      minSvgWidth,
+      totalNbSamples
+    } = this.computeTree();
 
     this.state = {
       newPos: this.props.position,
@@ -210,7 +216,7 @@ class Tree extends React.Component {
           .on('end', this.onPanningDeactivated)
       )
       .on('dblclick.zoom', null);
-    if (this.props.scale == -1) {
+    if (this.props.scale === -1) {
       this.resetPosition();
     }
     else {
@@ -222,6 +228,9 @@ class Tree extends React.Component {
           .scale(this.state.scale)
       );
     }
+    if (this.props.selectedNode) {
+      this.findAndHightlightSelectedNodePath();
+    }
   }
 
   componentWillUnmount() {
@@ -232,6 +241,9 @@ class Tree extends React.Component {
     if (prevProps.treeData !== this.props.treeData) {
       this.setState(this.computeTree());
     }
+    if (prevProps.selectedNode !== this.props.selectedNode) {
+      this.findAndHightlightSelectedNodePath();
+    }
   }
 
   computeTree = () => {
@@ -240,6 +252,7 @@ class Tree extends React.Component {
     root.y = 0;
 
     const {
+      selectedNodeId,
       links,
       minSvgHeight,
       minSvgWidth,
@@ -254,7 +267,14 @@ class Tree extends React.Component {
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
 
-    return { links, minSvgHeight, minSvgWidth, nodes, totalNbSamples };
+    return {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      selectedNodeId,
+      totalNbSamples
+    };
   };
 
   mouseWheel = () => {
@@ -314,13 +334,47 @@ class Tree extends React.Component {
     this.translatedTreeRef = input;
   };
 
-  highlightSelectedEdgePath = (selectedEdgePath) => {
-    this.setState({ selectedEdgePath });
+  findAndHightlightSelectedNodePath = () => {
+    // Check validity of the selectedNode
+    if (/^0(-[0-1])*$/g.test(this.props.selectedNode)) {
+      const findSelectedNodeRecursion = (path, node) => {
+        if (path.length !== 0) {
+          const indexChild = parseInt(path[0]);
+          return findSelectedNodeRecursion(
+            _.tail(path),
+            node.children[indexChild]
+          );
+        }
+        else {
+          return node.treeNodeIdPath;
+        }
+      };
+
+      // making the root node an exception
+      if (this.props.selectedNode == '0') {
+        this.setState({ selectedEdgePath: this.state.nodes[0].treeNodeIdPath });
+      }
+      else {
+        let pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
+        // remove the first element of the path because it is the root path;
+        const selectedPath = findSelectedNodeRecursion(_.tail(pathArray), this.state.nodes[0]);
+        this.setState({ selectedEdgePath: selectedPath });
+      }
+    }
+    else {
+      throw new Error(`Selected node is not valid: ${this.props.selectedNode}`);
+    }
   };
 
   render() {
     const panActivated = this.state.isPanActivated;
-    const { links, minSvgHeight, minSvgWidth, nodes, totalNbSamples } = this.state;
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodes,
+      totalNbSamples
+    } = this.state;
     return (
       <TreeCanvas
         onDoubleClick={ this.resetPosition }
@@ -350,8 +404,8 @@ class Tree extends React.Component {
             configuration={ this.props.configuration }
             nodes={ nodes }
             links={ links }
-            highlightSelectedEdgePath={ this.highlightSelectedEdgePath }
             updateSelectedNode={ this.props.updateSelectedNode }
+            selectedNode={ this.props.selectedNode }
           />
           <Edges
             version={ this.props.version }
@@ -380,7 +434,8 @@ Tree.propTypes = {
   scale: PropTypes.number.isRequired,
   updatePositionAndZoom: PropTypes.func,
   updateSelectedNode: PropTypes.func.isRequired,
-  edgeType: PropTypes.string
+  edgeType: PropTypes.string,
+  selectedNode: PropTypes.string
 };
 
 export default Tree;

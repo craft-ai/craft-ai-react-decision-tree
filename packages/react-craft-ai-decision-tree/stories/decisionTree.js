@@ -31,6 +31,12 @@ const confidenceBoundOptions = {
 const CustomComponent = ({ tree, height, width }) => {
   const [selectedNode, setSelectedNode] = useState('');
 
+  const updateSelectedNodeInput = (event) => {
+    setSelectedNode(event.target.value);
+  };
+
+  console.log('selectedNode custom', selectedNode);
+
   return (
     <div>
       <div
@@ -40,13 +46,14 @@ const CustomComponent = ({ tree, height, width }) => {
           marginBottom: 10
         }}
       >
-        SelectedNode: {selectedNode}
+        SelectedNode:&nbsp;<input type='text' onChange={ updateSelectedNodeInput } value={ selectedNode } />
       </div>
       <DecisionTree
         updateSelectedNode={ setSelectedNode }
         width={ width }
         height={ height }
         data={ tree }
+        selectedNode={ selectedNode }
       />
     </div>
   );
