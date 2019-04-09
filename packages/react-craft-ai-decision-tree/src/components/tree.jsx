@@ -259,7 +259,7 @@ class Tree extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(nextProps, this.props) 
+    return !_.isEqual(nextProps, this.props)
       || !_.isEqual(this.state.newPos, nextState.newPos)
       || !_.isEqual(this.state.nodeDescendantsArray, nextState.nodeDescendantsArray)
       || !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath);
@@ -274,7 +274,7 @@ class Tree extends React.Component {
       offsetX,
       treed3
     } = updateTree(this.state.treed3);
-  
+
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodeDescendantsArray, (d) => {
       d.x = d.x + offsetX;
@@ -402,14 +402,14 @@ class Tree extends React.Component {
 
       // making the root node an exception
       if (this.props.selectedNode === '0') {
-        this.setState({ selectedEdgePath: this.state.nodes[0].treeNodeIdPath });
+        this.setState({ selectedEdgePath: this.state.nodeDescendantsArray[0].treeNodeIdPath });
       }
       else {
         const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
         // remove the first element of the path because it is the root path;
         const selectedPath = findSelectedNodeRecursion(
           _.tail(pathArray),
-          this.state.nodes[0]
+          this.state.nodeDescendantsArray[0]
         );
         this.setState({ selectedEdgePath: selectedPath });
       }

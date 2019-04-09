@@ -79,7 +79,7 @@ NodeButton.propTypes = {
   node: PropTypes.object.isRequired,
   refButton: PropTypes.func.isRequired,
   setSelectedNode: PropTypes.func.isRequired,
-  isVisible: PropTypes.string.isRequired
+  isVisible: PropTypes.bool.isRequired
 };
 
 class Nodes extends React.Component {
@@ -222,8 +222,8 @@ class Nodes extends React.Component {
           style={{
             border:
             this.props.selectedNode === node.treePath
-                ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
-                : '',
+              ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
+              : '',
             top: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
             left: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
             backgroundColor: color
