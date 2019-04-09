@@ -12,34 +12,40 @@ const Ul = styled('ul')`
   padding-inline-start: 0;
 `;
 
+const StatsDiv = styled('div')`
+  text-align: center;
+`;
+
 const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => {
   if (treeVersion == 2) {
     const { value, standard_deviation, min, max, size } = interpreter.distribution(node);
     return (
       <div className='node-predictions'>
         <H3NodeInformation>Statistics</H3NodeInformation>
-        <Ul>
-          <li>{size} samples</li>
-        </Ul>
-        {
-          _.isUndefined(standard_deviation) ? (
-            <Histogram
-              distribution={ value }
-              outputValues={ outputValues }
-              size={ size }
-            />
-          ) : (
-            <BoxPlot
-              mean={ value }
-              std={ standard_deviation }
-              min={ min }
-              max={ max }
-              size={ size }
-              totalMin={ totalMin }
-              totalMax={ totalMax } 
-            />
-          )
-        }
+        <StatsDiv>
+          <Ul>
+            <li>{size} samples</li>
+          </Ul>
+          {
+            _.isUndefined(standard_deviation) ? (
+              <Histogram
+                distribution={ value }
+                outputValues={ outputValues }
+                size={ size }
+              />
+            ) : (
+              <BoxPlot
+                mean={ value }
+                std={ standard_deviation }
+                min={ min }
+                max={ max }
+                size={ size }
+                totalMin={ totalMin }
+                totalMax={ totalMax }
+              />
+            )
+          }
+        </StatsDiv>
       </div>
     );
   }

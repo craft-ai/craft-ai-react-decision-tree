@@ -156,7 +156,7 @@ class Histogram extends React.Component {
 
   render() {
     return (
-      <div ref={ (div) => this.div = div } style={{ position: 'relative' }}>
+      <div ref={ (div) => this.div = div } style={{ position: 'relative', display: 'inline-block' }}>
         <svg ref={ (node) => this.node = node } />
       </div>
     );
