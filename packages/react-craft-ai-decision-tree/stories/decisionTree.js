@@ -31,6 +31,10 @@ const confidenceBoundOptions = {
 const CustomComponent = ({ tree, height, width }) => {
   const [selectedNode, setSelectedNode] = useState('');
 
+  const updateSelectedNodeInput = (event) => {
+    setSelectedNode(event.target.value);
+  };
+
   return (
     <div>
       <div
@@ -40,13 +44,14 @@ const CustomComponent = ({ tree, height, width }) => {
           marginBottom: 10
         }}
       >
-        SelectedNode: {selectedNode}
+        SelectedNode:&nbsp;<input type='text' onChange={ updateSelectedNodeInput } value={ selectedNode } />
       </div>
       <DecisionTree
         updateSelectedNode={ setSelectedNode }
         width={ width }
         height={ height }
         data={ tree }
+        selectedNode={ selectedNode }
       />
     </div>
   );
@@ -130,7 +135,7 @@ storiesOf('Tree displayed with fixed height', module)
     <div
       style={{
         display: 'flex',
-        height: '100%',
+        height: 500,
         border: 'solid 1px black'
       }}
     >

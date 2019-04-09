@@ -21,6 +21,7 @@ const NodeInformationContainer = styled('div')`
   position: relative;
   background-color: white;
   border-right: solid 1px;
+  overflow-y: auto;
 `;
 
 const InformationContainer = styled('div')`

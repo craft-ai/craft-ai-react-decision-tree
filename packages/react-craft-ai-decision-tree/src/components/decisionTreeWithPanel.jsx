@@ -23,7 +23,7 @@ const DecisionTreeWithPanel = ({
   const treeVersion = semver.major(data._version);
 
   const closeNodeInformation = () => {
-    setSelectedNode(undefined);
+    setSelectedNode('');
   };
 
   return (
@@ -52,6 +52,7 @@ const DecisionTreeWithPanel = ({
             configuration={ data.configuration }
             treeData={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
+            selectedNode={ selectedNode }
           />
         )}
       </ContainerDimensions>
