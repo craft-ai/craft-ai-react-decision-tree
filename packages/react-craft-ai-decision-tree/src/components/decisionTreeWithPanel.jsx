@@ -23,7 +23,7 @@ const DecisionTreeWithPanel = ({
   const treeVersion = semver.major(data._version);
 
   const closeNodeInformation = () => {
-    setSelectedNode(undefined);
+    setSelectedNode('');
   };
 
   return (

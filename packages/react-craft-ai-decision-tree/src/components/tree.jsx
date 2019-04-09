@@ -349,9 +349,7 @@ class Tree extends React.Component {
             node.children[indexChild]
           );
         }
-        else {
-          return node.treeNodeIdPath;
-        }
+        return node.treeNodeIdPath;
       };
 
       // making the root node an exception
@@ -359,7 +357,7 @@ class Tree extends React.Component {
         this.setState({ selectedEdgePath: this.state.nodes[0].treeNodeIdPath });
       }
       else {
-        let pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
+        const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
         // remove the first element of the path because it is the root path;
         const selectedPath = findSelectedNodeRecursion(_.tail(pathArray), this.state.nodes[0]);
         this.setState({ selectedEdgePath: selectedPath });
