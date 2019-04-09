@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Added
 
 - `react-craft-ai-operations-history` now supports horizontal scroll and has a `width` property.
+- Expose the selectedNode parameter in `react-craft-ai-decision-tree`. Only available for the DecisionTree component.
 
 ## Fixed
 
 - `react-craft-ai-operations-history` now throw an error if the given `onRequestOperations` does not behave properly.
+- NodeInformation has now a vertical overflow.
 
 ## [0.0.19](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.18...v0.0.19) - 2019-03-22
 
