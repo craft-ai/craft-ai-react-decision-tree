@@ -4,7 +4,8 @@ import React from 'react';
 import {
   H3NodeInformation,
   TableNodeInformation,
-  TdNodeInformation
+  TdNodeInformation,
+  TextCenterDiv
 } from './utils';
 
 const DecisionRules = ({ context, node }) => {
@@ -45,7 +46,7 @@ const DecisionRules = ({ context, node }) => {
     <div className='node-decision-rules'>
       <H3NodeInformation>Decision rules</H3NodeInformation>
       {!decisionRulesKeys.length ? (
-        <div>N/A (root node)</div>
+        <TextCenterDiv>N/A (root node)</TextCenterDiv>
       ) : (
         <TableNodeInformation>
           <tbody>{decisionRulesKeys.map(displayConditions)}</tbody>

@@ -1,0 +1,925 @@
+{
+    "_version": "2.0.0",
+    "configuration": {
+      "time_quantum": 900,
+      "learning_period": 13500000,
+      "context": {
+        "movement": {
+          "type": "continuous"
+        },
+        "light": {
+          "type": "enum"
+        },
+        "tz": {
+          "type": "timezone"
+        },
+        "time": {
+          "type": "time_of_day",
+          "is_generated": true
+        }
+      },
+      "output": [
+        "light"
+      ]
+    },
+    "trees": {
+      "light": {
+        "children": [
+          {
+            "children": [
+              {
+                "decision_rule": {
+                  "operand": 1.5,
+                  "operator": "<",
+                  "property": "movement"
+                },
+                "prediction": {
+                  "confidence": 0.6077240705490112,
+                  "distribution": [
+                    0.6110359489756475,
+                    0.38896405102435255
+                  ],
+                  "nb_samples": 10348,
+                  "value": "OFF"
+                },
+                "decisionRules": {
+                  "time": [
+                    {
+                      "operator": "[in[",
+                      "operand": [
+                        4.15,
+                        20.9
+                      ],
+                      "type": "time_of_day"
+                    }
+                  ],
+                  "movement": [
+                    {
+                      "operator": "<",
+                      "operand": 1.5,
+                      "type": "continuous"
+                    }
+                  ]
+                }
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "decision_rule": {
+                                  "operand": 3.5,
+                                  "operator": "<",
+                                  "property": "movement"
+                                },
+                                "prediction": {
+                                  "confidence": 0.6474004983901978,
+                                  "distribution": [
+                                    0.6976744186046512,
+                                    0.3023255813953488
+                                  ],
+                                  "nb_samples": 43,
+                                  "value": "OFF"
+                                }
+                              },
+                              {
+                                "decision_rule": {
+                                  "operand": 3.5,
+                                  "operator": ">=",
+                                  "property": "movement"
+                                },
+                                "prediction": {
+                                  "confidence": 0.6774609088897705,
+                                  "distribution": [
+                                    0,
+                                    1
+                                  ],
+                                  "nb_samples": 1,
+                                  "value": "ON"
+                                },
+                                "decisionRules": {
+                                  "time": [
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        4.15,
+                                        20.9
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        4.15,
+                                        18.9
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        4.15,
+                                        9.15
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        4.15,
+                                        8.65
+                                      ],
+                                      "type": "time_of_day"
+                                    }
+                                  ],
+                                  "movement": [
+                                    {
+                                      "operator": ">=",
+                                      "operand": 1.5
+                                    },
+                                    {
+                                      "operator": ">=",
+                                      "operand": 3.5
+                                    }
+                                  ]
+                                }
+                              }
+                            ],
+                            "decision_rule": {
+                              "operand": [
+                                4.15,
+                                8.65
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            }
+                          },
+                          {
+                            "decision_rule": {
+                              "operand": [
+                                8.65,
+                                9.15
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "prediction": {
+                              "confidence": 0.8077218532562256,
+                              "distribution": [
+                                0,
+                                1
+                              ],
+                              "nb_samples": 2,
+                              "value": "ON"
+                            },
+                            "decisionRules": {
+                              "time": [
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    4.15,
+                                    20.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    4.15,
+                                    18.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    4.15,
+                                    9.15
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    8.65,
+                                    9.15
+                                  ],
+                                  "type": "time_of_day"
+                                }
+                              ],
+                              "movement": [
+                                {
+                                  "operator": ">=",
+                                  "operand": 1.5,
+                                  "type": "continuous"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "decision_rule": {
+                          "operand": [
+                            4.15,
+                            9.15
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        }
+                      },
+                      {
+                        "decision_rule": {
+                          "operand": [
+                            9.15,
+                            18.9
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        },
+                        "prediction": {
+                          "confidence": 0.7837526798248291,
+                          "distribution": [
+                            0.8235294117647058,
+                            0.17647058823529413
+                          ],
+                          "nb_samples": 51,
+                          "value": "OFF"
+                        },
+                        "decisionRules": {
+                          "time": [
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                4.15,
+                                20.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                4.15,
+                                18.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                9.15,
+                                18.9
+                              ],
+                              "type": "time_of_day"
+                            }
+                          ],
+                          "movement": [
+                            {
+                              "operator": ">=",
+                              "operand": 1.5,
+                              "type": "continuous"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "decision_rule": {
+                      "operand": [
+                        4.15,
+                        18.9
+                      ],
+                      "operator": "[in[",
+                      "property": "time"
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "decision_rule": {
+                                  "operand": [
+                                    18.9,
+                                    19.15
+                                  ],
+                                  "operator": "[in[",
+                                  "property": "time"
+                                },
+                                "prediction": {
+                                  "confidence": 0.4465939402580261,
+                                  "distribution": [
+                                    0.4,
+                                    0.6
+                                  ],
+                                  "nb_samples": 5,
+                                  "value": "ON"
+                                },
+                                "decisionRules": {
+                                  "time": [
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        4.15,
+                                        20.9
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        18.9,
+                                        20.9
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        18.9,
+                                        19.65
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        18.9,
+                                        19.4
+                                      ]
+                                    },
+                                    {
+                                      "operator": "[in[",
+                                      "operand": [
+                                        18.9,
+                                        19.15
+                                      ],
+                                      "type": "time_of_day"
+                                    }
+                                  ],
+                                  "movement": [
+                                    {
+                                      "operator": ">=",
+                                      "operand": 1.5,
+                                      "type": "continuous"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "decision_rule": {
+                                  "operand": [
+                                    19.15,
+                                    19.4
+                                  ],
+                                  "operator": "[in[",
+                                  "property": "time"
+                                },
+                                "prediction": {
+                                  "confidence": 0.8077218532562256,
+                                  "distribution": [
+                                    1,
+                                    0
+                                  ],
+                                  "nb_samples": 2,
+                                  "value": "OFF"
+                                }
+                              }
+                            ],
+                            "decision_rule": {
+                              "operand": [
+                                18.9,
+                                19.4
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "decisionRules": {
+                              "time": [
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    4.15,
+                                    20.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    18.9,
+                                    20.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    18.9,
+                                    19.65
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    18.9,
+                                    19.4
+                                  ],
+                                  "type": "time_of_day"
+                                }
+                              ],
+                              "movement": [
+                                {
+                                  "operator": ">=",
+                                  "operand": 1.5,
+                                  "type": "continuous"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "decision_rule": {
+                              "operand": [
+                                19.4,
+                                19.65
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "prediction": {
+                              "confidence": 0.8077218532562256,
+                              "distribution": [
+                                0,
+                                1
+                              ],
+                              "nb_samples": 2,
+                              "value": "ON"
+                            },
+                            "decisionRules": {
+                              "time": [
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    4.15,
+                                    20.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    18.9,
+                                    20.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    18.9,
+                                    19.65
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    19.4,
+                                    19.65
+                                  ],
+                                  "type": "time_of_day"
+                                }
+                              ],
+                              "movement": [
+                                {
+                                  "operator": ">=",
+                                  "operand": 1.5,
+                                  "type": "continuous"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "decision_rule": {
+                          "operand": [
+                            18.9,
+                            19.65
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        },
+                        "decisionRules": {
+                          "time": [
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                4.15,
+                                20.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                18.9,
+                                20.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                18.9,
+                                19.65
+                              ],
+                              "type": "time_of_day"
+                            }
+                          ],
+                          "movement": [
+                            {
+                              "operator": ">=",
+                              "operand": 1.5,
+                              "type": "continuous"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "decision_rule": {
+                          "operand": [
+                            19.65,
+                            20.9
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        },
+                        "prediction": {
+                          "confidence": 0.5679990649223328,
+                          "distribution": [
+                            0.6666666666666666,
+                            0.3333333333333333
+                          ],
+                          "nb_samples": 12,
+                          "value": "OFF"
+                        },
+                        "decisionRules": {
+                          "time": [
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                4.15,
+                                20.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                18.9,
+                                20.9
+                              ]
+                            },
+                            {
+                              "operator": "[in[",
+                              "operand": [
+                                19.65,
+                                20.9
+                              ],
+                              "type": "time_of_day"
+                            }
+                          ],
+                          "movement": [
+                            {
+                              "operator": ">=",
+                              "operand": 1.5,
+                              "type": "continuous"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "decision_rule": {
+                      "operand": [
+                        18.9,
+                        20.9
+                      ],
+                      "operator": "[in[",
+                      "property": "time"
+                    },
+                    "decisionRules": {
+                      "time": [
+                        {
+                          "operator": "[in[",
+                          "operand": [
+                            4.15,
+                            20.9
+                          ]
+                        },
+                        {
+                          "operator": "[in[",
+                          "operand": [
+                            18.9,
+                            20.9
+                          ],
+                          "type": "time_of_day"
+                        }
+                      ],
+                      "movement": [
+                        {
+                          "operator": ">=",
+                          "operand": 1.5,
+                          "type": "continuous"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "decision_rule": {
+                  "operand": 1.5,
+                  "operator": ">=",
+                  "property": "movement"
+                }
+              }
+            ],
+            "decision_rule": {
+              "operand": [
+                4.15,
+                20.9
+              ],
+              "operator": "[in[",
+              "property": "time"
+            }
+          },
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "decision_rule": {
+                      "operand": 1.5,
+                      "operator": "<",
+                      "property": "movement"
+                    },
+                    "prediction": {
+                      "confidence": 0.5308282375335693,
+                      "distribution": [
+                        0.5365122615803815,
+                        0.46348773841961854
+                      ],
+                      "nb_samples": 3670,
+                      "value": "OFF"
+                    }
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [
+                          {
+                            "decision_rule": {
+                              "operand": [
+                                20.9,
+                                0.15
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "prediction": {
+                              "confidence": 0.4714658856391907,
+                              "distribution": [
+                                0.4807692307692308,
+                                0.5192307692307693
+                              ],
+                              "nb_samples": 52,
+                              "value": "ON"
+                            }
+                          },
+                          {
+                            "decision_rule": {
+                              "operand": [
+                                0.15,
+                                0.4
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "prediction": {
+                              "confidence": 0.7432112693786621,
+                              "distribution": [
+                                0.8571428571428571,
+                                0.14285714285714285
+                              ],
+                              "nb_samples": 7,
+                              "value": "OFF"
+                            }
+                          }
+                        ],
+                        "decision_rule": {
+                          "operand": [
+                            20.9,
+                            0.4
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        }
+                      },
+                      {
+                        "children": [
+                          {
+                            "decision_rule": {
+                              "operand": [
+                                0.4,
+                                0.65
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "prediction": {
+                              "confidence": 0.913058578968048,
+                              "distribution": [
+                                0,
+                                1
+                              ],
+                              "nb_samples": 5,
+                              "value": "ON"
+                            },
+                            "decisionRules": {
+                              "time": [
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    20.9,
+                                    4.15
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    20.9,
+                                    2.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    0.4,
+                                    2.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    0.4,
+                                    0.65
+                                  ],
+                                  "type": "time_of_day"
+                                }
+                              ],
+                              "movement": [
+                                {
+                                  "operator": ">=",
+                                  "operand": 1.5,
+                                  "type": "continuous"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "children": [
+                              {
+                                "decision_rule": {
+                                  "operand": [
+                                    0.65,
+                                    0.9
+                                  ],
+                                  "operator": "[in[",
+                                  "property": "time"
+                                },
+                                "prediction": {
+                                  "confidence": 0.6774609088897705,
+                                  "distribution": [
+                                    1,
+                                    0
+                                  ],
+                                  "nb_samples": 1,
+                                  "value": "OFF"
+                                }
+                              },
+                              {
+                                "decision_rule": {
+                                  "operand": [
+                                    0.9,
+                                    2.9
+                                  ],
+                                  "operator": "[in[",
+                                  "property": "time"
+                                },
+                                "prediction": {
+                                  "confidence": 0.5528743267059326,
+                                  "distribution": [
+                                    0.3684210526315789,
+                                    0.631578947368421
+                                  ],
+                                  "nb_samples": 19,
+                                  "value": "ON"
+                                }
+                              }
+                            ],
+                            "decision_rule": {
+                              "operand": [
+                                0.65,
+                                2.9
+                              ],
+                              "operator": "[in[",
+                              "property": "time"
+                            },
+                            "decisionRules": {
+                              "time": [
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    20.9,
+                                    4.15
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    20.9,
+                                    2.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    0.4,
+                                    2.9
+                                  ]
+                                },
+                                {
+                                  "operator": "[in[",
+                                  "operand": [
+                                    0.65,
+                                    2.9
+                                  ],
+                                  "type": "time_of_day"
+                                }
+                              ],
+                              "movement": [
+                                {
+                                  "operator": ">=",
+                                  "operand": 1.5,
+                                  "type": "continuous"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "decision_rule": {
+                          "operand": [
+                            0.4,
+                            2.9
+                          ],
+                          "operator": "[in[",
+                          "property": "time"
+                        }
+                      }
+                    ],
+                    "decision_rule": {
+                      "operand": 1.5,
+                      "operator": ">=",
+                      "property": "movement"
+                    }
+                  }
+                ],
+                "decision_rule": {
+                  "operand": [
+                    20.9,
+                    2.9
+                  ],
+                  "operator": "[in[",
+                  "property": "time"
+                }
+              },
+              {
+                "decision_rule": {
+                  "operand": [
+                    2.9,
+                    4.15
+                  ],
+                  "operator": "[in[",
+                  "property": "time"
+                },
+                "prediction": {
+                  "confidence": 0.5543869733810425,
+                  "distribution": [
+                    0.5666666666666667,
+                    0.43333333333333335
+                  ],
+                  "nb_samples": 780,
+                  "value": "OFF"
+                }
+              }
+            ],
+            "decision_rule": {
+              "operand": [
+                20.9,
+                4.15
+              ],
+              "operator": "[in[",
+              "property": "time"
+            }
+          }
+        ],
+        "output_values": [
+          "Way too long class to say OFF",
+          "ON"
+        ],
+        "x": 0,
+        "y": 0
+      }
+    }
+  }

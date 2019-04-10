@@ -7,6 +7,7 @@ import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
 import treeV2Classif from './treeV2.json';
+import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import { number, withKnobs } from '@storybook/addon-knobs';
@@ -141,6 +142,19 @@ storiesOf('Tree displayed with fixed height', module)
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
         <DecisionTreeWithPanel data={ treeV2Classif } />
+      </div>
+    </div>
+  ))
+  .add('display tree v2 classification - binary', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: 500,
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeV2ClassifBinary } />
       </div>
     </div>
   ))

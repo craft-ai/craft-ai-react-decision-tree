@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import BoxPlot from './boxplot';
-import { H3NodeInformation } from './utils';
 import Histogram from './histogram';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import {
+  H3NodeInformation,
+  TextCenterDiv
+} from './utils';
 
 const Ul = styled('ul')`
   list-style: none;
@@ -18,28 +21,30 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
     return (
       <div className='node-predictions'>
         <H3NodeInformation>Statistics</H3NodeInformation>
-        <Ul>
-          <li>{size} samples</li>
-        </Ul>
-        {
-          _.isUndefined(standard_deviation) ? (
-            <Histogram
-              distribution={ value }
-              outputValues={ outputValues }
-              size={ size }
-            />
-          ) : (
-            <BoxPlot
-              mean={ value }
-              std={ standard_deviation }
-              min={ min }
-              max={ max }
-              size={ size }
-              totalMin={ totalMin }
-              totalMax={ totalMax } 
-            />
-          )
-        }
+        <TextCenterDiv>
+          <Ul>
+            <li>{size} samples</li>
+          </Ul>
+          {
+            _.isUndefined(standard_deviation) ? (
+              <Histogram
+                distribution={ value }
+                outputValues={ outputValues }
+                size={ size }
+              />
+            ) : (
+              <BoxPlot
+                mean={ value }
+                std={ standard_deviation }
+                min={ min }
+                max={ max }
+                size={ size }
+                totalMin={ totalMin }
+                totalMax={ totalMax }
+              />
+            )
+          }
+        </TextCenterDiv>
       </div>
     );
   }
