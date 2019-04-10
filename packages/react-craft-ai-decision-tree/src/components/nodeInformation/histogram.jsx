@@ -4,14 +4,16 @@ import React from 'react';
 import { axisBottom, axisLeft, select as d3Select, scaleLinear } from 'd3';
 
 const margin = {
-  top: 10,
-  bottom: 30,
+  top: 30,
+  bottom: 50,
   left: 30,
   right: 10
 };
 
 const barWidthRatio = 0.5;
 const rectColor = 'rgb(0,178,103)';
+const maxLegendCharacters = 5;
+const maxLegendShowing = 5;
 
 const tooltipCssClass = css`
   position: absolute;
@@ -30,6 +32,9 @@ const tooltipCssClass = css`
 
 class Histogram extends React.Component {
   componentDidMount() {
+    // When the React Component is mounted, create the histogram
+    // static elements such as axes and legend.
+    // This function then returns a function to update the SVG.
     this.updateHistogram = this.createHistogram(this.props);
     this.updateHistogram(this.props);
   }
@@ -44,19 +49,19 @@ class Histogram extends React.Component {
   createHistogram = ({ distribution, outputValues, size, width, height }) => { 
     // Set width and height
     d3Select(this.node)
-      .attr('width', width)
-      .attr('height', height);
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.bottom + margin.top);
 
-    const fullBarWidth = (width - margin.right - margin.left) / distribution.length;
+    const fullBarWidth = width / distribution.length;
     const barWidth = barWidthRatio * fullBarWidth;
 
     const scaleX = scaleLinear()
       .domain([0, distribution.length])
-      .range([margin.left, width - margin.right]);
+      .range([margin.left, width + margin.left]);
 
     const scaleY = scaleLinear()
       .domain([0, 1])
-      .range([height - margin.top, margin.bottom]);
+      .range([height + margin.top, margin.top]);
 
     const xAxis = axisBottom()
       .tickFormat('')
@@ -77,6 +82,22 @@ class Histogram extends React.Component {
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(yAxis);
     
+    let legends;
+    if (outputValues.length < maxLegendShowing) {
+      legends = d3Select(this.node)
+        .selectAll('text.legend')
+        .data(outputValues)
+        .enter()
+        .append('text')
+        .attr('class', 'legend')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 10)
+        .attr('color', 'black')
+        .attr('x', (d, i) => (scaleX(i) + fullBarWidth / 2))
+        .attr('y', scaleY(0) + 15)
+        .text((d) => d.length > maxLegendCharacters ? `${d.substring(0, maxLegendCharacters)}...` : d);
+    }
+
     const updateHistogram = ({ distribution: newDistribution }) => {
       // Get the tooltip div, apply style and hide it initially
       const div = d3Select(this.tooltip)
@@ -135,9 +156,9 @@ class Histogram extends React.Component {
             .transition()
             .duration(100)
             .style('opacity', 0.9);
-          return div.html(`${outputValues[i]}</br>${Math.round(d * 100) / 100}</br>${Math.floor(size * d)} samples`)
+          return div.html(`${outputValues[i]}</br>${d.toFixed(2)}</br>${Math.floor(size * d)} samples`)
             .style('left', `${scaleX(i) + (fullBarWidth) / 2}px`)		
-            .style('top', `${scaleY(0)}px`);	
+            .style('top', `${legends ? scaleY(0) + 15 : scaleY(0)}px`);	
         })
         .on('mouseout', function() {
           d3Select(this)
@@ -160,7 +181,7 @@ class Histogram extends React.Component {
 
   render() {
     return (
-      <div ref={ (div) => this.div = div } style={{ position: 'relative', display: 'inline-block' }}>
+      <div ref={ (div) => this.div = div } style={{ position: 'relative', display: 'inline-block', marginBottom: '30px' }}>
         <svg ref={ (node) => this.node = node } />
         <div ref={ (tooltip) => this.tooltip = tooltip } />
       </div>
