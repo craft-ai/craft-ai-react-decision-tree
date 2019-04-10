@@ -23,7 +23,7 @@ const Split = ({ context, node }) => {
         return (
           <tr key={ key }>
             <TdNodeInformation>
-              {child.decision_rule.property}
+              <code>{child.decision_rule.property}</code>
             </TdNodeInformation>
             <TdNodeInformation>{text}</TdNodeInformation>
           </tr>
@@ -31,7 +31,7 @@ const Split = ({ context, node }) => {
       }
       return (
         <tr key={ key }>
-          <td>{child.decision_rule.property}</td>
+          <td><code>{child.decision_rule.property}</code></td>
           <td>{text}</td>
         </tr>
       );
