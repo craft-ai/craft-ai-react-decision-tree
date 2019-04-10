@@ -40,7 +40,7 @@ const CloseButtonDiv = styled('div')`
   margin-bottom: 10px;
 `;
 
-const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
+const NodeInformation = ({ closeNodeInformation, selectedNodePath, style, tree }) => {
   if (selectedNodePath) {
     const treeVersion = semver.major(tree._version);
     const treeData = tree.trees[Object.keys(tree.trees)[0]];
@@ -54,7 +54,9 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
     }
 
     return (
-      <NodeInformationContainer className='node-informations'>
+      <NodeInformationContainer
+        className='node-informations'
+        style={ style }>
         <InformationContainer>
           {closeNodeInformation ? (
             <CloseButtonDiv>
@@ -89,10 +91,15 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, tree }) => {
   }
 };
 
+NodeInformation.defaultProps = {
+  style: {}
+};
+
 NodeInformation.propTypes = {
   closeNodeInformation: PropTypes.func,
   tree: PropTypes.object.isRequired,
-  selectedNodePath: PropTypes.string.isRequired
+  selectedNodePath: PropTypes.string.isRequired,
+  style: PropTypes.object
 };
 
 export default NodeInformation;
