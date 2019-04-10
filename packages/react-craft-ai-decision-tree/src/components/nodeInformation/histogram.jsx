@@ -179,19 +179,27 @@ class Histogram extends React.Component {
     return updateHistogram;
   }
 
+  getSVGRef = (node) => {
+    this.node = node;
+  }
+
+  getToolTipRef = (tooltip) => {
+    this.tooltip = tooltip;
+  }
+
   render() {
     return (
-      <div ref={ (div) => this.div = div } style={{ position: 'relative', display: 'inline-block', marginBottom: '30px' }}>
-        <svg ref={ (node) => this.node = node } />
-        <div ref={ (tooltip) => this.tooltip = tooltip } />
+      <div style={{ position: 'relative', display: 'inline-block', marginBottom: '30px' }}>
+        <svg ref={ this.getSVGRef } />
+        <div ref={ this.getToolTipRef } />
       </div>
     );
   }
 }
 
 Histogram.defaultProps = {
-  width: 200,
-  height: 200
+  width: 150,
+  height: 150
 };
 
 Histogram.propTypes = {

@@ -35,12 +35,9 @@ const boxPlotMargin = {
 const stdRectangleHeight = 20;
 
 class BoxPlot extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tooltipShown: false
-    };
-  }
+  state = {
+    tooltipShown: false
+  };
 
   componentDidMount() {
     this.createBoxPlot(this.props);
@@ -241,11 +238,19 @@ class BoxPlot extends React.Component {
       .text((Math.round(mean * 100) / 100));
   }
 
+  getSVGRef = (node) => {
+    this.node = node;
+  }
+
+  getIconRef = (info) => {
+    this.info = info;
+  }
+
   render() {
     return (
       <div style={{ display: 'inline-flex' }} >
-        <svg ref={ (node) => this.node = node } />
-        <div ref={ (info) => this.info = info }>
+        <svg ref={ this.getSVGRef } />
+        <div ref={ this.getIconRef } >
           <FontAwesomeIcon
             icon={ faInfoCircle }
             onMouseEnter={ this.showTooltip }
@@ -258,11 +263,11 @@ class BoxPlot extends React.Component {
           placement={ 'top' }
           target={ this.info }
         >
-            -std ______ +std<br />
-global min      |  ||  |      global max<br />
-     |----|=====|  ||  |=====|----|<br />
-         min    |__||__|    max<br />
-                  mean<br />
+  global  -std _  _ +std  global<br />
+   min       | || |       max<br />
+    |---|====| || |====|---|<br />
+       min   |_||_|   max<br />
+              mean<br />
         </ToolTip>
       </div>
     );
@@ -270,7 +275,7 @@ global min      |  ||  |      global max<br />
 }
 
 BoxPlot.defaultProps = {
-  width: 200,
+  width: 180,
   height: 100
 };
 
