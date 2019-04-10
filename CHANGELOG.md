@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...HEAD) ##
 
+## Added
+
+- Add an information button on the boxplot to explain how to read it.
+- Expose the style parameter in `NodeInformation`.
+
+## Updated
+
+- Minor update of the presentation of the node information.
+
 ## [0.0.20](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.19...v0.0.20) - 2019-04-09 ##
 
 ## Added
