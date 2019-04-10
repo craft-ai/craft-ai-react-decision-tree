@@ -4,7 +4,8 @@ import React from 'react';
 import {
   H3NodeInformation,
   TableNodeInformation,
-  TdNodeInformation
+  TdNodeInformation,
+  TextCenterDiv
 } from './utils';
 
 const Split = ({ context, node }) => {
@@ -48,7 +49,7 @@ const Split = ({ context, node }) => {
     <div className='node-split'>
       <H3NodeInformation>Splits</H3NodeInformation>
       {!node.children ? (
-        <p>N/A (leaf node)</p>
+        <TextCenterDiv>N/A (leaf node)</TextCenterDiv>
       ) : (
         <TableNodeInformation>
           <tbody>{node.children.map(displaySplit)}</tbody>

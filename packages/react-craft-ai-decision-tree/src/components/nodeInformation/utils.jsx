@@ -12,3 +12,7 @@ export const TableNodeInformation = styled('table')`
 export const H3NodeInformation = styled('h3')`
   text-align: center;
 `;
+
+export const TextCenterDiv = styled('div')`
+  text-align: center;
+`;

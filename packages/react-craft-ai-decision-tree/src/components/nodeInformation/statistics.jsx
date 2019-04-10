@@ -1,19 +1,18 @@
 import _ from 'lodash';
 import BoxPlot from './boxplot';
-import { H3NodeInformation } from './utils';
 import Histogram from './histogram';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import {
+  H3NodeInformation,
+  TextCenterDiv
+} from './utils';
 
 const Ul = styled('ul')`
   list-style: none;
   padding-inline-start: 0;
-`;
-
-const StatsDiv = styled('div')`
-  text-align: center;
 `;
 
 const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => {
@@ -22,7 +21,7 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
     return (
       <div className='node-predictions'>
         <H3NodeInformation>Statistics</H3NodeInformation>
-        <StatsDiv>
+        <TextCenterDiv>
           <Ul>
             <li>{size} samples</li>
           </Ul>
@@ -45,7 +44,7 @@ const Statistics = ({ node, totalMin, totalMax, treeVersion, outputValues }) => 
               />
             )
           }
-        </StatsDiv>
+        </TextCenterDiv>
       </div>
     );
   }
