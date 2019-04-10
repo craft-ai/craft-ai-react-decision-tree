@@ -5,7 +5,7 @@ import { axisBottom, axisLeft, select as d3Select, scaleLinear } from 'd3';
 
 const margin = {
   top: 10,
-  down: 30,
+  bottom: 30,
   left: 30,
   right: 10
 };
@@ -30,18 +30,19 @@ const tooltipCssClass = css`
 
 class Histogram extends React.Component {
   componentDidMount() {
-    this.createHistogram(this.props);
+    this.updateHistogram = this.createHistogram(this.props);
+    this.updateHistogram(this.props);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     // Delegate rendering the tree to a d3 function on prop change
-    this.createHistogram(nextProps);
-
+    this.updateHistogram(nextProps);
     // Do not allow react to render the component on prop change
     return false;
   }
 
   createHistogram = ({ distribution, outputValues, size, width, height }) => { 
+    // Set width and height
     d3Select(this.node)
       .attr('width', width)
       .attr('height', height);
@@ -55,7 +56,7 @@ class Histogram extends React.Component {
 
     const scaleY = scaleLinear()
       .domain([0, 1])
-      .range([height - margin.top, margin.down]);
+      .range([height - margin.top, margin.bottom]);
 
     const xAxis = axisBottom()
       .tickFormat('')
@@ -76,88 +77,92 @@ class Histogram extends React.Component {
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(yAxis);
     
-    // Define the div for the tooltip
-    const div = d3Select(this.div)
-      .append('div')
-      .attr('class', tooltipCssClass)	
-      .style('opacity', 0);
+    const updateHistogram = ({ distribution: newDistribution }) => {
+      // Get the tooltip div, apply style and hide it initially
+      const div = d3Select(this.tooltip)
+        .attr('class', tooltipCssClass)	
+        .style('opacity', 0);
 
-    let histogram = d3Select(this.node)
-      .selectAll('rect')
-      .data(distribution, (d, i) => i);
+      let histogram = d3Select(this.node)
+        .selectAll('rect')
+        .data(newDistribution, (d, i) => i);
 
-    // Define the rectangle drawing the distribution
-    const histEnter = histogram
-      .enter()
-      .append('rect')
-      .style('fill', `${rectColor}`)
-      .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
-      .attr('y', (d) => scaleY(d))
-      .attr('width', barWidth)
-      .attr('height', (d) => scaleY(0) - scaleY(d));
-    
-    const histUpdate = histEnter.merge(histogram);
+      // Define the rectangle drawing the distribution
+      const histEnter = histogram
+        .enter()
+        .append('rect')
+        .style('fill', `${rectColor}`)
+        .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
+        .attr('y', (d) => scaleY(d))
+        .attr('width', barWidth)
+        .attr('height', (d) => scaleY(0) - scaleY(d));
+      
+      const histUpdate = histEnter.merge(histogram);
 
-    histUpdate
-      .transition()
-      .duration(1000)
-      .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
-      .attr('y', (d) => scaleY(d))
-      .attr('width', barWidth)
-      .attr('height', (d) => scaleY(0) - scaleY(d));
+      histUpdate
+        .transition()
+        .duration(1000)
+        .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
+        .attr('y', (d) => scaleY(d))
+        .attr('width', barWidth)
+        .attr('height', (d) => scaleY(0) - scaleY(d));
 
-    histogram
-      .exit()
-      .remove();
-  
-    // Define the rectangle to hover the drawn distribution
-    let rectback = d3Select(this.node)
-      .selectAll('rect.fake')
-      .data(distribution, (d, i) => i);
+      histogram
+        .exit()
+        .remove();
 
-    rectback
-      .enter()
-      .append('rect')
-      .attr('class', 'fake')
-      .attr('opacity', 0.0)
-      .style('fill', `${rectColor}`)
-      .attr('x', (d, i) => scaleX(i))
-      .attr('y', scaleY(1))
-      .attr('width', fullBarWidth)
-      .attr('height', scaleY(0) - scaleY(1))
-      .on('mouseover', function(d, i) {
-        d3Select(this)
-          .transition()
-          .duration(100)
-          .style('opacity', 0.2);
-        div
-          .transition()
-          .duration(100)
-          .style('opacity', 0.9);
-        return div.html(`${outputValues[i]}</br>${Math.round(d * 100) / 100}</br>${Math.floor(size * d)} samples`)
-          .style('left', `${scaleX(i) + (fullBarWidth) / 2}px`)		
-          .style('top', `${scaleY(0)}px`);	
-      })
-      .on('mouseout', function() {
-        d3Select(this)
-          .transition()
-          .duration(100)
-          .style('opacity', 0.0);
-        return div
-          .transition()
-          .duration(100)
-          .style('opacity', 0);
-      });
-    
-    rectback
-      .exit()
-      .remove();
+      // Define the rectangle to hover the drawn distribution
+      let rectback = d3Select(this.node)
+        .selectAll('rect.fake')
+        .data(newDistribution, (d, i) => i);
+
+      rectback
+        .enter()
+        .append('rect')
+        .attr('class', 'fake')
+        .attr('opacity', 0.0)
+        .style('fill', `${rectColor}`)
+        .attr('x', (d, i) => scaleX(i))
+        .attr('y', scaleY(1))
+        .attr('width', fullBarWidth)
+        .attr('height', scaleY(0) - scaleY(1))
+        .on('mouseover', function(d, i) {
+          d3Select(this)
+            .transition()
+            .duration(100)
+            .style('opacity', 0.2);
+          div
+            .transition()
+            .duration(100)
+            .style('opacity', 0.9);
+          return div.html(`${outputValues[i]}</br>${Math.round(d * 100) / 100}</br>${Math.floor(size * d)} samples`)
+            .style('left', `${scaleX(i) + (fullBarWidth) / 2}px`)		
+            .style('top', `${scaleY(0)}px`);	
+        })
+        .on('mouseout', function() {
+          d3Select(this)
+            .transition()
+            .duration(100)
+            .style('opacity', 0.0);
+          return div
+            .transition()
+            .duration(100)
+            .style('opacity', 0);
+        });
+      
+      rectback
+        .exit()
+        .remove();
+    };
+
+    return updateHistogram;
   }
 
   render() {
     return (
       <div ref={ (div) => this.div = div } style={{ position: 'relative', display: 'inline-block' }}>
         <svg ref={ (node) => this.node = node } />
+        <div ref={ (tooltip) => this.tooltip = tooltip } />
       </div>
     );
   }
