@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Fixed
 
 - Edges toolTips properly close when the mouse goes out.
+- Histogram bars have the right amount of samples they contain.
+
+## Updated
+
+- Histogram plots are 90° rotated.
 
 ## [0.0.21](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...v0.0.21) - 2019-04-10 ##
 
