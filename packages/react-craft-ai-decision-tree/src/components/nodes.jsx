@@ -216,7 +216,7 @@ class Nodes extends React.Component {
         key={ index }
         ref={ indexRef }
         onMouseOver={ showTooltip }
-        onMouseOut={ this.hideTooltips }
+        onMouseOut={ this.hideTooltip }
         className='craft-links'
         style={{
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
