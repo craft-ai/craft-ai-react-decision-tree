@@ -1,19 +1,18 @@
 import { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { axisBottom, axisLeft, select as d3Select, scaleLinear } from 'd3';
+import { axisLeft, axisTop, select as d3Select, scaleLinear } from 'd3';
 
 const margin = {
   top: 30,
   bottom: 50,
-  left: 30,
+  left: 40,
   right: 10
 };
 
 const barWidthRatio = 0.5;
 const rectColor = 'rgb(0,178,103)';
 const maxLegendCharacters = 5;
-const maxLegendShowing = 5;
 
 const tooltipCssClass = css`
   position: absolute;
@@ -25,9 +24,10 @@ const tooltipCssClass = css`
   border: 0px;
   border-radius: 8px;			
   pointer-events: none;
-  transform: translateX(-50%);
+  transform: translateX(-100%);
+  width: 100px;
   padding: 1px 10px 1px 10px;
-  white-space: nowrap;
+  white-space: normal;
 `;
 
 class Histogram extends React.Component {
@@ -46,30 +46,30 @@ class Histogram extends React.Component {
     return false;
   }
 
-  createHistogram = ({ distribution, outputValues, size, width, height }) => { 
+  createHistogram = ({ distribution, outputValues, size, width, fullBarWidth }) => {
+    const height = fullBarWidth * distribution.length;
+    const barWidth = barWidthRatio * fullBarWidth;
+
     // Set width and height
     d3Select(this.node)
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.bottom + margin.top);
 
-    const fullBarWidth = width / distribution.length;
-    const barWidth = barWidthRatio * fullBarWidth;
-
     const scaleX = scaleLinear()
-      .domain([0, distribution.length])
+      .domain([0, 1])
       .range([margin.left, width + margin.left]);
 
     const scaleY = scaleLinear()
-      .domain([0, 1])
-      .range([height + margin.top, margin.top]);
+      .domain([0, distribution.length])
+      .range([margin.top, height + margin.top]);
 
-    const xAxis = axisBottom()
-      .tickFormat('')
-      .ticks(distribution.length)
+    const xAxis = axisTop()
+      .ticks(3)
       .scale(scaleX);
     
     const yAxis = axisLeft()
-      .ticks(3)
+      .tickFormat('')
+      .ticks(distribution.length)
       .scale(scaleY);
 
     d3Select(this.node)
@@ -79,26 +79,23 @@ class Histogram extends React.Component {
     
     d3Select(this.node)
       .append('g')
-      .attr('transform', `translate(${margin.left}, 0)`)
+      .attr('transform', `translate(${scaleX(0)}, 0)`)
       .call(yAxis);
-    
-    let legends;
-    if (outputValues.length < maxLegendShowing) {
-      legends = d3Select(this.node)
-        .selectAll('text.legend')
-        .data(outputValues)
-        .enter()
-        .append('text')
-        .attr('class', 'legend')
-        .attr('text-anchor', 'middle')
-        .attr('font-size', 10)
-        .attr('color', 'black')
-        .attr('x', (d, i) => (scaleX(i) + fullBarWidth / 2))
-        .attr('y', scaleY(0) + 15)
-        .text((d) => d.length > maxLegendCharacters ? `${d.substring(0, maxLegendCharacters)}...` : d);
-    }
 
-    const updateHistogram = ({ distribution: newDistribution }) => {
+    d3Select(this.node)
+      .selectAll('text.legend')
+      .data(outputValues)
+      .enter()
+      .append('text')
+      .attr('class', 'legend')
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 10)
+      .attr('color', 'black')
+      .attr('x', scaleX(0) - 17)
+      .attr('y', (_, i) => (scaleY(i) + fullBarWidth / 2 + 4))
+      .text((d) => d.length > maxLegendCharacters ? `${d.substring(0, maxLegendCharacters)}...` : d);
+
+    const updateHistogram = ({ size: newSize, distribution: newDistribution }) => {
       // Get the tooltip div, apply style and hide it initially
       const div = d3Select(this.tooltip)
         .attr('class', tooltipCssClass)	
@@ -113,20 +110,20 @@ class Histogram extends React.Component {
         .enter()
         .append('rect')
         .style('fill', `${rectColor}`)
-        .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
-        .attr('y', (d) => scaleY(d))
-        .attr('width', barWidth)
-        .attr('height', (d) => scaleY(0) - scaleY(d));
+        .attr('x', scaleX(0))
+        .attr('y', (d, i) => scaleY(i) + (scaleY(1) - margin.top - barWidth) / 2)
+        .attr('width', 0)
+        .attr('height', barWidth);
       
       const histUpdate = histEnter.merge(histogram);
 
       histUpdate
         .transition()
         .duration(1000)
-        .attr('x', (d, i) => scaleX(i) + (scaleX(1) - margin.left - barWidth) / 2)
-        .attr('y', (d) => scaleY(d))
-        .attr('width', barWidth)
-        .attr('height', (d) => scaleY(0) - scaleY(d));
+        .attr('x', margin.left)
+        .attr('y', (d, i) => scaleY(i) + (scaleY(1) - margin.top - barWidth) / 2)
+        .attr('width', (d) => scaleX(d) - scaleX(0))
+        .attr('height', barWidth);
 
       histogram
         .exit()
@@ -143,10 +140,10 @@ class Histogram extends React.Component {
         .attr('class', 'fake')
         .attr('opacity', 0.0)
         .style('fill', `${rectColor}`)
-        .attr('x', (d, i) => scaleX(i))
-        .attr('y', scaleY(1))
-        .attr('width', fullBarWidth)
-        .attr('height', scaleY(0) - scaleY(1))
+        .attr('x', scaleX(0))
+        .attr('y', (_, i) => scaleY(i))
+        .attr('width', scaleX(1) - scaleX(0))
+        .attr('height', fullBarWidth)
         .on('mouseover', function(d, i) {
           d3Select(this)
             .transition()
@@ -156,9 +153,9 @@ class Histogram extends React.Component {
             .transition()
             .duration(100)
             .style('opacity', 0.9);
-          return div.html(`${outputValues[i]}</br>${d.toFixed(2)}</br>${Math.floor(size * d)} samples`)
-            .style('left', `${scaleX(i) + (fullBarWidth) / 2}px`)		
-            .style('top', `${legends ? scaleY(0) + 15 : scaleY(0)}px`);	
+          return div.html(`<b>${outputValues[i]}</b></br>${d.toFixed(2)}</br>${Math.floor(newSize * d)} samples`)
+            .style('left', `${scaleX(1)}px`)		
+            .style('top', `${scaleY(i) + (fullBarWidth) / 2}px`);	
         })
         .on('mouseout', function() {
           d3Select(this)
@@ -198,8 +195,8 @@ class Histogram extends React.Component {
 }
 
 Histogram.defaultProps = {
-  width: 150,
-  height: 150
+  width: 130,
+  fullBarWidth: 25
 };
 
 Histogram.propTypes = {
@@ -207,7 +204,7 @@ Histogram.propTypes = {
   outputValues: PropTypes.array.isRequired,
   size: PropTypes.number.isRequired,
   width: PropTypes.number,
-  height: PropTypes.number  
+  fullBarWidth: PropTypes.number  
 };
 
 export default Histogram;
