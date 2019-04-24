@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { computeLeafColor } from '../../utils/utils';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -18,7 +19,7 @@ const Prediction = ({ node, treeVersion, configuration }) => {
     value = node.predicted_value;
   }
   else {
-    if (node.prediction) {
+    if (!_.isUndefined(node.prediction)) {
       confidence = node.prediction.confidence;
       std = node.prediction.distribution
         ? node.prediction.distribution.standard_deviation
