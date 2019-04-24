@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Edges toolTips properly close when the mouse goes out.
 - Histogram bars have the right amount of samples they contain.
+- Show prediction for '0' output value.
 
 ## Updated
 
