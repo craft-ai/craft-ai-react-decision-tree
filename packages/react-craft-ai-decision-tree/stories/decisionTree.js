@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
@@ -117,6 +118,19 @@ storiesOf('Tree displayed with fixed height', module)
   .add('width css', () => (
     <div className='square'>
       <DecisionTreeWithPanel data={ tree } />
+    </div>
+  ))
+  .add('display tree V2 with non binary splits', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        border: 'solid 1px black'
+      }}
+    >
+      <div style={{ height: 'inherit', flexGrow: 1 }}>
+        <DecisionTreeWithPanel data={ treeMultipleEnum } />
+      </div>
     </div>
   ))
   .add('display tree v2 regression', () => (
