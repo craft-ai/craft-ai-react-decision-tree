@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Fixed
 
 - The decision tree no longer relies on 'immutable'.
+- Fixing the versions for React peer dependencies.
 
 ## [0.0.22](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.21...v0.0.22) - 2019-04-29
 
@@ -24,7 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Histogram plots are 90° rotated.
 
-## [0.0.21](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...v0.0.21) - 2019-04-10 ##
+## [0.0.21](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...v0.0.21) - 2019-04-10
 
 ## Added
 
@@ -35,7 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Minor update of the presentation of the node information.
 
-## [0.0.20](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.19...v0.0.20) - 2019-04-09 ##
+## [0.0.20](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.19...v0.0.20) - 2019-04-09
 
 ## Added
 
