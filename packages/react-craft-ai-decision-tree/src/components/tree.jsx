@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import Box from '../utils/box';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
+import { applyMarginToBox, boxFromRect, computeFitTransformation } from '../utils/box';
 import {
   event as d3Event,
   hierarchy as d3Hierarchy,
@@ -23,60 +23,6 @@ import {
   NODE_WIDTH_MARGIN,
   ZOOM_EXTENT
 } from '../utils/constants';
-
-function computeFitTransformation(
-  treeBbox,
-  canvasBbox,
-  prevTransformation,
-  scaleExtent = ZOOM_EXTENT
-) {
-  // from https://developer.mozilla.org/en/docs/Web/SVG/Attribute/transform
-  // worldX = localX * scaleX + translateX
-  // <=>
-  // localX = (worldX - translateX) / scaleX
-
-  // 1 - Compute the scales to apply to have the tree match the canvas.
-  const scaleX =
-    (canvasBbox.delta.x * prevTransformation.scale) / treeBbox.delta.x;
-  const scaleY =
-    (canvasBbox.delta.y * prevTransformation.scale) / treeBbox.delta.y;
-  const scale = Math.max(
-    scaleExtent[0],
-    Math.min(Math.min(scaleX, scaleY, scaleExtent[1]))
-  );
-
-  // 2 - Compute the translation to apply to have the center of the two bbox match
-  // canvasCenterX = treeCenterWorldX
-  // <=>
-  // canvasCenterX = treeCenterLocalX * scaleX + translateX
-  // <=>
-  // canvasCenterX = (treeCenterPrevWorldX - prevTranslateX) / prevScaleX * scaleX + translateX
-  // <=>
-  // canvasOriginX + canvasDeltaX / 2 = (treeOriginPrevWorldX + treeDeltaPrevWorldX / 2 - prevTranslateX) / prevScaleX * scaleX + translateX
-  // <=>
-  // translateX = canvasOriginX + canvasDeltaX / 2 - (treeOriginPrevWorldX + treeDeltaPrevWorldX / 2 - prevTranslateX) / prevScaleX * scaleX
-  const translate = [
-    canvasBbox.origin.x +
-      canvasBbox.delta.x / 2 -
-      ((treeBbox.origin.x +
-        treeBbox.delta.x / 2 -
-        prevTransformation.newPos[0]) /
-        prevTransformation.scale) *
-        scale,
-    canvasBbox.origin.y +
-      canvasBbox.delta.y / 2 -
-      ((treeBbox.origin.y +
-        treeBbox.delta.y / 2 -
-        prevTransformation.newPos[1]) /
-        prevTransformation.scale) *
-        scale
-  ];
-
-  return {
-    scale: scale,
-    newPos: translate
-  };
-}
 
 const TreeCanvas = styled('div')`
   min-width: 400px;
@@ -155,7 +101,10 @@ function computeSvgSizeFromData(root) {
       node.children.forEach((child, childIndex) => {
         enrichTreeRecursive(childIndex, child);
       });
-      node.nbSamples = node.children.reduce((acc, child) => acc + child.nbSamples, 0);
+      node.nbSamples = node.children.reduce(
+        (acc, child) => acc + child.nbSamples,
+        0
+      );
     }
     return node;
   };
@@ -289,13 +238,13 @@ class Tree extends React.Component {
   };
 
   doFitToScreen = () => {
-    const canvasBbox = new Box(
+    const canvasBbox = boxFromRect(
       d3Select('div.zoomed-tree')
         .node()
         .getBoundingClientRect()
     );
-    const marginedCanvasBbox = canvasBbox.applyMargin(MARGIN);
-    const treeBbox = new Box(
+    const marginedCanvasBbox = applyMarginToBox(canvasBbox, MARGIN);
+    const treeBbox = boxFromRect(
       d3Select('div.translated-tree')
         .node()
         .getBoundingClientRect()
@@ -303,7 +252,8 @@ class Tree extends React.Component {
     const { newPos, scale } = computeFitTransformation(
       treeBbox,
       marginedCanvasBbox,
-      this.state
+      this.state,
+      ZOOM_EXTENT
     );
     this.setState({ newPos, scale });
     const selection = d3Select('div.zoomed-tree');
@@ -359,7 +309,10 @@ class Tree extends React.Component {
       else {
         const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
         // remove the first element of the path because it is the root path;
-        const selectedPath = findSelectedNodeRecursion(_.tail(pathArray), this.state.nodes[0]);
+        const selectedPath = findSelectedNodeRecursion(
+          _.tail(pathArray),
+          this.state.nodes[0]
+        );
         this.setState({ selectedEdgePath: selectedPath });
       }
     }
