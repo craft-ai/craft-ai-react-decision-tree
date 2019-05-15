@@ -5,9 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.22...HEAD) ##
+## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.22...HEAD)
 
-## [0.0.22](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.21...v0.0.22) - 2019-04-29 ##
+## Fixed
+
+- The decision tree no longer relies on 'immutable'.
+- Fixing the versions for React peer dependencies.
+- Explicitely setting the box sizing policy to 'content-box' for the decision tree 'Node' component.
+
+## [0.0.22](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.21...v0.0.22) - 2019-04-29
 
 ## Fixed
 
@@ -20,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Histogram plots are 90° rotated.
 
-## [0.0.21](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...v0.0.21) - 2019-04-10 ##
+## [0.0.21](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.20...v0.0.21) - 2019-04-10
 
 ## Added
 
@@ -31,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Minor update of the presentation of the node information.
 
-## [0.0.20](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.19...v0.0.20) - 2019-04-09 ##
+## [0.0.20](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.19...v0.0.20) - 2019-04-09
 
 ## Added
 

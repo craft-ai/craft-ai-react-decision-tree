@@ -1,64 +1,90 @@
 import _ from 'lodash';
-import { Record } from 'immutable';
 
-class Vector extends Record({
-  x: 0,
-  y: 0
-}) {
-  constructor(x = 0, y = 0) {
-    super({
-      x: x,
-      y: y
-    });
-  }
-}
-
-export default class Box extends Record({
-  origin: new Vector(),
-  delta: new Vector()
-}) {
-  constructor(
-    box = {
-      origin: {
-        x: 0,
-        y: 0
-      },
-      delta: {
-        x: 0,
-        y: 0
-      }
+function boxFromRect({ left, top, right, bottom }) {
+  return {
+    origin: {
+      x: left || 0,
+      y: top || 0
+    },
+    delta: {
+      x: right != null && left != null ? right - left : 0,
+      y: top != null && bottom != null ? bottom - top : 0
     }
-  ) {
-    super({
-      origin: new Vector(
-        (box.origin && box.origin.x) || box.left || 0,
-        (box.origin && box.origin.y) || box.top || 0
-      ),
-      delta: new Vector(
-        (box.delta && box.delta.x) ||
-          (!_.isUndefined(box.right) &&
-            !_.isUndefined(box.left) &&
-            box.right - box.left) ||
-          0,
-        (box.delta && box.delta.y) ||
-          (!_.isUndefined(box.bottom) &&
-            !_.isUndefined(box.top) &&
-            box.bottom - box.top) ||
-          0
-      )
-    });
-  }
-
-  applyMargin(margin) {
-    const m = _.defaults(margin || {}, {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0
-    });
-    return this.updateIn(['origin', 'x'], (x) => x + m.left)
-      .updateIn(['origin', 'y'], (y) => y + m.top)
-      .updateIn(['delta', 'x'], (x) => x - m.left - m.right)
-      .updateIn(['delta', 'y'], (y) => y - m.top - m.bottom);
-  }
+  };
 }
+
+function applyMarginToBox({ origin, delta }, margin) {
+  const m = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    ...margin
+  };
+  return {
+    origin: {
+      x: origin.x + m.left,
+      y: origin.y + m.top
+    },
+    delta: {
+      x: delta.x - m.left - m.right,
+      y: delta.y - m.top - m.bottom
+    }
+  };
+}
+
+function computeFitTransformation(
+  treeBbox,
+  canvasBbox,
+  prevTransformation,
+  scaleExtent
+) {
+  // from https://developer.mozilla.org/en/docs/Web/SVG/Attribute/transform
+  // worldX = localX * scaleX + translateX
+  // <=>
+  // localX = (worldX - translateX) / scaleX
+
+  // 1 - Compute the scales to apply to have the tree match the canvas.
+  const scaleX =
+    (canvasBbox.delta.x * prevTransformation.scale) / treeBbox.delta.x;
+  const scaleY =
+    (canvasBbox.delta.y * prevTransformation.scale) / treeBbox.delta.y;
+  const scale = Math.max(
+    scaleExtent[0],
+    Math.min(Math.min(scaleX, scaleY, scaleExtent[1]))
+  );
+
+  // 2 - Compute the translation to apply to have the center of the two bbox match
+  // canvasCenterX = treeCenterWorldX
+  // <=>
+  // canvasCenterX = treeCenterLocalX * scaleX + translateX
+  // <=>
+  // canvasCenterX = (treeCenterPrevWorldX - prevTranslateX) / prevScaleX * scaleX + translateX
+  // <=>
+  // canvasOriginX + canvasDeltaX / 2 = (treeOriginPrevWorldX + treeDeltaPrevWorldX / 2 - prevTranslateX) / prevScaleX * scaleX + translateX
+  // <=>
+  // translateX = canvasOriginX + canvasDeltaX / 2 - (treeOriginPrevWorldX + treeDeltaPrevWorldX / 2 - prevTranslateX) / prevScaleX * scaleX
+  const translate = [
+    canvasBbox.origin.x +
+      canvasBbox.delta.x / 2 -
+      ((treeBbox.origin.x +
+        treeBbox.delta.x / 2 -
+        prevTransformation.newPos[0]) /
+        prevTransformation.scale) *
+        scale,
+    canvasBbox.origin.y +
+      canvasBbox.delta.y / 2 -
+      ((treeBbox.origin.y +
+        treeBbox.delta.y / 2 -
+        prevTransformation.newPos[1]) /
+        prevTransformation.scale) *
+        scale
+  ];
+
+  return {
+    scale: scale,
+    newPos: translate
+  };
+}
+
+export { applyMarginToBox, computeFitTransformation, boxFromRect };
