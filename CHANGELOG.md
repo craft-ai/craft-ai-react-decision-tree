@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.22...HEAD)
 
+## Added
+
+- Trees are now foldable. The props `collapsedDepth` has been added to the `Tree` component setting the depth after which nodes are folded. A node can be expanded by clicking the `+` button under it and collapsed by clicking the `-` button.
+
 ## Fixed
 
 - The decision tree no longer relies on 'immutable'.
