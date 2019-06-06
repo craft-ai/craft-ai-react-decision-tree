@@ -9,6 +9,7 @@ import ToolTip from 'react-craft-ai-tooltip';
 import {
   NODE_DEPTH,
   NODE_HEIGHT,
+  NODE_PADDING,
   NODE_WIDTH,
   SELECTED_BORDER_WIDTH,
   SELECTED_COLOR_EDGES
@@ -38,12 +39,13 @@ const Button = styled('button')`
   box-shadow: 0 0 3px gray;
   float: left;
   font-size: 12px;
-  visibility: hidden 
+  visibility: hidden;
   font-weight: bold;
   display: inline-block;
   transform: translate(-50%, -50%);
   padding: 0px;
   transition: background-color 0.1s;
+  cursor: pointer;
   &:hover {
     background: #ffcc00;
   }
@@ -127,13 +129,13 @@ class Nodes extends React.Component {
 
     const onClickExpand = () => {
       if (!_.isNull(node.children)) {
-        node._children = node.children;
+        node.hidden_children = node.children;
         node.children = null;
       }
       else {
-        node.children = node._children;
-        node._children = null;
-      }      
+        node.children = node.hidden_children;
+        node.hidden_children = null;
+      }
       this.props.onClickNode();
     };
 
@@ -189,34 +191,32 @@ class Nodes extends React.Component {
       });
     };
 
-    const PADDING = 15;
+    const showNodeButton = () => {
+      this.setState({ showingNodeButtonId: index });
+      showTooltip();
+    };
+
+    const hideNodeButton = () => {
+      this.setState({ showingNodeButtonId: undefined });
+      this.hideTooltip();
+    };
 
     return (
-      <div 
+      <div
         key={ index }
-        onMouseOver={ () => {
-          this.setState({ showingNodeButtonId: index });
-        } }
-        onMouseOut={ () => {
-          this.setState({ showingNodeButtonId: undefined });
-        } }
+        onMouseOver={ showNodeButton }
+        onMouseOut={ hideNodeButton }
         style={{
           display: 'inline-block',
-          padding: `${PADDING}px ${PADDING}px ${PADDING}px ${PADDING}px`,
+          padding: `${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px`,
           position: 'absolute',
           top:
-            node.y - NODE_HEIGHT / 3 - PADDING,
+            node.y - NODE_HEIGHT / 3 - NODE_PADDING,
           left:
-            node.x - NODE_WIDTH / 2 - PADDING
+            node.x - NODE_WIDTH / 2 - NODE_PADDING
         }}>
         <Node
           ref={ indexRef }
-          onMouseOver={ () => {
-            showTooltip();
-          } }
-          onMouseOut={ () => {
-            this.hideTooltip();
-          } }
           onClick={ setSelectedNode }
           className='craft-nodes'
           style={{
@@ -227,15 +227,14 @@ class Nodes extends React.Component {
             top: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
             left: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
             backgroundColor: color
-          }}
-        >
+          }}>
           {text}
         </Node>
         <NodeButton
           refButton={ nodeButtonRef }
           node={ node }
           setSelectedNode={ onClickExpand }
-          isVisible={ index === this.state.showingNodeButtonId }  
+          isVisible={ index === this.state.showingNodeButtonId }
         />
       </div>
     );
@@ -310,8 +309,7 @@ class Nodes extends React.Component {
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
           left: x,
           width: width
-        }}
-      >
+        }}>
         {text}
       </Links>
     );
@@ -329,14 +327,13 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
-          style={{ 
+          style={{
             pointerEvents: 'none'
           }} // disable click on tooltip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
-          onPlacementUpdated={ this.updateTooltipPlacement }
-        >
+          onPlacementUpdated={ this.updateTooltipPlacement }>
           {this.state.tooltipText}
         </ToolTip>
       </div>

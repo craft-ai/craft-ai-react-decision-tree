@@ -50,15 +50,25 @@ const Prediction = ({ node, treeVersion, configuration, outputValues }) => {
 
   return (
     <div className='node-predictions'>
-      {outputValue ? (
-        <PredictionDiv>
-          <OutputDiv>
-            <code>{configuration.output[0]}</code> {outputValue}
-          </OutputDiv>
-          {confidence ? <div>Confidence {(confidence * 100).toFixed(2)}%</div> : null}
-          {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
-        </PredictionDiv>
-      ) : null}
+      {
+        outputValue ? (
+          <PredictionDiv>
+            <OutputDiv>
+              <code>{configuration.output[0]}</code> {outputValue}
+            </OutputDiv>
+            {
+              confidence ? (
+                <div>Confidence {(confidence * 100).toFixed(2)}%</div>
+              ) : null
+            }
+            {
+              std ? (
+                <div>Standard deviation {std.toFixed(2)}</div>
+              ) : null
+            }
+          </PredictionDiv>
+        ) : null
+      }
     </div>
   );
 };
