@@ -261,6 +261,9 @@ class Tree extends React.Component {
   }
 
   onClickNode = (node) => {
+    // Get clicked node position
+    const previousClickedNodePosX = node.x;
+    const previousClickedNodePosY = node.y;
     const {
       links,
       minSvgHeight,
@@ -275,6 +278,15 @@ class Tree extends React.Component {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
+
+    // Get clicked node new position
+    const currentClickedNodePosX = node.x;
+    const currentClickedNodePosY = node.y;
+
+    const deltaX = currentClickedNodePosX - previousClickedNodePosX;
+    const deltaY = currentClickedNodePosY - previousClickedNodePosY;
+
+    this.translateTree(deltaX, deltaY);
     this.setState({
       nodeDescendantsArray: nodeDescendantsArray,
       links: links,
@@ -326,6 +338,23 @@ class Tree extends React.Component {
     if (this.props.updatePositionAndZoom) {
       this.props.updatePositionAndZoom(this.state.newPos, this.state.scale);
     }
+  };
+
+  translateTree = (deltaX, deltaY) => {
+    const selection = d3Select('div.translated-tree');
+    const treeBbox = boxFromRect(
+      selection
+        .node()
+        .getBoundingClientRect()
+    );
+
+    d3Select('div.zoomed-tree')
+      .call(
+        this.zoom.transform,
+        zoomIdentity.translate(treeBbox.origin.x - deltaX * this.state.scale - 1,
+          treeBbox.origin.y - deltaY * this.state.scale - 1)
+          .scale(this.state.scale)
+      );
   };
 
   doFitToScreen = () => {

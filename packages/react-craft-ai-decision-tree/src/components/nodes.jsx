@@ -136,7 +136,7 @@ class Nodes extends React.Component {
         node.children = node.hidden_children;
         node.hidden_children = null;
       }
-      this.props.onClickNode();
+      this.props.onClickNode(node);
     };
 
     const indexRef = (input) => {
