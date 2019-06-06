@@ -87,6 +87,25 @@ function updateTree(nodes) {
   };
 }
 
+function collapseNodesFromDepth(nodes, collapsedDepth) {
+  const collapse = (node) => {
+    if (node.depth > collapsedDepth) {
+      node.hidden_children = node.children;
+      node.children = null;
+      if (node.hidden_children) {
+        node.hidden_children.forEach(collapse);
+      }
+    }
+    else {
+      if (node.children) {
+        node.children.forEach(collapse);
+      }
+    }
+  };
+
+  return nodes.children.forEach(collapse);
+}
+
 function computeSvgSizeFromData(root, collapsedDepth) {
   const tree = d3Tree()
     .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
@@ -148,24 +167,9 @@ function computeSvgSizeFromData(root, collapsedDepth) {
 
   nodes = enrichTreeRecursive(0, nodes);
 
+  // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
   if (!_.isUndefined(collapsedDepth)) {
-    // Collapse the node and all it's children
-    const collapse = (node) => {
-      if (node.depth > collapsedDepth) {
-        node._children = node.children;
-        node.children = null;
-        if (node._children) {
-          node._children.forEach(collapse);
-        }
-      }
-      else {
-        if (node.children) {
-          node.children.forEach(collapse);
-        }
-      }
-    };
-
-    nodes.children.forEach(collapse);
+    collapseNodesFromDepth(nodes, collapsedDepth);
   }
 
   tree(nodes);
@@ -183,7 +187,6 @@ function computeSvgSizeFromData(root, collapsedDepth) {
     offsetX: offsetX
   };
 }
-
 
 class Tree extends React.Component {
   constructor(props) {
@@ -280,16 +283,14 @@ class Tree extends React.Component {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
-    this.setState(
-      {
-        nodeDescendantsArray: nodeDescendantsArray,
-        links: links,
-        minSvgHeight: minSvgHeight,
-        minSvgWidth: minSvgWidth,
-        treed3: treed3,
-        clickedNode: node
-      }
-    );
+    this.setState({
+      nodeDescendantsArray: nodeDescendantsArray,
+      links: links,
+      minSvgHeight: minSvgHeight,
+      minSvgWidth: minSvgWidth,
+      treed3: treed3,
+      clickedNode: node
+    });
   };
 
   computeTree = () => {
