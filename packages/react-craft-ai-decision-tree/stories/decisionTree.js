@@ -172,7 +172,7 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
-  .add('collapsed after depth=3 ', () => (
+  .add('collapsed tree', () => (
     <div
       style={{
         display: 'flex',
@@ -181,9 +181,9 @@ storiesOf('Tree displayed with fixed height', module)
       }}
     >
       <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel 
+        <DecisionTreeWithPanel
           data={ treeV2Classif }
-          collapsedDepth={ 3 }
+          collapsedDepth={ number('Depth', 5, { range: true, min: 0, max: 10, step: 1 }) }
         />
       </div>
     </div>

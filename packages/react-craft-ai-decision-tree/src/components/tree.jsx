@@ -87,23 +87,14 @@ function updateTree(nodes) {
   };
 }
 
-function collapseNodesFromDepth(nodes, collapsedDepth) {
+function collapseNodesFromDepth(nodesList, collapsedDepth) {
   const collapse = (node) => {
-    if (node.depth > collapsedDepth) {
+    if (node.depth >= collapsedDepth) {
       node.hidden_children = node.children;
       node.children = null;
-      if (node.hidden_children) {
-        node.hidden_children.forEach(collapse);
-      }
-    }
-    else {
-      if (node.children) {
-        node.children.forEach(collapse);
-      }
     }
   };
-
-  return nodes.children.forEach(collapse);
+  nodesList.map(collapse);
 }
 
 function computeSvgSizeFromData(root, collapsedDepth) {
@@ -169,7 +160,7 @@ function computeSvgSizeFromData(root, collapsedDepth) {
 
   // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
   if (!_.isUndefined(collapsedDepth)) {
-    collapseNodesFromDepth(nodes, collapsedDepth);
+    collapseNodesFromDepth(nodes.descendants(), collapsedDepth);
   }
 
   tree(nodes);
@@ -253,8 +244,9 @@ class Tree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.treeData !== this.props.treeData) {
-      this.setState(this.computeTree());
+    if (prevProps.treeData !== this.props.treeData
+      || !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)) {
+      this.setState(this.computeTree(), () => this.doFitToScreen());
     }
     if (prevProps.selectedNode !== this.props.selectedNode) {
       this.findAndHightlightSelectedNodePath();
