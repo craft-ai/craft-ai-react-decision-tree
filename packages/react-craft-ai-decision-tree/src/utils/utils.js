@@ -3,12 +3,16 @@ import { mix } from 'polished';
 import {
   COLOR_LEAVES_CONFIDENCE_0,
   COLOR_LEAVES_CONFIDENCE_1,
+  COLOR_LEAVES_CONFIDENCE_UNDEFINED,
   NODE_PATH_SEPARATOR
 } from './constants';
 
 export function computeLeafColor(confidence) {
-  const blend = Math.pow(confidence, 3);
-  return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
+  if (confidence) {
+    const blend = Math.pow(confidence, 3);
+    return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);  
+  }
+  return COLOR_LEAVES_CONFIDENCE_UNDEFINED;
 }
 
 export function findSelectedNode(path, tree) {

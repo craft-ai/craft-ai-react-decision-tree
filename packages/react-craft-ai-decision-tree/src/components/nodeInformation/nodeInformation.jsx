@@ -69,6 +69,7 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, style, tree }
             configuration={ tree.configuration }
             node={ selectedNode }
             treeVersion={ treeVersion }
+            outputValues={ treeData.output_values }
           />
           <DecisionRules
             context={ tree.configuration.context }

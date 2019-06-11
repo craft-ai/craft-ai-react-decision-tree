@@ -1,21 +1,25 @@
 import { css } from 'react-emotion';
 import { select as d3Select } from 'd3';
-import { NODE_HEIGHT } from '../utils/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ADDITIONAL_SELECTED_STROKE_WIDTH,
   DEFAULT_COLOR_EDGES,
   DEFAULT_MINIMUM_STROKE_WIDTH,
   DEFAULT_STROKE_WIDTH_RATIO,
-  SELECTED_COLOR_EDGES } from '../utils/constants';
+  NODE_HEIGHT,
+  NODE_WIDTH,
+  SELECTED_COLOR_EDGES
+} from '../utils/constants';
 
 // make links css rules
 const defaultLinksCssClass = css`
+  position: relative;
   fill: none;
   stroke: ${DEFAULT_COLOR_EDGES};
 `;
 
 const selectedLinksCssClass = css`
+  position: relative;
   fill: none;
   stroke: ${SELECTED_COLOR_EDGES};
 `;
@@ -25,7 +29,6 @@ class Edges extends React.Component {
     // Render the tree using d3 after first component mount
     this.renderTree(
       this.props.treeData,
-      this.svgTreeRef,
       this.props.nodes,
       this.props.links,
       this.props.edgePath,
@@ -39,13 +42,14 @@ class Edges extends React.Component {
     // Delegate rendering the tree to a d3 function on prop change
     this.renderTree(
       nextProps.treeData,
-      this.svgTreeRef,
       nextProps.nodes,
       nextProps.links,
       nextProps.edgePath,
       this.props.totalNbSamples,
       this.props.version,
-      this.props.edgeType
+      this.props.edgeType,
+      nextProps.width,
+      nextProps.height
     );
 
     // Do not allow react to render the component on prop change
@@ -64,39 +68,49 @@ class Edges extends React.Component {
     this.svgTreeRef = input;
   };
 
-  renderTree = (treeData, svgDomNode, nodes, links, edgePath, totalNbSamples, version, edgeType) => {
-    // Cleans up the SVG on re-render
-    d3Select(svgDomNode)
-      .selectAll('*')
-      .remove();
+  renderTree = (treeData, nodes, links, edgePath, totalNbSamples, version, edgeType, width, height) => {
+    d3Select(this.svgTreeRef)
+      .attr('width', width)
+      .attr('height', height);
+  
+    // ------------ NODES ------------
 
-    let svg = d3Select(svgDomNode)
-      .attr('width', this.props.width)
-      .attr('height', this.props.height)
-      .append('g');
-
-    // Update the nodes…
-    let node = svg.selectAll('g.node')
+    // Update the nodes
+    const nodesSvg = d3Select(this.svgTreeRef)
+      .selectAll('g.node')
       .data(nodes, (d) => d.id);
-
-    // Enter any new nodes at the parent's previous position.
-    let nodeEnter = node
+    
+    const nodeEnter = nodesSvg
       .enter()
       .append('g')
       .attr('class', 'node')
+      .attr('transform', (d) => {
+        if (d.parent) {
+          return `translate(${d.parent.x},${d.parent.y})`;
+        }
+        return `translate(${d.x},${d.y})`;
+      });
+
+    const nodesUpdate = nodeEnter.merge(nodesSvg);
+    
+    nodesUpdate.transition()
       .attr('transform', (d) => `translate(${d.x},${d.y})`);
 
-    nodeEnter.append('circle')
-      .attr('r', 1);
-
-    // Transition exiting nodes to the parent's new position.
-    node
-      .exit()
-      .attr('transform', (d) => `translate(${d.x},${d.y})`)
+    nodeEnter.append('rect')
+      .attr('x', -NODE_WIDTH / 2) 
+      .attr('y', -NODE_HEIGHT / 2)
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('fill', 'none');
+    
+    nodesSvg.exit()
       .remove();
 
-    // Update the links… (they are ordered)
-    let link = svg.selectAll('path.link')
+    // ------------ LINKS ------------
+
+    // Update the links
+    const link = d3Select(this.svgTreeRef)
+      .selectAll('path')
       .data(links, (d) => {
         d.linkClass = defaultLinksCssClass;
         if (edgePath.indexOf(d.target.id) !== -1) {
@@ -108,14 +122,7 @@ class Edges extends React.Component {
     // Enter any new links at the parent's previous position.
     link
       .enter()
-      .insert('path', 'g')
-      .attr(
-        'class',
-        (d) =>
-          `${d.linkClass} ${
-            d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
-          }`
-      )
+      .append('path')
       .attr('stroke-width', (d) => {
         if (version == 1 || edgeType == 'constant') {
           return d.linkClass == selectedLinksCssClass ?
@@ -142,19 +149,27 @@ class Edges extends React.Component {
           );
         }
       })
+      .merge(link)
       .attr('d', (d) => {
         const source = {
           x: d.source.x,
-          y: d.source.y + (2 * NODE_HEIGHT / 3)
+          y: d.source.y + NODE_HEIGHT / 2
         };
         const target = {
           x: d.target.x,
           y: d.target.y - NODE_HEIGHT / 3
         };
         return this.diagonal(source, target);
-      });
-
-    // Transition exiting nodes to the parent's new position.
+      })
+      .attr(
+        'class',
+        (d) => {
+          return `${d.linkClass} ${
+            d.linkClass == selectedLinksCssClass ? 'selected-link' : ''
+          }`;
+        }
+      );
+   
     link.exit()
       .remove();
   };

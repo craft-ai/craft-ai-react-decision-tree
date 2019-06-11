@@ -31,20 +31,81 @@ const TreeCanvas = styled('div')`
   position: absolute;
 `;
 
-function computeSvgSizeFromData(root) {
-  const tree = d3Tree()
-    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
-  let nodes = d3Hierarchy(root, (d) => d.children);
-  tree(nodes);
-  const links = nodes.links();
+function adjustTreePosition(tree) {
+  let maxTreeDepth = 0;
   let dxMin;
   let dxMax;
-  let maxTreeDepth = 0;
-  let minSvgWidth;
-  let minSvgHeight;
+
+  const adjustPositions = (node) => {
+    if (node.depth > maxTreeDepth) {
+      maxTreeDepth = node.depth;
+    }
+    // Normalize for fixed-depth.
+    node.y = node.depth * NODE_DEPTH;
+
+    if (_.isUndefined(dxMin) || node.x < dxMin) {
+      dxMin = node.x;
+    }
+    if (_.isUndefined(dxMax) || node.x > dxMax) {
+      dxMax = node.x;
+    }
+
+    if (node.children) {
+      node.children.forEach(adjustPositions);
+    }
+    return node;
+  };
+
+  tree = adjustPositions(tree);
+  const minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
+  const minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+
+  return {
+    minSvgWidth: minSvgWidth,
+    minSvgHeight: minSvgHeight,
+    offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
+  };
+}
+
+function updateTree(nodes) {
+  const tree = d3Tree()
+    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
+
+  tree(nodes);
+
+  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(nodes);
+  const nodeDescendantsArray = nodes.descendants();
+
+  return {
+    minSvgWidth: minSvgWidth,
+    minSvgHeight: minSvgHeight,
+    nodeDescendantsArray: nodeDescendantsArray,
+    links: nodes.links(),
+    treed3: nodes,
+    totalNbSamples: nodeDescendantsArray[0].nbSamples,
+    offsetX: offsetX
+  };
+}
+
+function collapseNodesFromDepth(nodesList, collapsedDepth) {
+  const collapse = (node) => {
+    if (node.depth >= collapsedDepth) {
+      node.hidden_children = node.children;
+      node.children = null;
+    }
+  };
+  nodesList.map(collapse);
+}
+
+function computeSvgSizeFromData(root, collapsedDepth) {
+  const tree = d3Tree()
+    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
+  let nodes;
   let incr = 0;
 
-  // Compute the max tree depth(node which is the lowest leaf)
+  nodes = d3Hierarchy(root, (d) => d.children);
+
+  // Add the necessary information into the created d3Hierachy
   const enrichTreeRecursive = (index, node) => {
     node.id = incr++;
     // Deal with decision rules
@@ -83,20 +144,6 @@ function computeSvgSizeFromData(root) {
       node.treePath = `${index}`;
     }
 
-    if (node.depth > maxTreeDepth) {
-      maxTreeDepth = node.depth;
-    }
-
-    // Normalize for fixed-depth.
-    node.y = node.depth * NODE_DEPTH;
-
-    if (_.isUndefined(dxMin) || node.x < dxMin) {
-      dxMin = node.x;
-    }
-    if (_.isUndefined(dxMax) || node.x > dxMax) {
-      dxMax = node.x;
-    }
-
     if (node.children) {
       node.children.forEach((child, childIndex) => {
         enrichTreeRecursive(childIndex, child);
@@ -111,17 +158,24 @@ function computeSvgSizeFromData(root) {
 
   nodes = enrichTreeRecursive(0, nodes);
 
-  minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
-  minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+  // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
+  if (!_.isUndefined(collapsedDepth)) {
+    collapseNodesFromDepth(nodes.descendants(), collapsedDepth);
+  }
+
+  tree(nodes);
+
+  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(nodes);
   const nodeDescendantsArray = nodes.descendants();
 
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
-    nodes: nodeDescendantsArray,
-    links,
+    nodeDescendantsArray: nodeDescendantsArray,
+    links: nodes.links(),
+    treed3: nodes,
     totalNbSamples: nodeDescendantsArray[0].nbSamples,
-    offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
+    offsetX: offsetX
   };
 }
 
@@ -131,9 +185,10 @@ class Tree extends React.Component {
 
     const {
       links,
-      nodes,
+      nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
+      treed3,
       totalNbSamples
     } = this.computeTree();
 
@@ -142,12 +197,13 @@ class Tree extends React.Component {
       scale: this.props.scale === -1 ? 1 : this.props.scale,
       isPanActivated: false,
       selectedEdgePath: [],
-      nodes,
       links,
+      nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
       totalNbSamples,
-      edgeType: this.props.edgeType
+      edgeType: this.props.edgeType,
+      treed3: treed3
     };
   }
 
@@ -188,13 +244,63 @@ class Tree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.treeData !== this.props.treeData) {
-      this.setState(this.computeTree());
+    if (prevProps.treeData !== this.props.treeData
+      || !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)) {
+      this.setState(this.computeTree(), () => this.doFitToScreen());
     }
     if (prevProps.selectedNode !== this.props.selectedNode) {
       this.findAndHightlightSelectedNodePath();
     }
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(nextProps, this.props)
+      || !_.isEqual(this.state.newPos, nextState.newPos)
+      || !_.isEqual(this.state.nodeDescendantsArray, nextState.nodeDescendantsArray)
+      || !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath);
+  }
+
+  onClickNode = (node) => {
+    // Get clicked node position
+    const previousClickedNodePosX = node.x;
+    const previousClickedNodePosY = node.y;
+    const {
+      links,
+      minSvgHeight,
+      minSvgWidth,
+      nodeDescendantsArray,
+      offsetX,
+      treed3
+    } = updateTree(this.state.treed3);
+
+    // place correctly the tree in the svg with the minSvgWidth
+    _.forEach(nodeDescendantsArray, (d) => {
+      d.x = d.x + offsetX;
+      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
+    });
+
+    // Unselect the previously selected node if a parent is collapsed
+    if (this.props.selectedNode.startsWith(node.treePath) && this.props.selectedNode !== node.treePath) {
+      this.props.updateSelectedNode('');
+    }
+
+    // Get clicked node new position
+    const currentClickedNodePosX = node.x;
+    const currentClickedNodePosY = node.y;
+
+    const deltaX = currentClickedNodePosX - previousClickedNodePosX;
+    const deltaY = currentClickedNodePosY - previousClickedNodePosY;
+
+    this.translateTree(deltaX, deltaY);
+    this.setState({
+      nodeDescendantsArray: nodeDescendantsArray,
+      links: links,
+      minSvgHeight: minSvgHeight,
+      minSvgWidth: minSvgWidth,
+      treed3: treed3,
+      clickedNode: node
+    });
+  };
 
   computeTree = () => {
     let root = this.props.treeData;
@@ -206,13 +312,14 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      nodes,
+      nodeDescendantsArray,
       offsetX,
-      totalNbSamples
-    } = computeSvgSizeFromData(root);
+      totalNbSamples,
+      treed3
+    } = computeSvgSizeFromData(root, this.props.collapsedDepth);
 
     // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(nodes, (d) => {
+    _.forEach(nodeDescendantsArray, (d) => {
       d.x = d.x + offsetX;
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
@@ -221,8 +328,9 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      nodes,
+      nodeDescendantsArray,
       selectedNodeId,
+      treed3,
       totalNbSamples
     };
   };
@@ -235,6 +343,28 @@ class Tree extends React.Component {
     if (this.props.updatePositionAndZoom) {
       this.props.updatePositionAndZoom(this.state.newPos, this.state.scale);
     }
+  };
+
+  translateTree = (deltaX, deltaY) => {
+    const treeBbox = boxFromRect(
+      d3Select('div.translated-tree')
+        .node()
+        .getBoundingClientRect()
+    );
+
+    const treeZoomedBbox = boxFromRect(
+      d3Select('div.zoomed-tree')
+        .node()
+        .getBoundingClientRect()
+    );
+
+    d3Select('div.zoomed-tree')
+      .call(
+        this.zoom.transform,
+        zoomIdentity.translate(treeBbox.origin.x - deltaX * this.state.scale - treeZoomedBbox.origin.x,
+          treeBbox.origin.y - deltaY * this.state.scale - treeZoomedBbox.origin.y)
+          .scale(this.state.scale)
+      );
   };
 
   doFitToScreen = () => {
@@ -304,14 +434,14 @@ class Tree extends React.Component {
 
       // making the root node an exception
       if (this.props.selectedNode === '0') {
-        this.setState({ selectedEdgePath: this.state.nodes[0].treeNodeIdPath });
+        this.setState({ selectedEdgePath: this.state.nodeDescendantsArray[0].treeNodeIdPath });
       }
       else {
         const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
         // remove the first element of the path because it is the root path;
         const selectedPath = findSelectedNodeRecursion(
           _.tail(pathArray),
-          this.state.nodes[0]
+          this.state.nodeDescendantsArray[0]
         );
         this.setState({ selectedEdgePath: selectedPath });
       }
@@ -327,7 +457,8 @@ class Tree extends React.Component {
       links,
       minSvgHeight,
       minSvgWidth,
-      nodes,
+      nodeDescendantsArray,
+      clickedNode,
       totalNbSamples
     } = this.state;
     return (
@@ -357,21 +488,23 @@ class Tree extends React.Component {
             selectable={ !panActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
-            nodes={ nodes }
+            nodes={ nodeDescendantsArray }
             links={ links }
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
+            onClickNode={ this.onClickNode }
           />
           <Edges
             version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
             treeData={ this.props.treeData }
-            nodes={ nodes }
+            nodes={ nodeDescendantsArray }
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight }
             totalNbSamples={ totalNbSamples }
             edgeType={ this.props.edgeType }
+            clickedNode={ clickedNode }
           />
         </div>
       </TreeCanvas>
@@ -390,7 +523,8 @@ Tree.propTypes = {
   updatePositionAndZoom: PropTypes.func,
   updateSelectedNode: PropTypes.func.isRequired,
   edgeType: PropTypes.string,
-  selectedNode: PropTypes.string
+  selectedNode: PropTypes.string,
+  collapsedDepth: PropTypes.number
 };
 
 export default Tree;

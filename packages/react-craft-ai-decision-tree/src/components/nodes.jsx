@@ -9,10 +9,14 @@ import ToolTip from 'react-craft-ai-tooltip';
 import {
   NODE_DEPTH,
   NODE_HEIGHT,
+  NODE_PADDING,
   NODE_WIDTH,
   SELECTED_BORDER_WIDTH,
   SELECTED_COLOR_EDGES
 } from '../utils/constants';
+
+const BUTTON_RADIUS = 21;
+const BUTTON_BORDER = 2;
 
 const Links = styled('div')`
   overflow: hidden;
@@ -23,17 +27,78 @@ const Links = styled('div')`
   pointer-events: auto;
 `;
 
+const Button = styled('button')`
+  position: fixed;
+  height: ${BUTTON_RADIUS}px;
+  width: ${BUTTON_RADIUS}px;
+  border: ${BUTTON_BORDER}px solid white;
+  border-radius: 50%;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 3px gray;
+  float: left;
+  font-size: 12px;
+  visibility: hidden;
+  font-weight: bold;
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  padding: 0px;
+  transition: background-color 0.1s;
+  cursor: pointer;
+  &:hover {
+    background: #ffcc00;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    background: ${SELECTED_COLOR_EDGES};
+  }
+`;
+
+const NodeButton = ({ node, refButton, setSelectedNode, isVisible }) => {
+  if (!_.isUndefined(node.data.children)) {
+    const text = _.isNull(node.children) ? '+' : '-';
+    return (
+      <Button
+        ref={ refButton }
+        style={{
+          top: node.y + NODE_HEIGHT - BUTTON_RADIUS / 2,
+          left: node.x,
+          visibility: isVisible ? 'visible' : 'hidden'
+        }}
+        onClick={ setSelectedNode }
+      >
+        { text }
+      </Button>
+    );
+  }
+  return null;
+};
+
+NodeButton.propTypes = {
+  node: PropTypes.object.isRequired,
+  refButton: PropTypes.func.isRequired,
+  setSelectedNode: PropTypes.func.isRequired,
+  isVisible: PropTypes.bool.isRequired
+};
+
 class Nodes extends React.Component {
   linkRef = {};
 
   nodeRef = {};
+
+  buttonRef = {};
 
   state = {
     showingTooltip: false,
     tooltipOnPovover: false,
     tooltipText: '',
     tooltipRef: null,
-    tooltipPlacement: 'bottom'
+    tooltipPlacement: 'bottom',
+    selectedNodeId: undefined,
+    showingNodeButtonId: undefined
   };
 
   hideTooltip = () => {
@@ -50,24 +115,10 @@ class Nodes extends React.Component {
       this.props.configuration != nextProps.configuration ||
       _.isEqual(this.props.nodes, nextProps.nodes) ||
       _.isEqual(this.props.links, nextProps.links) ||
+      _.isEqual(this.state.nodes, nextState.nodes) ||
       this.props.height != nextProps.height;
-
     return doUpdate;
   }
-
-  showNodeTooltip = (index, text) => (input) => {
-    if (this.props.selectable) {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.nodeRef[index]
-      });
-    }
-  };
-
-  indexNodeRef = (index) => (input) => {
-    this.nodeRef[index] = input;
-  };
 
   displayNode = (node, index) => {
     const setSelectedNode = () => {
@@ -76,15 +127,31 @@ class Nodes extends React.Component {
       }
     };
 
+    const onClickExpand = () => {
+      if (!_.isNull(node.children)) {
+        node.hidden_children = node.children;
+        node.children = null;
+      }
+      else {
+        node.children = node.hidden_children;
+        node.hidden_children = null;
+      }
+      this.props.onClickNode(node);
+    };
+
     const indexRef = (input) => {
       this.nodeRef[index] = input;
+    };
+
+    const nodeButtonRef = (input) => {
+      this.buttonRef[index] = input;
     };
 
     let text;
     let color;
 
     if (this.props.version == 1) {
-      if (_.isUndefined(node.children)) {
+      if (!_.isUndefined(node.data.predicted_value)) {
         // leaf
         color = computeLeafColor(node.data.confidence);
         text = _.isNull(node.data.predicted_value)
@@ -96,7 +163,7 @@ class Nodes extends React.Component {
       }
       else {
         // node
-        text = node.children[0].data.decision_rule.property;
+        text = node.data.children[0].decision_rule.property;
       }
     }
     else {
@@ -120,36 +187,56 @@ class Nodes extends React.Component {
       this.setState({
         showingTooltip: true,
         tooltipText: text,
-        tooltipRef: this.nodeRef[index]
+        tooltipRef: !_.isUndefined(node.data.children) ? this.buttonRef[index] : this.nodeRef[index]
       });
     };
 
+    const showNodeButton = () => {
+      this.setState({ showingNodeButtonId: index });
+      showTooltip();
+    };
+
+    const hideNodeButton = () => {
+      this.setState({ showingNodeButtonId: undefined });
+      this.hideTooltip();
+    };
+
     return (
-      <Node
+      <div
         key={ index }
-        ref={ indexRef }
-        onMouseOver={ showTooltip }
-        onMouseOut={ this.hideTooltip }
-        onClick={ setSelectedNode }
-        className='craft-nodes '
+        onMouseOver={ showNodeButton }
+        onMouseOut={ hideNodeButton }
         style={{
-          border:
+          display: 'inline-block',
+          padding: `${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px`,
+          position: 'absolute',
+          top:
+            node.y - NODE_HEIGHT / 3 - NODE_PADDING,
+          left:
+            node.x - NODE_WIDTH / 2 - NODE_PADDING
+        }}>
+        <Node
+          ref={ indexRef }
+          onClick={ setSelectedNode }
+          className='craft-nodes'
+          style={{
+            border:
             this.props.selectedNode === node.treePath
               ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
               : '',
-          top:
-            node.y -
-            NODE_HEIGHT / 3 -
-            (this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-          left:
-            node.x -
-            NODE_WIDTH / 2 -
-            (this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-          backgroundColor: color
-        }}
-      >
-        {text}
-      </Node>
+            top: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
+            left: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
+            backgroundColor: color
+          }}>
+          {text}
+        </Node>
+        <NodeButton
+          refButton={ nodeButtonRef }
+          node={ node }
+          setSelectedNode={ onClickExpand }
+          isVisible={ index === this.state.showingNodeButtonId }
+        />
+      </div>
     );
   };
 
@@ -222,8 +309,7 @@ class Nodes extends React.Component {
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
           left: x,
           width: width
-        }}
-      >
+        }}>
         {text}
       </Links>
     );
@@ -241,12 +327,13 @@ class Nodes extends React.Component {
         {_.map(this.props.nodes, this.displayNode)}
         {_.map(this.props.links, this.displayLinksText)}
         <ToolTip
-          style={{ pointerEvents: 'none' }} // disable click on tooltip
+          style={{
+            pointerEvents: 'none'
+          }} // disable click on tooltip
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
-          onPlacementUpdated={ this.updateTooltipPlacement }
-        >
+          onPlacementUpdated={ this.updateTooltipPlacement }>
           {this.state.tooltipText}
         </ToolTip>
       </div>
@@ -262,7 +349,8 @@ Nodes.propTypes = {
   links: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
   version: PropTypes.number.isRequired,
-  selectedNode: PropTypes.string
+  selectedNode: PropTypes.string,
+  onClickNode: PropTypes.func.isRequired
 };
 
 export default Nodes;

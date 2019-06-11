@@ -14,6 +14,7 @@ export const NODE_WIDTH_MARGIN = 20; // margin between two nodes - needed by the
 export const NODE_WIDTH = 100;
 export const NODE_HEIGHT = 30;
 export const NODE_DEPTH = 100;
+export const NODE_PADDING = 15;
 
 // Color of the nodes and edges
 export const SELECTED_COLOR_EDGES = '#FF7F00';
@@ -24,6 +25,7 @@ export const SELECTED_BORDER_WIDTH = 5;
 // Color of the leaves
 export const COLOR_LEAVES_CONFIDENCE_0 = '#FEF3C2';
 export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';
+export const COLOR_LEAVES_CONFIDENCE_UNDEFINED = '#ddd';
 
 // Node path
 export const NODE_PATH_SEPARATOR = '-';
