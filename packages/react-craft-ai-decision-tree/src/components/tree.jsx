@@ -279,6 +279,11 @@ class Tree extends React.Component {
       d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
     });
 
+    // Unselect the previously selected node if a parent is collapsed
+    if (this.props.selectedNode.startsWith(node.treePath) && this.props.selectedNode !== node.treePath) {
+      this.props.updateSelectedNode('');
+    }
+
     // Get clicked node new position
     const currentClickedNodePosX = node.x;
     const currentClickedNodePosY = node.y;
