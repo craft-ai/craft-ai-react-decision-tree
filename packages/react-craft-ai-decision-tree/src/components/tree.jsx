@@ -346,9 +346,14 @@ class Tree extends React.Component {
   };
 
   translateTree = (deltaX, deltaY) => {
-    const selection = d3Select('div.translated-tree');
     const treeBbox = boxFromRect(
-      selection
+      d3Select('div.translated-tree')
+        .node()
+        .getBoundingClientRect()
+    );
+
+    const treeZoomedBbox = boxFromRect(
+      d3Select('div.zoomed-tree')
         .node()
         .getBoundingClientRect()
     );
@@ -356,8 +361,8 @@ class Tree extends React.Component {
     d3Select('div.zoomed-tree')
       .call(
         this.zoom.transform,
-        zoomIdentity.translate(treeBbox.origin.x - deltaX * this.state.scale - 1,
-          treeBbox.origin.y - deltaY * this.state.scale - 1)
+        zoomIdentity.translate(treeBbox.origin.x - deltaX * this.state.scale - treeZoomedBbox.origin.x,
+          treeBbox.origin.y - deltaY * this.state.scale - treeZoomedBbox.origin.y)
           .scale(this.state.scale)
       );
   };
