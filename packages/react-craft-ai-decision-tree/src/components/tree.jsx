@@ -35,135 +35,108 @@ const TreeCanvas = styled('div')`
   position: absolute;
 `;
 
-const computeTreeLayout = d3Tree()
+function computeHierarchy(rootDtNode, collapsedDepth) {
+  const hierarchy = d3Hierarchy(rootDtNode, (treeNode) => treeNode.children);
+  let index = 0;
+  hierarchy.each((hNode) => {
+    // Unique idbased on index
+    hNode.id = index;
+    index += 1;
+
+    // Deal with decision rules
+    if (hNode.parent) {
+      hNode.treeNodeIdPath = _.clone(hNode.parent.treeNodeIdPath);
+      hNode.treeNodeIdPath.push(hNode.id);
+      const indexForParent = hNode.parent.children.findIndex(
+        (child) => child === hNode
+      );
+      hNode.treePath = `${
+        hNode.parent.treePath
+      }${NODE_PATH_SEPARATOR}${indexForParent}`;
+      hNode.decisionRules = _.isEmpty(hNode.parent.decisionRules)
+        ? {}
+        : _.cloneDeep(hNode.parent.decisionRules);
+      // adding decision rules of the node
+      if (hNode.decisionRules[hNode.data.decision_rule.property]) {
+        hNode.decisionRules[hNode.data.decision_rule.property].push({
+          operator: hNode.data.decision_rule.operator,
+          operand: hNode.data.decision_rule.operand
+        });
+      }
+      else {
+        hNode.decisionRules[hNode.data.decision_rule.property] = [
+          {
+            operator: hNode.data.decision_rule.operator,
+            operand: hNode.data.decision_rule.operand
+          }
+        ];
+      }
+    }
+    else {
+      // root node
+      hNode.treeNodeIdPath = [hNode.id];
+      hNode.treePath = '0';
+    }
+
+    // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
+    if (collapsedDepth != null) {
+      if (hNode.depth >= collapsedDepth) {
+        hNode.hidden_children = hNode.children;
+        hNode.children = null;
+      }
+    }
+  });
+  return hierarchy;
+}
+
+const d3ComputeHierarchyLayout = d3Tree()
   .nodeSize([
     NODE_WIDTH + NODE_WIDTH_MARGIN,
     NODE_HEIGHT
   ]);
 
-function adjustTreePosition(tree) {
-  let maxTreeDepth = 0;
-  let dxMin;
-  let dxMax;
+function computeHierarchyLayout(hierarchy) {
+  d3ComputeHierarchyLayout(hierarchy);
 
-  const adjustPositions = (node) => {
-    if (node.depth > maxTreeDepth) {
-      maxTreeDepth = node.depth;
-    }
+  let treeDepth = 0;
+  let dxMin = Number.MAX_SAFE_INTEGER;
+  let dxMax = Number.MIN_SAFE_INTEGER;
+
+  // Find out the boundaries of the hierarchy
+  hierarchy.each((hNode) => {
+    treeDepth = Math.max(treeDepth, hNode.depth);
+
     // Normalize for fixed-depth.
-    node.y = node.depth * NODE_DEPTH;
+    hNode.y = hNode.depth * NODE_DEPTH;
 
-    if (_.isUndefined(dxMin) || node.x < dxMin) {
-      dxMin = node.x;
-    }
-    if (_.isUndefined(dxMax) || node.x > dxMax) {
-      dxMax = node.x;
-    }
+    dxMin = Math.min(hNode.x, dxMin);
+    dxMax = Math.max(hNode.x, dxMax);
+  });
 
-    if (node.children) {
-      node.children.forEach(adjustPositions);
-    }
-    return node;
-  };
-
-  tree = adjustPositions(tree);
-  const minSvgHeight = (maxTreeDepth + 1) * NODE_DEPTH;
+  const minSvgHeight = (treeDepth + 1) * NODE_DEPTH;
   const minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+  const offsetX = Math.abs(dxMin) + NODE_WIDTH / 2;
+
+  // place correctly the tree in the svg with the minSvgWidth
+  hierarchy.each((hNode) => {
+    hNode.x = hNode.x + offsetX;
+    hNode.y = hNode.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
+  });
 
   return {
-    minSvgWidth: minSvgWidth,
-    minSvgHeight: minSvgHeight,
-    offsetX: Math.abs(dxMin) + NODE_WIDTH / 2
+    minSvgWidth,
+    minSvgHeight
   };
 }
 
-function updateTree(hierarchy) {
-  computeTreeLayout(hierarchy);
-
-  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(hierarchy);
-  const nodeDescendantsArray = hierarchy.descendants();
+function computeTree(rootDtNode = {}, collapsedDepth) {
+  const hierarchy = computeHierarchy(rootDtNode, collapsedDepth);
+  const { minSvgWidth, minSvgHeight } = computeHierarchyLayout(hierarchy);
 
   return {
-    minSvgWidth: minSvgWidth,
-    minSvgHeight: minSvgHeight,
-    nodeDescendantsArray: nodeDescendantsArray,
-    links: hierarchy.links(),
-    hierarchy: hierarchy,
-    offsetX: offsetX
-  };
-}
-
-function collapseNodesFromDepth(hNodes, collapsedDepth) {
-  const collapse = (hNode) => {
-    if (hNode.depth >= collapsedDepth) {
-      hNode.hidden_children = hNode.children;
-      hNode.children = null;
-    }
-  };
-  hNodes.map(collapse);
-}
-
-function computeSvgSizeFromData(rootDtNode, collapsedDepth) {
-  let incr = 0;
-  const hierarchy = d3Hierarchy(
-    rootDtNode,
-    (treeNode) => treeNode.children
-  )
-    .each((hNode) => {
-      hNode.id = incr++;
-      // Deal with decision rules
-      if (hNode.parent) {
-        hNode.treeNodeIdPath = _.clone(hNode.parent.treeNodeIdPath);
-        hNode.treeNodeIdPath.push(hNode.id);
-        const indexForParent = hNode.parent.children.findIndex(
-          (child) => child === hNode
-        );
-        hNode.treePath = `${
-          hNode.parent.treePath
-        }${NODE_PATH_SEPARATOR}${indexForParent}`;
-        hNode.decisionRules = _.isEmpty(hNode.parent.decisionRules)
-          ? {}
-          : _.cloneDeep(hNode.parent.decisionRules);
-        // adding decision rules of the node
-        if (hNode.decisionRules[hNode.data.decision_rule.property]) {
-          hNode.decisionRules[hNode.data.decision_rule.property].push({
-            operator: hNode.data.decision_rule.operator,
-            operand: hNode.data.decision_rule.operand
-          });
-        }
-        else {
-          hNode.decisionRules[hNode.data.decision_rule.property] = [
-            {
-              operator: hNode.data.decision_rule.operator,
-              operand: hNode.data.decision_rule.operand
-            }
-          ];
-        }
-      }
-      else {
-      // root node
-        hNode.treeNodeIdPath = [hNode.id];
-        hNode.treePath = '0';
-      }
-    });
-
-  // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
-  if (!_.isUndefined(collapsedDepth)) {
-    collapseNodesFromDepth(hierarchy.descendants(), collapsedDepth);
-  }
-
-  computeTreeLayout(hierarchy);
-
-  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(hierarchy);
-  const nodeDescendantsArray = hierarchy.descendants();
-
-  return {
-    minSvgWidth: minSvgWidth,
-    minSvgHeight: minSvgHeight,
-    nodeDescendantsArray: nodeDescendantsArray,
-    links: hierarchy.links(),
-    hierarchy: hierarchy,
-    offsetX: offsetX
+    minSvgHeight,
+    minSvgWidth,
+    hierarchy
   };
 }
 
@@ -171,25 +144,20 @@ class Tree extends React.Component {
   constructor(props) {
     super(props);
 
-    const {
-      links,
-      nodeDescendantsArray,
-      minSvgHeight,
-      minSvgWidth,
-      hierarchy
-    } = this.computeTree(props.dt, props.collapsedDepth);
+    const { minSvgHeight, minSvgWidth, hierarchy } = computeTree(
+      props.dt,
+      props.collapsedDepth
+    );
 
     this.state = {
       newPos: this.props.position,
       scale: this.props.scale === -1 ? 1 : this.props.scale,
       isPanActivated: false,
       selectedEdgePath: [],
-      links,
-      nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
       edgeType: this.props.edgeType,
-      hierarchy: hierarchy
+      hierarchy
     };
   }
 
@@ -234,9 +202,8 @@ class Tree extends React.Component {
       prevProps.dt !== this.props.dt ||
       !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)
     ) {
-      this.setState(
-        this.computeTree(this.props.dt, this.props.collapsedDepth),
-        () => this.doFitToScreen()
+      this.setState(computeTree(this.props.dt, this.props.collapsedDepth), () =>
+        this.doFitToScreen()
       );
     }
     if (prevProps.selectedNode !== this.props.selectedNode) {
@@ -248,10 +215,6 @@ class Tree extends React.Component {
     return (
       !_.isEqual(nextProps, this.props) ||
       !_.isEqual(this.state.newPos, nextState.newPos) ||
-      !_.isEqual(
-        this.state.nodeDescendantsArray,
-        nextState.nodeDescendantsArray
-      ) ||
       !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath)
     );
   }
@@ -260,20 +223,9 @@ class Tree extends React.Component {
     // Get clicked node position
     const previousClickedNodePosX = node.x;
     const previousClickedNodePosY = node.y;
-    const {
-      links,
-      minSvgHeight,
-      minSvgWidth,
-      nodeDescendantsArray,
-      offsetX,
-      hierarchy
-    } = updateTree(this.state.hierarchy);
-
-    // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(nodeDescendantsArray, (d) => {
-      d.x = d.x + offsetX;
-      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
-    });
+    const { minSvgHeight, minSvgWidth } = computeHierarchyLayout(
+      this.state.hierarchy
+    );
 
     // Unselect the previously selected node if a parent is collapsed
     if (
@@ -292,40 +244,11 @@ class Tree extends React.Component {
 
     this.translateTree(deltaX, deltaY);
     this.setState({
-      nodeDescendantsArray: nodeDescendantsArray,
-      links: links,
       minSvgHeight: minSvgHeight,
       minSvgWidth: minSvgWidth,
-      hierarchy: hierarchy,
+      hierarchy: this.state.hierarchy,
       clickedNode: node
     });
-  };
-
-  computeTree = (dtRootNode = {}, collapsedDepth) => {
-    const {
-      selectedNodeId,
-      links,
-      minSvgHeight,
-      minSvgWidth,
-      nodeDescendantsArray,
-      offsetX,
-      hierarchy
-    } = computeSvgSizeFromData(dtRootNode, collapsedDepth);
-
-    // place correctly the tree in the svg with the minSvgWidth
-    _.forEach(nodeDescendantsArray, (d) => {
-      d.x = d.x + offsetX;
-      d.y = d.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
-    });
-
-    return {
-      links,
-      minSvgHeight,
-      minSvgWidth,
-      nodeDescendantsArray,
-      selectedNodeId,
-      hierarchy
-    };
   };
 
   mouseWheel = () => {
@@ -435,7 +358,7 @@ class Tree extends React.Component {
       // making the root node an exception
       if (this.props.selectedNode === '0') {
         this.setState({
-          selectedEdgePath: this.state.nodeDescendantsArray[0].treeNodeIdPath
+          selectedEdgePath: this.state.hierarchy.treeNodeIdPath
         });
       }
       else {
@@ -443,7 +366,7 @@ class Tree extends React.Component {
         // remove the first element of the path because it is the root path;
         const selectedPath = findSelectedNodeRecursion(
           _.tail(pathArray),
-          this.state.nodeDescendantsArray[0]
+          this.state.hierarchy
         );
         this.setState({ selectedEdgePath: selectedPath });
       }
@@ -454,13 +377,11 @@ class Tree extends React.Component {
   };
 
   render() {
-    const panActivated = this.state.isPanActivated;
     const {
+      isPanActivated,
       hierarchy,
-      links,
       minSvgHeight,
       minSvgWidth,
-      nodeDescendantsArray,
       clickedNode
     } = this.state;
     return (
@@ -487,11 +408,11 @@ class Tree extends React.Component {
         >
           <Nodes
             version={ this.props.version }
-            selectable={ !panActivated }
+            selectable={ !isPanActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
-            nodes={ nodeDescendantsArray }
-            links={ links }
+            nodes={ hierarchy.descendants() }
+            links={ hierarchy.links() }
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
             onClickNode={ this.onClickNode }
