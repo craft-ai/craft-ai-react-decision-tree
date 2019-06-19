@@ -456,6 +456,7 @@ class Tree extends React.Component {
   render() {
     const panActivated = this.state.isPanActivated;
     const {
+      hierarchy,
       links,
       minSvgHeight,
       minSvgWidth,
@@ -496,14 +497,14 @@ class Tree extends React.Component {
             onClickNode={ this.onClickNode }
           />
           <Edges
-            version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
             dt={ this.props.dt }
-            nodes={ nodeDescendantsArray }
-            links={ links }
+            hierarchy={ hierarchy }
             width={ minSvgWidth }
             height={ minSvgHeight }
-            edgeType={ this.props.edgeType }
+            edgeType={
+              this.props.version == 1 ? 'constant' : this.props.edgeType
+            }
             clickedNode={ clickedNode }
           />
         </div>
