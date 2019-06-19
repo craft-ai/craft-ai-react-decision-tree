@@ -9,6 +9,7 @@ setOptions({
 
 function loadStories() {
   require('../stories/decisionTree.js');
+  require('../stories/zoomableCanvas.js');
 }
 
 configure(loadStories, module);
