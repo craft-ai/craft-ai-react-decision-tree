@@ -4,7 +4,11 @@ import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
-import { applyMarginToBox, boxFromRect, computeFitTransformation } from '../utils/box';
+import {
+  applyMarginToBox,
+  boxFromRect,
+  computeFitTransformation
+} from '../utils/box';
 import {
   event as d3Event,
   hierarchy as d3Hierarchy,
@@ -30,6 +34,12 @@ const TreeCanvas = styled('div')`
   background-color: white;
   position: absolute;
 `;
+
+const computeTreeLayout = d3Tree()
+  .nodeSize([
+    NODE_WIDTH + NODE_WIDTH_MARGIN,
+    NODE_HEIGHT
+  ]);
 
 function adjustTreePosition(tree) {
   let maxTreeDepth = 0;
@@ -67,114 +77,92 @@ function adjustTreePosition(tree) {
   };
 }
 
-function updateTree(nodes) {
-  const tree = d3Tree()
-    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
+function updateTree(hierarchy) {
+  computeTreeLayout(hierarchy);
 
-  tree(nodes);
-
-  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(nodes);
-  const nodeDescendantsArray = nodes.descendants();
+  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(hierarchy);
+  const nodeDescendantsArray = hierarchy.descendants();
 
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
     nodeDescendantsArray: nodeDescendantsArray,
-    links: nodes.links(),
-    treed3: nodes,
-    totalNbSamples: nodeDescendantsArray[0].nbSamples,
+    links: hierarchy.links(),
+    hierarchy: hierarchy,
     offsetX: offsetX
   };
 }
 
-function collapseNodesFromDepth(nodesList, collapsedDepth) {
-  const collapse = (node) => {
-    if (node.depth >= collapsedDepth) {
-      node.hidden_children = node.children;
-      node.children = null;
+function collapseNodesFromDepth(hNodes, collapsedDepth) {
+  const collapse = (hNode) => {
+    if (hNode.depth >= collapsedDepth) {
+      hNode.hidden_children = hNode.children;
+      hNode.children = null;
     }
   };
-  nodesList.map(collapse);
+  hNodes.map(collapse);
 }
 
-function computeSvgSizeFromData(root, collapsedDepth) {
-  const tree = d3Tree()
-    .nodeSize([NODE_WIDTH + NODE_WIDTH_MARGIN, NODE_HEIGHT]);
-  let nodes;
+function computeSvgSizeFromData(rootDtNode, collapsedDepth) {
   let incr = 0;
-
-  nodes = d3Hierarchy(root, (d) => d.children);
-
-  // Add the necessary information into the created d3Hierachy
-  const enrichTreeRecursive = (index, node) => {
-    node.id = incr++;
-    // Deal with decision rules
-    if (node.parent) {
-      node.treeNodeIdPath = _.clone(node.parent.treeNodeIdPath);
-      node.treeNodeIdPath.push(node.id);
-      node.treePath = `${node.parent.treePath}${NODE_PATH_SEPARATOR}${index}`;
-      node.decisionRules = _.isEmpty(node.parent.decisionRules)
-        ? {}
-        : _.cloneDeep(node.parent.decisionRules);
-      // adding decision rules of the node
-      if (node.decisionRules[node.data.decision_rule.property]) {
-        node.decisionRules[node.data.decision_rule.property].push({
-          operator: node.data.decision_rule.operator,
-          operand: node.data.decision_rule.operand
-        });
+  const hierarchy = d3Hierarchy(
+    rootDtNode,
+    (treeNode) => treeNode.children
+  )
+    .each((hNode) => {
+      hNode.id = incr++;
+      // Deal with decision rules
+      if (hNode.parent) {
+        hNode.treeNodeIdPath = _.clone(hNode.parent.treeNodeIdPath);
+        hNode.treeNodeIdPath.push(hNode.id);
+        const indexForParent = hNode.parent.children.findIndex(
+          (child) => child === hNode
+        );
+        hNode.treePath = `${
+          hNode.parent.treePath
+        }${NODE_PATH_SEPARATOR}${indexForParent}`;
+        hNode.decisionRules = _.isEmpty(hNode.parent.decisionRules)
+          ? {}
+          : _.cloneDeep(hNode.parent.decisionRules);
+        // adding decision rules of the node
+        if (hNode.decisionRules[hNode.data.decision_rule.property]) {
+          hNode.decisionRules[hNode.data.decision_rule.property].push({
+            operator: hNode.data.decision_rule.operator,
+            operand: hNode.data.decision_rule.operand
+          });
+        }
+        else {
+          hNode.decisionRules[hNode.data.decision_rule.property] = [
+            {
+              operator: hNode.data.decision_rule.operator,
+              operand: hNode.data.decision_rule.operand
+            }
+          ];
+        }
       }
       else {
-        node.decisionRules[node.data.decision_rule.property] = [
-          {
-            operator: node.data.decision_rule.operator,
-            operand: node.data.decision_rule.operand
-          }
-        ];
-      }
-      if (node.data.prediction) {
-        node.nbSamples = node.data.prediction.nb_samples;
-      }
-      else {
-        node.nbSamples = 0;
-      }
-    }
-    else {
       // root node
-      node.treeNodeIdPath = [node.id];
-      node.treePath = `${index}`;
-    }
-
-    if (node.children) {
-      node.children.forEach((child, childIndex) => {
-        enrichTreeRecursive(childIndex, child);
-      });
-      node.nbSamples = node.children.reduce(
-        (acc, child) => acc + child.nbSamples,
-        0
-      );
-    }
-    return node;
-  };
-
-  nodes = enrichTreeRecursive(0, nodes);
+        hNode.treeNodeIdPath = [hNode.id];
+        hNode.treePath = '0';
+      }
+    });
 
   // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
   if (!_.isUndefined(collapsedDepth)) {
-    collapseNodesFromDepth(nodes.descendants(), collapsedDepth);
+    collapseNodesFromDepth(hierarchy.descendants(), collapsedDepth);
   }
 
-  tree(nodes);
+  computeTreeLayout(hierarchy);
 
-  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(nodes);
-  const nodeDescendantsArray = nodes.descendants();
+  const { minSvgWidth, minSvgHeight, offsetX } = adjustTreePosition(hierarchy);
+  const nodeDescendantsArray = hierarchy.descendants();
 
   return {
     minSvgWidth: minSvgWidth,
     minSvgHeight: minSvgHeight,
     nodeDescendantsArray: nodeDescendantsArray,
-    links: nodes.links(),
-    treed3: nodes,
-    totalNbSamples: nodeDescendantsArray[0].nbSamples,
+    links: hierarchy.links(),
+    hierarchy: hierarchy,
     offsetX: offsetX
   };
 }
@@ -188,9 +176,8 @@ class Tree extends React.Component {
       nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
-      treed3,
-      totalNbSamples
-    } = this.computeTree();
+      hierarchy
+    } = this.computeTree(props.dt, props.collapsedDepth);
 
     this.state = {
       newPos: this.props.position,
@@ -201,9 +188,8 @@ class Tree extends React.Component {
       nodeDescendantsArray,
       minSvgHeight,
       minSvgWidth,
-      totalNbSamples,
       edgeType: this.props.edgeType,
-      treed3: treed3
+      hierarchy: hierarchy
     };
   }
 
@@ -244,9 +230,14 @@ class Tree extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.treeData !== this.props.treeData
-      || !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)) {
-      this.setState(this.computeTree(), () => this.doFitToScreen());
+    if (
+      prevProps.dt !== this.props.dt ||
+      !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)
+    ) {
+      this.setState(
+        this.computeTree(this.props.dt, this.props.collapsedDepth),
+        () => this.doFitToScreen()
+      );
     }
     if (prevProps.selectedNode !== this.props.selectedNode) {
       this.findAndHightlightSelectedNodePath();
@@ -254,10 +245,15 @@ class Tree extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(nextProps, this.props)
-      || !_.isEqual(this.state.newPos, nextState.newPos)
-      || !_.isEqual(this.state.nodeDescendantsArray, nextState.nodeDescendantsArray)
-      || !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath);
+    return (
+      !_.isEqual(nextProps, this.props) ||
+      !_.isEqual(this.state.newPos, nextState.newPos) ||
+      !_.isEqual(
+        this.state.nodeDescendantsArray,
+        nextState.nodeDescendantsArray
+      ) ||
+      !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath)
+    );
   }
 
   onClickNode = (node) => {
@@ -270,8 +266,8 @@ class Tree extends React.Component {
       minSvgWidth,
       nodeDescendantsArray,
       offsetX,
-      treed3
-    } = updateTree(this.state.treed3);
+      hierarchy
+    } = updateTree(this.state.hierarchy);
 
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodeDescendantsArray, (d) => {
@@ -280,7 +276,10 @@ class Tree extends React.Component {
     });
 
     // Unselect the previously selected node if a parent is collapsed
-    if (this.props.selectedNode.startsWith(node.treePath) && this.props.selectedNode !== node.treePath) {
+    if (
+      this.props.selectedNode.startsWith(node.treePath) &&
+      this.props.selectedNode !== node.treePath
+    ) {
       this.props.updateSelectedNode('');
     }
 
@@ -297,16 +296,12 @@ class Tree extends React.Component {
       links: links,
       minSvgHeight: minSvgHeight,
       minSvgWidth: minSvgWidth,
-      treed3: treed3,
+      hierarchy: hierarchy,
       clickedNode: node
     });
   };
 
-  computeTree = () => {
-    let root = this.props.treeData;
-    root.x = 0;
-    root.y = 0;
-
+  computeTree = (dtRootNode = {}, collapsedDepth) => {
     const {
       selectedNodeId,
       links,
@@ -314,9 +309,8 @@ class Tree extends React.Component {
       minSvgWidth,
       nodeDescendantsArray,
       offsetX,
-      totalNbSamples,
-      treed3
-    } = computeSvgSizeFromData(root, this.props.collapsedDepth);
+      hierarchy
+    } = computeSvgSizeFromData(dtRootNode, collapsedDepth);
 
     // place correctly the tree in the svg with the minSvgWidth
     _.forEach(nodeDescendantsArray, (d) => {
@@ -330,8 +324,7 @@ class Tree extends React.Component {
       minSvgWidth,
       nodeDescendantsArray,
       selectedNodeId,
-      treed3,
-      totalNbSamples
+      hierarchy
     };
   };
 
@@ -361,8 +354,15 @@ class Tree extends React.Component {
     d3Select('div.zoomed-tree')
       .call(
         this.zoom.transform,
-        zoomIdentity.translate(treeBbox.origin.x - deltaX * this.state.scale - treeZoomedBbox.origin.x,
-          treeBbox.origin.y - deltaY * this.state.scale - treeZoomedBbox.origin.y)
+        zoomIdentity
+          .translate(
+            treeBbox.origin.x -
+            deltaX * this.state.scale -
+            treeZoomedBbox.origin.x,
+            treeBbox.origin.y -
+            deltaY * this.state.scale -
+            treeZoomedBbox.origin.y
+          )
           .scale(this.state.scale)
       );
   };
@@ -434,7 +434,9 @@ class Tree extends React.Component {
 
       // making the root node an exception
       if (this.props.selectedNode === '0') {
-        this.setState({ selectedEdgePath: this.state.nodeDescendantsArray[0].treeNodeIdPath });
+        this.setState({
+          selectedEdgePath: this.state.nodeDescendantsArray[0].treeNodeIdPath
+        });
       }
       else {
         const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
@@ -458,8 +460,7 @@ class Tree extends React.Component {
       minSvgHeight,
       minSvgWidth,
       nodeDescendantsArray,
-      clickedNode,
-      totalNbSamples
+      clickedNode
     } = this.state;
     return (
       <TreeCanvas
@@ -497,12 +498,11 @@ class Tree extends React.Component {
           <Edges
             version={ this.props.version }
             edgePath={ this.state.selectedEdgePath }
-            treeData={ this.props.treeData }
+            dt={ this.props.dt }
             nodes={ nodeDescendantsArray }
             links={ links }
             width={ minSvgWidth }
             height={ minSvgHeight }
-            totalNbSamples={ totalNbSamples }
             edgeType={ this.props.edgeType }
             clickedNode={ clickedNode }
           />
@@ -514,7 +514,7 @@ class Tree extends React.Component {
 
 Tree.propTypes = {
   version: PropTypes.number.isRequired,
-  treeData: PropTypes.object.isRequired,
+  dt: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,

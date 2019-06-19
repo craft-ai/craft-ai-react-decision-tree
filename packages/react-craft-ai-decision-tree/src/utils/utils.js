@@ -10,7 +10,7 @@ import {
 export function computeLeafColor(confidence) {
   if (confidence) {
     const blend = Math.pow(confidence, 3);
-    return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);  
+    return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
   }
   return COLOR_LEAVES_CONFIDENCE_UNDEFINED;
 }
@@ -58,3 +58,12 @@ function findSelectedNodeRecursion(path, tree, decisionRules) {
     return tree;
   }
 }
+
+export const computeSamplesCount = _.memoize((dtNode) => {
+  const selfCount = (dtNode.prediction && dtNode.prediction.nb_samples) || 0;
+  const children = dtNode.children || [];
+  return children.reduce(
+    (count, child) => count + computeSamplesCount(child),
+    selfCount
+  );
+});
