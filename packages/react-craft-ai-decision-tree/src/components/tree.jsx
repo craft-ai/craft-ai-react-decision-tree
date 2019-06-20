@@ -220,6 +220,15 @@ class Tree extends React.Component {
   }
 
   onClickNode = (node) => {
+    if (!_.isNull(node.children)) {
+      node.hidden_children = node.children;
+      node.children = null;
+    }
+    else {
+      node.children = node.hidden_children;
+      node.hidden_children = null;
+    }
+
     // Get clicked node position
     const previousClickedNodePosX = node.x;
     const previousClickedNodePosY = node.y;
@@ -411,8 +420,7 @@ class Tree extends React.Component {
             selectable={ !isPanActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
-            nodes={ hierarchy.descendants() }
-            links={ hierarchy.links() }
+            hierarchy={ hierarchy }
             updateSelectedNode={ this.props.updateSelectedNode }
             selectedNode={ this.props.selectedNode }
             onClickNode={ this.onClickNode }

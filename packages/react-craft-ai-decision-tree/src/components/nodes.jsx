@@ -1,22 +1,12 @@
+/* eslint-disable react/jsx-no-bind */
 import _ from 'lodash';
-import { computeLeafColor } from '../utils/utils';
 import { interpreter } from 'craft-ai';
 import Node from './node';
 import PropTypes from 'prop-types';
-import React from 'react';
 import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
-import {
-  NODE_DEPTH,
-  NODE_HEIGHT,
-  NODE_PADDING,
-  NODE_WIDTH,
-  SELECTED_BORDER_WIDTH,
-  SELECTED_COLOR_EDGES
-} from '../utils/constants';
-
-const BUTTON_RADIUS = 21;
-const BUTTON_BORDER = 2;
+import { NODE_DEPTH, NODE_HEIGHT } from '../utils/constants';
+import React, { useState } from 'react';
 
 const Links = styled('div')`
   overflow: hidden;
@@ -27,61 +17,17 @@ const Links = styled('div')`
   pointer-events: auto;
 `;
 
-const Button = styled('button')`
-  position: fixed;
-  height: ${BUTTON_RADIUS}px;
-  width: ${BUTTON_RADIUS}px;
-  border: ${BUTTON_BORDER}px solid white;
-  border-radius: 50%;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  box-shadow: 0 0 3px gray;
-  float: left;
-  font-size: 12px;
-  visibility: hidden;
-  font-weight: bold;
-  display: inline-block;
-  transform: translate(-50%, -50%);
-  padding: 0px;
-  transition: background-color 0.1s;
-  cursor: pointer;
-  &:hover {
-    background: #ffcc00;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    background: ${SELECTED_COLOR_EDGES};
-  }
-`;
-
-const NodeButton = ({ node, refButton, setSelectedNode, isVisible }) => {
-  if (!_.isUndefined(node.data.children)) {
-    const text = _.isNull(node.children) ? '+' : '-';
-    return (
-      <Button
-        ref={ refButton }
-        style={{
-          top: node.y + NODE_HEIGHT - BUTTON_RADIUS / 2,
-          left: node.x,
-          visibility: isVisible ? 'visible' : 'hidden'
-        }}
-        onClick={ setSelectedNode }
-      >
-        { text }
-      </Button>
-    );
-  }
-  return null;
+const DT_UTILS_V1 = {
+  isLeaf: (dtNode) => dtNode.predicted_value != null,
+  getPrediction: (dtNode) => ({
+    confidence: dtNode.confidence,
+    value: dtNode.predicted_value
+  })
 };
 
-NodeButton.propTypes = {
-  node: PropTypes.object.isRequired,
-  refButton: PropTypes.func.isRequired,
-  setSelectedNode: PropTypes.func.isRequired,
-  isVisible: PropTypes.bool.isRequired
+const DT_UTILS_V2 = {
+  isLeaf: (dtNode) => dtNode.prediction != null,
+  getPrediction: (dtNode) => dtNode.prediction || {}
 };
 
 class Nodes extends React.Component {
@@ -113,132 +59,11 @@ class Nodes extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const doUpdate =
       this.props.configuration != nextProps.configuration ||
-      _.isEqual(this.props.nodes, nextProps.nodes) ||
-      _.isEqual(this.props.links, nextProps.links) ||
+      _.isEqual(this.props.hierarchy, nextProps.hierarchy) ||
       _.isEqual(this.state.nodes, nextState.nodes) ||
       this.props.height != nextProps.height;
     return doUpdate;
   }
-
-  displayNode = (node, index) => {
-    const setSelectedNode = () => {
-      if (this.props.updateSelectedNode) {
-        this.props.updateSelectedNode(node.treePath);
-      }
-    };
-
-    const onClickExpand = () => {
-      if (!_.isNull(node.children)) {
-        node.hidden_children = node.children;
-        node.children = null;
-      }
-      else {
-        node.children = node.hidden_children;
-        node.hidden_children = null;
-      }
-      this.props.onClickNode(node);
-    };
-
-    const indexRef = (input) => {
-      this.nodeRef[index] = input;
-    };
-
-    const nodeButtonRef = (input) => {
-      this.buttonRef[index] = input;
-    };
-
-    let text;
-    let color;
-
-    if (this.props.version == 1) {
-      if (!_.isUndefined(node.data.predicted_value)) {
-        // leaf
-        color = computeLeafColor(node.data.confidence);
-        text = _.isNull(node.data.predicted_value)
-          ? ''
-          : _.isFinite(node.data.predicted_value)
-            ? parseFloat(node.data.predicted_value.toFixed(3))
-              .toString()
-            : node.data.predicted_value;
-      }
-      else {
-        // node
-        text = node.data.children[0].decision_rule.property;
-      }
-    }
-    else {
-      if (!_.isUndefined(node.data.prediction)) {
-        // leaf
-        color = computeLeafColor(node.data.prediction.confidence);
-        text = _.isNull(node.data.prediction.value)
-          ? ''
-          : _.isFinite(node.data.prediction.value)
-            ? parseFloat(node.data.prediction.value.toFixed(3))
-              .toString()
-            : node.data.prediction.value;
-      }
-      else {
-        // node
-        text = node.data.children[0].decision_rule.property;
-      }
-    }
-
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: !_.isUndefined(node.data.children) ? this.buttonRef[index] : this.nodeRef[index]
-      });
-    };
-
-    const showNodeButton = () => {
-      this.setState({ showingNodeButtonId: index });
-      showTooltip();
-    };
-
-    const hideNodeButton = () => {
-      this.setState({ showingNodeButtonId: undefined });
-      this.hideTooltip();
-    };
-
-    return (
-      <div
-        key={ index }
-        onMouseOver={ showNodeButton }
-        onMouseOut={ hideNodeButton }
-        style={{
-          display: 'inline-block',
-          padding: `${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px`,
-          position: 'absolute',
-          top:
-            node.y - NODE_HEIGHT / 3 - NODE_PADDING,
-          left:
-            node.x - NODE_WIDTH / 2 - NODE_PADDING
-        }}>
-        <Node
-          ref={ indexRef }
-          onClick={ setSelectedNode }
-          className='craft-nodes'
-          style={{
-            border:
-            this.props.selectedNode === node.treePath
-              ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
-              : '',
-            top: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-            left: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-            backgroundColor: color
-          }}>
-          {text}
-        </Node>
-        <NodeButton
-          refButton={ nodeButtonRef }
-          node={ node }
-          setSelectedNode={ onClickExpand }
-          isVisible={ index === this.state.showingNodeButtonId }
-        />
-      </div>
-    );
-  };
 
   indexLinkRef = (index) => (input) => {
     this.linkRef[index] = input;
@@ -309,7 +134,8 @@ class Nodes extends React.Component {
           top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
           left: x,
           width: width
-        }}>
+        }}
+      >
         {text}
       </Links>
     );
@@ -322,10 +148,43 @@ class Nodes extends React.Component {
   };
 
   render() {
+    const dtUtils = this.props.version == 1 ? DT_UTILS_V1 : DT_UTILS_V2;
+
     return (
       <div style={{ position: 'relative' }}>
-        {_.map(this.props.nodes, this.displayNode)}
-        {_.map(this.props.links, this.displayLinksText)}
+        {this.props.hierarchy.descendants()
+          .map((hNode, index) => (
+            <Node
+              key={ index }
+              hNode={ hNode }
+              selected={ hNode.treePath === this.props.selectedNode }
+              onSelectNode={ () => {
+                if (this.props.updateSelectedNode) {
+                  this.props.updateSelectedNode(hNode.treePath);
+                }
+              } }
+              onToggleSubtreeFold={ () => {
+                if (this.props.onClickNode) {
+                  this.props.onClickNode(hNode);
+                }
+              } }
+              onShowTooltip={ (ref, text) =>
+                this.setState({
+                  showingTooltip: true,
+                  tooltipText: text,
+                  tooltipRef: ref
+                })
+              }
+              onHideTooltip={ () =>
+                this.setState({
+                  showingTooltip: false
+                })
+              }
+              dtUtils={ dtUtils }
+            />
+          ))}
+        {this.props.hierarchy.links()
+          .map(this.displayLinksText)}
         <ToolTip
           style={{
             pointerEvents: 'none'
@@ -333,7 +192,8 @@ class Nodes extends React.Component {
           show={ this.state.showingTooltip }
           placement={ this.state.tooltipPlacement }
           target={ this.state.tooltipRef }
-          onPlacementUpdated={ this.updateTooltipPlacement }>
+          onPlacementUpdated={ this.updateTooltipPlacement }
+        >
           {this.state.tooltipText}
         </ToolTip>
       </div>
@@ -345,8 +205,7 @@ Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
   updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
-  nodes: PropTypes.array.isRequired,
-  links: PropTypes.array.isRequired,
+  hierarchy: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
   version: PropTypes.number.isRequired,
   selectedNode: PropTypes.string,
