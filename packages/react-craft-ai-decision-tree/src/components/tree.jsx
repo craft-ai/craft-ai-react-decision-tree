@@ -417,7 +417,7 @@ class Tree extends React.Component {
         >
           <Nodes
             version={ this.props.version }
-            selectable={ !isPanActivated }
+            selectable={ isPanActivated }
             height={ this.props.height }
             configuration={ this.props.configuration }
             hierarchy={ hierarchy }

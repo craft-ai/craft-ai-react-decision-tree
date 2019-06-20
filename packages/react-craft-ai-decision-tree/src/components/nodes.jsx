@@ -1,21 +1,10 @@
 /* eslint-disable react/jsx-no-bind */
 import _ from 'lodash';
-import { interpreter } from 'craft-ai';
+import EdgeLabel from './edgeLabel';
 import Node from './node';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
-import { NODE_DEPTH, NODE_HEIGHT } from '../utils/constants';
 import React, { useState } from 'react';
-
-const Links = styled('div')`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: absolute;
-  text-align: center;
-  font-size: smaller;
-  pointer-events: auto;
-`;
 
 const DT_UTILS_V1 = {
   isLeaf: (dtNode) => dtNode.predicted_value != null,
@@ -31,12 +20,6 @@ const DT_UTILS_V2 = {
 };
 
 class Nodes extends React.Component {
-  linkRef = {};
-
-  nodeRef = {};
-
-  buttonRef = {};
-
   state = {
     showingTooltip: false,
     tooltipOnPovover: false,
@@ -65,82 +48,6 @@ class Nodes extends React.Component {
     return doUpdate;
   }
 
-  indexLinkRef = (index) => (input) => {
-    this.linkRef[index] = input;
-  };
-
-  showLinkTooltip = (index, text) => (input) => {
-    if (this.props.selectable) {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.linkRef[index]
-      });
-    }
-  };
-
-  displayLinksText = (link, index) => {
-    let x;
-    let width = 100;
-    if (link.source.x <= link.target.x) {
-      if (link.source.children.length <= 2) {
-        width = link.target.x - link.source.x;
-        x = link.source.x;
-      }
-      else {
-        x = link.target.x;
-      }
-    }
-    else {
-      if (link.source.children.length <= 2) {
-        x = link.target.x;
-        width = link.source.x - link.target.x;
-      }
-      else {
-        x = link.target.x;
-      }
-    }
-    const propertyType = this.props.configuration.context[
-      link.target.data.decision_rule.property
-    ].type;
-    const text = interpreter.formatDecisionRules([
-      {
-        operand: link.target.data.decision_rule.operand,
-        operator: link.target.data.decision_rule.operator,
-        type: propertyType
-      }
-    ]);
-
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.linkRef[index]
-      });
-    };
-
-    const indexRef = (input) => {
-      this.linkRef[index] = input;
-    };
-
-    return (
-      <Links
-        key={ index }
-        ref={ indexRef }
-        onMouseOver={ showTooltip }
-        onMouseOut={ this.hideTooltip }
-        className='craft-links'
-        style={{
-          top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
-          left: x,
-          width: width
-        }}
-      >
-        {text}
-      </Links>
-    );
-  };
-
   updateTooltipPlacement = (changeTooltipPlacement) => {
     if (changeTooltipPlacement && this.state.tooltipPlacement != 'top') {
       this.setState({ tooltipPlacement: 'top' });
@@ -149,6 +56,21 @@ class Nodes extends React.Component {
 
   render() {
     const dtUtils = this.props.version == 1 ? DT_UTILS_V1 : DT_UTILS_V2;
+
+    const hideTooltip = () =>
+      this.setState({
+        showingTooltip: false
+      });
+
+    const showTooltip = (ref, text) => {
+      if (this.props.selectable) {
+        this.setState({
+          showingTooltip: true,
+          tooltipText: text,
+          tooltipRef: ref
+        });
+      }
+    };
 
     return (
       <div style={{ position: 'relative' }}>
@@ -168,23 +90,21 @@ class Nodes extends React.Component {
                   this.props.onClickNode(hNode);
                 }
               } }
-              onShowTooltip={ (ref, text) =>
-                this.setState({
-                  showingTooltip: true,
-                  tooltipText: text,
-                  tooltipRef: ref
-                })
-              }
-              onHideTooltip={ () =>
-                this.setState({
-                  showingTooltip: false
-                })
-              }
+              onShowTooltip={ showTooltip }
+              onHideTooltip={ hideTooltip }
               dtUtils={ dtUtils }
             />
           ))}
         {this.props.hierarchy.links()
-          .map(this.displayLinksText)}
+          .map((hLink, index) => (
+            <EdgeLabel
+              key={ index }
+              hLink={ hLink }
+              configuration={ this.props.configuration }
+              onShowTooltip={ showTooltip }
+              onHideTooltip={ hideTooltip }
+            />
+          ))}
         <ToolTip
           style={{
             pointerEvents: 'none'
