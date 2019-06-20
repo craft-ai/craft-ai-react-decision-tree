@@ -3,22 +3,9 @@ import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from '@emotion/styled';
+import ZoomableCanvas from './ZoomableCanvas';
+import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3';
 import {
-  applyMarginToBox,
-  boxFromRect,
-  computeFitTransformation
-} from '../utils/box';
-import {
-  event as d3Event,
-  hierarchy as d3Hierarchy,
-  select as d3Select,
-  tree as d3Tree,
-  zoom as d3Zoom,
-  zoomIdentity
-} from 'd3';
-import {
-  MARGIN,
   NODE_DEPTH,
   NODE_HEIGHT,
   NODE_PATH_REGEXP,
@@ -27,13 +14,6 @@ import {
   NODE_WIDTH_MARGIN,
   ZOOM_EXTENT
 } from '../utils/constants';
-
-const TreeCanvas = styled('div')`
-  min-width: 400px;
-  overflow: hidden;
-  background-color: white;
-  position: absolute;
-`;
 
 function computeHierarchy(rootDtNode, collapsedDepth) {
   const hierarchy = d3Hierarchy(rootDtNode, (treeNode) => treeNode.children);
@@ -150,8 +130,11 @@ class Tree extends React.Component {
     );
 
     this.state = {
-      newPos: this.props.position,
-      scale: this.props.scale === -1 ? 1 : this.props.scale,
+      initialZoom: this.props.scale > 0 && {
+        x: this.props.position[0],
+        y: this.props.position[1],
+        k: this.props.scale
+      },
       isPanActivated: false,
       selectedEdgePath: [],
       minSvgHeight,
@@ -159,42 +142,16 @@ class Tree extends React.Component {
       edgeType: this.props.edgeType,
       hierarchy
     };
-  }
 
-  zoom = d3Zoom();
+    this.zoom = this.state.initialZoom;
+  }
 
   translatedTreeRef = null;
 
   componentDidMount() {
-    const selection = d3Select('div.zoomed-tree');
-    selection
-      .call(
-        this.zoom
-          .scaleExtent(ZOOM_EXTENT)
-          .on('zoom', this.mouseWheel)
-          .on('start', this.onPanningActivated)
-          .on('end', this.onPanningDeactivated)
-      )
-      .on('dblclick.zoom', null);
-    if (this.props.scale === -1) {
-      this.resetPosition();
-    }
-    else {
-      const selection = d3Select('div.zoomed-tree');
-      selection.call(
-        this.zoom.transform,
-        zoomIdentity
-          .translate(this.state.newPos[0], this.state.newPos[1])
-          .scale(this.state.scale)
-      );
-    }
     if (this.props.selectedNode) {
       this.findAndHightlightSelectedNodePath();
     }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.fitToScreenTimeout);
   }
 
   componentDidUpdate(prevProps) {
@@ -214,7 +171,9 @@ class Tree extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       !_.isEqual(nextProps, this.props) ||
-      !_.isEqual(this.state.newPos, nextState.newPos) ||
+      !_.isEqual(this.state.initialZoom, nextState.initialZoom) ||
+      !_.isEqual(this.state.minSvgHeight, nextState.minSvgHeight) ||
+      !_.isEqual(this.state.minSvgWidth, nextState.minSvgWidth) ||
       !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath)
     );
   }
@@ -244,102 +203,29 @@ class Tree extends React.Component {
       this.props.updateSelectedNode('');
     }
 
-    // Get clicked node new position
-    const currentClickedNodePosX = node.x;
-    const currentClickedNodePosY = node.y;
-
-    const deltaX = currentClickedNodePosX - previousClickedNodePosX;
-    const deltaY = currentClickedNodePosY - previousClickedNodePosY;
-
-    this.translateTree(deltaX, deltaY);
+    // this.translateTree(deltaX, deltaY);
     this.setState({
       minSvgHeight: minSvgHeight,
       minSvgWidth: minSvgWidth,
+      initialZoom: {
+        // This should compensate for the folding
+        x: this.zoom.x - (node.x - previousClickedNodePosX) * this.zoom.k,
+        y: this.zoom.y - (node.y - previousClickedNodePosY) * this.zoom.k,
+        k: this.zoom.k
+      },
       hierarchy: this.state.hierarchy,
       clickedNode: node
     });
   };
 
-  mouseWheel = () => {
-    this.setState({
-      scale: d3Event.transform.k,
-      newPos: [d3Event.transform.x, d3Event.transform.y]
-    });
+  onZooming = (isZooming) => {
+    this.setState({ isPanActivated: isZooming });
+  };
+
+  handleZoomChange = (zoom) => {
+    this.zoom = zoom;
     if (this.props.updatePositionAndZoom) {
-      this.props.updatePositionAndZoom(this.state.newPos, this.state.scale);
-    }
-  };
-
-  translateTree = (deltaX, deltaY) => {
-    const treeBbox = boxFromRect(
-      d3Select('div.translated-tree')
-        .node()
-        .getBoundingClientRect()
-    );
-
-    const treeZoomedBbox = boxFromRect(
-      d3Select('div.zoomed-tree')
-        .node()
-        .getBoundingClientRect()
-    );
-
-    d3Select('div.zoomed-tree')
-      .call(
-        this.zoom.transform,
-        zoomIdentity
-          .translate(
-            treeBbox.origin.x -
-            deltaX * this.state.scale -
-            treeZoomedBbox.origin.x,
-            treeBbox.origin.y -
-            deltaY * this.state.scale -
-            treeZoomedBbox.origin.y
-          )
-          .scale(this.state.scale)
-      );
-  };
-
-  doFitToScreen = () => {
-    const canvasBbox = boxFromRect(
-      d3Select('div.zoomed-tree')
-        .node()
-        .getBoundingClientRect()
-    );
-    const marginedCanvasBbox = applyMarginToBox(canvasBbox, MARGIN);
-    const treeBbox = boxFromRect(
-      d3Select('div.translated-tree')
-        .node()
-        .getBoundingClientRect()
-    );
-    const { newPos, scale } = computeFitTransformation(
-      treeBbox,
-      marginedCanvasBbox,
-      this.state,
-      ZOOM_EXTENT
-    );
-    this.setState({ newPos, scale });
-    const selection = d3Select('div.zoomed-tree');
-    selection.call(
-      this.zoom.transform,
-      zoomIdentity.translate(newPos[0], newPos[1])
-        .scale(scale)
-    );
-  };
-
-  resetPosition = () => {
-    this.doFitToScreen();
-    this.fitToScreenTimeout = setTimeout(() => this.doFitToScreen(), 0);
-  };
-
-  onPanningActivated = () => {
-    if (!this.state.isPanActivated) {
-      this.setState({ isPanActivated: true });
-    }
-  };
-
-  onPanningDeactivated = () => {
-    if (this.state.isPanActivated) {
-      this.setState({ isPanActivated: false });
+      this.props.updatePositionAndZoom([zoom.x, zoom.y], zoom.k);
     }
   };
 
@@ -386,7 +272,9 @@ class Tree extends React.Component {
   };
 
   render() {
+    const { height, width } = this.props;
     const {
+      initialZoom,
       isPanActivated,
       hierarchy,
       minSvgHeight,
@@ -394,50 +282,36 @@ class Tree extends React.Component {
       clickedNode
     } = this.state;
     return (
-      <TreeCanvas
-        onDoubleClick={ this.resetPosition }
-        className='tree zoomed-tree'
-        style={{
-          height: this.props.height,
-          width: this.props.width
-        }}
+      <ZoomableCanvas
+        initialZoom={ initialZoom }
+        canvasWidth={ minSvgWidth }
+        canvasHeight={ minSvgHeight }
+        onZooming={ this.onZooming }
+        onZoomChange={ this.handleZoomChange }
+        minZoomScale={ ZOOM_EXTENT[0] }
+        maxZoomScale={ ZOOM_EXTENT[1] }
+        style={{ height, width, backgroundColor: 'white', minWidth: 400 }}
       >
-        <div
-          ref={ this.getTranslatedTreeRef }
-          onDoubleClick={ this.resetPosition }
-          className={ 'translated-tree' }
-          style={{
-            transformOrigin: 'left top 0px',
-            transform: `translate(${this.state.newPos[0]}px,${
-              this.state.newPos[1]
-            }px) scale(${this.state.scale})`,
-            width: minSvgWidth,
-            height: minSvgHeight
-          }}
-        >
-          <Nodes
-            version={ this.props.version }
-            selectable={ isPanActivated }
-            height={ this.props.height }
-            configuration={ this.props.configuration }
-            hierarchy={ hierarchy }
-            updateSelectedNode={ this.props.updateSelectedNode }
-            selectedNode={ this.props.selectedNode }
-            onClickNode={ this.onClickNode }
-          />
-          <Edges
-            edgePath={ this.state.selectedEdgePath }
-            dt={ this.props.dt }
-            hierarchy={ hierarchy }
-            width={ minSvgWidth }
-            height={ minSvgHeight }
-            edgeType={
-              this.props.version == 1 ? 'constant' : this.props.edgeType
-            }
-            clickedNode={ clickedNode }
-          />
-        </div>
-      </TreeCanvas>
+        <Nodes
+          version={ this.props.version }
+          selectable={ !isPanActivated }
+          height={ this.props.height }
+          configuration={ this.props.configuration }
+          hierarchy={ hierarchy }
+          updateSelectedNode={ this.props.updateSelectedNode }
+          selectedNode={ this.props.selectedNode }
+          onClickNode={ this.onClickNode }
+        />
+        <Edges
+          edgePath={ this.state.selectedEdgePath }
+          dt={ this.props.dt }
+          hierarchy={ hierarchy }
+          width={ minSvgWidth }
+          height={ minSvgHeight }
+          edgeType={ this.props.version == 1 ? 'constant' : this.props.edgeType }
+          clickedNode={ clickedNode }
+        />
+      </ZoomableCanvas>
     );
   }
 }

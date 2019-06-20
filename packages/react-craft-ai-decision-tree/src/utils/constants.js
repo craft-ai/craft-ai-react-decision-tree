@@ -1,5 +1,5 @@
 // Zoom
-export const ZOOM_EXTENT = [0.3, 1.5];
+export const ZOOM_EXTENT = [0.05, 1.2];
 
 // Fit to screen
 export const MARGIN = {
