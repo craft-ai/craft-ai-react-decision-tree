@@ -2,7 +2,6 @@ import _ from 'lodash';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
-import React from 'react';
 import ZoomableCanvas from './ZoomableCanvas';
 import { hierarchy as d3Hierarchy, tree as d3Tree } from 'd3';
 import {
@@ -14,6 +13,13 @@ import {
   NODE_WIDTH_MARGIN,
   ZOOM_EXTENT
 } from '../utils/constants';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 
 function computeHierarchy(rootDtNode, collapsedDepth) {
   const hierarchy = d3Hierarchy(rootDtNode, (treeNode) => treeNode.children);
@@ -93,93 +99,123 @@ function computeHierarchyLayout(hierarchy) {
     dxMax = Math.max(hNode.x, dxMax);
   });
 
-  const minSvgHeight = (treeDepth + 1) * NODE_DEPTH;
-  const minSvgWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
+  const canvasHeight = (treeDepth + 1) * NODE_DEPTH;
+  const canvasWidth = Math.abs(dxMin) + Math.abs(dxMax) + NODE_WIDTH;
   const offsetX = Math.abs(dxMin) + NODE_WIDTH / 2;
 
-  // place correctly the tree in the svg with the minSvgWidth
+  // place correctly the tree in the svg with the canvasWidth
   hierarchy.each((hNode) => {
     hNode.x = hNode.x + offsetX;
     hNode.y = hNode.y + NODE_HEIGHT / 3; // take in account the height of the node above the link
   });
 
   return {
-    minSvgWidth,
-    minSvgHeight
+    canvasWidth,
+    canvasHeight
   };
 }
 
 function computeTree(rootDtNode = {}, collapsedDepth) {
   const hierarchy = computeHierarchy(rootDtNode, collapsedDepth);
-  const { minSvgWidth, minSvgHeight } = computeHierarchyLayout(hierarchy);
+  const { canvasWidth, canvasHeight } = computeHierarchyLayout(hierarchy);
 
   return {
-    minSvgHeight,
-    minSvgWidth,
+    canvasHeight,
+    canvasWidth,
     hierarchy
   };
 }
 
-class Tree extends React.Component {
-  constructor(props) {
-    super(props);
+function recursiveHNodeFromPath(nodePath, hNode) {
+  if (nodePath.length !== 0) {
+    const indexChild = parseInt(nodePath[0]);
+    return recursiveHNodeFromPath(_.tail(nodePath), hNode.children[indexChild]);
+  }
+  return hNode;
+}
 
-    const { minSvgHeight, minSvgWidth, hierarchy } = computeTree(
-      props.dt,
-      props.collapsedDepth
-    );
-
-    this.state = {
-      initialZoom: this.props.scale > 0 && {
-        x: this.props.position[0],
-        y: this.props.position[1],
-        k: this.props.scale
-      },
-      isPanActivated: false,
-      selectedEdgePath: [],
-      minSvgHeight,
-      minSvgWidth,
-      edgeType: this.props.edgeType,
-      hierarchy
-    };
-
-    this.zoom = this.state.initialZoom;
+function hNodeFromPath(nodePathStr, hierarchy) {
+  if (!nodePathStr) {
+    return null;
+  }
+  if (nodePathStr === '0') {
+    return hierarchy;
+  }
+  // Check validity of the selectedNode
+  if (!NODE_PATH_REGEXP.test(nodePathStr)) {
+    throw new Error(`Given node path is not valid: ${nodePathStr}`);
   }
 
-  translatedTreeRef = null;
+  const nodePath = nodePathStr.split(NODE_PATH_SEPARATOR);
+  // remove the first element of the path because it is the root path;
+  return recursiveHNodeFromPath(_.tail(nodePath), hierarchy);
+}
 
-  componentDidMount() {
-    if (this.props.selectedNode) {
-      this.findAndHightlightSelectedNodePath();
+const Tree = ({
+  version,
+  dt,
+  configuration,
+  height,
+  width,
+  position,
+  scale = -1,
+  updatePositionAndZoom = (position, scale) => {},
+  updateSelectedNode,
+  edgeType,
+  selectedNode,
+  collapsedDepth
+}) => {
+  const [zooming, setZooming] = useState(true);
+
+  const [initialZoom, setInitialZoom] = useState(
+    scale > 0 && {
+      x: position[0],
+      y: position[1],
+      k: scale
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.dt !== this.props.dt ||
-      !_.isEqual(prevProps.collapsedDepth, this.props.collapsedDepth)
-    ) {
-      this.setState(computeTree(this.props.dt, this.props.collapsedDepth), () =>
-        this.doFitToScreen()
+  );
+  useEffect(
+    () => {
+      setInitialZoom(
+        scale > 0 && {
+          x: position[0],
+          y: position[1],
+          k: scale
+        }
       );
-    }
-    if (prevProps.selectedNode !== this.props.selectedNode) {
-      this.findAndHightlightSelectedNodePath();
-    }
-  }
+    },
+    [position, scale]
+  );
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      !_.isEqual(nextProps, this.props) ||
-      !_.isEqual(this.state.initialZoom, nextState.initialZoom) ||
-      !_.isEqual(this.state.minSvgHeight, nextState.minSvgHeight) ||
-      !_.isEqual(this.state.minSvgWidth, nextState.minSvgWidth) ||
-      !_.isEqual(this.state.selectedEdgePath, nextState.selectedEdgePath)
-    );
-  }
+  const zoom = useRef(initialZoom);
+  const handleZoomChange = useCallback((newZoom) => {
+    zoom.current = newZoom;
+    if (updatePositionAndZoom) {
+      updatePositionAndZoom([newZoom.x, newZoom.y], newZoom.k);
+    }
+  });
 
-  onClickNode = (node) => {
-    if (!_.isNull(node.children)) {
+  const hierarchy = useMemo(() => computeHierarchy(dt, collapsedDepth), [
+    dt,
+    collapsedDepth
+  ]);
+  const [{ canvasWidth, canvasHeight }, setCanvasSize] = useState(
+    computeHierarchyLayout(hierarchy)
+  );
+  useEffect(
+    () => {
+      setCanvasSize(computeHierarchyLayout(hierarchy));
+    },
+    [hierarchy]
+  );
+
+  const selectedHNode = useMemo(() => hNodeFromPath(selectedNode, hierarchy), [
+    selectedNode,
+    hierarchy
+  ]);
+
+  const foldNode = useCallback((node) => {
+    if (node.children != null) {
       node.hidden_children = node.children;
       node.children = null;
     }
@@ -188,133 +224,61 @@ class Tree extends React.Component {
       node.hidden_children = null;
     }
 
-    // Get clicked node position
-    const previousClickedNodePosX = node.x;
-    const previousClickedNodePosY = node.y;
-    const { minSvgHeight, minSvgWidth } = computeHierarchyLayout(
-      this.state.hierarchy
-    );
-
     // Unselect the previously selected node if a parent is collapsed
     if (
-      this.props.selectedNode.startsWith(node.treePath) &&
-      this.props.selectedNode !== node.treePath
+      selectedNode.startsWith(node.treePath) &&
+      selectedNode !== node.treePath
     ) {
-      this.props.updateSelectedNode('');
+      updateSelectedNode('');
     }
 
-    // this.translateTree(deltaX, deltaY);
-    this.setState({
-      minSvgHeight: minSvgHeight,
-      minSvgWidth: minSvgWidth,
-      initialZoom: {
-        // This should compensate for the folding
-        x: this.zoom.x - (node.x - previousClickedNodePosX) * this.zoom.k,
-        y: this.zoom.y - (node.y - previousClickedNodePosY) * this.zoom.k,
-        k: this.zoom.k
-      },
-      hierarchy: this.state.hierarchy,
-      clickedNode: node
+    // 'Save' the position of the folded node
+    const previousClickedNodePosX = node.x;
+    const previousClickedNodePosY = node.y;
+
+    // Refresh the layout
+    setCanvasSize(computeHierarchyLayout(hierarchy));
+
+    // Update the zoom to compensate for the movement induced by the folding
+    setInitialZoom({
+      x: zoom.current.x - (node.x - previousClickedNodePosX) * zoom.current.k,
+      y: zoom.current.y - (node.y - previousClickedNodePosY) * zoom.current.k,
+      k: zoom.current.k
     });
-  };
+  });
 
-  onZooming = (isZooming) => {
-    this.setState({ isPanActivated: isZooming });
-  };
-
-  handleZoomChange = (zoom) => {
-    this.zoom = zoom;
-    if (this.props.updatePositionAndZoom) {
-      this.props.updatePositionAndZoom([zoom.x, zoom.y], zoom.k);
-    }
-  };
-
-  getTranslatedTreeRef = (input) => {
-    this.translatedTreeRef = input;
-  };
-
-  findAndHightlightSelectedNodePath = () => {
-    if (!this.props.selectedNode) {
-      this.setState({ selectedEdgePath: [] });
-    }
-    // Check validity of the selectedNode
-    else if (NODE_PATH_REGEXP.test(this.props.selectedNode)) {
-      const findSelectedNodeRecursion = (path, node) => {
-        if (path.length !== 0) {
-          const indexChild = parseInt(path[0]);
-          return findSelectedNodeRecursion(
-            _.tail(path),
-            node.children[indexChild]
-          );
-        }
-        return node.treeNodeIdPath;
-      };
-
-      // making the root node an exception
-      if (this.props.selectedNode === '0') {
-        this.setState({
-          selectedEdgePath: this.state.hierarchy.treeNodeIdPath
-        });
-      }
-      else {
-        const pathArray = this.props.selectedNode.split(NODE_PATH_SEPARATOR);
-        // remove the first element of the path because it is the root path;
-        const selectedPath = findSelectedNodeRecursion(
-          _.tail(pathArray),
-          this.state.hierarchy
-        );
-        this.setState({ selectedEdgePath: selectedPath });
-      }
-    }
-    else {
-      throw new Error(`Selected node is not valid: ${this.props.selectedNode}`);
-    }
-  };
-
-  render() {
-    const { height, width } = this.props;
-    const {
-      initialZoom,
-      isPanActivated,
-      hierarchy,
-      minSvgHeight,
-      minSvgWidth,
-      clickedNode
-    } = this.state;
-    return (
-      <ZoomableCanvas
-        initialZoom={ initialZoom }
-        canvasWidth={ minSvgWidth }
-        canvasHeight={ minSvgHeight }
-        onZooming={ this.onZooming }
-        onZoomChange={ this.handleZoomChange }
-        minZoomScale={ ZOOM_EXTENT[0] }
-        maxZoomScale={ ZOOM_EXTENT[1] }
-        style={{ height, width, backgroundColor: 'white', minWidth: 400 }}
-      >
-        <Nodes
-          version={ this.props.version }
-          selectable={ !isPanActivated }
-          height={ this.props.height }
-          configuration={ this.props.configuration }
-          hierarchy={ hierarchy }
-          updateSelectedNode={ this.props.updateSelectedNode }
-          selectedNode={ this.props.selectedNode }
-          onClickNode={ this.onClickNode }
-        />
-        <Edges
-          edgePath={ this.state.selectedEdgePath }
-          dt={ this.props.dt }
-          hierarchy={ hierarchy }
-          width={ minSvgWidth }
-          height={ minSvgHeight }
-          edgeType={ this.props.version == 1 ? 'constant' : this.props.edgeType }
-          clickedNode={ clickedNode }
-        />
-      </ZoomableCanvas>
-    );
-  }
-}
+  return (
+    <ZoomableCanvas
+      initialZoom={ initialZoom }
+      canvasWidth={ canvasWidth }
+      canvasHeight={ canvasHeight }
+      onZooming={ setZooming }
+      onZoomChange={ handleZoomChange }
+      minZoomScale={ ZOOM_EXTENT[0] }
+      maxZoomScale={ ZOOM_EXTENT[1] }
+      style={{ height, width, backgroundColor: 'white', minWidth: 400 }}
+    >
+      <Nodes
+        version={ version }
+        selectable={ !zooming }
+        height={ height }
+        configuration={ configuration }
+        hierarchy={ hierarchy }
+        updateSelectedNode={ updateSelectedNode }
+        selectedNode={ selectedNode }
+        onClickNode={ foldNode }
+      />
+      <Edges
+        edgePath={ selectedHNode ? selectedHNode.treeNodeIdPath : [] }
+        dt={ dt }
+        hierarchy={ hierarchy }
+        width={ canvasWidth }
+        height={ canvasHeight }
+        edgeType={ version == 1 ? 'constant' : edgeType }
+      />
+    </ZoomableCanvas>
+  );
+};
 
 Tree.propTypes = {
   version: PropTypes.number.isRequired,
