@@ -158,7 +158,6 @@ const ZoomableCanvas = ({
       initialZoom && initialZoom.k
     ]
   );
-
   return (
     <Viewport
       { ...otherProps }

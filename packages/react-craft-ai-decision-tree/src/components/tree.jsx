@@ -81,7 +81,7 @@ const d3ComputeHierarchyLayout = d3Tree()
     NODE_HEIGHT
   ]);
 
-function computeHierarchyLayout(hierarchy) {
+function computeHierarchyLayout(hierarchy, version = 0) {
   d3ComputeHierarchyLayout(hierarchy);
 
   let treeDepth = 0;
@@ -111,18 +111,8 @@ function computeHierarchyLayout(hierarchy) {
 
   return {
     canvasWidth,
-    canvasHeight
-  };
-}
-
-function computeTree(rootDtNode = {}, collapsedDepth) {
-  const hierarchy = computeHierarchy(rootDtNode, collapsedDepth);
-  const { canvasWidth, canvasHeight } = computeHierarchyLayout(hierarchy);
-
-  return {
     canvasHeight,
-    canvasWidth,
-    hierarchy
+    version: version + 1
   };
 }
 
@@ -199,12 +189,10 @@ const Tree = ({
     dt,
     collapsedDepth
   ]);
-  const [{ canvasWidth, canvasHeight }, setCanvasSize] = useState(
-    computeHierarchyLayout(hierarchy)
-  );
+  const [layout, setLayout] = useState(computeHierarchyLayout(hierarchy));
   useEffect(
     () => {
-      setCanvasSize(computeHierarchyLayout(hierarchy));
+      setLayout(({ version }) => computeHierarchyLayout(hierarchy, version));
     },
     [hierarchy]
   );
@@ -214,68 +202,77 @@ const Tree = ({
     hierarchy
   ]);
 
-  const foldNode = useCallback((node) => {
-    if (node.children != null) {
-      node.hidden_children = node.children;
-      node.children = null;
-    }
-    else {
-      node.children = node.hidden_children;
-      node.hidden_children = null;
-    }
+  const foldNode = useCallback(
+    (node) => {
+      if (node.children != null) {
+        node.hidden_children = node.children;
+        node.children = null;
+      }
+      else {
+        node.children = node.hidden_children;
+        node.hidden_children = null;
+      }
 
-    // Unselect the previously selected node if a parent is collapsed
-    if (
-      selectedNode.startsWith(node.treePath) &&
-      selectedNode !== node.treePath
-    ) {
-      updateSelectedNode('');
-    }
+      // Unselect the previously selected node if a parent is collapsed
+      if (
+        selectedNode.startsWith(node.treePath) &&
+        selectedNode !== node.treePath
+      ) {
+        updateSelectedNode('');
+      }
 
-    // 'Save' the position of the folded node
-    const previousClickedNodePosX = node.x;
-    const previousClickedNodePosY = node.y;
+      // 'Save' the position of the folded node
+      const previousClickedNodePosX = node.x;
+      const previousClickedNodePosY = node.y;
 
-    // Refresh the layout
-    setCanvasSize(computeHierarchyLayout(hierarchy));
-
-    // Update the zoom to compensate for the movement induced by the folding
-    setInitialZoom({
-      x: zoom.current.x - (node.x - previousClickedNodePosX) * zoom.current.k,
-      y: zoom.current.y - (node.y - previousClickedNodePosY) * zoom.current.k,
-      k: zoom.current.k
-    });
-  });
-
+      // Refresh the layout
+      setLayout(({ version }) => {
+        const layout = computeHierarchyLayout(hierarchy, version);
+        // Update the zoom to compensate for the movement induced by the folding
+        setInitialZoom({
+          x:
+            zoom.current.x -
+            (node.x - previousClickedNodePosX) * zoom.current.k,
+          y:
+            zoom.current.y -
+            (node.y - previousClickedNodePosY) * zoom.current.k,
+          k: zoom.current.k
+        });
+        return layout;
+      });
+    },
+    [selectedNode, updateSelectedNode]
+  );
   return (
     <ZoomableCanvas
       initialZoom={ initialZoom }
-      canvasWidth={ canvasWidth }
-      canvasHeight={ canvasHeight }
+      canvasWidth={ layout.canvasWidth }
+      canvasHeight={ layout.canvasHeight }
       onZooming={ setZooming }
       onZoomChange={ handleZoomChange }
       minZoomScale={ ZOOM_EXTENT[0] }
       maxZoomScale={ ZOOM_EXTENT[1] }
       style={{ height, width, backgroundColor: 'white', minWidth: 400 }}
     >
-      <Nodes
-        version={ version }
-        selectable={ !zooming }
-        height={ height }
-        configuration={ configuration }
-        hierarchy={ hierarchy }
-        updateSelectedNode={ updateSelectedNode }
-        selectedNode={ selectedNode }
-        onClickNode={ foldNode }
-      />
-      <Edges
-        edgePath={ selectedHNode ? selectedHNode.treeNodeIdPath : [] }
-        dt={ dt }
-        hierarchy={ hierarchy }
-        width={ canvasWidth }
-        height={ canvasHeight }
-        edgeType={ version == 1 ? 'constant' : edgeType }
-      />
+      <React.Fragment key={ layout.version }>
+        <Nodes
+          version={ version }
+          selectable={ !zooming }
+          configuration={ configuration }
+          hierarchy={ hierarchy }
+          updateSelectedNode={ updateSelectedNode }
+          selectedNode={ selectedNode }
+          onClickNode={ foldNode }
+        />
+        <Edges
+          edgePath={ selectedHNode ? selectedHNode.treeNodeIdPath : [] }
+          dt={ dt }
+          hierarchy={ hierarchy }
+          width={ layout.canvasWidth }
+          height={ layout.canvasHeight }
+          edgeType={ version == 1 ? 'constant' : edgeType }
+        />
+      </React.Fragment>
     </ZoomableCanvas>
   );
 };

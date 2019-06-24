@@ -1,9 +1,9 @@
 import ContainerDimensions from 'react-container-dimensions';
 import PropTypes from 'prop-types';
-import React from 'react';
 import semver from 'semver';
 import styled from '@emotion/styled';
 import Tree from './tree';
+import React, { useMemo } from 'react';
 
 const DecisionTreeContainer = styled('div')`
   height: 100%;
@@ -21,7 +21,7 @@ const DecisionTree = ({
   width,
   collapsedDepth
 }) => {
-  const treeVersion = semver.major(data._version);
+  const treeVersion = useMemo(() => semver.major(data._version), [data]);
 
   return (
     <DecisionTreeContainer
