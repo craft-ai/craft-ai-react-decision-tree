@@ -33,6 +33,7 @@ const NodeLabel = styled('div')`
   overflow: hidden;
   width: ${NODE_WIDTH}px;
   height: ${NODE_HEIGHT}px;
+  font-style: ${({ isFolded }) => (isFolded ? 'italic' : 'initial')};
   pointer-events: auto;
   cursor: pointer;
   box-sizing: content-box;
@@ -74,9 +75,32 @@ const NodeButton = styled('button')`
   }
 `;
 
+function computeNodePresentationData(hNode, interpreter) {
+  const dtNode = hNode.data;
+  const isLeaf = interpreter.isLeaf(dtNode);
+  const isFolded = hNode.foldedChildren != null;
+  if (isLeaf || isFolded) {
+    const { value, confidence } = interpreter.getPrediction(dtNode);
+    return {
+      isLeaf,
+      isFolded,
+      text: _.isFinite(value) ? parseFloat(value.toFixed(3)) : value,
+      color: computeLeafColor(confidence)
+    };
+  }
+  else {
+    return {
+      isLeaf,
+      isFolded,
+      text: dtNode.children[0].decision_rule.property,
+      color: undefined
+    };
+  }
+}
+
 const Node = ({
   hNode,
-  dtUtils,
+  interpreter,
   selected = false,
   onSelectNode = () => {},
   onShowTooltip = (ref, text) => {},
@@ -86,18 +110,10 @@ const Node = ({
   const buttonRef = React.createRef();
   const labelRef = React.createRef();
 
-  const dtNode = hNode.data;
-  const isLeaf = dtUtils.isLeaf(dtNode);
-  const { value, confidence } = dtUtils.getPrediction(dtNode);
-
-  const color = isLeaf ? computeLeafColor(confidence) : undefined;
-  const text = isLeaf
-    ? _.isFinite(value)
-      ? parseFloat(value.toFixed(3))
-      : value
-    : dtNode.children[0].decision_rule.property;
-
-  const isFolded = !isLeaf && hNode.children == null;
+  const { isFolded, isLeaf, color, text = 'N/A' } = computeNodePresentationData(
+    hNode,
+    interpreter
+  );
 
   const [showNodeButton, setShowNodeButton] = useState(false);
 
@@ -120,6 +136,7 @@ const Node = ({
         className='craft-nodes'
         color={ color }
         selected={ selected }
+        isFolded={ isFolded }
       >
         {text}
       </NodeLabel>
@@ -136,7 +153,7 @@ const Node = ({
 
 Node.propTypes = {
   hNode: PropTypes.object.isRequired,
-  dtUtils: PropTypes.object.isRequired,
+  interpreter: PropTypes.object.isRequired,
   selected: PropTypes.bool,
   onSelectNode: PropTypes.func,
   onShowTooltip: PropTypes.func,

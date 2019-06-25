@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.23...HEAD)
 
+## Added
+
+- Introduce a Decision Tree props `foldedNodes` to set which nodes' subtrees will be folded.
+- Decision Tree folded nodes now display the predicted values of the folded tree.
+
 ## Fixed
 
 - Decision tree _fit-to-screen_ (when double clicking) now works with a single render and is therefore smoother.
+
+## Removed
+
+- `collapsedDepth` props is no longer supported, users need to migrate to the `foldedNodes` props.
 
 ## [0.0.23](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.22...v0.0.23) - 2019-06-18
 

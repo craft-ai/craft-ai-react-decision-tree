@@ -1,22 +1,8 @@
-import _ from 'lodash';
 import EdgeLabel from './edgeLabel';
 import Node from './node';
 import PropTypes from 'prop-types';
 import ToolTip from 'react-craft-ai-tooltip';
 import React, { useCallback, useMemo, useState } from 'react';
-
-const DT_UTILS_V1 = {
-  isLeaf: (dtNode) => dtNode.predicted_value != null,
-  getPrediction: (dtNode) => ({
-    confidence: dtNode.confidence,
-    value: dtNode.predicted_value
-  })
-};
-
-const DT_UTILS_V2 = {
-  isLeaf: (dtNode) => dtNode.prediction != null,
-  getPrediction: (dtNode) => dtNode.prediction || {}
-};
 
 const NodesEdgesLabels = React.memo(function NodesEdgesLabels({
   links,
@@ -53,7 +39,7 @@ const NodesNodes = React.memo(function NodesNodes({
   onToggleSubtreeFold,
   onShowTooltip,
   onHideTooltip,
-  dtUtils
+  interpreter
 }) {
   return (
     <React.Fragment>
@@ -68,7 +54,7 @@ const NodesNodes = React.memo(function NodesNodes({
           onToggleSubtreeFold={ () => onToggleSubtreeFold(hNode) }
           onShowTooltip={ onShowTooltip }
           onHideTooltip={ onHideTooltip }
-          dtUtils={ dtUtils }
+          interpreter={ interpreter }
         />
       ))}
     </React.Fragment>
@@ -82,11 +68,11 @@ NodesNodes.propTypes = {
   onToggleSubtreeFold: PropTypes.func.isRequired,
   onShowTooltip: PropTypes.func.isRequired,
   onHideTooltip: PropTypes.func.isRequired,
-  dtUtils: PropTypes.object.isRequired
+  interpreter: PropTypes.object.isRequired
 };
 
 const Nodes = ({
-  version,
+  interpreter,
   hierarchy,
   selectedNodePath,
   selectable,
@@ -94,8 +80,6 @@ const Nodes = ({
   onToggleSubtreeFold,
   configuration
 }) => {
-  const dtUtils = version == 1 ? DT_UTILS_V1 : DT_UTILS_V2;
-
   const [tooltip, setTooltip] = useState({
     show: false,
     text: '',
@@ -165,7 +149,7 @@ const Nodes = ({
         onToggleSubtreeFold={ toggleSubtreeFold }
         onShowTooltip={ showTooltip }
         onHideTooltip={ hideTooltip }
-        dtUtils={ dtUtils }
+        interpreter={ interpreter }
       />
       <NodesEdgesLabels
         links={ links }
@@ -193,7 +177,7 @@ Nodes.propTypes = {
   updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
   hierarchy: PropTypes.object.isRequired,
-  version: PropTypes.number.isRequired,
+  interpreter: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string,
   onToggleSubtreeFold: PropTypes.func.isRequired
 };

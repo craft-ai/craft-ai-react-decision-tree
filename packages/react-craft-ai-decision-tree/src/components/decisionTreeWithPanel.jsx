@@ -1,10 +1,10 @@
 import ContainerDimensions from 'react-container-dimensions';
+import createInterpreter from '../utils/interpreter';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
-import semver from 'semver';
 import styled from '@emotion/styled';
 import Tree from './tree';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 const DecisionTreeContainer = styled('div')`
   height: 100%;
@@ -21,7 +21,11 @@ const DecisionTreeWithPanel = ({
   foldedNodes
 }) => {
   const [selectedNode, setSelectedNode] = useState('');
-  const treeVersion = semver.major(data._version);
+
+  const interpreter = useMemo(
+    () => createInterpreter(data, Object.keys(data.trees)[0]),
+    [data]
+  );
 
   const closeNodeInformation = () => {
     setSelectedNode('');
@@ -43,7 +47,7 @@ const DecisionTreeWithPanel = ({
       <ContainerDimensions>
         {({ height, width }) => (
           <Tree
-            version={ treeVersion }
+            interpreter={ interpreter }
             updateSelectedNode={ setSelectedNode }
             height={ height }
             width={ width }
@@ -51,7 +55,6 @@ const DecisionTreeWithPanel = ({
             scale={ scale }
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
-            dt={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
             selectedNode={ selectedNode }
             foldedNodes={ foldedNodes }

@@ -135,8 +135,7 @@ const DEFAULT_PROPS = {
 };
 
 const Tree = ({
-  version,
-  dt,
+  interpreter,
   configuration,
   height,
   width,
@@ -178,7 +177,9 @@ const Tree = ({
     }
   });
 
-  const hierarchy = useMemo(() => computeHierarchy(dt), [dt]);
+  const hierarchy = useMemo(() => computeHierarchy(interpreter.dt), [
+    interpreter.dt
+  ]);
 
   const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
   const setFoldedNodes = useCallback(
@@ -277,8 +278,8 @@ const Tree = ({
     >
       <React.Fragment key={ layout.version }>
         <Nodes
-          version={ version }
           selectable={ !zooming }
+          interpreter={ interpreter }
           configuration={ configuration }
           hierarchy={ hierarchy }
           updateSelectedNode={ updateSelectedNode }
@@ -287,11 +288,11 @@ const Tree = ({
         />
         <Edges
           selectedNodeIdPath={ selectedHNode ? selectedHNode.idPath : [] }
-          dt={ dt }
+          dt={ interpreter.dt }
           hierarchy={ hierarchy }
           width={ layout.canvasWidth }
           height={ layout.canvasHeight }
-          edgeType={ version == 1 ? 'constant' : edgeType }
+          edgeType={ interpreter.version == 1 ? 'constant' : edgeType }
         />
       </React.Fragment>
     </ZoomableCanvas>
@@ -299,8 +300,7 @@ const Tree = ({
 };
 
 Tree.propTypes = {
-  version: PropTypes.number.isRequired,
-  dt: PropTypes.object.isRequired,
+  interpreter: PropTypes.object.isRequired,
   configuration: PropTypes.object.isRequired,
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
