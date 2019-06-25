@@ -1,9 +1,74 @@
+import _ from 'lodash';
 import { interpreter } from 'craft-ai';
+import { NODE_PATH_SEPARATOR } from './constants';
 import semver from 'semver';
 
 function createInterpreter(fullDt, outputProperty) {
   const version = semver.major(fullDt._version);
   const dt = fullDt.trees[outputProperty];
+
+  const findNodeRecursion = (dtNodeParent, path = []) => {
+    if (path.length > 0) {
+      const [childIndex, ...pathTail] = path;
+      const { dtNode, decisionRules } = findNodeRecursion(
+        dtNodeParent.children[childIndex],
+        pathTail
+      );
+      if (dtNodeParent.decision_rule) {
+        const { property, operator, operand } = dtNodeParent.decision_rule;
+        return {
+          dtNode,
+          decisionRules: {
+            ...decisionRules,
+            [property]: [
+              {
+                operator,
+                operand
+              },
+              ...(decisionRules[property] || [])
+            ]
+          }
+        };
+      }
+      else {
+        return { dtNode, decisionRules };
+      }
+    }
+    else {
+      if (dtNodeParent.decision_rule) {
+        const { property, operator, operand } = dtNodeParent.decision_rule;
+        return {
+          dtNode: dtNodeParent,
+          decisionRules: {
+            [property]: [
+              {
+                operator,
+                operand
+              }
+            ]
+          }
+        };
+      }
+      else {
+        return { dtNode: dtNodeParent, decisionRules: [] };
+      }
+    }
+  };
+
+  const findNode = (path) => {
+    // making the root node an exception
+    if (path == '0') {
+      return { dtNode: dt, decisionRules: {} };
+    }
+    else {
+      const [, ...pathTail] = path
+        .split(NODE_PATH_SEPARATOR)
+        .map((n) => parseInt(n));
+      // remove the first element of the path because it is the root path;
+      return findNodeRecursion(dt, pathTail);
+    }
+  };
+
   if (version == 1) {
     return {
       version,
@@ -13,8 +78,12 @@ function createInterpreter(fullDt, outputProperty) {
       isLeaf: (dtNode) => dtNode.predicted_value != null,
       getPrediction: (dtNode) => ({
         confidence: dtNode.confidence,
-        value: dtNode.predicted_value
-      })
+        value: dtNode.predicted_value,
+        distribution: {
+          standard_deviation: dtNode.standard_deviation
+        }
+      }),
+      findNode
     };
   }
   else {
@@ -29,11 +98,12 @@ function createInterpreter(fullDt, outputProperty) {
           return dtNode.prediction;
         }
         else {
-          const { value } = interpreter.distribution(dtNode);
+          const { value, ...distribution } = interpreter.distribution(dtNode);
           if (typeof value === 'number') {
             return {
               value,
-              confidence: undefined
+              confidence: undefined,
+              distribution
             };
           }
           else {
@@ -49,11 +119,13 @@ function createInterpreter(fullDt, outputProperty) {
               );
             return {
               value: majClass.value,
-              confidence: undefined
+              confidence: undefined,
+              distribution
             };
           }
         }
-      }
+      },
+      findNode
     };
   }
 }

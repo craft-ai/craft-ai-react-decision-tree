@@ -8,11 +8,9 @@ import {
   TextCenterDiv
 } from './utils';
 
-const DecisionRules = ({ context, node }) => {
+const DecisionRules = ({ context, decisionRules }) => {
   const displayConditions = (key, index) => {
-    const decisionRule = interpreter.reduceDecisionRules(
-      node.decisionRules[key]
-    );
+    const decisionRule = interpreter.reduceDecisionRules(decisionRules[key]);
     // Add the type to format properly the decision rule
     decisionRule[0].type = context[key].type;
     const text = interpreter
@@ -38,9 +36,7 @@ const DecisionRules = ({ context, node }) => {
     );
   };
 
-  const decisionRulesKeys = node.decisionRules
-    ? Object.keys(node.decisionRules)
-    : [];
+  const decisionRulesKeys = decisionRules ? Object.keys(decisionRules) : [];
 
   return (
     <div className='node-decision-rules'>
@@ -57,8 +53,8 @@ const DecisionRules = ({ context, node }) => {
 };
 
 DecisionRules.propTypes = {
-  context: PropTypes.object.isRequired,
-  node: PropTypes.object.isRequired
+  decisionRules: PropTypes.object.isRequired,
+  context: PropTypes.object.isRequired
 };
 
 export default DecisionRules;
