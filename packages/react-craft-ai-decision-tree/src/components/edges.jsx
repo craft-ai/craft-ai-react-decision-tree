@@ -60,12 +60,15 @@ function drawNodes(domNode, { descendants }) {
     .attr('fill', 'none');
 }
 
-function drawLinks(domNode, { descendants, links, edgePath, edgeType }) {
+function drawLinks(
+  domNode,
+  { descendants, links, selectedNodeIdPath, edgeType }
+) {
   d3Select(domNode)
     .selectAll('path')
     .data(links, (d) => {
       d.linkClass = defaultLinksCssClass;
-      if (edgePath.indexOf(d.target.id) !== -1) {
+      if (selectedNodeIdPath.indexOf(d.target.id) !== -1) {
         d.linkClass = selectedLinksCssClass;
       }
       return d.target.id;
@@ -127,7 +130,14 @@ function drawLinks(domNode, { descendants, links, edgePath, edgeType }) {
     });
 }
 
-const Edges = ({ edgePath, dt, hierarchy, width, height, edgeType }) => {
+const Edges = ({
+  selectedNodeIdPath,
+  dt,
+  hierarchy,
+  width,
+  height,
+  edgeType
+}) => {
   const canvas = React.createRef();
 
   useEffect(
@@ -140,18 +150,18 @@ const Edges = ({ edgePath, dt, hierarchy, width, height, edgeType }) => {
       // ------------ LINKS ------------
       drawLinks(canvas.current, {
         links,
-        edgePath,
+        selectedNodeIdPath,
         edgeType,
         descendants
       });
     },
-    [canvas, hierarchy, edgePath, edgeType]
+    [canvas, hierarchy, selectedNodeIdPath, edgeType]
   );
 
   return <svg ref={ canvas } width={ width } height={ height } />;
 };
 Edges.propTypes = {
-  edgePath: PropTypes.array.isRequired,
+  selectedNodeIdPath: PropTypes.array.isRequired,
   dt: PropTypes.object.isRequired,
   hierarchy: PropTypes.object.isRequired,
   width: PropTypes.number,

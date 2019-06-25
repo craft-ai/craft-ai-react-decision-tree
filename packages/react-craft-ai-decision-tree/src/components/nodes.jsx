@@ -48,7 +48,7 @@ NodesEdgesLabels.propTypes = {
 
 const NodesNodes = React.memo(function NodesNodes({
   descendants,
-  selectedNodeTreePath,
+  selectedNodePath,
   onSelectNode,
   onToggleSubtreeFold,
   onShowTooltip,
@@ -61,9 +61,9 @@ const NodesNodes = React.memo(function NodesNodes({
         <Node
           key={ index }
           hNode={ hNode }
-          selected={ hNode.treePath === selectedNodeTreePath }
+          selected={ hNode.path === selectedNodePath }
           // eslint-disable-next-line react/jsx-no-bind
-          onSelectNode={ () => onSelectNode(hNode.treePath) }
+          onSelectNode={ () => onSelectNode(hNode.path) }
           // eslint-disable-next-line react/jsx-no-bind
           onToggleSubtreeFold={ () => onToggleSubtreeFold(hNode) }
           onShowTooltip={ onShowTooltip }
@@ -77,7 +77,7 @@ const NodesNodes = React.memo(function NodesNodes({
 
 NodesNodes.propTypes = {
   descendants: PropTypes.array.isRequired,
-  selectedNodeTreePath: PropTypes.string,
+  selectedNodePath: PropTypes.string,
   onSelectNode: PropTypes.func.isRequired,
   onToggleSubtreeFold: PropTypes.func.isRequired,
   onShowTooltip: PropTypes.func.isRequired,
@@ -88,10 +88,10 @@ NodesNodes.propTypes = {
 const Nodes = ({
   version,
   hierarchy,
-  selectedNode,
+  selectedNodePath,
   selectable,
   updateSelectedNode,
-  onClickNode,
+  onToggleSubtreeFold,
   configuration
 }) => {
   const dtUtils = version == 1 ? DT_UTILS_V1 : DT_UTILS_V2;
@@ -146,8 +146,8 @@ const Nodes = ({
 
   const toggleSubtreeFold = useCallback(
     (hNode) => {
-      if (onClickNode) {
-        onClickNode(hNode);
+      if (onToggleSubtreeFold) {
+        onToggleSubtreeFold(hNode);
       }
     },
     [updateSelectedNode]
@@ -160,7 +160,7 @@ const Nodes = ({
     <div style={{ position: 'relative' }}>
       <NodesNodes
         descendants={ descendants }
-        selectedNodeTreePath={ selectedNode }
+        selectedNodePath={ selectedNodePath }
         onSelectNode={ selectNode }
         onToggleSubtreeFold={ toggleSubtreeFold }
         onShowTooltip={ showTooltip }
@@ -194,8 +194,8 @@ Nodes.propTypes = {
   configuration: PropTypes.object.isRequired,
   hierarchy: PropTypes.object.isRequired,
   version: PropTypes.number.isRequired,
-  selectedNode: PropTypes.string,
-  onClickNode: PropTypes.func.isRequired
+  selectedNodePath: PropTypes.string,
+  onToggleSubtreeFold: PropTypes.func.isRequired
 };
 
 export default Nodes;

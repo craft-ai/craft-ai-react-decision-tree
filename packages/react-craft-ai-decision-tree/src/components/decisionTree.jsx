@@ -19,7 +19,7 @@ const DecisionTree = ({
   updateSelectedNode,
   updatePositionAndZoom,
   width,
-  collapsedDepth
+  foldedNodes
 }) => {
   const treeVersion = useMemo(() => semver.major(data._version), [data]);
 
@@ -45,7 +45,7 @@ const DecisionTree = ({
             dt={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
             selectedNode={ selectedNode }
-            collapsedDepth={ collapsedDepth }
+            foldedNodes={ foldedNodes }
           />
         )}
       </ContainerDimensions>
@@ -73,7 +73,7 @@ DecisionTree.propTypes = {
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
   selectedNode: PropTypes.string,
-  collapsedDepth: PropTypes.number
+  foldedNodes: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default DecisionTree;

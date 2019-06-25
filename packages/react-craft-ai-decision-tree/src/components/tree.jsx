@@ -21,24 +21,19 @@ import React, {
   useState
 } from 'react';
 
-function computeHierarchy(rootDtNode, collapsedDepth) {
+function computeHierarchy(rootDtNode) {
   const hierarchy = d3Hierarchy(rootDtNode, (treeNode) => treeNode.children);
   let index = 0;
   hierarchy.each((hNode) => {
-    // Unique idbased on index
+    // Unique id based on index
     hNode.id = index;
     index += 1;
 
     // Deal with decision rules
     if (hNode.parent) {
-      hNode.treeNodeIdPath = _.clone(hNode.parent.treeNodeIdPath);
-      hNode.treeNodeIdPath.push(hNode.id);
-      const indexForParent = hNode.parent.children.findIndex(
-        (child) => child === hNode
-      );
-      hNode.treePath = `${
-        hNode.parent.treePath
-      }${NODE_PATH_SEPARATOR}${indexForParent}`;
+      hNode.idPath = [...hNode.parent.idPath, hNode.id];
+      const index = hNode.parent.children.findIndex((child) => child === hNode);
+      hNode.path = `${hNode.parent.path}${NODE_PATH_SEPARATOR}${index}`;
       hNode.decisionRules = _.isEmpty(hNode.parent.decisionRules)
         ? {}
         : _.cloneDeep(hNode.parent.decisionRules);
@@ -60,16 +55,8 @@ function computeHierarchy(rootDtNode, collapsedDepth) {
     }
     else {
       // root node
-      hNode.treeNodeIdPath = [hNode.id];
-      hNode.treePath = '0';
-    }
-
-    // If a `collapsedDepth` is giving, collapses all the nodes from this depth.
-    if (collapsedDepth != null) {
-      if (hNode.depth >= collapsedDepth) {
-        hNode.hidden_children = hNode.children;
-        hNode.children = null;
-      }
+      hNode.idPath = [hNode.id];
+      hNode.path = '0';
     }
   });
   return hierarchy;
@@ -141,6 +128,12 @@ function hNodeFromPath(nodePathStr, hierarchy) {
   return recursiveHNodeFromPath(_.tail(nodePath), hierarchy);
 }
 
+const DEFAULT_PROPS = {
+  scale: -1,
+  updatePositionAndZoom: (position, scale) => {},
+  foldedNodes: []
+};
+
 const Tree = ({
   version,
   dt,
@@ -148,12 +141,12 @@ const Tree = ({
   height,
   width,
   position,
-  scale = -1,
-  updatePositionAndZoom = (position, scale) => {},
+  scale = DEFAULT_PROPS.scale,
+  updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
   edgeType,
   selectedNode,
-  collapsedDepth
+  foldedNodes = DEFAULT_PROPS.foldedNodes
 }) => {
   const [zooming, setZooming] = useState(true);
 
@@ -185,10 +178,64 @@ const Tree = ({
     }
   });
 
-  const hierarchy = useMemo(() => computeHierarchy(dt, collapsedDepth), [
-    dt,
-    collapsedDepth
+  const hierarchy = useMemo(() => computeHierarchy(dt), [dt]);
+
+  const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
+  const setFoldedNodes = useCallback(
+    (foldedNodes, referenceHNode) => {
+      // 'Save' the position of the reference node
+      const previousPosX = referenceHNode.x;
+      const previousPosY = referenceHNode.y;
+
+      hierarchy.each((hNode) => {
+        const folded = hNode.foldedChildren != null;
+        const shouldBeFolded =
+          foldedNodes.findIndex((path) => hNode.path === path) >= 0;
+        const toFold = shouldBeFolded && !folded;
+        const toUnfold = !shouldBeFolded && folded;
+        if (toFold) {
+          hNode.foldedChildren = hNode.children;
+          hNode.children = null;
+
+          // Unselect the previously selected node if a parent is collapsed
+          if (
+            selectedNode.startsWith(hNode.path) &&
+            selectedNode !== hNode.path
+          ) {
+            updateSelectedNode('');
+          }
+        }
+        if (toUnfold) {
+          hNode.children = hNode.foldedChildren;
+          hNode.foldedChildren = null;
+        }
+      });
+
+      // Refresh the layout
+      setLayout(({ version }) => {
+        const layout = computeHierarchyLayout(hierarchy, version);
+        // Update the zoom to compensate for the movement induced by the folding
+        setInitialZoom({
+          x:
+            zoom.current.x - (referenceHNode.x - previousPosX) * zoom.current.k,
+          y:
+            zoom.current.y - (referenceHNode.y - previousPosY) * zoom.current.k,
+          k: zoom.current.k
+        });
+        return layout;
+      });
+
+      setFoldedNodesState(foldedNodes);
+    },
+    [hierarchy, selectedNode, updateSelectedNode]
+  );
+
+  // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
+  useEffect(() => setFoldedNodes(foldedNodes, hierarchy), [
+    hierarchy,
+    foldedNodes
   ]);
+
   const [layout, setLayout] = useState(computeHierarchyLayout(hierarchy));
   useEffect(
     () => {
@@ -202,46 +249,20 @@ const Tree = ({
     hierarchy
   ]);
 
-  const foldNode = useCallback(
-    (node) => {
-      if (node.children != null) {
-        node.hidden_children = node.children;
-        node.children = null;
+  const toggleSubtreeFold = useCallback(
+    (hNode) => {
+      const folded = hNode.foldedChildren != null;
+      if (!folded) {
+        setFoldedNodes([...foldedNodesState, hNode.path], hNode);
       }
       else {
-        node.children = node.hidden_children;
-        node.hidden_children = null;
+        setFoldedNodes(
+          foldedNodesState.filter((path) => path !== hNode.path),
+          hNode
+        );
       }
-
-      // Unselect the previously selected node if a parent is collapsed
-      if (
-        selectedNode.startsWith(node.treePath) &&
-        selectedNode !== node.treePath
-      ) {
-        updateSelectedNode('');
-      }
-
-      // 'Save' the position of the folded node
-      const previousClickedNodePosX = node.x;
-      const previousClickedNodePosY = node.y;
-
-      // Refresh the layout
-      setLayout(({ version }) => {
-        const layout = computeHierarchyLayout(hierarchy, version);
-        // Update the zoom to compensate for the movement induced by the folding
-        setInitialZoom({
-          x:
-            zoom.current.x -
-            (node.x - previousClickedNodePosX) * zoom.current.k,
-          y:
-            zoom.current.y -
-            (node.y - previousClickedNodePosY) * zoom.current.k,
-          k: zoom.current.k
-        });
-        return layout;
-      });
     },
-    [selectedNode, updateSelectedNode]
+    [foldedNodesState, setFoldedNodes]
   );
   return (
     <ZoomableCanvas
@@ -261,11 +282,11 @@ const Tree = ({
           configuration={ configuration }
           hierarchy={ hierarchy }
           updateSelectedNode={ updateSelectedNode }
-          selectedNode={ selectedNode }
-          onClickNode={ foldNode }
+          selectedNodePath={ selectedNode }
+          onToggleSubtreeFold={ toggleSubtreeFold }
         />
         <Edges
-          edgePath={ selectedHNode ? selectedHNode.treeNodeIdPath : [] }
+          selectedNodeIdPath={ selectedHNode ? selectedHNode.idPath : [] }
           dt={ dt }
           hierarchy={ hierarchy }
           width={ layout.canvasWidth }
@@ -289,7 +310,7 @@ Tree.propTypes = {
   updateSelectedNode: PropTypes.func.isRequired,
   edgeType: PropTypes.string,
   selectedNode: PropTypes.string,
-  collapsedDepth: PropTypes.number
+  foldedNodes: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default Tree;

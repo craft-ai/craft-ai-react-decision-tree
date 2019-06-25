@@ -10,8 +10,8 @@ import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
-import { number, withKnobs } from '@storybook/addon-knobs';
 import React, { useState } from 'react';
 
 import './test.css';
@@ -46,7 +46,12 @@ const CustomComponent = ({ tree, height, width }) => {
           marginBottom: 10
         }}
       >
-        SelectedNode:&nbsp;<input type='text' onChange={ updateSelectedNodeInput } value={ selectedNode } />
+        SelectedNode:&nbsp;
+        <input
+          type='text'
+          onChange={ updateSelectedNodeInput }
+          value={ selectedNode }
+        />
       </div>
       <DecisionTree
         updateSelectedNode={ setSelectedNode }
@@ -172,22 +177,34 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
-  .add('collapsed tree', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: '100%',
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel
-          data={ treeV2Classif }
-          collapsedDepth={ number('Depth', 5, { range: true, min: 0, max: 10, step: 1 }) }
-        />
+  .add('Folded Tree', () => {
+    let foldedNodes = [];
+    if (boolean('fold 0-0', false)) {
+      foldedNodes = [...foldedNodes, '0-0'];
+    }
+    if (boolean('fold 0-0-1', false)) {
+      foldedNodes = [...foldedNodes, '0-0-1'];
+    }
+    if (boolean('fold 0-1-1', false)) {
+      foldedNodes = [...foldedNodes, '0-1-1'];
+    }
+    return (
+      <div
+        style={{
+          display: 'flex',
+          height: '100%',
+          border: 'solid 1px black'
+        }}
+      >
+        <div style={{ height: 'inherit', flexGrow: 1 }}>
+          <DecisionTreeWithPanel
+            data={ treeV2Classif }
+            foldedNodes={ foldedNodes }
+          />
+        </div>
       </div>
-    </div>
-  ))
+    );
+  })
   .add('display tree v2 - absolute link thickness', () => (
     <div
       style={{

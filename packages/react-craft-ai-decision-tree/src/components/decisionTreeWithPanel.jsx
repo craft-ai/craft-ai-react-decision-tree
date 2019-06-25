@@ -18,7 +18,7 @@ const DecisionTreeWithPanel = ({
   width,
   updatePositionAndZoom,
   edgeType,
-  collapsedDepth
+  foldedNodes
 }) => {
   const [selectedNode, setSelectedNode] = useState('');
   const treeVersion = semver.major(data._version);
@@ -54,7 +54,7 @@ const DecisionTreeWithPanel = ({
             dt={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
             selectedNode={ selectedNode }
-            collapsedDepth={ collapsedDepth }
+            foldedNodes={ foldedNodes }
           />
         )}
       </ContainerDimensions>
@@ -78,7 +78,7 @@ DecisionTreeWithPanel.propTypes = {
   width: PropTypes.number,
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
-  collapsedDepth: PropTypes.number
+  foldedNodes: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default DecisionTreeWithPanel;
