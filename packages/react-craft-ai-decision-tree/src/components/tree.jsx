@@ -144,7 +144,7 @@ const Tree = ({
   updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
   edgeType,
-  selectedNode,
+  selectedNode = '',
   foldedNodes = DEFAULT_PROPS.foldedNodes
 }) => {
   const [zooming, setZooming] = useState(true);

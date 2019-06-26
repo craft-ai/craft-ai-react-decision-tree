@@ -4,7 +4,7 @@ import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Tree from './tree';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const DecisionTreeContainer = styled('div')`
   height: 100%;
@@ -16,11 +16,14 @@ const DecisionTreeWithPanel = ({
   data,
   height,
   width,
+  selectedNode,
   updatePositionAndZoom,
   edgeType,
   foldedNodes
 }) => {
-  const [selectedNode, setSelectedNode] = useState('');
+  const [selectedNodeState, setSelectedNode] = useState(selectedNode);
+
+  useEffect(() => setSelectedNode(selectedNode), [selectedNode]);
 
   const interpreter = useMemo(
     () => createInterpreter(data, Object.keys(data.trees)[0]),
@@ -28,7 +31,7 @@ const DecisionTreeWithPanel = ({
   );
 
   const closeNodeInformation = () => {
-    setSelectedNode('');
+    setSelectedNode(undefined);
   };
 
   return (
@@ -41,7 +44,7 @@ const DecisionTreeWithPanel = ({
     >
       <NodeInformations
         tree={ data }
-        selectedNodePath={ selectedNode }
+        selectedNodePath={ selectedNodeState || '' }
         closeNodeInformation={ closeNodeInformation }
       />
       <ContainerDimensions>
@@ -56,7 +59,7 @@ const DecisionTreeWithPanel = ({
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
             edgeType={ edgeType }
-            selectedNode={ selectedNode }
+            selectedNode={ selectedNodeState }
             foldedNodes={ foldedNodes }
           />
         )}
@@ -81,6 +84,7 @@ DecisionTreeWithPanel.propTypes = {
   width: PropTypes.number,
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
+  selectedNode: PropTypes.string,
   foldedNodes: PropTypes.arrayOf(PropTypes.string)
 };
 

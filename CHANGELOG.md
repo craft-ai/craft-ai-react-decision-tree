@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Introduce a Decision Tree props `foldedNodes` to set which nodes' subtrees will be folded.
 - Decision Tree folded nodes now display the predicted values of the folded tree.
+- `DecisionTreeWithPanel` can now be provided by an initial `selectedNode`.
 
 ## Fixed
 

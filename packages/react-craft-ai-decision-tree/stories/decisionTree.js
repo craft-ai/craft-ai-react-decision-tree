@@ -151,6 +151,14 @@ storiesOf('Tree displayed with fixed height', module)
       </div>
     </div>
   ))
+  .add('display tree v2 regression - selected node', () => (
+    <DecisionTreeWithPanel
+      data={ treeV2Reg }
+      width={ number('Width', 1280, sizeBoundOptions) }
+      height={ number('Height', 720, sizeBoundOptions) }
+      selectedNode={ boolean('select node', true) ? '0-1-0' : undefined }
+    />
+  ))
   .add('display tree v2 classification', () => (
     <div
       style={{
