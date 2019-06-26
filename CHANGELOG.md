@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Decision tree _fit-to-screen_ (when double clicking) now works with a single render and is therefore smoother.
 - Decision tree selected node label offset is properly applied.
+- Decision tree edges labels are now placed _more_ properly.
 
 ## Removed
 

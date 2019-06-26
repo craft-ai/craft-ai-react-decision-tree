@@ -3,7 +3,7 @@ import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';
-import { NODE_DEPTH, NODE_HEIGHT, NODE_WIDTH } from '../utils/constants';
+import { NODE_DEPTH, NODE_WIDTH } from '../utils/constants';
 
 const EdgeLabelDiv = styled('div')`
   overflow: hidden;
@@ -12,7 +12,7 @@ const EdgeLabelDiv = styled('div')`
   text-align: center;
   font-size: smaller;
   pointer-events: auto;
-  width: ${({ width }) => width}px;
+  width: ${NODE_WIDTH}px;
   top: ${({ y }) => y}px;
   left: ${({ x }) => x}px;
 `;
@@ -23,27 +23,8 @@ const EdgeLabel = ({
   onShowTooltip = (ref, text) => {},
   onHideTooltip = () => {}
 }) => {
-  const dtSourceNode = hLink.source.data;
   const dtTargetNode = hLink.target.data;
   const edgeLabelRef = React.createRef();
-
-  let x;
-  let width;
-  if (dtSourceNode.children.length > 2) {
-    // arity of 2 or more.
-    x = hLink.target.x;
-    width = NODE_WIDTH;
-  }
-  else if (hLink.source.x <= hLink.target.x) {
-    // source on the left
-    x = hLink.source.x;
-    width = hLink.target.x - hLink.source.x;
-  }
-  else {
-    // source on the right
-    x = hLink.target.x;
-    width = hLink.source.x - hLink.target.x;
-  }
 
   const propertyType =
     configuration.context[dtTargetNode.decision_rule.property].type;
@@ -61,9 +42,8 @@ const EdgeLabel = ({
       onMouseOver={ () => onShowTooltip(edgeLabelRef.current, text) }
       onMouseOut={ onHideTooltip }
       className='craft-links'
-      width={ width }
-      x={ x }
-      y={ hLink.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3) }
+      x={ hLink.target.x - NODE_WIDTH / 2 }
+      y={ hLink.target.y - (NODE_DEPTH * 2) / 5 }
     >
       {text}
     </EdgeLabelDiv>
