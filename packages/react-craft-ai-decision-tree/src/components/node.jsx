@@ -39,8 +39,8 @@ const NodeLabel = styled('div')`
   box-sizing: content-box;
   border: ${({ selected }) =>
     selected ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}` : ''};
-  top: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)};
-  left: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)};
+  top: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)}px;
+  left: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)}px;
   background-color: ${({ color = COLOR_NODES }) => color};
 `;
 
