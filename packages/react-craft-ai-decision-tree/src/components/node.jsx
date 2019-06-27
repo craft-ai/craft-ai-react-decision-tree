@@ -11,7 +11,7 @@ import {
   SELECTED_BORDER_WIDTH,
   SELECTED_COLOR_EDGES
 } from '../utils/constants';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const BUTTON_RADIUS = 21;
 const BUTTON_BORDER = 2;
@@ -107,8 +107,8 @@ const Node = ({
   onHideTooltip = () => {},
   onToggleSubtreeFold = () => {}
 }) => {
-  const buttonRef = React.createRef();
-  const labelRef = React.createRef();
+  const buttonRef = useRef();
+  const labelRef = useRef();
 
   const { isFolded, isLeaf, color, text = 'N/A' } = computeNodePresentationData(
     hNode,

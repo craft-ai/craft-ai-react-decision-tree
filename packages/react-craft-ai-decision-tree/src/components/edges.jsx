@@ -11,7 +11,7 @@ import {
   NODE_WIDTH,
   SELECTED_COLOR_EDGES
 } from '../utils/constants';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // make links css rules
 const defaultLinksCssClass = css`
@@ -138,7 +138,7 @@ const Edges = ({
   height,
   edgeType
 }) => {
-  const canvas = React.createRef();
+  const canvas = useRef();
 
   useEffect(
     () => {

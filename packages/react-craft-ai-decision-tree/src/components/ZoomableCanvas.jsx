@@ -7,7 +7,13 @@ import {
   zoom as d3Zoom,
   zoomIdentity as transformIdentity
 } from 'd3';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 
 const Viewport = styled('div')`
   position: relative;
@@ -61,26 +67,34 @@ function computeFitZoom({
   });
 }
 
-const ZoomableCanvas = ({
+const DEFAULT_PROPS = {
+  minZoomScale: 0.1,
+  maxZoomScale: 10,
+  onZooming: (isZooming) => {},
+  onZoomChange: (transform) => {},
+  disable: false
+};
+
+const ZoomableCanvas = React.memo(function ZoomableCanvas({
   children,
   canvasHeight,
   canvasWidth,
-  minZoomScale = 0.1,
-  maxZoomScale = 10,
+  minZoomScale = DEFAULT_PROPS.minZoomScale,
+  maxZoomScale = DEFAULT_PROPS.maxZoomScale,
   initialZoom,
-  onZooming = (isZooming) => {},
-  onZoomChange = (transform) => {},
-  disable = false,
+  onZooming = DEFAULT_PROPS.onZooming,
+  onZoomChange = DEFAULT_PROPS.onZoomChange,
+  disable = DEFAULT_PROPS.disable,
   ...otherProps
-}) => {
-  const viewportRef = React.createRef();
+}) {
+  const viewportRef = useRef();
   const [zoom, setZoomState] = useState(createZoom(initialZoom));
 
   // Create the zoom system only once.
   const zoomSystem = useMemo(
     () => d3Zoom()
       .scaleExtent([minZoomScale, maxZoomScale]),
-    []
+    [maxZoomScale, minZoomScale]
   );
 
   // Create the callback that can be used to properly change the zoom.
@@ -107,56 +121,64 @@ const ZoomableCanvas = ({
 
       setZoom(fitZoom);
     },
-    [canvasHeight, canvasWidth, minZoomScale, maxZoomScale, viewportRef]
+    [canvasHeight, canvasWidth, minZoomScale, maxZoomScale, setZoom]
   );
 
   // Attach the zoom system
   useEffect(
     () => {
+      const viewportDomNode = viewportRef.current;
       if (disable) {
-        d3Select(viewportRef.current)
+        d3Select(viewportDomNode)
           .on('.zoom', null);
       }
       else {
-        d3Select(viewportRef.current)
+        d3Select(viewportDomNode)
           .call(
             zoomSystem
               .on('zoom', () => {
-                onZoomChange({
-                  x: d3Event.transform.x,
-                  y: d3Event.transform.y,
-                  k: d3Event.transform.k
+                const zoom = d3Event.transform;
+                const { x, y, k } = zoom;
+                setZoomState((oldZoom) => {
+                  if (x == oldZoom.x && y == oldZoom.y && k == oldZoom.k) {
+                    return oldZoom;
+                  }
+                  onZoomChange({
+                    x,
+                    y,
+                    k
+                  });
+                  return zoom;
                 });
-                setZoomState(d3Event.transform);
               })
               .on('start', () => onZooming(true))
               .on('end', () => onZooming(false))
           )
           .on('dblclick.zoom', null);
         return () => {
-          d3Select(viewportRef.current)
+          d3Select(viewportDomNode)
             .on('.zoom', null);
         };
       }
     },
-    [disable, minZoomScale, maxZoomScale, viewportRef]
+    [disable, minZoomScale, maxZoomScale, zoomSystem, onZoomChange, onZooming]
   );
 
+  const initialZoomX = initialZoom && initialZoom.x;
+  const initialZoomY = initialZoom && initialZoom.y;
+  const initialZoomK = initialZoom && initialZoom.k;
   useEffect(
     () => {
-      if (!initialZoom) {
+      if (!initialZoomX) {
         fitToScreen();
       }
       else {
-        setZoom(createZoom(initialZoom));
+        setZoom(
+          createZoom({ x: initialZoomX, y: initialZoomY, k: initialZoomK })
+        );
       }
     },
-    [
-      initialZoom,
-      initialZoom && initialZoom.x,
-      initialZoom && initialZoom.y,
-      initialZoom && initialZoom.k
-    ]
+    [fitToScreen, setZoom, initialZoomX, initialZoomY, initialZoomK]
   );
   return (
     <Viewport
@@ -169,7 +191,7 @@ const ZoomableCanvas = ({
       </Canvas>
     </Viewport>
   );
-};
+});
 
 ZoomableCanvas.propTypes = {
   canvasHeight: PropTypes.number.isRequired,

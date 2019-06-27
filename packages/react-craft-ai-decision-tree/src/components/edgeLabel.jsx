@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
-import React from 'react';
 import styled from '@emotion/styled';
 import { NODE_DEPTH, NODE_WIDTH } from '../utils/constants';
+import React, { useRef } from 'react';
 
 const EdgeLabelDiv = styled('div')`
   overflow: hidden;
@@ -24,7 +24,7 @@ const EdgeLabel = ({
   onHideTooltip = () => {}
 }) => {
   const dtTargetNode = hLink.target.data;
-  const edgeLabelRef = React.createRef();
+  const edgeLabelRef = useRef();
 
   const propertyType =
     configuration.context[dtTargetNode.decision_rule.property].type;
