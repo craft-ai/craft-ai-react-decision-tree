@@ -1,7 +1,6 @@
 import createInterpreter from '../../utils/interpreter';
 import DecisionRules from './decisionRules';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { findSelectedNode } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Prediction from './prediction';
 import PropTypes from 'prop-types';

@@ -34,24 +34,6 @@ function computeHierarchy(rootDtNode) {
       hNode.idPath = [...hNode.parent.idPath, hNode.id];
       const index = hNode.parent.children.findIndex((child) => child === hNode);
       hNode.path = `${hNode.parent.path}${NODE_PATH_SEPARATOR}${index}`;
-      hNode.decisionRules = _.isEmpty(hNode.parent.decisionRules)
-        ? {}
-        : _.cloneDeep(hNode.parent.decisionRules);
-      // adding decision rules of the node
-      if (hNode.decisionRules[hNode.data.decision_rule.property]) {
-        hNode.decisionRules[hNode.data.decision_rule.property].push({
-          operator: hNode.data.decision_rule.operator,
-          operand: hNode.data.decision_rule.operand
-        });
-      }
-      else {
-        hNode.decisionRules[hNode.data.decision_rule.property] = [
-          {
-            operator: hNode.data.decision_rule.operator,
-            operand: hNode.data.decision_rule.operand
-          }
-        ];
-      }
     }
     else {
       // root node
