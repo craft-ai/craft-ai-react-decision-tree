@@ -59,6 +59,28 @@ function computeHierarchy(rootDtNode) {
       hNode.path = '0';
     }
   });
+
+  return hierarchy;
+}
+
+function applyFolding(hierarchy, foldedNodes = []) {
+  // Apply the folded node to the hierarchy
+  hierarchy.each((hNode) => {
+    const folded = hNode.foldedChildren != null;
+    const shouldBeFolded =
+      foldedNodes.findIndex((path) => hNode.path === path) >= 0;
+    const toFold = shouldBeFolded && !folded;
+    const toUnfold = !shouldBeFolded && folded;
+    if (toFold) {
+      hNode.foldedChildren = hNode.children;
+      hNode.children = null;
+    }
+    if (toUnfold) {
+      hNode.children = hNode.foldedChildren;
+      hNode.foldedChildren = null;
+    }
+  });
+
   return hierarchy;
 }
 
@@ -68,7 +90,7 @@ const d3ComputeHierarchyLayout = d3Tree()
     NODE_HEIGHT
   ]);
 
-function computeHierarchyLayout(hierarchy, version = 0) {
+function applyHierarchyLayout(hierarchy, version = 0) {
   d3ComputeHierarchyLayout(hierarchy);
 
   let treeDepth = 0;
@@ -147,29 +169,45 @@ const Tree = ({
   selectedNode,
   foldedNodes = DEFAULT_PROPS.foldedNodes
 }) => {
-  const [zooming, setZooming] = useState(true);
+  const hierarchy = useMemo(
+    () => applyFolding(computeHierarchy(interpreter.dt), foldedNodes),
+    // No dependency on 'foldedNodes' because this should only occur on the hierarchy full recomputation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [interpreter.dt]
+  );
 
-  const [initialZoom, setInitialZoom] = useState(
-    scale > 0 && {
+  const [zooming, setZooming] = useState(true);
+  const [{ layout, initialZoom }, setLayoutAndInitialZoom] = useState({
+    layout: applyHierarchyLayout(hierarchy),
+    initialZoom: scale > 0 && {
       x: position[0],
       y: position[1],
       k: scale
     }
+  });
+  const zoom = useRef(layout.initialZoom);
+  useEffect(
+    () => {
+      setLayoutAndInitialZoom(({ layout, initialZoom }) => ({
+        layout: applyHierarchyLayout(hierarchy, layout.version),
+        initialZoom
+      }));
+    },
+    [hierarchy]
   );
   useEffect(
     () => {
-      setInitialZoom(
-        scale > 0 && {
+      setLayoutAndInitialZoom(({ layout, initialZoom }) => ({
+        layout,
+        initialZoom: scale > 0 && {
           x: position[0],
           y: position[1],
           k: scale
         }
-      );
+      }));
     },
     [position, scale]
   );
-
-  const zoom = useRef(initialZoom);
   const handleZoomChange = useCallback(
     (newZoom) => {
       zoom.current = newZoom;
@@ -180,10 +218,6 @@ const Tree = ({
     [updatePositionAndZoom]
   );
 
-  const hierarchy = useMemo(() => computeHierarchy(interpreter.dt), [
-    interpreter.dt
-  ]);
-
   const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
   const setFoldedNodes = useCallback(
     (foldedNodes, referenceHNode) => {
@@ -191,34 +225,24 @@ const Tree = ({
       const previousPosX = referenceHNode.x;
       const previousPosY = referenceHNode.y;
 
-      hierarchy.each((hNode) => {
-        const folded = hNode.foldedChildren != null;
-        const shouldBeFolded =
-          foldedNodes.findIndex((path) => hNode.path === path) >= 0;
-        const toFold = shouldBeFolded && !folded;
-        const toUnfold = !shouldBeFolded && folded;
-        if (toFold) {
-          hNode.foldedChildren = hNode.children;
-          hNode.children = null;
-        }
-        if (toUnfold) {
-          hNode.children = hNode.foldedChildren;
-          hNode.foldedChildren = null;
-        }
-      });
+      applyFolding(hierarchy, foldedNodes);
 
       // Refresh the layout
-      setLayout(({ version }) => {
-        const layout = computeHierarchyLayout(hierarchy, version);
-        // Update the zoom to compensate for the movement induced by the folding
-        setInitialZoom({
-          x:
-            zoom.current.x - (referenceHNode.x - previousPosX) * zoom.current.k,
-          y:
-            zoom.current.y - (referenceHNode.y - previousPosY) * zoom.current.k,
-          k: zoom.current.k
-        });
-        return layout;
+      setLayoutAndInitialZoom(({ layout }) => {
+        const updatedLayout = applyHierarchyLayout(hierarchy, layout.version);
+        return {
+          layout: updatedLayout,
+          // Update the zoom to compensate for the movement induced by the folding
+          initialZoom: {
+            x:
+              zoom.current.x -
+              (referenceHNode.x - previousPosX) * zoom.current.k,
+            y:
+              zoom.current.y -
+              (referenceHNode.y - previousPosY) * zoom.current.k,
+            k: zoom.current.k
+          }
+        };
       });
 
       setFoldedNodesState(foldedNodes);
@@ -232,14 +256,6 @@ const Tree = ({
     foldedNodes,
     setFoldedNodes
   ]);
-
-  const [layout, setLayout] = useState(computeHierarchyLayout(hierarchy));
-  useEffect(
-    () => {
-      setLayout(({ version }) => computeHierarchyLayout(hierarchy, version));
-    },
-    [hierarchy]
-  );
 
   const selectedHNode = useMemo(() => hNodeFromPath(selectedNode, hierarchy), [
     selectedNode,

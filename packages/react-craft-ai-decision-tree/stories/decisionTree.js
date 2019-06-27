@@ -187,7 +187,7 @@ storiesOf('Tree displayed with fixed height', module)
   ))
   .add('Folded Tree', () => {
     let foldedNodes = [];
-    if (boolean('fold 0-0', false)) {
+    if (boolean('fold 0-0', true)) {
       foldedNodes = [...foldedNodes, '0-0'];
     }
     if (boolean('fold 0-0-1', false)) {
