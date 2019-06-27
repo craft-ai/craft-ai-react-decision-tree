@@ -144,7 +144,7 @@ const Tree = ({
   updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
   edgeType,
-  selectedNode = '',
+  selectedNode,
   foldedNodes = DEFAULT_PROPS.foldedNodes
 }) => {
   const [zooming, setZooming] = useState(true);
@@ -170,12 +170,15 @@ const Tree = ({
   );
 
   const zoom = useRef(initialZoom);
-  const handleZoomChange = useCallback((newZoom) => {
-    zoom.current = newZoom;
-    if (updatePositionAndZoom) {
-      updatePositionAndZoom([newZoom.x, newZoom.y], newZoom.k);
-    }
-  });
+  const handleZoomChange = useCallback(
+    (newZoom) => {
+      zoom.current = newZoom;
+      if (updatePositionAndZoom) {
+        updatePositionAndZoom([newZoom.x, newZoom.y], newZoom.k);
+      }
+    },
+    [updatePositionAndZoom]
+  );
 
   const hierarchy = useMemo(() => computeHierarchy(interpreter.dt), [
     interpreter.dt
@@ -197,14 +200,6 @@ const Tree = ({
         if (toFold) {
           hNode.foldedChildren = hNode.children;
           hNode.children = null;
-
-          // Unselect the previously selected node if a parent is collapsed
-          if (
-            selectedNode.startsWith(hNode.path) &&
-            selectedNode !== hNode.path
-          ) {
-            updateSelectedNode('');
-          }
         }
         if (toUnfold) {
           hNode.children = hNode.foldedChildren;
@@ -228,13 +223,14 @@ const Tree = ({
 
       setFoldedNodesState(foldedNodes);
     },
-    [hierarchy, selectedNode, updateSelectedNode]
+    [hierarchy]
   );
 
   // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
   useEffect(() => setFoldedNodes(foldedNodes, hierarchy), [
     hierarchy,
-    foldedNodes
+    foldedNodes,
+    setFoldedNodes
   ]);
 
   const [layout, setLayout] = useState(computeHierarchyLayout(hierarchy));
@@ -265,6 +261,22 @@ const Tree = ({
     },
     [foldedNodesState, setFoldedNodes]
   );
+
+  // Unselect the previously selected node if a parent were folded
+  useEffect(
+    () => {
+      if (selectedNode) {
+        foldedNodesState.forEach((path) => {
+          if (selectedNode.startsWith(path) && selectedNode !== path) {
+            updateSelectedNode();
+            return;
+          }
+        });
+      }
+    },
+    [foldedNodesState, selectedNode, updateSelectedNode]
+  );
+
   return (
     <ZoomableCanvas
       initialZoom={ initialZoom }
@@ -283,7 +295,7 @@ const Tree = ({
           configuration={ configuration }
           hierarchy={ hierarchy }
           updateSelectedNode={ updateSelectedNode }
-          selectedNodePath={ selectedNode }
+          selectedNodePath={ selectedNode || '' }
           onToggleSubtreeFold={ toggleSubtreeFold }
         />
         <Edges
