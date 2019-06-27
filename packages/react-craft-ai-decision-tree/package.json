@@ -55,6 +55,7 @@
     "eslint": "^5.9",
     "eslint-config-craft-ai": "^3.0",
     "eslint-plugin-react": "^7.11",
+    "eslint-plugin-react-hooks": "^1.6.1",
     "webpack": "4.26.0",
     "webpack-cli": "3.1.2"
   },
