@@ -35,7 +35,7 @@ const NodeLabel = styled('div')`
   height: ${NODE_HEIGHT}px;
   font-style: ${({ isFolded }) => (isFolded ? 'italic' : 'initial')};
   pointer-events: auto;
-  cursor: pointer;
+  cursor: ${({ selectable }) => (selectable ? 'pointer' : 'default')};
   box-sizing: content-box;
   border: ${({ selected }) =>
     selected ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}` : ''};
@@ -102,7 +102,7 @@ const Node = ({
   hNode,
   interpreter,
   selected = false,
-  onSelectNode = () => {},
+  onSelectNode,
   onShowTooltip = (ref, text) => {},
   onHideTooltip = () => {},
   onToggleSubtreeFold = () => {}
@@ -137,6 +137,7 @@ const Node = ({
         color={ color }
         selected={ selected }
         isFolded={ isFolded }
+        selectable={ onSelectNode != null }
       >
         {text}
       </NodeLabel>

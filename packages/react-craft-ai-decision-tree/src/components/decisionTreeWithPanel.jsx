@@ -1,25 +1,27 @@
 import ContainerDimensions from 'react-container-dimensions';
 import createInterpreter from '../utils/interpreter';
+import DecisionTreeContainer from './decisionTreeContainer';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Tree from './tree';
 import React, { useEffect, useMemo, useState } from 'react';
 
-const DecisionTreeContainer = styled('div')`
-  height: 100%;
+const NodeInformationsOverlay = styled('div')`
+  position: absolute;
+  height: ${({ height }) => height}px;
+  z-index: 10;
 `;
 
 const DecisionTreeWithPanel = ({
   scale,
   position,
   data,
-  height,
-  width,
   selectedNode,
   updatePositionAndZoom,
   edgeType,
-  foldedNodes
+  foldedNodes,
+  style
 }) => {
   const [selectedNodeState, setSelectedNode] = useState(selectedNode);
 
@@ -35,20 +37,17 @@ const DecisionTreeWithPanel = ({
   };
 
   return (
-    <DecisionTreeContainer
-      style={{
-        display: 'flex',
-        height: height,
-        width: width
-      }}
-    >
-      <NodeInformations
-        tree={ data }
-        selectedNodePath={ selectedNodeState || '' }
-        closeNodeInformation={ closeNodeInformation }
-      />
-      <ContainerDimensions>
-        {({ height, width }) => (
+    <DecisionTreeContainer style={ style }>
+      {({ height, width }) => (
+        <React.Fragment>
+          <NodeInformationsOverlay height={ height }>
+            <NodeInformations
+              tree={ data }
+              selectedNodePath={ selectedNodeState || '' }
+              closeNodeInformation={ closeNodeInformation }
+              width={ 400 }
+            />
+          </NodeInformationsOverlay>
           <Tree
             interpreter={ interpreter }
             updateSelectedNode={ setSelectedNode }
@@ -62,8 +61,8 @@ const DecisionTreeWithPanel = ({
             selectedNode={ selectedNodeState }
             foldedNodes={ foldedNodes }
           />
-        )}
-      </ContainerDimensions>
+        </React.Fragment>
+      )}
     </DecisionTreeContainer>
   );
 };
@@ -80,12 +79,11 @@ DecisionTreeWithPanel.propTypes = {
   scale: PropTypes.number,
   position: PropTypes.array,
   data: PropTypes.object.isRequired,
-  height: PropTypes.number,
-  width: PropTypes.number,
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
   selectedNode: PropTypes.string,
-  foldedNodes: PropTypes.arrayOf(PropTypes.string)
+  foldedNodes: PropTypes.arrayOf(PropTypes.string),
+  style: PropTypes.object
 };
 
 export default DecisionTreeWithPanel;

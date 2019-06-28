@@ -53,13 +53,18 @@ const CustomComponent = ({ tree, height, width }) => {
           value={ selectedNode }
         />
       </div>
-      <DecisionTree
-        updateSelectedNode={ setSelectedNode }
-        width={ width }
-        height={ height }
-        data={ tree }
-        selectedNode={ selectedNode }
-      />
+      <div
+        style={{
+          height,
+          width
+        }}
+      >
+        <DecisionTree
+          updateSelectedNode={ setSelectedNode }
+          data={ tree }
+          selectedNode={ selectedNode }
+        />
+      </div>
     </div>
   );
 };
@@ -70,7 +75,7 @@ CustomComponent.propTypes = {
   width: PropTypes.number
 };
 
-storiesOf('Tree displayed with fixed height', module)
+storiesOf('Decision Tree with panel', module)
   .addDecorator(withKnobs)
   .addDecorator(
     backgrounds([
@@ -78,112 +83,52 @@ storiesOf('Tree displayed with fixed height', module)
       { name: 'pink', value: '#d54267' }
     ])
   )
-  .add('only tree', () => (
-    <DecisionTreeWithPanel
-      width={ number('Width', 600, sizeBoundOptions) }
-      height={ number('Height', 500, sizeBoundOptions) }
-      data={ tree }
-    />
-  ))
-  .add('fixed width', () => (
+  .add('only tree', () => <DecisionTreeWithPanel data={ tree } />)
+  .add('in fixed width div', () => (
     <div
       style={{
         width: 600,
         height: 500,
-        border: 'solid 1px black'
+        border: 'solid 5px black'
       }}
     >
       <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
-  .add('flexbox row', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ tree } />
-      </div>
-    </div>
-  ))
-  .add('width 100%', () => (
+  .add('in flexbox row', () => <DecisionTreeWithPanel data={ tree } />)
+  .add('in width 100% div', () => (
     <div
       style={{
         width: '100%',
         height: 500,
-        border: 'solid 1px black'
+        border: 'solid 5px black'
       }}
     >
       <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
-  .add('width css', () => (
+  .add('in width from css div', () => (
     <div className='square'>
       <DecisionTreeWithPanel data={ tree } />
     </div>
   ))
   .add('display tree V2 with non binary splits', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: '100%',
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeMultipleEnum } />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeMultipleEnum } />
   ))
   .add('display tree v2 regression', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: '100%',
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2Reg } />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeV2Reg } />
   ))
   .add('display tree v2 regression - selected node', () => (
     <DecisionTreeWithPanel
       data={ treeV2Reg }
-      width={ number('Width', 1280, sizeBoundOptions) }
-      height={ number('Height', 720, sizeBoundOptions) }
       selectedNode={ boolean('select node', true) ? '0-1-0' : undefined }
     />
   ))
   .add('display tree v2 classification', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2Classif } />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeV2Classif } />
   ))
   .add('display tree v2 classification - binary', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2ClassifBinary } />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeV2ClassifBinary } />
   ))
   .add('Folded Tree', () => {
     let foldedNodes = [];
@@ -197,156 +142,33 @@ storiesOf('Tree displayed with fixed height', module)
       foldedNodes = [...foldedNodes, '0-1-1'];
     }
     return (
-      <div
-        style={{
-          display: 'flex',
-          height: '100%',
-          border: 'solid 1px black'
-        }}
-      >
-        <div style={{ height: 'inherit', flexGrow: 1 }}>
-          <DecisionTreeWithPanel
-            data={ treeV2Classif }
-            foldedNodes={ foldedNodes }
-          />
-        </div>
-      </div>
+      <DecisionTreeWithPanel data={ treeV2Classif } foldedNodes={ foldedNodes } />
     );
   })
   .add('display tree v2 - absolute link thickness', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='absolute' />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeV2Reg } edgeType='absolute' />
   ))
   .add('display tree v2 - relative link thickness', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <div style={{ height: 'inherit', flexGrow: 1 }}>
-        <DecisionTreeWithPanel data={ treeV2Reg } edgeType='relative' />
-      </div>
-    </div>
+    <DecisionTreeWithPanel data={ treeV2Reg } edgeType='relative' />
   ))
   .add('saving zoom and pan in parent component', () => <ParentComponent />)
   .add('with initial zoom tree', () => (
-    <DecisionTreeWithPanel
-      width={ number('Width', 600, sizeBoundOptions) }
-      height={ number('Height', 500, sizeBoundOptions) }
-      position={ [0, 0] }
-      scale={ 0.25 }
-      data={ tree }
-    />
-  ));
-
-storiesOf('Tree displayed with fixed width', module)
-  .add('fixed height', () => (
-    <div
-      style={{
-        width: 800,
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ tree } />
-    </div>
+    <DecisionTreeWithPanel position={ [0, 0] } scale={ 0.25 } data={ tree } />
   ))
-  .add('height 100%', () => (
-    <div
-      style={{
-        height: '100vh',
-        width: 800,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ tree } />
-    </div>
-  ));
-
-storiesOf('Small tree', module)
-  .addDecorator(withKnobs)
-  .add('fixed width', () => (
-    <div
-      style={{
-        width: 600,
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ smallTree } />
-    </div>
-  ))
-  .add('flexbox row', () => {
+  .add('small tree', () => <DecisionTreeWithPanel data={ smallTree } />)
+  .add('small tree parameterized confidence', () => {
     const parametrizedTree = _.cloneDeep(smallTree);
     parametrizedTree.trees.interest.children[0].confidence = number(
       'confidence',
       parametrizedTree.trees.interest.children[0].confidence,
       confidenceBoundOptions
     );
-    return (
-      <div
-        style={{
-          display: 'flex',
-          height: 500,
-          border: 'solid 1px black'
-        }}
-      >
-        <div style={{ flexGrow: 1 }}>
-          <DecisionTreeWithPanel data={ parametrizedTree } />
-        </div>
-      </div>
-    );
+    return <DecisionTreeWithPanel data={ parametrizedTree } />;
   })
-  .add('width 100%', () => (
-    <div
-      style={{
-        width: '100%',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ smallTree } />
-    </div>
-  ));
-
-storiesOf('Big tree', module)
-  .addDecorator(withKnobs)
-  .add('fixed width', () => (
-    <div
-      style={{
-        width: 600,
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ bigTree } />
-    </div>
-  ))
-  .add('width 100%', () => (
-    <div
-      style={{
-        width: '100%',
-        height: 500,
-        border: 'solid 1px black'
-      }}
-    >
-      <DecisionTreeWithPanel data={ bigTree } />
-    </div>
-  ));
+  .add('big tree', () => <DecisionTreeWithPanel data={ bigTree } />);
 
 storiesOf('Tree in content', module)
-  .add('between centered text', () => (
+  .add('DecisionTreeWithPanel - between centered text', () => (
     <div
       style={{
         display: 'flex',
@@ -374,7 +196,7 @@ storiesOf('Tree in content', module)
         blandit pellentesque massa nec fermentum. Integer velit eros, malesuada
         ut tortor id, efficitur scelerisque nibh.
       </p>
-      <DecisionTreeWithPanel data={ tree } height={ 300 } />
+      <DecisionTreeWithPanel data={ tree } style={{ height: 200 }} />
       <p>
         Phasellus gravida urna mi, luctus sagittis dolor scelerisque eu.
         Pellentesque aliquam justo non ultricies pretium. Vestibulum ante ipsum
@@ -392,7 +214,7 @@ storiesOf('Tree in content', module)
       </p>
     </div>
   ))
-  .add('bewteen centered text with height in parent div', () => (
+  .add('DecisionTree - between centered text', () => (
     <div
       style={{
         display: 'flex',
@@ -421,7 +243,7 @@ storiesOf('Tree in content', module)
         blandit pellentesque massa nec fermentum. Integer velit eros, malesuada
         ut tortor id, efficitur scelerisque nibh.
       </p>
-      <DecisionTreeWithPanel data={ tree } />
+      <DecisionTree data={ tree } />
       <p>
         Phasellus gravida urna mi, luctus sagittis dolor scelerisque eu.
         Pellentesque aliquam justo non ultricies pretium. Vestibulum ante ipsum
@@ -466,8 +288,6 @@ storiesOf('Using separate component', module)
   )
   .add('tree', () => (
     <DecisionTree
-      width={ number('Width', 600, sizeBoundOptions) }
-      height={ number('Height', 500, sizeBoundOptions) }
       data={ tree }
     />
   ))

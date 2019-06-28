@@ -10,7 +10,8 @@ import styled from 'react-emotion';
 import React, { useMemo } from 'react';
 
 const NodeInformationContainer = styled('div')`
-  width: 200px;
+  height: 100%;
+  ${({ width }) => (width ? `width: ${width}` : '')}
   display: flex;
   flex-direction: column;
   float: left;
@@ -42,7 +43,8 @@ const NodeInformation = ({
   closeNodeInformation,
   selectedNodePath,
   style,
-  tree
+  tree,
+  width
 }) => {
   const interpreter = useMemo(
     () => createInterpreter(tree, Object.keys(tree.trees)[0]),
@@ -95,6 +97,7 @@ NodeInformation.propTypes = {
   closeNodeInformation: PropTypes.func,
   tree: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string.isRequired,
+  width: PropTypes.number,
   style: PropTypes.object
 };
 

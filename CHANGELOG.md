@@ -10,14 +10,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Added
 
 - Introduce a Decision Tree props `foldedNodes` to set which nodes' subtrees will be folded.
-- Decision Tree folded nodes now display the predicted values of the folded tree.
+
+## Changed
+
 - `DecisionTreeWithPanel` can now be provided by an initial `selectedNode`.
+- Decision Tree folded nodes now display the predicted values of the folded tree.
+- `DecisionTreeWithPanel` & `DecisionTree` no longer require `width` and `height` to be dimensioned properly.
+- The panel in `DecisionTreeWithPanel` now appears over the tree itself.
 
 ## Fixed
 
 - Decision tree _fit-to-screen_ (when double clicking) now works with a single render and is therefore smoother.
 - Decision tree selected node label offset is properly applied.
 - Decision tree edges labels are now placed _more_ properly.
+- Decision tree nodes that are not selectable no longer change the mouse pointer.
 
 ## Removed
 
@@ -45,7 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Show prediction for '0' output value.
 - Fix the nodepath regex to accept non-binary splits.
 
-## Updated
+## Changed
 
 - Histogram plots are 90° rotated.
 
@@ -56,7 +62,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add an information button on the boxplot to explain how to read it.
 - Expose the style parameter in `NodeInformation`.
 
-## Updated
+## Changed
 
 - Minor update of the presentation of the node information.
 
@@ -84,7 +90,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Edges width can be 'constant', 'absolute' or 'relative' with the parameter `edgeType`
 - Add Histograms for Classification and Boxplots for Regression in the panel in every node.
 
-## Updated
+## Changed
 
 - Change the popover of the leaf to a panel
 - Refactor the visualization of the data in all the nodes

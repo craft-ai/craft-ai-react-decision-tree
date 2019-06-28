@@ -138,7 +138,7 @@ const DEFAULT_PROPS = {
   foldedNodes: []
 };
 
-const Tree = ({
+const Tree = React.memo(function Tree({
   interpreter,
   configuration,
   height,
@@ -150,7 +150,7 @@ const Tree = ({
   edgeType,
   selectedNode,
   foldedNodes = DEFAULT_PROPS.foldedNodes
-}) => {
+}) {
   const hierarchy = useMemo(
     () => applyFolding(computeHierarchy(interpreter.dt), foldedNodes),
     // No dependency on 'foldedNodes' because this should only occur on the hierarchy full recomputation.
@@ -263,7 +263,7 @@ const Tree = ({
   // Unselect the previously selected node if a parent were folded
   useEffect(
     () => {
-      if (selectedNode) {
+      if (selectedNode && updateSelectedNode) {
         foldedNodesState.forEach((path) => {
           if (selectedNode.startsWith(path) && selectedNode !== path) {
             updateSelectedNode();
@@ -307,7 +307,7 @@ const Tree = ({
       </React.Fragment>
     </ZoomableCanvas>
   );
-};
+});
 
 Tree.propTypes = {
   interpreter: PropTypes.object.isRequired,
@@ -317,7 +317,7 @@ Tree.propTypes = {
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
   updatePositionAndZoom: PropTypes.func,
-  updateSelectedNode: PropTypes.func.isRequired,
+  updateSelectedNode: PropTypes.func,
   edgeType: PropTypes.string,
   selectedNode: PropTypes.string,
   foldedNodes: PropTypes.arrayOf(PropTypes.string)

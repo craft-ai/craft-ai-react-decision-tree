@@ -8,7 +8,7 @@ import {
 } from './constants';
 
 export function computeLeafColor(confidence) {
-  if (confidence) {
+  if (confidence != null) {
     const blend = Math.pow(confidence, 3);
     return mix(blend, COLOR_LEAVES_CONFIDENCE_1, COLOR_LEAVES_CONFIDENCE_0);
   }

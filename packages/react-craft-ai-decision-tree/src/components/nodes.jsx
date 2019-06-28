@@ -49,7 +49,9 @@ const NodesNodes = React.memo(function NodesNodes({
           hNode={ hNode }
           selected={ hNode.path === selectedNodePath }
           // eslint-disable-next-line react/jsx-no-bind
-          onSelectNode={ () => onSelectNode(hNode.path) }
+          onSelectNode={
+            onSelectNode ? () => onSelectNode(hNode.path) : undefined
+          }
           // eslint-disable-next-line react/jsx-no-bind
           onToggleSubtreeFold={ () => onToggleSubtreeFold(hNode) }
           onShowTooltip={ onShowTooltip }
@@ -64,7 +66,7 @@ const NodesNodes = React.memo(function NodesNodes({
 NodesNodes.propTypes = {
   descendants: PropTypes.array.isRequired,
   selectedNodePath: PropTypes.string,
-  onSelectNode: PropTypes.func.isRequired,
+  onSelectNode: PropTypes.func,
   onToggleSubtreeFold: PropTypes.func.isRequired,
   onShowTooltip: PropTypes.func.isRequired,
   onHideTooltip: PropTypes.func.isRequired,
@@ -120,11 +122,11 @@ const Nodes = ({
   }, []);
 
   const selectNode = useCallback(
-    (selectedNodeTreePath) => {
-      if (updateSelectedNode) {
+    updateSelectedNode
+      ? (selectedNodeTreePath) => {
         updateSelectedNode(selectedNodeTreePath);
       }
-    },
+      : null,
     [updateSelectedNode]
   );
 
@@ -134,7 +136,7 @@ const Nodes = ({
         onToggleSubtreeFold(hNode);
       }
     },
-    [updateSelectedNode]
+    [onToggleSubtreeFold]
   );
 
   const descendants = useMemo(() => hierarchy.descendants(), [hierarchy]);
