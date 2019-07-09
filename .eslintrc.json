@@ -1,9 +1,14 @@
 {
   "root": true,
   "extends": "craft-ai/react.babel",
+  "plugins": ["react-hooks"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
   "settings": {
     "react": {
-      "version": "15.0"
+      "version": "16.0"
     }
   }
 }

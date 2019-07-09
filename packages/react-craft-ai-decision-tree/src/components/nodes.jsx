@@ -1,356 +1,187 @@
-import _ from 'lodash';
-import { computeLeafColor } from '../utils/utils';
-import { interpreter } from 'craft-ai';
+import EdgeLabel from './edgeLabel';
 import Node from './node';
 import PropTypes from 'prop-types';
-import React from 'react';
-import styled from '@emotion/styled';
 import ToolTip from 'react-craft-ai-tooltip';
-import {
-  NODE_DEPTH,
-  NODE_HEIGHT,
-  NODE_PADDING,
-  NODE_WIDTH,
-  SELECTED_BORDER_WIDTH,
-  SELECTED_COLOR_EDGES
-} from '../utils/constants';
+import React, { useCallback, useMemo, useState } from 'react';
 
-const BUTTON_RADIUS = 21;
-const BUTTON_BORDER = 2;
-
-const Links = styled('div')`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: absolute;
-  text-align: center;
-  font-size: smaller;
-  pointer-events: auto;
-`;
-
-const Button = styled('button')`
-  position: fixed;
-  height: ${BUTTON_RADIUS}px;
-  width: ${BUTTON_RADIUS}px;
-  border: ${BUTTON_BORDER}px solid white;
-  border-radius: 50%;
-  color: black;
-  text-align: center;
-  text-decoration: none;
-  box-shadow: 0 0 3px gray;
-  float: left;
-  font-size: 12px;
-  visibility: hidden;
-  font-weight: bold;
-  display: inline-block;
-  transform: translate(-50%, -50%);
-  padding: 0px;
-  transition: background-color 0.1s;
-  cursor: pointer;
-  &:hover {
-    background: #ffcc00;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    background: ${SELECTED_COLOR_EDGES};
-  }
-`;
-
-const NodeButton = ({ node, refButton, setSelectedNode, isVisible }) => {
-  if (!_.isUndefined(node.data.children)) {
-    const text = _.isNull(node.children) ? '+' : '-';
-    return (
-      <Button
-        ref={ refButton }
-        style={{
-          top: node.y + NODE_HEIGHT - BUTTON_RADIUS / 2,
-          left: node.x,
-          visibility: isVisible ? 'visible' : 'hidden'
-        }}
-        onClick={ setSelectedNode }
-      >
-        { text }
-      </Button>
-    );
-  }
-  return null;
-};
-
-NodeButton.propTypes = {
-  node: PropTypes.object.isRequired,
-  refButton: PropTypes.func.isRequired,
-  setSelectedNode: PropTypes.func.isRequired,
-  isVisible: PropTypes.bool.isRequired
-};
-
-class Nodes extends React.Component {
-  linkRef = {};
-
-  nodeRef = {};
-
-  buttonRef = {};
-
-  state = {
-    showingTooltip: false,
-    tooltipOnPovover: false,
-    tooltipText: '',
-    tooltipRef: null,
-    tooltipPlacement: 'bottom',
-    selectedNodeId: undefined,
-    showingNodeButtonId: undefined
-  };
-
-  hideTooltip = () => {
-    this.setState({
-      showingTooltip: false,
-      tooltipText: '',
-      tooltipRef: null,
-      tooltipPlacement: 'bottom'
-    });
-  };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const doUpdate =
-      this.props.configuration != nextProps.configuration ||
-      _.isEqual(this.props.nodes, nextProps.nodes) ||
-      _.isEqual(this.props.links, nextProps.links) ||
-      _.isEqual(this.state.nodes, nextState.nodes) ||
-      this.props.height != nextProps.height;
-    return doUpdate;
-  }
-
-  displayNode = (node, index) => {
-    const setSelectedNode = () => {
-      if (this.props.updateSelectedNode) {
-        this.props.updateSelectedNode(node.treePath);
-      }
-    };
-
-    const onClickExpand = () => {
-      if (!_.isNull(node.children)) {
-        node.hidden_children = node.children;
-        node.children = null;
-      }
-      else {
-        node.children = node.hidden_children;
-        node.hidden_children = null;
-      }
-      this.props.onClickNode(node);
-    };
-
-    const indexRef = (input) => {
-      this.nodeRef[index] = input;
-    };
-
-    const nodeButtonRef = (input) => {
-      this.buttonRef[index] = input;
-    };
-
-    let text;
-    let color;
-
-    if (this.props.version == 1) {
-      if (!_.isUndefined(node.data.predicted_value)) {
-        // leaf
-        color = computeLeafColor(node.data.confidence);
-        text = _.isNull(node.data.predicted_value)
-          ? ''
-          : _.isFinite(node.data.predicted_value)
-            ? parseFloat(node.data.predicted_value.toFixed(3))
-              .toString()
-            : node.data.predicted_value;
-      }
-      else {
-        // node
-        text = node.data.children[0].decision_rule.property;
-      }
-    }
-    else {
-      if (!_.isUndefined(node.data.prediction)) {
-        // leaf
-        color = computeLeafColor(node.data.prediction.confidence);
-        text = _.isNull(node.data.prediction.value)
-          ? ''
-          : _.isFinite(node.data.prediction.value)
-            ? parseFloat(node.data.prediction.value.toFixed(3))
-              .toString()
-            : node.data.prediction.value;
-      }
-      else {
-        // node
-        text = node.data.children[0].decision_rule.property;
-      }
-    }
-
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: !_.isUndefined(node.data.children) ? this.buttonRef[index] : this.nodeRef[index]
-      });
-    };
-
-    const showNodeButton = () => {
-      this.setState({ showingNodeButtonId: index });
-      showTooltip();
-    };
-
-    const hideNodeButton = () => {
-      this.setState({ showingNodeButtonId: undefined });
-      this.hideTooltip();
-    };
-
-    return (
-      <div
-        key={ index }
-        onMouseOver={ showNodeButton }
-        onMouseOut={ hideNodeButton }
-        style={{
-          display: 'inline-block',
-          padding: `${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px ${NODE_PADDING}px`,
-          position: 'absolute',
-          top:
-            node.y - NODE_HEIGHT / 3 - NODE_PADDING,
-          left:
-            node.x - NODE_WIDTH / 2 - NODE_PADDING
-        }}>
-        <Node
-          ref={ indexRef }
-          onClick={ setSelectedNode }
-          className='craft-nodes'
-          style={{
-            border:
-            this.props.selectedNode === node.treePath
-              ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}`
-              : '',
-            top: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-            left: -(this.props.selectedNode === node.treePath ? SELECTED_BORDER_WIDTH : 0),
-            backgroundColor: color
-          }}>
-          {text}
-        </Node>
-        <NodeButton
-          refButton={ nodeButtonRef }
-          node={ node }
-          setSelectedNode={ onClickExpand }
-          isVisible={ index === this.state.showingNodeButtonId }
+const NodesEdgesLabels = React.memo(function NodesEdgesLabels({
+  links,
+  configuration,
+  onShowTooltip,
+  onHideTooltip
+}) {
+  return (
+    <React.Fragment>
+      {links.map((hLink, index) => (
+        <EdgeLabel
+          key={ index }
+          hLink={ hLink }
+          configuration={ configuration }
+          onShowTooltip={ onShowTooltip }
+          onHideTooltip={ onHideTooltip }
         />
-      </div>
-    );
-  };
+      ))}
+    </React.Fragment>
+  );
+});
 
-  indexLinkRef = (index) => (input) => {
-    this.linkRef[index] = input;
-  };
+NodesEdgesLabels.propTypes = {
+  configuration: PropTypes.object.isRequired,
+  links: PropTypes.array.isRequired,
+  onShowTooltip: PropTypes.func.isRequired,
+  onHideTooltip: PropTypes.func.isRequired
+};
 
-  showLinkTooltip = (index, text) => (input) => {
-    if (this.props.selectable) {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.linkRef[index]
-      });
-    }
-  };
+const NodesNodes = React.memo(function NodesNodes({
+  descendants,
+  selectedNodePath,
+  onSelectNode,
+  onToggleSubtreeFold,
+  onShowTooltip,
+  onHideTooltip,
+  interpreter
+}) {
+  return (
+    <React.Fragment>
+      {descendants.map((hNode, index) => (
+        <Node
+          key={ index }
+          hNode={ hNode }
+          selected={ hNode.path === selectedNodePath }
+          // eslint-disable-next-line react/jsx-no-bind
+          onSelectNode={
+            onSelectNode ? () => onSelectNode(hNode.path) : undefined
+          }
+          // eslint-disable-next-line react/jsx-no-bind
+          onToggleSubtreeFold={ () => onToggleSubtreeFold(hNode) }
+          onShowTooltip={ onShowTooltip }
+          onHideTooltip={ onHideTooltip }
+          interpreter={ interpreter }
+        />
+      ))}
+    </React.Fragment>
+  );
+});
 
-  displayLinksText = (link, index) => {
-    let x;
-    let width = 100;
-    if (link.source.x <= link.target.x) {
-      if (link.source.children.length <= 2) {
-        width = link.target.x - link.source.x;
-        x = link.source.x;
+NodesNodes.propTypes = {
+  descendants: PropTypes.array.isRequired,
+  selectedNodePath: PropTypes.string,
+  onSelectNode: PropTypes.func,
+  onToggleSubtreeFold: PropTypes.func.isRequired,
+  onShowTooltip: PropTypes.func.isRequired,
+  onHideTooltip: PropTypes.func.isRequired,
+  interpreter: PropTypes.object.isRequired
+};
+
+const Nodes = ({
+  interpreter,
+  hierarchy,
+  selectedNodePath,
+  selectable,
+  updateSelectedNode,
+  onToggleSubtreeFold,
+  configuration
+}) => {
+  const [tooltip, setTooltip] = useState({
+    show: false,
+    text: '',
+    ref: null,
+    placement: 'bottom'
+  });
+
+  const hideTooltip = useCallback(
+    () =>
+      setTooltip((tooltip) => ({
+        ...tooltip,
+        show: false,
+        placement: 'bottom'
+      })),
+    []
+  );
+
+  const showTooltip = useCallback((ref, text) => {
+    setTooltip((tooltip) => ({
+      ...tooltip,
+      show: true,
+      text,
+      ref
+    }));
+  }, []);
+
+  const updateTooltipPlacement = useCallback((placeTooltipTop) => {
+    const newPlacement = placeTooltipTop ? 'top' : 'bottom';
+    setTooltip((tooltip) => {
+      if (tooltip.placement !== newPlacement) {
+        return {
+          ...tooltip,
+          placement: newPlacement
+        };
       }
-      else {
-        x = link.target.x;
-      }
-    }
-    else {
-      if (link.source.children.length <= 2) {
-        x = link.target.x;
-        width = link.source.x - link.target.x;
-      }
-      else {
-        x = link.target.x;
-      }
-    }
-    const propertyType = this.props.configuration.context[
-      link.target.data.decision_rule.property
-    ].type;
-    const text = interpreter.formatDecisionRules([
-      {
-        operand: link.target.data.decision_rule.operand,
-        operator: link.target.data.decision_rule.operator,
-        type: propertyType
-      }
-    ]);
+      return tooltip;
+    });
+  }, []);
 
-    const showTooltip = () => {
-      this.setState({
-        showingTooltip: true,
-        tooltipText: text,
-        tooltipRef: this.linkRef[index]
-      });
-    };
+  const selectNode = useCallback(
+    updateSelectedNode
+      ? (selectedNodeTreePath) => {
+        updateSelectedNode(selectedNodeTreePath);
+      }
+      : null,
+    [updateSelectedNode]
+  );
 
-    const indexRef = (input) => {
-      this.linkRef[index] = input;
-    };
+  const toggleSubtreeFold = useCallback(
+    (hNode) => {
+      if (onToggleSubtreeFold) {
+        onToggleSubtreeFold(hNode);
+      }
+    },
+    [onToggleSubtreeFold]
+  );
 
-    return (
-      <Links
-        key={ index }
-        ref={ indexRef }
-        onMouseOver={ showTooltip }
-        onMouseOut={ this.hideTooltip }
-        className='craft-links'
+  const descendants = useMemo(() => hierarchy.descendants(), [hierarchy]);
+  const links = useMemo(() => hierarchy.links(), [hierarchy]);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <NodesNodes
+        descendants={ descendants }
+        selectedNodePath={ selectedNodePath }
+        onSelectNode={ selectNode }
+        onToggleSubtreeFold={ toggleSubtreeFold }
+        onShowTooltip={ showTooltip }
+        onHideTooltip={ hideTooltip }
+        interpreter={ interpreter }
+      />
+      <NodesEdgesLabels
+        links={ links }
+        configuration={ configuration }
+        onShowTooltip={ showTooltip }
+        onHideTooltip={ hideTooltip }
+      />
+      <ToolTip
         style={{
-          top: link.source.y + (NODE_DEPTH / 2 - NODE_HEIGHT / 3),
-          left: x,
-          width: width
-        }}>
-        {text}
-      </Links>
-    );
-  };
-
-  updateTooltipPlacement = (changeTooltipPlacement) => {
-    if (changeTooltipPlacement && this.state.tooltipPlacement != 'top') {
-      this.setState({ tooltipPlacement: 'top' });
-    }
-  };
-
-  render() {
-    return (
-      <div style={{ position: 'relative' }}>
-        {_.map(this.props.nodes, this.displayNode)}
-        {_.map(this.props.links, this.displayLinksText)}
-        <ToolTip
-          style={{
-            pointerEvents: 'none'
-          }} // disable click on tooltip
-          show={ this.state.showingTooltip }
-          placement={ this.state.tooltipPlacement }
-          target={ this.state.tooltipRef }
-          onPlacementUpdated={ this.updateTooltipPlacement }>
-          {this.state.tooltipText}
-        </ToolTip>
-      </div>
-    );
-  }
-}
+          pointerEvents: 'none'
+        }} // disable click on tooltip
+        show={ selectable && tooltip.show }
+        placement={ tooltip.placement }
+        target={ tooltip.ref }
+        onPlacementUpdated={ updateTooltipPlacement }
+      >
+        {tooltip.text}
+      </ToolTip>
+    </div>
+  );
+};
 
 Nodes.propTypes = {
   selectable: PropTypes.bool.isRequired,
   updateSelectedNode: PropTypes.func,
   configuration: PropTypes.object.isRequired,
-  nodes: PropTypes.array.isRequired,
-  links: PropTypes.array.isRequired,
-  height: PropTypes.number.isRequired,
-  version: PropTypes.number.isRequired,
-  selectedNode: PropTypes.string,
-  onClickNode: PropTypes.func.isRequired
+  hierarchy: PropTypes.object.isRequired,
+  interpreter: PropTypes.object.isRequired,
+  selectedNodePath: PropTypes.string,
+  onToggleSubtreeFold: PropTypes.func.isRequired
 };
 
 export default Nodes;

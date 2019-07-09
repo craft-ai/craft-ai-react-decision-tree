@@ -1,18 +1,17 @@
+import createInterpreter from '../../utils/interpreter';
 import DecisionRules from './decisionRules';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { findSelectedNode } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { interpreter } from 'craft-ai';
 import Prediction from './prediction';
 import PropTypes from 'prop-types';
-import React from 'react';
-import semver from 'semver';
 import Split from './split';
 import Statistics from './statistics';
 import styled from 'react-emotion';
+import React, { useMemo } from 'react';
 
 const NodeInformationContainer = styled('div')`
-  width: 200px;
+  height: 100%;
+  ${({ width }) => (width ? `width: ${width}` : '')}
   display: flex;
   flex-direction: column;
   float: left;
@@ -40,23 +39,26 @@ const CloseButtonDiv = styled('div')`
   margin-bottom: 10px;
 `;
 
-const NodeInformation = ({ closeNodeInformation, selectedNodePath, style, tree }) => {
+const NodeInformation = ({
+  closeNodeInformation,
+  selectedNodePath,
+  style,
+  tree,
+  width
+}) => {
+  const interpreter = useMemo(
+    () => createInterpreter(tree, Object.keys(tree.trees)[0]),
+    [tree]
+  );
+
   if (selectedNodePath) {
-    const treeVersion = semver.major(tree._version);
-    const treeData = tree.trees[Object.keys(tree.trees)[0]];
-    const selectedNode = findSelectedNode(selectedNodePath, treeData);
-    let min = undefined;
-    let max = undefined;
-    if (treeVersion == 2) {
-      const res = interpreter.distribution(treeData);
-      min = res.min;
-      max = res.max;
-    }
+    const { dtNode, decisionRules } = interpreter.findNode(selectedNodePath);
+    const { distribution } = interpreter.getPrediction(interpreter.dt);
+
+    const { min, max } = distribution || { min: undefined, max: undefined };
 
     return (
-      <NodeInformationContainer
-        className='node-informations'
-        style={ style }>
+      <NodeInformationContainer className='node-informations' style={ style }>
         <InformationContainer>
           {closeNodeInformation ? (
             <CloseButtonDiv>
@@ -65,23 +67,18 @@ const NodeInformation = ({ closeNodeInformation, selectedNodePath, style, tree }
               </CloseButton>
             </CloseButtonDiv>
           ) : null}
-          <Prediction
-            configuration={ tree.configuration }
-            node={ selectedNode }
-            treeVersion={ treeVersion }
-            outputValues={ treeData.output_values }
-          />
+          <Prediction dtNode={ dtNode } interpreter={ interpreter } />
           <DecisionRules
             context={ tree.configuration.context }
-            node={ selectedNode }
+            decisionRules={ decisionRules }
           />
-          <Split context={ tree.configuration.context } node={ selectedNode } />
+          <Split context={ tree.configuration.context } dtNode={ dtNode } />
           <Statistics
-            node={ selectedNode }
+            dtNode={ dtNode }
             totalMin={ min }
             totalMax={ max }
-            treeVersion={ treeVersion }
-            outputValues={ treeData.output_values }
+            interpreter={ interpreter }
+            outputValues={ interpreter.dt.output_values }
           />
         </InformationContainer>
       </NodeInformationContainer>
@@ -100,6 +97,7 @@ NodeInformation.propTypes = {
   closeNodeInformation: PropTypes.func,
   tree: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string.isRequired,
+  width: PropTypes.number,
   style: PropTypes.object
 };
 

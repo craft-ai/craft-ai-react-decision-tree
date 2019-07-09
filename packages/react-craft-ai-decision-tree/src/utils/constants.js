@@ -1,5 +1,7 @@
+import { lighten } from 'polished';
+
 // Zoom
-export const ZOOM_EXTENT = [0.3, 1.5];
+export const ZOOM_EXTENT = [0.05, 1.2];
 
 // Fit to screen
 export const MARGIN = {
@@ -25,7 +27,7 @@ export const SELECTED_BORDER_WIDTH = 5;
 // Color of the leaves
 export const COLOR_LEAVES_CONFIDENCE_0 = '#FEF3C2';
 export const COLOR_LEAVES_CONFIDENCE_1 = '#FFBC00';
-export const COLOR_LEAVES_CONFIDENCE_UNDEFINED = '#ddd';
+export const COLOR_LEAVES_CONFIDENCE_UNDEFINED = lighten(0, '#A5F2E3');
 
 // Node path
 export const NODE_PATH_SEPARATOR = '-';

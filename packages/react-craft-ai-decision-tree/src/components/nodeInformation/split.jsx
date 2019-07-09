@@ -8,7 +8,7 @@ import {
   TextCenterDiv
 } from './utils';
 
-const Split = ({ context, node }) => {
+const Split = ({ context, dtNode }) => {
   const displaySplit = (child, key) => {
     try {
       const propertyType = context[child.decision_rule.property].type;
@@ -31,7 +31,9 @@ const Split = ({ context, node }) => {
       }
       return (
         <tr key={ key }>
-          <td><code>{child.decision_rule.property}</code></td>
+          <td>
+            <code>{child.decision_rule.property}</code>
+          </td>
           <td>{text}</td>
         </tr>
       );
@@ -48,11 +50,11 @@ const Split = ({ context, node }) => {
   return (
     <div className='node-split'>
       <H3NodeInformation>Splits</H3NodeInformation>
-      {!node.children ? (
+      {!dtNode.children ? (
         <TextCenterDiv>N/A (leaf node)</TextCenterDiv>
       ) : (
         <TableNodeInformation>
-          <tbody>{node.children.map(displaySplit)}</tbody>
+          <tbody>{dtNode.children.map(displaySplit)}</tbody>
         </TableNodeInformation>
       )}
     </div>
@@ -60,7 +62,7 @@ const Split = ({ context, node }) => {
 };
 
 Split.propTypes = {
-  node: PropTypes.object.isRequired,
+  dtNode: PropTypes.object.isRequired,
   context: PropTypes.object.isRequired
 };
 

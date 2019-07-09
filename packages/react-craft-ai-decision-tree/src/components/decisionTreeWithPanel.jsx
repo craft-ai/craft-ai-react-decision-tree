@@ -1,49 +1,55 @@
 import ContainerDimensions from 'react-container-dimensions';
+import createInterpreter from '../utils/interpreter';
+import DecisionTreeContainer from './decisionTreeContainer';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
-import semver from 'semver';
 import styled from '@emotion/styled';
 import Tree from './tree';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-const DecisionTreeContainer = styled('div')`
-  height: 100%;
+const NodeInformationsOverlay = styled('div')`
+  position: absolute;
+  height: ${({ height }) => height}px;
+  z-index: 10;
 `;
 
 const DecisionTreeWithPanel = ({
   scale,
   position,
   data,
-  height,
-  width,
+  selectedNode,
   updatePositionAndZoom,
   edgeType,
-  collapsedDepth
+  foldedNodes,
+  style
 }) => {
-  const [selectedNode, setSelectedNode] = useState('');
-  const treeVersion = semver.major(data._version);
+  const [selectedNodeState, setSelectedNode] = useState(selectedNode);
+
+  useEffect(() => setSelectedNode(selectedNode), [selectedNode]);
+
+  const interpreter = useMemo(
+    () => createInterpreter(data, Object.keys(data.trees)[0]),
+    [data]
+  );
 
   const closeNodeInformation = () => {
-    setSelectedNode('');
+    setSelectedNode(undefined);
   };
 
   return (
-    <DecisionTreeContainer
-      style={{
-        display: 'flex',
-        height: height,
-        width: width
-      }}
-    >
-      <NodeInformations
-        tree={ data }
-        selectedNodePath={ selectedNode }
-        closeNodeInformation={ closeNodeInformation }
-      />
-      <ContainerDimensions>
-        {({ height, width }) => (
+    <DecisionTreeContainer style={ style }>
+      {({ height, width }) => (
+        <React.Fragment>
+          <NodeInformationsOverlay height={ height }>
+            <NodeInformations
+              tree={ data }
+              selectedNodePath={ selectedNodeState || '' }
+              closeNodeInformation={ closeNodeInformation }
+              width={ 400 }
+            />
+          </NodeInformationsOverlay>
           <Tree
-            version={ treeVersion }
+            interpreter={ interpreter }
             updateSelectedNode={ setSelectedNode }
             height={ height }
             width={ width }
@@ -51,13 +57,12 @@ const DecisionTreeWithPanel = ({
             scale={ scale }
             updatePositionAndZoom={ updatePositionAndZoom }
             configuration={ data.configuration }
-            treeData={ data.trees[Object.keys(data.trees)[0]] }
             edgeType={ edgeType }
-            selectedNode={ selectedNode }
-            collapsedDepth={ collapsedDepth }
+            selectedNode={ selectedNodeState }
+            foldedNodes={ foldedNodes }
           />
-        )}
-      </ContainerDimensions>
+        </React.Fragment>
+      )}
     </DecisionTreeContainer>
   );
 };
@@ -74,11 +79,11 @@ DecisionTreeWithPanel.propTypes = {
   scale: PropTypes.number,
   position: PropTypes.array,
   data: PropTypes.object.isRequired,
-  height: PropTypes.number,
-  width: PropTypes.number,
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
-  collapsedDepth: PropTypes.number
+  selectedNode: PropTypes.string,
+  foldedNodes: PropTypes.arrayOf(PropTypes.string),
+  style: PropTypes.object
 };
 
 export default DecisionTreeWithPanel;
