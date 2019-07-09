@@ -29,7 +29,7 @@ const Prediction = ({ dtNode, interpreter }) => {
           {confidence ? (
             <div>Confidence {(confidence * 100).toFixed(2)}%</div>
           ) : null}
-          {std ? <div>Standard deviation {std.toFixed(2)}</div> : null}
+          {std !== undefined ? <div>Standard deviation {std.toFixed(2)}</div> : null}
         </PredictionDiv>
       ) : null}
     </div>
