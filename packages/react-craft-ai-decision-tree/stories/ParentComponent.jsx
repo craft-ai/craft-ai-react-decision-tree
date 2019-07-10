@@ -14,8 +14,10 @@ const ParentComponent = () => {
   return (
     <div>
       <DecisionTreeWithPanel
-        width={ 600 }
-        height={ 400 }
+        style={{
+          width: 600,
+          height: 400
+        }}
         data={ tree }
         updatePositionAndZoom={ updatePosAndZoom }
         scale={ savedNewZoom }

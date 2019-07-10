@@ -122,14 +122,27 @@ storiesOf('Decision Tree with panel', module)
   .add('display tree v2 regression - selected node', () => (
     <DecisionTreeWithPanel
       data={ treeV2Reg }
+      style={{
+        height: 500
+      }}
       selectedNode={ boolean('select node', true) ? '0-1-0' : undefined }
     />
   ))
   .add('display tree v2 classification', () => (
-    <DecisionTreeWithPanel data={ treeV2Classif } />
+    <DecisionTreeWithPanel
+      data={ treeV2Classif }
+      style={{
+        height: 500
+      }}
+    />
   ))
   .add('display tree v2 classification - binary', () => (
-    <DecisionTreeWithPanel data={ treeV2ClassifBinary } />
+    <DecisionTreeWithPanel
+      data={ treeV2ClassifBinary }
+      style={{
+        height: 500
+      }}
+    />
   ))
   .add('Folded Tree', () => {
     let foldedNodes = [];
@@ -143,20 +156,52 @@ storiesOf('Decision Tree with panel', module)
       foldedNodes = [...foldedNodes, '0-1-1'];
     }
     return (
-      <DecisionTreeWithPanel data={ treeV2Classif } foldedNodes={ foldedNodes } />
+      <DecisionTreeWithPanel
+        data={ treeV2Classif }
+        foldedNodes={ foldedNodes }
+        style={{
+          height: 500
+        }}
+      />
     );
   })
   .add('display tree v2 - absolute link thickness', () => (
-    <DecisionTreeWithPanel data={ treeV2Reg } edgeType='absolute' />
+    <DecisionTreeWithPanel
+      data={ treeV2Reg }
+      edgeType='absolute'
+      style={{
+        height: 500
+      }}
+    />
   ))
   .add('display tree v2 - relative link thickness', () => (
-    <DecisionTreeWithPanel data={ treeV2Reg } edgeType='relative' />
+    <DecisionTreeWithPanel
+      data={ treeV2Reg }
+      edgeType='relative'
+      style={{
+        height: 500
+      }}
+    />
   ))
   .add('saving zoom and pan in parent component', () => <ParentComponent />)
   .add('with initial zoom tree', () => (
-    <DecisionTreeWithPanel position={ [0, 0] } scale={ 0.25 } data={ tree } />
+    <DecisionTreeWithPanel
+      position={ [0, 0] }
+      scale={ 0.25 }
+      data={ tree }
+      style={{
+        height: 500
+      }}
+    />
   ))
-  .add('small tree', () => <DecisionTreeWithPanel data={ smallTree } />)
+  .add('small tree', () => (
+    <DecisionTreeWithPanel
+      data={ smallTree }
+      style={{
+        height: 500
+      }}
+    />
+  ))
   .add('small tree parameterized confidence', () => {
     const parametrizedTree = _.cloneDeep(smallTree);
     parametrizedTree.trees.interest.children[0].confidence = number(
@@ -164,10 +209,31 @@ storiesOf('Decision Tree with panel', module)
       parametrizedTree.trees.interest.children[0].confidence,
       confidenceBoundOptions
     );
-    return <DecisionTreeWithPanel data={ parametrizedTree } />;
+    return (
+      <DecisionTreeWithPanel
+        data={ parametrizedTree }
+        style={{
+          height: 500
+        }}
+      />
+    );
   })
-  .add('big tree', () => <DecisionTreeWithPanel data={ bigTree } />)
-  .add('missing/optional branch tree', () => <DecisionTreeWithPanel data={ treeMissingValues } />);
+  .add('big tree', () => (
+    <DecisionTreeWithPanel
+      data={ bigTree }
+      style={{
+        height: 500
+      }}
+    />
+  ))
+  .add('missing/optional branch tree', () => (
+    <DecisionTreeWithPanel
+      data={ treeMissingValues }
+      style={{
+        height: 500
+      }}
+    />
+  ));
 
 storiesOf('Tree in content', module)
   .add('DecisionTreeWithPanel - between centered text', () => (
@@ -291,6 +357,9 @@ storiesOf('Using separate component', module)
   .add('tree', () => (
     <DecisionTree
       data={ tree }
+      style={{
+        height: 500
+      }}
     />
   ))
   .add('Tree v1 node information - root node', () => (
