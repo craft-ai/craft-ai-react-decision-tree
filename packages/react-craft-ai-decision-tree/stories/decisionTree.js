@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import treeMissingValues from './mvsTree.json';
 import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
@@ -165,7 +166,8 @@ storiesOf('Decision Tree with panel', module)
     );
     return <DecisionTreeWithPanel data={ parametrizedTree } />;
   })
-  .add('big tree', () => <DecisionTreeWithPanel data={ bigTree } />);
+  .add('big tree', () => <DecisionTreeWithPanel data={ bigTree } />)
+  .add('missing/optional branch tree', () => <DecisionTreeWithPanel data={ treeMissingValues } />);
 
 storiesOf('Tree in content', module)
   .add('DecisionTreeWithPanel - between centered text', () => (

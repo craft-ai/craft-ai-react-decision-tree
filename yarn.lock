@@ -4489,6 +4489,22 @@ craft-ai@1.16.0:
     semver "5.5.0"
     whatwg-fetch "2.0.4"
 
+craft-ai@1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/craft-ai/-/craft-ai-1.17.0.tgz#5d4cbd3f6a05c811855835a8c945e3ceb8684660"
+  integrity sha512-GNA6fAXlCOyeFTFyWza3VWU2IlBhWXSBz0WYfS9hr5vvrp5Azdr3qhYySrsaZjB03wIfouxoOp15owj3WT/opA==
+  dependencies:
+    debug "3.1.0"
+    http-proxy-agent "2.1.0"
+    https-proxy-agent "2.2.1"
+    inherits "2.0.3"
+    jwt-decode "2.2.0"
+    lodash "4.17.10"
+    moment "2.22.2"
+    node-fetch "2.2.0"
+    semver "5.5.0"
+    whatwg-fetch "2.0.4"
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"

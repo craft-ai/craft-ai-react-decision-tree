@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Decision tree selected node label offset is properly applied.
 - Decision tree edges labels are now placed _more_ properly.
 - Decision tree nodes that are not selectable no longer change the mouse pointer.
+- Decision tree missing and optional branches are now well formatted.
 
 ## Removed
 
