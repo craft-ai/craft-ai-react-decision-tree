@@ -4,13 +4,8 @@ import PropTypes from 'prop-types';
 import ToolTip from 'react-craft-ai-tooltip';
 import React, { useCallback, useMemo, useState } from 'react';
 
-const NodesEdgesLabels = React.memo(function NodesEdgesLabels({
-  links,
-  configuration,
-  onShowTooltip,
-  onHideTooltip
-}) {
-  return (
+const NodesEdgesLabels = React.memo(
+  ({ links, configuration, onShowTooltip, onHideTooltip }) => (
     <React.Fragment>
       {links.map((hLink, index) => (
         <EdgeLabel
@@ -22,8 +17,10 @@ const NodesEdgesLabels = React.memo(function NodesEdgesLabels({
         />
       ))}
     </React.Fragment>
-  );
-});
+  )
+);
+
+NodesEdgesLabels.displayName = 'NodesEdgesLabels';
 
 NodesEdgesLabels.propTypes = {
   configuration: PropTypes.object.isRequired,
@@ -32,16 +29,16 @@ NodesEdgesLabels.propTypes = {
   onHideTooltip: PropTypes.func.isRequired
 };
 
-const NodesNodes = React.memo(function NodesNodes({
-  descendants,
-  selectedNodePath,
-  onSelectNode,
-  onToggleSubtreeFold,
-  onShowTooltip,
-  onHideTooltip,
-  interpreter
-}) {
-  return (
+const NodesNodes = React.memo(
+  ({
+    descendants,
+    selectedNodePath,
+    onSelectNode,
+    onToggleSubtreeFold,
+    onShowTooltip,
+    onHideTooltip,
+    interpreter
+  }) => (
     <React.Fragment>
       {descendants.map((hNode, index) => (
         <Node
@@ -60,8 +57,10 @@ const NodesNodes = React.memo(function NodesNodes({
         />
       ))}
     </React.Fragment>
-  );
-});
+  )
+);
+
+NodesNodes.displayName = 'NodesNodes';
 
 NodesNodes.propTypes = {
   descendants: PropTypes.array.isRequired,

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import DecisionTreeWithPanel from '../src';
 import tree from './tree.json';
 import React, { useState } from 'react';

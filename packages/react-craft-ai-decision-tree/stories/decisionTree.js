@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 import _ from 'lodash';
 import backgrounds from '@storybook/addon-backgrounds';
 import bigTree from './bigTree.json';

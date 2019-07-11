@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { interpreter } from 'craft-ai';
 import { NODE_PATH_SEPARATOR } from './constants';
 import semver from 'semver';

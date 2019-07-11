@@ -75,40 +75,40 @@ const DEFAULT_PROPS = {
   disable: false
 };
 
-const ZoomableCanvas = React.memo(function ZoomableCanvas({
-  children,
-  canvasHeight,
-  canvasWidth,
-  minZoomScale = DEFAULT_PROPS.minZoomScale,
-  maxZoomScale = DEFAULT_PROPS.maxZoomScale,
-  initialZoom,
-  onZooming = DEFAULT_PROPS.onZooming,
-  onZoomChange = DEFAULT_PROPS.onZoomChange,
-  disable = DEFAULT_PROPS.disable,
-  ...otherProps
-}) {
-  const viewportRef = useRef();
-  const [zoom, setZoomState] = useState(createZoom(initialZoom));
+const ZoomableCanvas = React.memo(
+  ({
+    children,
+    canvasHeight,
+    canvasWidth,
+    minZoomScale = DEFAULT_PROPS.minZoomScale,
+    maxZoomScale = DEFAULT_PROPS.maxZoomScale,
+    initialZoom,
+    onZooming = DEFAULT_PROPS.onZooming,
+    onZoomChange = DEFAULT_PROPS.onZoomChange,
+    disable = DEFAULT_PROPS.disable,
+    ...otherProps
+  }) => {
+    const viewportRef = useRef();
+    const [zoom, setZoomState] = useState(createZoom(initialZoom));
 
-  // Create the zoom system only once.
-  const zoomSystem = useMemo(
-    () => d3Zoom()
-      .scaleExtent([minZoomScale, maxZoomScale]),
-    [maxZoomScale, minZoomScale]
-  );
+    // Create the zoom system only once.
+    const zoomSystem = useMemo(
+      () => d3Zoom()
+        .scaleExtent([minZoomScale, maxZoomScale]),
+      [maxZoomScale, minZoomScale]
+    );
 
-  // Create the callback that can be used to properly change the zoom.
-  const setZoom = useCallback(
-    (zoom) => {
-      d3Select(viewportRef.current)
-        .call(zoomSystem.transform, zoom);
-    },
-    [viewportRef, zoomSystem]
-  );
+    // Create the callback that can be used to properly change the zoom.
+    const setZoom = useCallback(
+      (zoom) => {
+        d3Select(viewportRef.current)
+          .call(zoomSystem.transform, zoom);
+      },
+      [viewportRef, zoomSystem]
+    );
 
-  // Fit to screen callback
-  const fitToScreen = useCallback(
-    () => {
+    // Fit to screen callback
+    const fitToScreen = useCallback(() => {
       const viewportClientRect = viewportRef.current.getBoundingClientRect();
       const fitZoom = computeFitZoom({
         viewportWidth: viewportClientRect.right - viewportClientRect.left,
@@ -120,13 +120,10 @@ const ZoomableCanvas = React.memo(function ZoomableCanvas({
       });
 
       setZoom(fitZoom);
-    },
-    [canvasHeight, canvasWidth, minZoomScale, maxZoomScale, setZoom]
-  );
+    }, [canvasHeight, canvasWidth, minZoomScale, maxZoomScale, setZoom]);
 
-  // Attach the zoom system
-  useEffect(
-    () => {
+    // Attach the zoom system
+    useEffect(() => {
       const viewportDomNode = viewportRef.current;
       if (disable) {
         d3Select(viewportDomNode)
@@ -160,15 +157,19 @@ const ZoomableCanvas = React.memo(function ZoomableCanvas({
             .on('.zoom', null);
         };
       }
-    },
-    [disable, minZoomScale, maxZoomScale, zoomSystem, onZoomChange, onZooming]
-  );
+    }, [
+      disable,
+      minZoomScale,
+      maxZoomScale,
+      zoomSystem,
+      onZoomChange,
+      onZooming
+    ]);
 
-  const initialZoomX = initialZoom && initialZoom.x;
-  const initialZoomY = initialZoom && initialZoom.y;
-  const initialZoomK = initialZoom && initialZoom.k;
-  useEffect(
-    () => {
+    const initialZoomX = initialZoom && initialZoom.x;
+    const initialZoomY = initialZoom && initialZoom.y;
+    const initialZoomK = initialZoom && initialZoom.k;
+    useEffect(() => {
       if (!initialZoomX) {
         fitToScreen();
       }
@@ -177,21 +178,22 @@ const ZoomableCanvas = React.memo(function ZoomableCanvas({
           createZoom({ x: initialZoomX, y: initialZoomY, k: initialZoomK })
         );
       }
-    },
-    [fitToScreen, setZoom, initialZoomX, initialZoomY, initialZoomK]
-  );
-  return (
-    <Viewport
-      { ...otherProps }
-      ref={ viewportRef }
-      onDoubleClick={ disable ? null : fitToScreen }
-    >
-      <Canvas transform={ zoom } height={ canvasHeight } width={ canvasWidth }>
-        {children}
-      </Canvas>
-    </Viewport>
-  );
-});
+    }, [fitToScreen, setZoom, initialZoomX, initialZoomY, initialZoomK]);
+    return (
+      <Viewport
+        { ...otherProps }
+        ref={ viewportRef }
+        onDoubleClick={ disable ? null : fitToScreen }
+      >
+        <Canvas transform={ zoom } height={ canvasHeight } width={ canvasWidth }>
+          {children}
+        </Canvas>
+      </Viewport>
+    );
+  }
+);
+
+ZoomableCanvas.displayName = 'ZoomableCanvas';
 
 ZoomableCanvas.propTypes = {
   canvasHeight: PropTypes.number.isRequired,

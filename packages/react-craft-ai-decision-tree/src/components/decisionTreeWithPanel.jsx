@@ -1,11 +1,10 @@
-import ContainerDimensions from 'react-container-dimensions';
 import createInterpreter from '../utils/interpreter';
 import DecisionTreeContainer from './decisionTreeContainer';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Tree from './tree';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 const NodeInformationsOverlay = styled('div')`
   position: absolute;
@@ -32,9 +31,9 @@ const DecisionTreeWithPanel = ({
     [data]
   );
 
-  const closeNodeInformation = () => {
+  const closeNodeInformation = useCallback(() => {
     setSelectedNode(undefined);
-  };
+  }, []);
 
   return (
     <DecisionTreeContainer style={ style }>
