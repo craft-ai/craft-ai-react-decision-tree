@@ -12,7 +12,7 @@ import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import React, { useState } from 'react';
 
@@ -145,6 +145,27 @@ storiesOf('Decision Tree with panel', module)
       }}
     />
   ))
+  .add('Switch Tree', () => {
+    const label = 'Trees';
+    const optionsSelect = {
+      tree1: 'tree1',
+      tree2: 'tree2'
+    };
+    const defaultValue = 'tree1';
+    const value = select(label, optionsSelect, defaultValue, 'l');
+    const options = {
+      tree1: treeV2Classif,
+      tree2: treeV2Reg
+    };
+    return (
+      <DecisionTree
+        data={ options[value] }
+        style={{
+          height: 500
+        }}
+      />
+    );
+  })
   .add('Folded Tree', () => {
     let foldedNodes = [];
     if (boolean('fold 0-0', true)) {
