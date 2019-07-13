@@ -1,4 +1,3 @@
-import ContainerDimensions from 'react-container-dimensions';
 import createInterpreter from '../utils/interpreter';
 import DecisionTreeContainer from './decisionTreeContainer';
 import PropTypes from 'prop-types';

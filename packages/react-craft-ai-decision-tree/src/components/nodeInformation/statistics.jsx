@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import BoxPlot from './boxplot';
 import Histogram from './histogram';
-import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from '@emotion/styled';

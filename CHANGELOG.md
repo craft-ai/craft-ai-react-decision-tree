@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.24...HEAD)
 
+## Fixed
+
+- The Decision tree now has a minimum height and weight to make sure it is always shown.
+- `react-craft-ai-operations-history` has now a default estimated period between samples of 1.
+
 ## [0.0.24](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.23...v0.0.24) - 2019-07-10
 
 ## Added

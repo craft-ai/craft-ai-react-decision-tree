@@ -117,7 +117,7 @@ function computeInitialStateFromProps(props) {
     from,
     to,
     loadedOperations,
-    estimatedPeriod: agentConfiguration.time_quantum || 10 * 60 // Use time quantum or the default period
+    estimatedPeriod: agentConfiguration.time_quantum || 1 // Use a time quantum of 1 as the default period
   });
 
   return {
