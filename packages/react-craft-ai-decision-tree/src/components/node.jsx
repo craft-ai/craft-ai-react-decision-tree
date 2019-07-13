@@ -61,6 +61,7 @@ const NodeButton = styled('button')`
   font-weight: bold;
   display: inline-block;
   transform: translate(-50%, -50%);
+  top: ${({ selected }) => (selected ? -2 * SELECTED_BORDER_WIDTH : 0)}px;
   padding: 0px;
   transition: background-color 0.1s;
   cursor: pointer;
@@ -144,6 +145,7 @@ const Node = ({
       <NodeButton
         ref={ buttonRef }
         onClick={ onToggleSubtreeFold }
+        selected={ selected }
         visible={ !isLeaf && showNodeButton }
       >
         {isFolded ? '+' : '-'}
