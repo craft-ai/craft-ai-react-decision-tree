@@ -203,31 +203,33 @@ const Tree = React.memo(function Tree({
   const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
   const setFoldedNodes = useCallback(
     (foldedNodes, referenceHNode) => {
-      // 'Save' the position of the reference node
-      const previousPosX = referenceHNode.x;
-      const previousPosY = referenceHNode.y;
+      if (!_.isUndefined(referenceHNode)) {
+        // 'Save' the position of the reference node
+        const previousPosX = referenceHNode.x;
+        const previousPosY = referenceHNode.y;
 
-      applyFolding(hierarchy, foldedNodes);
+        applyFolding(hierarchy, foldedNodes);
 
-      // Refresh the layout
-      setLayoutAndInitialZoom(({ layout }) => {
-        const updatedLayout = applyHierarchyLayout(hierarchy, layout.version);
-        return {
-          layout: updatedLayout,
-          // Update the zoom to compensate for the movement induced by the folding
-          initialZoom: {
-            x:
-              zoom.current.x -
-              (referenceHNode.x - previousPosX) * zoom.current.k,
-            y:
-              zoom.current.y -
-              (referenceHNode.y - previousPosY) * zoom.current.k,
-            k: zoom.current.k
-          }
-        };
-      });
+        // Refresh the layout
+        setLayoutAndInitialZoom(({ layout }) => {
+          const updatedLayout = applyHierarchyLayout(hierarchy, layout.version);
+          return {
+            layout: updatedLayout,
+            // Update the zoom to compensate for the movement induced by the folding
+            initialZoom: {
+              x:
+                zoom.current.x -
+                (referenceHNode.x - previousPosX) * zoom.current.k,
+              y:
+                zoom.current.y -
+                (referenceHNode.y - previousPosY) * zoom.current.k,
+              k: zoom.current.k
+            }
+          };
+        });
 
-      setFoldedNodesState(foldedNodes);
+        setFoldedNodesState(foldedNodes);
+      }
     },
     [hierarchy]
   );
