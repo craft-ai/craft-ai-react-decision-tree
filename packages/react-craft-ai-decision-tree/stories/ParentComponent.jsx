@@ -1,15 +1,12 @@
 /* eslint-disable react/jsx-no-bind */
 import DecisionTreeWithPanel from '../src';
-import tree from './tree.json';
 import React, { useState } from 'react';
 
-const ParentComponent = () => {
-  const [savedNewPos, setSavedNewPos] = useState([0, 0]);
-  const [savedNewZoom, setSavedNewZoom] = useState(1);
+const ParentComponent = ({ tree }) => {
+  const [savedNewPosZoom, setSavedNewPosZoom] = useState({pos: [0., 0.], zoom: 1.});
 
   const updatePosAndZoom = (pos, zoom) => {
-    setSavedNewPos(pos);
-    setSavedNewZoom(zoom);
+    setSavedNewPosZoom({ pos, zoom });
   };
 
   return (
@@ -21,8 +18,8 @@ const ParentComponent = () => {
         }}
         data={ tree }
         updatePositionAndZoom={ updatePosAndZoom }
-        scale={ savedNewZoom }
-        position={ savedNewPos }
+        scale={ savedNewPosZoom.zoom }
+        position={ savedNewPosZoom.pos }
       />
       <div
         style={{
@@ -31,9 +28,9 @@ const ParentComponent = () => {
         }}
       >
         <h4>Value of zoom and pan</h4>
-        <p>Current zoom value: {savedNewZoom}</p>
+        <p>Current zoom value: {savedNewPosZoom.zoom}</p>
         <p>
-          Current position: [{savedNewPos[0]},{savedNewPos[1]}]
+          Current position: [{savedNewPosZoom.pos[0]},{savedNewPosZoom.pos[1]}]
         </p>
       </div>
     </div>

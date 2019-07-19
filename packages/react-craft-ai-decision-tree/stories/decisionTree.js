@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import tree1 from './tree1.json';
+import tree2 from './tree2.json';
 import treeMissingValues from './mvsTree.json';
 import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
@@ -154,15 +156,12 @@ storiesOf('Decision Tree with panel', module)
     const defaultValue = 'tree1';
     const value = select(label, optionsSelect, defaultValue, 'l');
     const options = {
-      tree1: treeV2Classif,
-      tree2: treeV2Reg
+      tree1: tree1,
+      tree2: tree2
     };
     return (
-      <DecisionTree
-        data={ options[value] }
-        style={{
-          height: 500
-        }}
+      <ParentComponent
+        tree={ options[value] }
       />
     );
   })
@@ -205,7 +204,7 @@ storiesOf('Decision Tree with panel', module)
       }}
     />
   ))
-  .add('saving zoom and pan in parent component', () => <ParentComponent />)
+  .add('saving zoom and pan in parent component', () => <ParentComponent tree={ tree } />)
   .add('with initial zoom tree', () => (
     <DecisionTreeWithPanel
       position={ [0, 0] }
@@ -423,6 +422,6 @@ storiesOf('Using separate component', module)
     <NodeInformation
       updateSelectedNode={ () => {} }
       tree={ treeV2Reg }
-      selectedNodePath='0-0-1-0-0-0'
+      selectedNodePath='0-0-1-0-0'
     />
   ));

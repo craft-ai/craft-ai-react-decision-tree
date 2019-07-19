@@ -134,8 +134,8 @@ const ZoomableCanvas = React.memo(
           .call(
             zoomSystem
               .on('zoom', () => {
-                const zoom = d3Event.transform;
-                const { x, y, k } = zoom;
+                const transform = d3Event.transform;
+                const { x, y, k } = transform;
                 setZoomState((oldZoom) => {
                   if (x == oldZoom.x && y == oldZoom.y && k == oldZoom.k) {
                     return oldZoom;
@@ -145,7 +145,7 @@ const ZoomableCanvas = React.memo(
                     y,
                     k
                   });
-                  return zoom;
+                  return transform;
                 });
               })
               .on('start', () => onZooming(true))

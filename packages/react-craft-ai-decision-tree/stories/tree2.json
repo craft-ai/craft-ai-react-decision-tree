@@ -1,0 +1,131 @@
+{
+  "trees": {
+    "sleep": {
+      "children": [
+        {
+          "children": [
+            {
+              "decision_rule": {
+                "operand": "False",
+                "operator": "is",
+                "property": "next_day_off"
+              },
+              "prediction": {
+                "confidence": 0.7855429649353027,
+                "distribution": {
+                  "max": 10.233333587646484,
+                  "min": 1.8166667222976685,
+                  "standard_deviation": 1.4568778
+                },
+                "nb_samples": 25,
+                "value": 6.502666
+              }
+            },
+            {
+              "decision_rule": {
+                "operand": "True",
+                "operator": "is",
+                "property": "next_day_off"
+              },
+              "prediction": {
+                "confidence": 0.7638841271400452,
+                "distribution": {
+                  "max": 9.5,
+                  "min": 6.949999809265137,
+                  "standard_deviation": 1.1789321
+                },
+                "nb_samples": 7,
+                "value": 8.104762
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": "False",
+            "operator": "is",
+            "property": "day_off"
+          }
+        },
+        {
+          "children": [
+            {
+              "decision_rule": {
+                "operand": "False",
+                "operator": "is",
+                "property": "next_day_off"
+              },
+              "prediction": {
+                "confidence": 0.710700273513794,
+                "distribution": {
+                  "max": 10.983333587646484,
+                  "min": 6.199999809265137,
+                  "standard_deviation": 1.7148267
+                },
+                "nb_samples": 6,
+                "value": 8.322222
+              }
+            },
+            {
+              "decision_rule": {
+                "operand": "True",
+                "operator": "is",
+                "property": "next_day_off"
+              },
+              "prediction": {
+                "confidence": 0.7103021740913391,
+                "distribution": {
+                  "max": 11.016666412353516,
+                  "min": 8.199999809265137,
+                  "standard_deviation": 1.1870441
+                },
+                "nb_samples": 4,
+                "value": 9.400001
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": "True",
+            "operator": "is",
+            "property": "day_off"
+          }
+        }
+      ]
+    }
+  },
+  "configuration": {
+    "time_quantum": 86400,
+    "learning_period": 1296000000,
+    "context": {
+      "day_off": {
+        "type": "enum"
+      },
+      "next_day_off": {
+        "type": "enum"
+      },
+      "sleep_at_home": {
+        "type": "enum"
+      },
+      "sleep_start": {
+        "type": "time_of_day",
+        "is_generated": false
+      },
+      "sleep": {
+        "type": "continuous"
+      }
+    },
+    "output": [
+      "sleep"
+    ]
+  },
+  "_version": "2.0.0",
+  "state": "OK",
+  "lastTimestamp": 1485385200,
+  "firstTimestamp": 1477000800,
+  "timestamp": 1480606092,
+  "error": {},
+  "warning": {
+    "message": ""
+  },
+  "shareableUrl": "",
+  "stateShareableUrl": "NONE",
+  "shareableUrlError": ""
+}
