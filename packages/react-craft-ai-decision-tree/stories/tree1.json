@@ -1,0 +1,259 @@
+{
+  "trees": {
+    "sleep": {
+      "children": [
+        {
+          "children": [
+            {
+              "decision_rule": {
+                "operand": [
+                  0.05,
+                  21.05
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
+              },
+              "prediction": {
+                "confidence": 0.7729469537734985,
+                "distribution": {
+                  "max": 9.350000381469728,
+                  "min": 1.8166667222976685,
+                  "standard_deviation": 1.4273378
+                },
+                "nb_samples": 22,
+                "value": 6.0098486
+              }
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          21.05,
+                          23.683332
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8390380144119263,
+                        "distribution": {
+                          "max": 10.233333587646484,
+                          "min": 6.566666603088379,
+                          "standard_deviation": 0.89270717
+                        },
+                        "nb_samples": 16,
+                        "value": 7.333334
+                      }
+                    },
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          23.683332,
+                          0.05
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8988901376724243,
+                        "distribution": {
+                          "max": 6.800000190734863,
+                          "min": 5.75,
+                          "standard_deviation": 0.27356163
+                        },
+                        "nb_samples": 15,
+                        "value": 6.3688884
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": "False",
+                    "operator": "is",
+                    "property": "next_day_off"
+                  }
+                },
+                {
+                  "decision_rule": {
+                    "operand": "True",
+                    "operator": "is",
+                    "property": "next_day_off"
+                  },
+                  "prediction": {
+                    "confidence": 0.7854366302490234,
+                    "distribution": {
+                      "max": 9.5,
+                      "min": 6.4666666984558105,
+                      "standard_deviation": 1.2090912
+                    },
+                    "nb_samples": 10,
+                    "value": 7.6800003
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  21.05,
+                  0.05
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": "False",
+            "operator": "is",
+            "property": "day_off"
+          }
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "decision_rule": {
+                    "operand": "False",
+                    "operator": "is",
+                    "property": "next_day_off"
+                  },
+                  "prediction": {
+                    "confidence": 0.7612020373344421,
+                    "distribution": {
+                      "max": 12.06666660308838,
+                      "min": 6.150000095367432,
+                      "standard_deviation": 1.7872038
+                    },
+                    "nb_samples": 12,
+                    "value": 8.404167
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          0,
+                          21.3
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.8229598999023438,
+                        "distribution": {
+                          "max": 11.016666412353516,
+                          "min": 6.7166666984558105,
+                          "standard_deviation": 1.200033
+                        },
+                        "nb_samples": 14,
+                        "value": 8.9476185
+                      }
+                    },
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          21.3,
+                          23.633333
+                        ],
+                        "operator": "[in[",
+                        "property": "sleep_start"
+                      },
+                      "prediction": {
+                        "confidence": 0.6860379576683044,
+                        "distribution": {
+                          "max": 12.783333778381348,
+                          "min": 8.583333015441895,
+                          "standard_deviation": 1.7629089
+                        },
+                        "nb_samples": 4,
+                        "value": 10.6125
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": "True",
+                    "operator": "is",
+                    "property": "next_day_off"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  0,
+                  23.633333
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
+              }
+            },
+            {
+              "decision_rule": {
+                "operand": [
+                  23.633333,
+                  0
+                ],
+                "operator": "[in[",
+                "property": "sleep_start"
+              },
+              "prediction": {
+                "confidence": 0.7892604470252991,
+                "distribution": {
+                  "max": 10.983333587646484,
+                  "min": 9.399999618530272,
+                  "standard_deviation": 0.5680864
+                },
+                "nb_samples": 5,
+                "value": 10.173332
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": "True",
+            "operator": "is",
+            "property": "day_off"
+          }
+        }
+      ]
+    }
+  },
+  "configuration": {
+    "time_quantum": 86400,
+    "learning_period": 1296000000,
+    "context": {
+      "day_off": {
+        "type": "enum"
+      },
+      "next_day_off": {
+        "type": "enum"
+      },
+      "sleep_at_home": {
+        "type": "enum"
+      },
+      "sleep_start": {
+        "type": "time_of_day",
+        "is_generated": false
+      },
+      "sleep": {
+        "type": "continuous"
+      }
+    },
+    "output": [
+      "sleep"
+    ]
+  },
+  "_version": "2.0.0",
+  "state": "OK",
+  "lastTimestamp": 1485385200,
+  "firstTimestamp": 1477000800,
+  "timestamp": 1485385200,
+  "error": {},
+  "warning": {
+    "message": ""
+  },
+  "shareableUrl": "",
+  "stateShareableUrl": "NONE",
+  "shareableUrlError": ""
+}

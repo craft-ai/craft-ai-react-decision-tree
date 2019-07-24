@@ -7,12 +7,14 @@ import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
 import { storiesOf } from '@storybook/react';
 import tree from './tree.json';
+import tree1 from './tree1.json';
+import tree2 from './tree2.json';
 import treeMissingValues from './mvsTree.json';
 import treeMultipleEnum from './treeV2-multiple-enum.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import React, { useState } from 'react';
 
@@ -145,6 +147,36 @@ storiesOf('Decision Tree with panel', module)
       }}
     />
   ))
+  .add('display tree v2 classification - binary - set pos / scale', () => (
+    <DecisionTreeWithPanel
+      data={ treeV2ClassifBinary }
+      scale={ boolean('scale', true) ? 1 : null }
+      position={ boolean('pos', true) ? [0., 0.] : null }
+      style={{
+        height: 500
+      }}
+    />
+  ))
+  .add('Switch Tree - with unmounting', () => {
+    const label = 'Trees';
+    const optionsSelect = {
+      tree1: 'tree1',
+      tree2: 'tree2'
+    };
+    const defaultValue = 'tree1';
+    const value = select(label, optionsSelect, defaultValue, 'l');
+    const options = {
+      tree1: tree1,
+      tree2: tree2
+    };
+
+    return (
+      <ParentComponent
+        tree={ options[value] }
+        withTimer={ boolean('withTimer', true) }
+      />
+    );
+  })
   .add('Folded Tree', () => {
     let foldedNodes = [];
     if (boolean('fold 0-0', true)) {
@@ -184,7 +216,7 @@ storiesOf('Decision Tree with panel', module)
       }}
     />
   ))
-  .add('saving zoom and pan in parent component', () => <ParentComponent />)
+  .add('saving zoom and pan in parent component', () => <ParentComponent tree={ tree } />)
   .add('with initial zoom tree', () => (
     <DecisionTreeWithPanel
       position={ [0, 0] }
@@ -402,6 +434,6 @@ storiesOf('Using separate component', module)
     <NodeInformation
       updateSelectedNode={ () => {} }
       tree={ treeV2Reg }
-      selectedNodePath='0-0-1-0-0-0'
+      selectedNodePath='0-0-1-0-0'
     />
   ));

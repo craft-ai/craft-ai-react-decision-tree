@@ -170,7 +170,7 @@ const ZoomableCanvas = React.memo(
     const initialZoomY = initialZoom && initialZoom.y;
     const initialZoomK = initialZoom && initialZoom.k;
     useEffect(() => {
-      if (!initialZoomX) {
+      if (!initialZoom) {
         fitToScreen();
       }
       else {

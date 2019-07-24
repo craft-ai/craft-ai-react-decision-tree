@@ -1,29 +1,41 @@
 /* eslint-disable react/jsx-no-bind */
-import DecisionTreeWithPanel from '../src';
-import tree from './tree.json';
-import React, { useState } from 'react';
+import DecisionTree from '../src';
+import React, { useEffect, useState } from 'react';
 
-const ParentComponent = () => {
-  const [savedNewPos, setSavedNewPos] = useState([0, 0]);
-  const [savedNewZoom, setSavedNewZoom] = useState(1);
-
+const ParentComponent = ({ tree, withTimer }) => {
+  const [savedNewPosZoom, setSavedNewPosZoom] = useState({ pos: [0., 0.], zoom: 1. });
+  const [actualTree, setActualTree] = useState(undefined);
   const updatePosAndZoom = (pos, zoom) => {
-    setSavedNewPos(pos);
-    setSavedNewZoom(zoom);
+    setSavedNewPosZoom({ pos, zoom });
   };
+
+  useEffect(() => {
+    if (withTimer) {
+      setActualTree(undefined);
+      const timer = setInterval(() => setActualTree(tree), 500);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+    else {
+      setActualTree(tree);
+    }
+  }, [tree, withTimer]);
 
   return (
     <div>
-      <DecisionTreeWithPanel
-        style={{
-          width: 600,
-          height: 400
-        }}
-        data={ tree }
-        updatePositionAndZoom={ updatePosAndZoom }
-        scale={ savedNewZoom }
-        position={ savedNewPos }
-      />
+      { actualTree != null ?
+        <DecisionTree
+          style={{
+            width: 600,
+            height: 400
+          }}
+          data={ actualTree }
+          updatePositionAndZoom={ updatePosAndZoom }
+          scale={ savedNewPosZoom.zoom }
+          position={ savedNewPosZoom.pos } />
+        : <span> LOADING ... </span>
+      }
       <div
         style={{
           backgroundColor: 'white',
@@ -31,9 +43,9 @@ const ParentComponent = () => {
         }}
       >
         <h4>Value of zoom and pan</h4>
-        <p>Current zoom value: {savedNewZoom}</p>
+        <p>Current zoom value: {savedNewPosZoom.zoom}</p>
         <p>
-          Current position: [{savedNewPos[0]},{savedNewPos[1]}]
+          Current position: [{savedNewPosZoom.pos[0]},{savedNewPosZoom.pos[1]}]
         </p>
       </div>
     </div>

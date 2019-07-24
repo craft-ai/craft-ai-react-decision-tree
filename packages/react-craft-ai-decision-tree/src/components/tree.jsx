@@ -167,7 +167,7 @@ const Tree = React.memo(function Tree({
       k: scale
     }
   });
-  const zoom = useRef(layout.initialZoom);
+  const zoom = useRef(initialZoom);
   useEffect(
     () => {
       setLayoutAndInitialZoom(({ layout, initialZoom }) => ({

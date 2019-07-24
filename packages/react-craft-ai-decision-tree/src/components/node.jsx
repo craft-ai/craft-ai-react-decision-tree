@@ -40,6 +40,7 @@ const NodeLabel = styled('div')`
   border: ${({ selected }) =>
     selected ? `solid ${SELECTED_BORDER_WIDTH}px ${SELECTED_COLOR_EDGES}` : ''};
   top: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)}px;
+  margin-bottom: ${({ selected }) => (selected ? -2 * SELECTED_BORDER_WIDTH : 0)}px;
   left: ${({ selected }) => (selected ? -SELECTED_BORDER_WIDTH : 0)}px;
   background-color: ${({ color = COLOR_NODES }) => color};
 `;
