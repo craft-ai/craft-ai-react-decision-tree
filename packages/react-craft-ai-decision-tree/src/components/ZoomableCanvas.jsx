@@ -134,8 +134,8 @@ const ZoomableCanvas = React.memo(
           .call(
             zoomSystem
               .on('zoom', () => {
-                const transform = d3Event.transform;
-                const { x, y, k } = transform;
+                const zoom = d3Event.transform;
+                const { x, y, k } = zoom;
                 setZoomState((oldZoom) => {
                   if (x == oldZoom.x && y == oldZoom.y && k == oldZoom.k) {
                     return oldZoom;
@@ -145,7 +145,7 @@ const ZoomableCanvas = React.memo(
                     y,
                     k
                   });
-                  return transform;
+                  return zoom;
                 });
               })
               .on('start', () => onZooming(true))
@@ -170,7 +170,7 @@ const ZoomableCanvas = React.memo(
     const initialZoomY = initialZoom && initialZoom.y;
     const initialZoomK = initialZoom && initialZoom.k;
     useEffect(() => {
-      if (initialZoom == null) {
+      if (!initialZoom || initialZoom == null) {
         fitToScreen();
       }
       else {

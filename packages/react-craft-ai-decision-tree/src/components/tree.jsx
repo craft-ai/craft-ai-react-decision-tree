@@ -134,7 +134,6 @@ function hNodeFromPath(nodePathStr, hierarchy) {
 
 const DEFAULT_PROPS = {
   scale: -1,
-  position: [0, 0],
   updatePositionAndZoom: (position, scale) => {},
   foldedNodes: []
 };
@@ -144,7 +143,7 @@ const Tree = React.memo(function Tree({
   configuration,
   height,
   width,
-  position = DEFAULT_PROPS.position,
+  position,
   scale = DEFAULT_PROPS.scale,
   updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
