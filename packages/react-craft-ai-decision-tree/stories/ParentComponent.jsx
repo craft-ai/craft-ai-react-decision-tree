@@ -1,26 +1,41 @@
 /* eslint-disable react/jsx-no-bind */
-import DecisionTreeWithPanel from '../src';
-import React, { useState } from 'react';
+import DecisionTree from '../src';
+import React, { useEffect, useState } from 'react';
 
-const ParentComponent = ({ tree }) => {
-  const [savedNewPosZoom, setSavedNewPosZoom] = useState({pos: [0., 0.], zoom: 1.});
-
+const ParentComponent = ({ tree, withTimer }) => {
+  const [savedNewPosZoom, setSavedNewPosZoom] = useState({ pos: [0., 0.], zoom: 1. });
+  const [actualTree, setActualTree] = useState(undefined);
   const updatePosAndZoom = (pos, zoom) => {
     setSavedNewPosZoom({ pos, zoom });
   };
 
+  useEffect(() => {
+    if (withTimer) {
+      setActualTree(undefined);
+      const timer = setInterval(() => setActualTree(tree), 500);
+      return () => {
+        clearInterval(timer);
+      };
+    }
+    else {
+      setActualTree(tree);
+    }
+  }, [tree, withTimer]);
+
   return (
     <div>
-      <DecisionTreeWithPanel
-        style={{
-          width: 600,
-          height: 400
-        }}
-        data={ tree }
-        updatePositionAndZoom={ updatePosAndZoom }
-        scale={ savedNewPosZoom.zoom }
-        position={ savedNewPosZoom.pos }
-      />
+      { actualTree != null ?
+        <DecisionTree
+          style={{
+            width: 600,
+            height: 400
+          }}
+          data={ actualTree }
+          updatePositionAndZoom={ updatePosAndZoom }
+          scale={ savedNewPosZoom.zoom }
+          position={ savedNewPosZoom.pos } />
+        : <span> LOADING ... </span>
+      }
       <div
         style={{
           backgroundColor: 'white',

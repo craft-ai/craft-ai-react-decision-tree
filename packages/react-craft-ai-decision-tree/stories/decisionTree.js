@@ -147,7 +147,17 @@ storiesOf('Decision Tree with panel', module)
       }}
     />
   ))
-  .add('Switch Tree', () => {
+  .add('display tree v2 classification - binary - set pos / scale', () => (
+    <DecisionTreeWithPanel
+      data={ treeV2ClassifBinary }
+      scale={ boolean('scale', true) ? 1 : null }
+      position={ boolean('pos', true) ? [0., 0.] : null }
+      style={{
+        height: 500
+      }}
+    />
+  ))
+  .add('Switch Tree - with unmounting', () => {
     const label = 'Trees';
     const optionsSelect = {
       tree1: 'tree1',
@@ -159,9 +169,11 @@ storiesOf('Decision Tree with panel', module)
       tree1: tree1,
       tree2: tree2
     };
+
     return (
       <ParentComponent
         tree={ options[value] }
+        withTimer={ boolean('withTimer', true) }
       />
     );
   })
