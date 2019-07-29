@@ -1,0 +1,1934 @@
+{
+  "_version": "2.0.0",
+  "configuration": {
+    "time_quantum": 900,
+    "operations_as_events": true,
+    "learning_period": 94608000,
+    "tree_max_operations": 40000,
+    "tree_max_depth": 12,
+    "context": {
+      "happen": {
+        "type": "boolean"
+      },
+      "since": {
+        "type": "continuous"
+      },
+      "vacances_scolaires": {
+        "type": "boolean"
+      },
+      "jours_feries": {
+        "type": "boolean"
+      },
+      "heure": {
+        "type": "time_of_day",
+        "is_generated": true
+      },
+      "jour": {
+        "type": "day_of_week",
+        "is_generated": true
+      },
+      "jour_mois": {
+        "type": "day_of_month",
+        "is_generated": true
+      },
+      "mois": {
+        "type": "month_of_year",
+        "is_generated": true
+      },
+      "timezone": {
+        "type": "timezone"
+      }
+    },
+    "output": [
+      "happen"
+    ]
+  },
+  "trees": {
+    "happen": {
+      "children": [
+        {
+          "children": [
+            {
+              "decision_rule": {
+                "operand": 899.5,
+                "operator": "<",
+                "property": "since"
+              },
+              "prediction": {
+                "confidence": 0.9966816902160645,
+                "distribution": [
+                  1,
+                  0
+                ],
+                "nb_samples": 143,
+                "value": false
+              }
+            },
+            {
+              "decision_rule": {
+                "operand": 899.5,
+                "operator": ">=",
+                "property": "since"
+              },
+              "prediction": {
+                "confidence": 0.9996600151062012,
+                "distribution": [
+                  0,
+                  1
+                ],
+                "nb_samples": 1400,
+                "value": true
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": 904.5,
+            "operator": "<",
+            "property": "since"
+          }
+        },
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          7,
+                          30
+                        ],
+                        "operator": "[in[",
+                        "property": "jour_mois"
+                      },
+                      "prediction": {
+                        "confidence": 0.9857779145240784,
+                        "distribution": [
+                          0,
+                          1
+                        ],
+                        "nb_samples": 33,
+                        "value": true
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "decision_rule": {
+                            "operand": [
+                              2,
+                              5
+                            ],
+                            "operator": "[in[",
+                            "property": "jour"
+                          },
+                          "prediction": {
+                            "confidence": 0.893635094165802,
+                            "distribution": [
+                              0,
+                              1
+                            ],
+                            "nb_samples": 4,
+                            "value": true
+                          }
+                        },
+                        {
+                          "decision_rule": {
+                            "operand": [
+                              5,
+                              2
+                            ],
+                            "operator": "[in[",
+                            "property": "jour"
+                          },
+                          "prediction": {
+                            "confidence": 0.5858232378959656,
+                            "distribution": [
+                              0.7142857142857143,
+                              0.2857142857142857
+                            ],
+                            "nb_samples": 7,
+                            "value": false
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          30,
+                          7
+                        ],
+                        "operator": "[in[",
+                        "property": "jour_mois"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 81003,
+                    "operator": "<",
+                    "property": "since"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          0,
+                          3
+                        ],
+                        "operator": "[in[",
+                        "property": "jour"
+                      },
+                      "prediction": {
+                        "confidence": 0.6531246900558472,
+                        "distribution": [
+                          0.8,
+                          0.2
+                        ],
+                        "nb_samples": 5,
+                        "value": false
+                      }
+                    },
+                    {
+                      "decision_rule": {
+                        "operand": [
+                          3,
+                          0
+                        ],
+                        "operator": "[in[",
+                        "property": "jour"
+                      },
+                      "prediction": {
+                        "confidence": 0.954553723335266,
+                        "distribution": [
+                          1,
+                          0
+                        ],
+                        "nb_samples": 10,
+                        "value": false
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": 81003,
+                    "operator": ">=",
+                    "property": "since"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  14,
+                  14.016666
+                ],
+                "operator": "[in[",
+                "property": "heure"
+              }
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      14.016666,
+                                                      14.5
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.9938548803329468,
+                                                    "distribution": [
+                                                      1,
+                                                      0
+                                                    ],
+                                                    "nb_samples": 77,
+                                                    "value": false
+                                                  }
+                                                },
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          14.5,
+                                                          14.516666
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.7000105381011963,
+                                                        "distribution": [
+                                                          0.2,
+                                                          0.8
+                                                        ],
+                                                        "nb_samples": 10,
+                                                        "value": true
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          14.516666,
+                                                          16
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.9093165993690492,
+                                                        "distribution": [
+                                                          0.923469387755102,
+                                                          0.07653061224489796
+                                                        ],
+                                                        "nb_samples": 196,
+                                                        "value": false
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      14.5,
+                                                      16
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  14.016666,
+                                                  16
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            },
+                                            {
+                                              "children": [
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      20,
+                                                      27
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "jour_mois"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.5858232378959656,
+                                                    "distribution": [
+                                                      0.7142857142857143,
+                                                      0.2857142857142857
+                                                    ],
+                                                    "nb_samples": 7,
+                                                    "value": false
+                                                  }
+                                                },
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": false,
+                                                        "operator": "is",
+                                                        "property": "vacances_scolaires"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.913058578968048,
+                                                        "distribution": [
+                                                          0,
+                                                          1
+                                                        ],
+                                                        "nb_samples": 5,
+                                                        "value": true
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": true,
+                                                        "operator": "is",
+                                                        "property": "vacances_scolaires"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.5797058939933777,
+                                                        "distribution": [
+                                                          0.25,
+                                                          0.75
+                                                        ],
+                                                        "nb_samples": 4,
+                                                        "value": true
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      27,
+                                                      20
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "jour_mois"
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  16,
+                                                  16.016666
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              14.016666,
+                                              16.016666
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "heure"
+                                          }
+                                        },
+                                        {
+                                          "decision_rule": {
+                                            "operand": [
+                                              16.016666,
+                                              16.5
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "heure"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.994906723499298,
+                                            "distribution": [
+                                              1,
+                                              0
+                                            ],
+                                            "nb_samples": 93,
+                                            "value": false
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": [
+                                          14.016666,
+                                          16.5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          16.5,
+                                          16.516666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.6323766708374023,
+                                        "distribution": [
+                                          0.25,
+                                          0.75
+                                        ],
+                                        "nb_samples": 8,
+                                        "value": true
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.016666,
+                                      16.516666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                },
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      16.516666,
+                                      17
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9960151314735411,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 119,
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  14.016666,
+                                  17
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          4
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "mois"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.5797058939933777,
+                                        "distribution": [
+                                          0.25,
+                                          0.75
+                                        ],
+                                        "nb_samples": 4,
+                                        "value": true
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          4,
+                                          5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "mois"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.893635094165802,
+                                        "distribution": [
+                                          0,
+                                          1
+                                        ],
+                                        "nb_samples": 4,
+                                        "value": true
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": false,
+                                    "operator": "is",
+                                    "property": "vacances_scolaires"
+                                  }
+                                },
+                                {
+                                  "decision_rule": {
+                                    "operand": true,
+                                    "operator": "is",
+                                    "property": "vacances_scolaires"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.913058578968048,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 5,
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  17,
+                                  17.016666
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              0,
+                              5
+                            ],
+                            "operator": "[in[",
+                            "property": "jour"
+                          }
+                        },
+                        {
+                          "decision_rule": {
+                            "operand": [
+                              5,
+                              0
+                            ],
+                            "operator": "[in[",
+                            "property": "jour"
+                          },
+                          "prediction": {
+                            "confidence": 0.9990745782852172,
+                            "distribution": [
+                              1,
+                              0
+                            ],
+                            "nb_samples": 514,
+                            "value": false
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          14.016666,
+                          17.016666
+                        ],
+                        "operator": "[in[",
+                        "property": "heure"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "children": [
+                                            {
+                                              "decision_rule": {
+                                                "operand": [
+                                                  1,
+                                                  2
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "mois"
+                                              },
+                                              "prediction": {
+                                                "confidence": 0.33693182468414307,
+                                                "distribution": [
+                                                  0.5,
+                                                  0.5
+                                                ],
+                                                "nb_samples": 4,
+                                                "value": false
+                                              }
+                                            },
+                                            {
+                                              "decision_rule": {
+                                                "operand": [
+                                                  2,
+                                                  5
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "mois"
+                                              },
+                                              "prediction": {
+                                                "confidence": 0.913058578968048,
+                                                "distribution": [
+                                                  1,
+                                                  0
+                                                ],
+                                                "nb_samples": 5,
+                                                "value": false
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              0,
+                                              1
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour"
+                                          }
+                                        },
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      1,
+                                                      4
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "mois"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.9264835119247437,
+                                                    "distribution": [
+                                                      1,
+                                                      0
+                                                    ],
+                                                    "nb_samples": 6,
+                                                    "value": false
+                                                  }
+                                                },
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      4,
+                                                      5
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "mois"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.7000105381011963,
+                                                    "distribution": [
+                                                      0.8,
+                                                      0.2
+                                                    ],
+                                                    "nb_samples": 10,
+                                                    "value": false
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  17,
+                                                  19
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "jour_mois"
+                                              }
+                                            },
+                                            {
+                                              "decision_rule": {
+                                                "operand": [
+                                                  19,
+                                                  17
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "jour_mois"
+                                              },
+                                              "prediction": {
+                                                "confidence": 0.9952139258384703,
+                                                "distribution": [
+                                                  1,
+                                                  0
+                                                ],
+                                                "nb_samples": 99,
+                                                "value": false
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              1,
+                                              0
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour"
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": 3616.5,
+                                        "operator": "<",
+                                        "property": "since"
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": 3616.5,
+                                        "operator": ">=",
+                                        "property": "since"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.9989638328552246,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 459,
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      17.016666,
+                                      18
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          4
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.33693182468414307,
+                                        "distribution": [
+                                          0.5,
+                                          0.5
+                                        ],
+                                        "nb_samples": 4,
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          4,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.913058578968048,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 5,
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      18,
+                                      18.016666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  17.016666,
+                                  18.016666
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      18.016666,
+                                      7
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9999554753303528,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 10690,
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "decision_rule": {
+                                            "operand": 46810,
+                                            "operator": "<",
+                                            "property": "since"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.5797058939933777,
+                                            "distribution": [
+                                              0.25,
+                                              0.75
+                                            ],
+                                            "nb_samples": 4,
+                                            "value": true
+                                          }
+                                        },
+                                        {
+                                          "decision_rule": {
+                                            "operand": 46810,
+                                            "operator": ">=",
+                                            "property": "since"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.9497578144073486,
+                                            "distribution": [
+                                              1,
+                                              0
+                                            ],
+                                            "nb_samples": 9,
+                                            "value": false
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": [
+                                          7,
+                                          7.016667
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          7.016667,
+                                          8.5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.999373972415924,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 760,
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      7,
+                                      8.5
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  18.016666,
+                                  8.5
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              17.016666,
+                              8.5
+                            ],
+                            "operator": "[in[",
+                            "property": "heure"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          8.5,
+                                                          9.5
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.7467080354690552,
+                                                        "distribution": [
+                                                          0.8333333333333334,
+                                                          0.16666666666666666
+                                                        ],
+                                                        "nb_samples": 12,
+                                                        "value": false
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          9.5,
+                                                          11.5
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.6531246900558472,
+                                                        "distribution": [
+                                                          0.2,
+                                                          0.8
+                                                        ],
+                                                        "nb_samples": 5,
+                                                        "value": true
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": false,
+                                                    "operator": "is",
+                                                    "property": "vacances_scolaires"
+                                                  }
+                                                },
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          0,
+                                                          3
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "jour"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.33693182468414307,
+                                                        "distribution": [
+                                                          0.5,
+                                                          0.5
+                                                        ],
+                                                        "nb_samples": 4,
+                                                        "value": false
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          3,
+                                                          5
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "jour"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.6531246900558472,
+                                                        "distribution": [
+                                                          0.8,
+                                                          0.2
+                                                        ],
+                                                        "nb_samples": 5,
+                                                        "value": false
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": true,
+                                                    "operator": "is",
+                                                    "property": "vacances_scolaires"
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": 63325,
+                                                "operator": "<",
+                                                "property": "since"
+                                              }
+                                            },
+                                            {
+                                              "decision_rule": {
+                                                "operand": 63325,
+                                                "operator": ">=",
+                                                "property": "since"
+                                              },
+                                              "prediction": {
+                                                "confidence": 0.8885039687156677,
+                                                "distribution": [
+                                                  0.9411764705882352,
+                                                  0.058823529411764705
+                                                ],
+                                                "nb_samples": 17,
+                                                "value": false
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              6,
+                                              10
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour_mois"
+                                          }
+                                        },
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          8.5,
+                                                          10.516666
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.938169538974762,
+                                                        "distribution": [
+                                                          0.9443671766342142,
+                                                          0.055632823365785816
+                                                        ],
+                                                        "nb_samples": 719,
+                                                        "value": false
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          10.516666,
+                                                          11
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.996265172958374,
+                                                        "distribution": [
+                                                          1,
+                                                          0
+                                                        ],
+                                                        "nb_samples": 127,
+                                                        "value": false
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      8.5,
+                                                      11
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  }
+                                                },
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      11,
+                                                      11.016666
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.5030263662338257,
+                                                    "distribution": [
+                                                      0.375,
+                                                      0.625
+                                                    ],
+                                                    "nb_samples": 8,
+                                                    "value": true
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  8.5,
+                                                  11.016666
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            },
+                                            {
+                                              "children": [
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": false,
+                                                    "operator": "is",
+                                                    "property": "jours_feries"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.995947241783142,
+                                                    "distribution": [
+                                                      1,
+                                                      0
+                                                    ],
+                                                    "nb_samples": 117,
+                                                    "value": false
+                                                  }
+                                                },
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": true,
+                                                    "operator": "is",
+                                                    "property": "jours_feries"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.9264835119247437,
+                                                    "distribution": [
+                                                      1,
+                                                      0
+                                                    ],
+                                                    "nb_samples": 6,
+                                                    "value": false
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  11.016666,
+                                                  11.5
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              10,
+                                              6
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour_mois"
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": [
+                                          8.5,
+                                          11.5
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          11.5,
+                                          11.516666
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "heure"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.7048512101173401,
+                                        "distribution": [
+                                          0.16666666666666666,
+                                          0.8333333333333334
+                                        ],
+                                        "nb_samples": 6,
+                                        "value": true
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      8.5,
+                                      11.516666
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "decision_rule": {
+                                        "operand": 3599,
+                                        "operator": "<",
+                                        "property": "since"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.998456597328186,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 308,
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "children": [
+                                        {
+                                          "children": [
+                                            {
+                                              "children": [
+                                                {
+                                                  "children": [
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          11.516666,
+                                                          13
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.9853819608688354,
+                                                        "distribution": [
+                                                          0.9901315789473684,
+                                                          0.009868421052631578
+                                                        ],
+                                                        "nb_samples": 304,
+                                                        "value": false
+                                                      }
+                                                    },
+                                                    {
+                                                      "decision_rule": {
+                                                        "operand": [
+                                                          13,
+                                                          13.016666
+                                                        ],
+                                                        "operator": "[in[",
+                                                        "property": "heure"
+                                                      },
+                                                      "prediction": {
+                                                        "confidence": 0.7035002708435059,
+                                                        "distribution": [
+                                                          0.7777777777777778,
+                                                          0.2222222222222222
+                                                        ],
+                                                        "nb_samples": 18,
+                                                        "value": false
+                                                      }
+                                                    }
+                                                  ],
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      11.516666,
+                                                      13.016666
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  }
+                                                },
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      13.016666,
+                                                      13.5
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "heure"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.9975768327713012,
+                                                    "distribution": [
+                                                      1,
+                                                      0
+                                                    ],
+                                                    "nb_samples": 196,
+                                                    "value": false
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  11.516666,
+                                                  13.5
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            },
+                                            {
+                                              "children": [
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      0,
+                                                      2
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "jour"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.5797058939933777,
+                                                    "distribution": [
+                                                      0.25,
+                                                      0.75
+                                                    ],
+                                                    "nb_samples": 4,
+                                                    "value": true
+                                                  }
+                                                },
+                                                {
+                                                  "decision_rule": {
+                                                    "operand": [
+                                                      2,
+                                                      5
+                                                    ],
+                                                    "operator": "[in[",
+                                                    "property": "jour"
+                                                  },
+                                                  "prediction": {
+                                                    "confidence": 0.7432112693786621,
+                                                    "distribution": [
+                                                      0.8571428571428571,
+                                                      0.14285714285714285
+                                                    ],
+                                                    "nb_samples": 7,
+                                                    "value": false
+                                                  }
+                                                }
+                                              ],
+                                              "decision_rule": {
+                                                "operand": [
+                                                  13.5,
+                                                  13.516666
+                                                ],
+                                                "operator": "[in[",
+                                                "property": "heure"
+                                              }
+                                            }
+                                          ],
+                                          "decision_rule": {
+                                            "operand": [
+                                              11.516666,
+                                              13.516666
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "heure"
+                                          }
+                                        },
+                                        {
+                                          "decision_rule": {
+                                            "operand": [
+                                              13.516666,
+                                              14
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "heure"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.9977697730064392,
+                                            "distribution": [
+                                              1,
+                                              0
+                                            ],
+                                            "nb_samples": 213,
+                                            "value": false
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": 3599,
+                                        "operator": ">=",
+                                        "property": "since"
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      11.516666,
+                                      14
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  0,
+                                  5
+                                ],
+                                "operator": "[in[",
+                                "property": "jour"
+                              }
+                            },
+                            {
+                              "decision_rule": {
+                                "operand": [
+                                  5,
+                                  0
+                                ],
+                                "operator": "[in[",
+                                "property": "jour"
+                              },
+                              "prediction": {
+                                "confidence": 0.9996159076690674,
+                                "distribution": [
+                                  1,
+                                  0
+                                ],
+                                "nb_samples": 1239,
+                                "value": false
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              8.5,
+                              14
+                            ],
+                            "operator": "[in[",
+                            "property": "heure"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          17.016666,
+                          14
+                        ],
+                        "operator": "[in[",
+                        "property": "heure"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      1,
+                      5
+                    ],
+                    "operator": "[in[",
+                    "property": "mois"
+                  }
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "decision_rule": {
+                            "operand": [
+                              14.016666,
+                              10
+                            ],
+                            "operator": "[in[",
+                            "property": "heure"
+                          },
+                          "prediction": {
+                            "confidence": 0.999350905418396,
+                            "distribution": [
+                              1,
+                              0
+                            ],
+                            "nb_samples": 733,
+                            "value": false
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "decision_rule": {
+                                "operand": false,
+                                "operator": "is",
+                                "property": "vacances_scolaires"
+                              },
+                              "prediction": {
+                                "confidence": 0.9503611326217652,
+                                "distribution": [
+                                  0.9743589743589745,
+                                  0.02564102564102564
+                                ],
+                                "nb_samples": 39,
+                                "value": false
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      1,
+                                      4
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "jour"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9826722145080566,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 27,
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      4,
+                                      1
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "jour"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9378143548965454,
+                                    "distribution": [
+                                      0.967741935483871,
+                                      0.03225806451612903
+                                    ],
+                                    "nb_samples": 31,
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": true,
+                                "operator": "is",
+                                "property": "vacances_scolaires"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": [
+                              10,
+                              14
+                            ],
+                            "operator": "[in[",
+                            "property": "heure"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          9,
+                          10
+                        ],
+                        "operator": "[in[",
+                        "property": "jour_mois"
+                      }
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          0,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.7432112693786621,
+                                        "distribution": [
+                                          0.8571428571428571,
+                                          0.14285714285714285
+                                        ],
+                                        "nb_samples": 7,
+                                        "value": false
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          0
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.913058578968048,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 5,
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      10,
+                                      27
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "jour_mois"
+                                  }
+                                },
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      27,
+                                      9
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "jour_mois"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9363170862197876,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 7,
+                                    "value": false
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": [
+                                  14.016666,
+                                  15.083333
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              }
+                            },
+                            {
+                              "decision_rule": {
+                                "operand": [
+                                  15.083333,
+                                  14
+                                ],
+                                "operator": "[in[",
+                                "property": "heure"
+                              },
+                              "prediction": {
+                                "confidence": 0.995912492275238,
+                                "distribution": [
+                                  1,
+                                  0
+                                ],
+                                "nb_samples": 116,
+                                "value": false
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 12624.5,
+                            "operator": "<",
+                            "property": "since"
+                          }
+                        },
+                        {
+                          "children": [
+                            {
+                              "decision_rule": {
+                                "operand": 1894273,
+                                "operator": "<",
+                                "property": "since"
+                              },
+                              "prediction": {
+                                "confidence": 0.9999735951423644,
+                                "distribution": [
+                                  1,
+                                  0
+                                ],
+                                "nb_samples": 18037,
+                                "value": false
+                              }
+                            },
+                            {
+                              "children": [
+                                {
+                                  "decision_rule": {
+                                    "operand": [
+                                      14.016666,
+                                      9.25
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  },
+                                  "prediction": {
+                                    "confidence": 0.9998002648353576,
+                                    "distribution": [
+                                      1,
+                                      0
+                                    ],
+                                    "nb_samples": 2383,
+                                    "value": false
+                                  }
+                                },
+                                {
+                                  "children": [
+                                    {
+                                      "children": [
+                                        {
+                                          "decision_rule": {
+                                            "operand": [
+                                              10,
+                                              4
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour_mois"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.9431982040405272,
+                                            "distribution": [
+                                              0.9705882352941176,
+                                              0.029411764705882353
+                                            ],
+                                            "nb_samples": 34,
+                                            "value": false
+                                          }
+                                        },
+                                        {
+                                          "decision_rule": {
+                                            "operand": [
+                                              4,
+                                              9
+                                            ],
+                                            "operator": "[in[",
+                                            "property": "jour_mois"
+                                          },
+                                          "prediction": {
+                                            "confidence": 0.9958044290542604,
+                                            "distribution": [
+                                              1,
+                                              0
+                                            ],
+                                            "nb_samples": 113,
+                                            "value": false
+                                          }
+                                        }
+                                      ],
+                                      "decision_rule": {
+                                        "operand": [
+                                          1,
+                                          3
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      }
+                                    },
+                                    {
+                                      "decision_rule": {
+                                        "operand": [
+                                          3,
+                                          1
+                                        ],
+                                        "operator": "[in[",
+                                        "property": "jour"
+                                      },
+                                      "prediction": {
+                                        "confidence": 0.9989430904388428,
+                                        "distribution": [
+                                          1,
+                                          0
+                                        ],
+                                        "nb_samples": 450,
+                                        "value": false
+                                      }
+                                    }
+                                  ],
+                                  "decision_rule": {
+                                    "operand": [
+                                      9.25,
+                                      14
+                                    ],
+                                    "operator": "[in[",
+                                    "property": "heure"
+                                  }
+                                }
+                              ],
+                              "decision_rule": {
+                                "operand": 1894273,
+                                "operator": ">=",
+                                "property": "since"
+                              }
+                            }
+                          ],
+                          "decision_rule": {
+                            "operand": 12624.5,
+                            "operator": ">=",
+                            "property": "since"
+                          }
+                        }
+                      ],
+                      "decision_rule": {
+                        "operand": [
+                          10,
+                          9
+                        ],
+                        "operator": "[in[",
+                        "property": "jour_mois"
+                      }
+                    }
+                  ],
+                  "decision_rule": {
+                    "operand": [
+                      5,
+                      1
+                    ],
+                    "operator": "[in[",
+                    "property": "mois"
+                  }
+                }
+              ],
+              "decision_rule": {
+                "operand": [
+                  14.016666,
+                  14
+                ],
+                "operator": "[in[",
+                "property": "heure"
+              }
+            }
+          ],
+          "decision_rule": {
+            "operand": 904.5,
+            "operator": ">=",
+            "property": "since"
+          }
+        }
+      ],
+      "output_values": [
+        "false",
+        "true"
+      ],
+      "x": 0,
+      "y": 0
+    }
+  }
+}

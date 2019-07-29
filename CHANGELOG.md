@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.25...HEAD)
 
+## Fixed
+- Boolean output leaves are properly rendered.
+
 ## [0.0.25](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.24...v0.0.25) - 2019-07-24
 
 ## Fixed

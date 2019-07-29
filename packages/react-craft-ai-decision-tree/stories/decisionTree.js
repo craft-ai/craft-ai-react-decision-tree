@@ -11,6 +11,7 @@ import tree1 from './tree1.json';
 import tree2 from './tree2.json';
 import treeMissingValues from './mvsTree.json';
 import treeMultipleEnum from './treeV2-multiple-enum.json';
+import treeV2Boolean from './treeV2-boolean.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
@@ -129,6 +130,14 @@ storiesOf('Decision Tree with panel', module)
         height: 500
       }}
       selectedNode={ boolean('select node', true) ? '0-1-0' : undefined }
+    />
+  ))
+  .add('display tree v2 boolean output', () => (
+    <DecisionTreeWithPanel
+      data={ treeV2Boolean }
+      style={{
+        height: 500
+      }}
     />
   ))
   .add('display tree v2 classification', () => (
