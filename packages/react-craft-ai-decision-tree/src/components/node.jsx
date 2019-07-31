@@ -85,7 +85,7 @@ function computeNodePresentationData(hNode, interpreter) {
     return {
       isLeaf,
       isFolded,
-      text: _.isFinite(value) ? parseFloat(value.toFixed(3)) : value,
+      text: _.isFinite(value) ? parseFloat(value.toFixed(3)) : `${value}`,
       color: computeLeafColor(confidence)
     };
   }
