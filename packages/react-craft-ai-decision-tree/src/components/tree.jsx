@@ -145,6 +145,7 @@ const Tree = React.memo(function Tree({
   width,
   position,
   scale = DEFAULT_PROPS.scale,
+  updateFoldedNodes,
   updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
   edgeType,
@@ -228,8 +229,11 @@ const Tree = React.memo(function Tree({
       });
 
       setFoldedNodesState(foldedNodes);
+      if (updateFoldedNodes) {
+        updateFoldedNodes(foldedNodes);
+      }
     },
-    [hierarchy]
+    [hierarchy, updateFoldedNodes]
   );
 
   // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
@@ -316,6 +320,7 @@ Tree.propTypes = {
   width: PropTypes.number.isRequired,
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
+  updateFoldedNodes: PropTypes.func,
   updatePositionAndZoom: PropTypes.func,
   updateSelectedNode: PropTypes.func,
   edgeType: PropTypes.string,

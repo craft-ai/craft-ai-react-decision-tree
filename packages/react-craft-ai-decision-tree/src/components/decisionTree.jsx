@@ -10,6 +10,7 @@ const DecisionTree = ({
   position,
   scale,
   selectedNode,
+  updateFoldedNodes,
   updateSelectedNode,
   updatePositionAndZoom,
   foldedNodes,
@@ -26,6 +27,7 @@ const DecisionTree = ({
         <Tree
           interpreter={ interpreter }
           updateSelectedNode={ updateSelectedNode }
+          updateFoldedNodes={ updateFoldedNodes }
           height={ height }
           width={ width }
           position={ position }
@@ -48,6 +50,7 @@ DecisionTree.defaultProps = {
   updatePositionAndZoom: null,
   auto: false,
   updateSelectedNode: undefined,
+  updateFoldedNodes: undefined,
   edgeType: 'constant',
   selectedNode: ''
 };
@@ -56,6 +59,7 @@ DecisionTree.propTypes = {
   scale: PropTypes.number,
   position: PropTypes.array,
   updateSelectedNode: PropTypes.func,
+  updateFoldedNodes: PropTypes.func,
   data: PropTypes.object.isRequired,
   updatePositionAndZoom: PropTypes.func,
   edgeType: PropTypes.string,
