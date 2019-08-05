@@ -145,6 +145,7 @@ const Tree = React.memo(function Tree({
   width,
   position,
   scale = DEFAULT_PROPS.scale,
+  updateFoldedNodes,
   updatePositionAndZoom = DEFAULT_PROPS.updatePositionAndZoom,
   updateSelectedNode,
   edgeType,
@@ -200,8 +201,7 @@ const Tree = React.memo(function Tree({
     [updatePositionAndZoom]
   );
 
-  const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
-  const setFoldedNodes = useCallback(
+  const applyFoldingAndFixPosition = useCallback(
     (foldedNodes, referenceHNode) => {
       // 'Save' the position of the reference node
       const previousPosX = referenceHNode.x;
@@ -226,17 +226,14 @@ const Tree = React.memo(function Tree({
           }
         };
       });
-
-      setFoldedNodesState(foldedNodes);
     },
     [hierarchy]
   );
 
   // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
-  useEffect(() => setFoldedNodes(foldedNodes, hierarchy), [
+  useEffect(() => applyFoldingAndFixPosition(foldedNodes, hierarchy), [
     hierarchy,
-    foldedNodes,
-    setFoldedNodes
+    foldedNodes
   ]);
 
   const selectedHNode = useMemo(() => hNodeFromPath(selectedNode, hierarchy), [
@@ -244,20 +241,21 @@ const Tree = React.memo(function Tree({
     hierarchy
   ]);
 
+  const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
   const toggleSubtreeFold = useCallback(
     (hNode) => {
       const folded = hNode.foldedChildren != null;
-      if (!folded) {
-        setFoldedNodes([...foldedNodesState, hNode.path], hNode);
+      const currentFoldedNodes = updateFoldedNodes ? foldedNodes : foldedNodesState;
+      const newFoldedNodes = folded ? currentFoldedNodes.filter((path) => path !== hNode.path) : [...currentFoldedNodes, hNode.path];
+      if (updateFoldedNodes) {
+        updateFoldedNodes(newFoldedNodes);
       }
       else {
-        setFoldedNodes(
-          foldedNodesState.filter((path) => path !== hNode.path),
-          hNode
-        );
+        applyFoldingAndFixPosition(newFoldedNodes, hNode);
+        setFoldedNodesState(newFoldedNodes);
       }
     },
-    [foldedNodesState, setFoldedNodes]
+    [applyFoldingAndFixPosition, foldedNodes, foldedNodesState, updateFoldedNodes]
   );
 
   // Unselect the previously selected node if a parent were folded
@@ -316,6 +314,7 @@ Tree.propTypes = {
   width: PropTypes.number.isRequired,
   position: PropTypes.array.isRequired,
   scale: PropTypes.number.isRequired,
+  updateFoldedNodes: PropTypes.func,
   updatePositionAndZoom: PropTypes.func,
   updateSelectedNode: PropTypes.func,
   edgeType: PropTypes.string,

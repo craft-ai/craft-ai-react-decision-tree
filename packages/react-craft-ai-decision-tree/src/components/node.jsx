@@ -82,10 +82,18 @@ function computeNodePresentationData(hNode, interpreter) {
   const isFolded = hNode.foldedChildren != null;
   if (isLeaf || isFolded) {
     const { value, confidence } = interpreter.getPrediction(dtNode);
+    let text;
+    if (_.isUndefined(value)) {
+      text = dtNode.children[0].decision_rule.property;
+    }
+    else {
+      text = _.isFinite(value) ? parseFloat(value.toFixed(3)) : `${value}`;
+    }
+
     return {
       isLeaf,
       isFolded,
-      text: _.isFinite(value) ? parseFloat(value.toFixed(3)) : `${value}`,
+      text,
       color: computeLeafColor(confidence)
     };
   }

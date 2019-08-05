@@ -37,6 +37,7 @@ const confidenceBoundOptions = {
 
 const CustomComponent = ({ tree, height, width }) => {
   const [selectedNode, setSelectedNode] = useState('');
+  const [foldedNodes, setFoldedNodes] = useState([]);
 
   const updateSelectedNodeInput = (event) => {
     setSelectedNode(event.target.value);
@@ -60,14 +61,25 @@ const CustomComponent = ({ tree, height, width }) => {
       </div>
       <div
         style={{
+          backgroundColor: 'white',
+          padding: 5,
+          marginBottom: 10
+        }}
+      >
+        FoldedNodes:&nbsp; { JSON.stringify(foldedNodes) }
+      </div>
+      <div
+        style={{
           height,
           width
         }}
       >
         <DecisionTree
           updateSelectedNode={ setSelectedNode }
+          updateFoldedNodes={ setFoldedNodes }
           data={ tree }
           selectedNode={ selectedNode }
+          foldedNodes={ foldedNodes }
         />
       </div>
     </div>

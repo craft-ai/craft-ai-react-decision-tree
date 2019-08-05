@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.25...HEAD)
 
+## Added
+
+- `DecisionTree` accepts `updateFoldedNodes` function as a prop. This latter is called when a new node is folded and passes the current folded nodes.
+
 ## Fixed
+
 - Boolean output leaves are properly rendered.
 
 ## [0.0.25](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.24...v0.0.25) - 2019-07-24
