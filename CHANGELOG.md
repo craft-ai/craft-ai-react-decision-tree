@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.26...HEAD)
 
+## Added
+
+- `DecisionTree` can be minified along the path of a selected nodeby using the `Minify` button in the `NodeInformation` panel.
+
 ## [0.0.26](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.25...v0.0.26) - 2019-08-05
 
 ## Added

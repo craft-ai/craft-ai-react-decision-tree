@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { interpreter } from 'craft-ai';
 import { NODE_PATH_SEPARATOR } from './constants';
 import semver from 'semver';
@@ -5,6 +6,39 @@ import semver from 'semver';
 function createInterpreter(fullDt, outputProperty) {
   const version = semver.major(fullDt._version);
   const dt = fullDt.trees[outputProperty];
+
+  const computeMinify = (path) => {
+    // making the root node an exception
+    if (path == '0') {
+      return ['0'];
+    }
+    else {
+      const [, ...pathTail] = path
+        .split(NODE_PATH_SEPARATOR)
+        .map((n) => parseInt(n));
+      // remove the first element of the path because it is the root path;
+      return computeMinifyRecursion(dt, pathTail);
+    }
+  };
+
+  const computeMinifyRecursion = (dtNodeParent, path = [], currentPath = ['0']) => {
+    if (path.length > 0) {
+      const [childIndex, ...pathTail] = path;
+      const foldedNodes = computeMinifyRecursion(
+        dtNodeParent.children[childIndex],
+        pathTail,
+        [...currentPath, childIndex]
+      );
+      for (let i = 0; i < dtNodeParent.children.length; i++) {
+        if (i !== childIndex && !_.isUndefined(dtNodeParent.children[i].children)) {
+          const toFold = [...currentPath, i];
+          foldedNodes.push(toFold.join('-'));
+        }
+      }
+      return foldedNodes;
+    }
+    return [];
+  };
 
   const findNodeRecursion = (dtNodeParent, path = []) => {
     if (path.length > 0) {
@@ -82,7 +116,8 @@ function createInterpreter(fullDt, outputProperty) {
           standard_deviation: dtNode.standard_deviation
         }
       }),
-      findNode
+      findNode,
+      computeMinify
     };
   }
   else {
@@ -124,7 +159,8 @@ function createInterpreter(fullDt, outputProperty) {
           }
         }
       },
-      findNode
+      findNode,
+      computeMinify
     };
   }
 }

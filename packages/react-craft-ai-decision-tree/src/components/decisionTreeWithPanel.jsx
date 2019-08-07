@@ -23,6 +23,7 @@ const DecisionTreeWithPanel = ({
   style
 }) => {
   const [selectedNodeState, setSelectedNode] = useState(selectedNode);
+  const [foldedNodesState, setfoldedNodes] = useState([]);
 
   useEffect(() => setSelectedNode(selectedNode), [selectedNode]);
 
@@ -35,6 +36,10 @@ const DecisionTreeWithPanel = ({
     setSelectedNode(undefined);
   }, []);
 
+  const minifyTree = useCallback((selectedNodePath) => {
+    setfoldedNodes(interpreter.computeMinify(selectedNodePath));
+  }, [interpreter]);
+
   return (
     <DecisionTreeContainer style={ style }>
       {({ height, width }) => (
@@ -45,10 +50,12 @@ const DecisionTreeWithPanel = ({
               selectedNodePath={ selectedNodeState || '' }
               closeNodeInformation={ closeNodeInformation }
               width={ 400 }
+              minifyTree={ minifyTree }
             />
           </NodeInformationsOverlay>
           <Tree
             interpreter={ interpreter }
+            updateFoldedNodes={ setfoldedNodes }
             updateSelectedNode={ setSelectedNode }
             height={ height }
             width={ width }
@@ -58,7 +65,7 @@ const DecisionTreeWithPanel = ({
             configuration={ data.configuration }
             edgeType={ edgeType }
             selectedNode={ selectedNodeState }
-            foldedNodes={ foldedNodes }
+            foldedNodes={ foldedNodesState }
           />
         </React.Fragment>
       )}
