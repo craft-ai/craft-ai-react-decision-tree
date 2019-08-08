@@ -230,7 +230,8 @@ const Tree = React.memo(function Tree({
     [hierarchy]
   );
 
-  // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
+  // Apply foldedNodes at the initialization and keep the root of the hierarchy at the same location.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => applyFoldingAndFixPosition(foldedNodes, hierarchy), [
     applyFoldingAndFixPosition,
     hierarchy
