@@ -1,5 +1,6 @@
 import createInterpreter from '../utils/interpreter';
 import DecisionTreeContainer from './decisionTreeContainer';
+import MinifyButton from './MinifyButton';
 import NodeInformations from './nodeInformation/nodeInformation';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -36,10 +37,6 @@ const DecisionTreeWithPanel = ({
     setSelectedNode(undefined);
   }, []);
 
-  const minifyTree = useCallback((selectedNodePath) => {
-    setfoldedNodes(interpreter.computeMinify(selectedNodePath));
-  }, [interpreter]);
-
   return (
     <DecisionTreeContainer style={ style }>
       {({ height, width }) => (
@@ -49,9 +46,7 @@ const DecisionTreeWithPanel = ({
               tree={ data }
               selectedNodePath={ selectedNodeState || '' }
               closeNodeInformation={ closeNodeInformation }
-              width={ 400 }
-              minifyTree={ minifyTree }
-            />
+              width={ 400 } />
           </NodeInformationsOverlay>
           <Tree
             interpreter={ interpreter }
@@ -65,8 +60,11 @@ const DecisionTreeWithPanel = ({
             configuration={ data.configuration }
             edgeType={ edgeType }
             selectedNode={ selectedNodeState }
-            foldedNodes={ foldedNodesState }
-          />
+            foldedNodes={ foldedNodesState } />
+          <MinifyButton
+            tree={ data }
+            selectedNodePath={ selectedNodeState || '' }
+            onMinify={ setfoldedNodes } />
         </React.Fragment>
       )}
     </DecisionTreeContainer>

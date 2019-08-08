@@ -41,7 +41,6 @@ const CloseButtonDiv = styled('div')`
 
 const NodeInformation = ({
   closeNodeInformation,
-  minifyTree,
   selectedNodePath,
   style,
   tree,
@@ -57,8 +56,6 @@ const NodeInformation = ({
     const { distribution } = interpreter.getPrediction(interpreter.dt);
 
     const { min, max } = distribution || { min: undefined, max: undefined };
-
-    const minifyLeaf = minifyTree ? () => minifyTree(selectedNodePath) : null;
 
     return (
       <NodeInformationContainer className='node-informations' style={ style }>
@@ -83,15 +80,6 @@ const NodeInformation = ({
             interpreter={ interpreter }
             outputValues={ interpreter.dt.output_values }
           />
-          <span>
-            {
-              !dtNode.children && minifyTree ? (
-                <button onClick={ minifyLeaf }>
-                  Minify Tree
-                </button>
-              ) : null
-            }
-          </span>
         </InformationContainer>
       </NodeInformationContainer>
     );
@@ -107,7 +95,6 @@ NodeInformation.defaultProps = {
 
 NodeInformation.propTypes = {
   closeNodeInformation: PropTypes.func,
-  minifyTree: PropTypes.func,
   tree: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string.isRequired,
   width: PropTypes.number,
