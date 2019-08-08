@@ -232,8 +232,8 @@ const Tree = React.memo(function Tree({
 
   // When the foldedNodes change, reapply them, and keep the root of the hierarchy at the same location.
   useEffect(() => applyFoldingAndFixPosition(foldedNodes, hierarchy), [
-    hierarchy,
-    foldedNodes
+    applyFoldingAndFixPosition,
+    hierarchy
   ]);
 
   const selectedHNode = useMemo(() => hNodeFromPath(selectedNode, hierarchy), [
@@ -247,11 +247,12 @@ const Tree = React.memo(function Tree({
       const folded = hNode.foldedChildren != null;
       const currentFoldedNodes = updateFoldedNodes ? foldedNodes : foldedNodesState;
       const newFoldedNodes = folded ? currentFoldedNodes.filter((path) => path !== hNode.path) : [...currentFoldedNodes, hNode.path];
+
+      applyFoldingAndFixPosition(newFoldedNodes, hNode);
       if (updateFoldedNodes) {
         updateFoldedNodes(newFoldedNodes);
       }
       else {
-        applyFoldingAndFixPosition(newFoldedNodes, hNode);
         setFoldedNodesState(newFoldedNodes);
       }
     },
