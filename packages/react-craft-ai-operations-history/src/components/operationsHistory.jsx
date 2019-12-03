@@ -1,21 +1,39 @@
 import createRowComponent from './createRowComponent';
-import { EventEmitter } from 'events';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
 import last from 'lodash.last';
 import memoizeOne from 'memoize-one';
+import orderBy from 'lodash.orderby';
 import PlaceholderRow from './placeholderRow';
 import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Table from './table';
+import Table, { computeWidth, TIMESTAMP_CELL_WIDTH } from './table';
+import { EventEmitter } from 'events';
 import * as most from 'most';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
 const TIMESTAMP_MIN = 0;
 
-const memoizedCreateRowComponent = memoizeOne((agentConfiguration) => {
-  return createRowComponent({ agentConfiguration });
+function extractProperties(agentConfiguration) {
+  const properties = Object.keys(agentConfiguration.context)
+    .map(
+      (property) => ({
+        property,
+        ...agentConfiguration.context[property],
+        output: !!agentConfiguration.output.find(
+          (outputProperty) => outputProperty === property
+        )
+      })
+    );
+
+  const sortedProperties = orderBy(properties, ['output', 'property']);
+
+  return sortedProperties;
+}
+
+const memoizedCreateRowComponent = memoizeOne((properties, totalWidth) => {
+  return createRowComponent({ properties, totalWidth });
 });
 
 function computeUpdatedEstimations({
@@ -240,6 +258,12 @@ class OperationsHistory extends React.Component {
 
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
+
+    this._extractedProperties = extractProperties(props.agentConfiguration);
+    this._totalWidth = TIMESTAMP_CELL_WIDTH;
+    this._extractedProperties.forEach(({ property }) =>
+      this._totalWidth += computeWidth(property.length)
+    );
   }
 
   _setHeaderElement(element) {
@@ -417,7 +441,7 @@ class OperationsHistory extends React.Component {
   }
 
   _renderRow(index) {
-    const { agentConfiguration, focus } = this.props;
+    const { focus } = this.props;
     const {
       estimatedAfterLoadedCount,
       estimatedBeforeLoadedCount,
@@ -427,7 +451,7 @@ class OperationsHistory extends React.Component {
       loadedOperations,
       to
     } = this.state;
-    const Row = memoizedCreateRowComponent(agentConfiguration);
+    const Row = memoizedCreateRowComponent(this._extractedProperties, this._totalWidth, this._cellsWidth);
     const estimatedFocusIndex = memoizedComputedEstimatedFocusIndex(
       focus,
       this.state
@@ -552,7 +576,7 @@ class OperationsHistory extends React.Component {
         width={ width }
       >
         <thead ref={ this._setHeaderElement }>
-          <HeaderRow agentConfiguration={ agentConfiguration } />
+          <HeaderRow properties={ this._extractedProperties } />
         </thead>
         <InfiniteList
           tag='tbody'

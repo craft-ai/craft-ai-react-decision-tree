@@ -1,6 +1,7 @@
 import backgrounds from '@storybook/addon-backgrounds';
 import CONFIGURATION_1 from './configuration_1.json';
 import CONFIGURATION_2 from './configuration_2.json';
+import CONFIGURATION_3 from './configuration_3.json';
 import OperationsHistory from '../src';
 import orderBy from 'lodash.orderby';
 import preprocessOperations from '../src/utils/preprocessOperations';
@@ -45,6 +46,25 @@ const CONFIGURATION_2_OPERATIONS_1_STATES = orderBy(
     ),
   ['timestamp']
 );
+
+const CONFIGURATION_3_OPERATIONS_1 = orderBy(
+  require('./configuration_3_operations_1.json'),
+  ['timestamp']
+);
+const CONFIGURATION_3_OPERATIONS_1_FROM =
+CONFIGURATION_3_OPERATIONS_1[0].timestamp;
+const CONFIGURATION_3_OPERATIONS_1_TO =
+CONFIGURATION_3_OPERATIONS_1[CONFIGURATION_3_OPERATIONS_1.length - 1]
+    .timestamp;
+
+const CONFIGURATION_3_OPERATIONS_1_STATES = orderBy(
+  preprocessOperations(CONFIGURATION_3, CONFIGURATION_3_OPERATIONS_1)
+    .map(
+      ({ state, timestamp }) => ({ context: state, timestamp })
+    ),
+  ['timestamp']
+);
+
 
 function delay(delay) {
   return new Promise((resolve) => setTimeout(resolve, delay));
@@ -270,6 +290,40 @@ storiesOf('OperationsHistory', module)
           }) }
           focus={ number('Focus', null) }
         />
+      </div>
+    );
+  })
+  .add('Fully dynamic loading, with width and height (custom css) ', () => {
+    return (
+      <div style={{
+        display: 'flex',
+        padding: '20px 100px',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        flex: '1 1 auto',
+      }}>
+        <div className='test'>
+          <OperationsHistory
+            agentConfiguration={ CONFIGURATION_3 }
+            onRequestOperations={ requestOperationsFromC2O1 }
+            from={ number('From', CONFIGURATION_3_OPERATIONS_1[500].timestamp, {
+              range: true,
+              min: CONFIGURATION_3_OPERATIONS_1_FROM,
+              max: CONFIGURATION_3_OPERATIONS_1_TO,
+              step: 1
+            }) }
+            to={ number('To', CONFIGURATION_3_OPERATIONS_1[1000].timestamp, {
+              range: true,
+              min: CONFIGURATION_3_OPERATIONS_1_FROM,
+              max: CONFIGURATION_3_OPERATIONS_1_TO,
+              step: 1
+            }) }
+            width={ 500 }
+            height={ 300 }
+            focus={ number('Focus', null) }
+          />
+        </div>
       </div>
     );
   })

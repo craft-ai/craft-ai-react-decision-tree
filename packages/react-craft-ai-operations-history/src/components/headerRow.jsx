@@ -1,8 +1,7 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import orderBy from 'lodash.orderby';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { TYPES } from 'craft-ai/lib/constants';
+import styled from 'react-emotion';
+import { computeWidth } from './table';
 import {
   faCalendar,
   faClock,
@@ -11,6 +10,8 @@ import {
   faTachometerAlt,
   faTags
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { TYPES } from 'craft-ai/lib/constants';
 
 const PropertyTypeIcons = {
   [TYPES.continuous]: <FontAwesomeIcon icon={ faTachometerAlt } />,
@@ -22,30 +23,17 @@ const PropertyTypeIcons = {
   [TYPES.month_of_year]: <FontAwesomeIcon icon={ faCalendar } />
 };
 
-export function extractProperties(agentConfiguration) {
-  const properties = Object.keys(agentConfiguration.context)
-    .map(
-      (property) => ({
-        property,
-        ...agentConfiguration.context[property],
-        output: !!agentConfiguration.output.find(
-          (outputProperty) => outputProperty === property
-        )
-      })
-    );
-
-  const sortedProperties = orderBy(properties, ['output', 'property']);
-
-  return sortedProperties;
-}
+const CustomWidthTh = styled('th')`
+  width: ${({ width }) => computeWidth(width)}px !important;
+`;
 
 const HeaderCell = ({ output, property, type }) => (
-  <th>
+  <CustomWidthTh width={ property.length }>
     <span>
       {PropertyTypeIcons[type]} {property}
     </span>
     {output ? <small>output</small> : null}
-  </th>
+  </CustomWidthTh>
 );
 HeaderCell.propTypes = {
   property: PropTypes.string.isRequired,
@@ -53,8 +41,7 @@ HeaderCell.propTypes = {
   output: PropTypes.bool.isRequired
 };
 
-const HeaderRow = ({ agentConfiguration }) => {
-  const properties = extractProperties(agentConfiguration);
+const HeaderRow = ({ properties }) => {
   return (
     <tr>
       <th>
@@ -70,7 +57,7 @@ const HeaderRow = ({ agentConfiguration }) => {
 };
 
 HeaderRow.propTypes = {
-  agentConfiguration: PropTypes.object.isRequired
+  properties: PropTypes.object.isRequired
 };
 
 export default HeaderRow;

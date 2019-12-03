@@ -5,6 +5,11 @@ import styled from 'react-emotion';
 export const CELL_WIDTH = 120;
 export const TIMESTAMP_CELL_WIDTH = 280;
 
+export function computeWidth(width) {
+  const computedWidth = width * 15;
+  return computedWidth > CELL_WIDTH ? computedWidth : CELL_WIDTH;
+}
+
 const Table = styled('table')`
   *,
   *:before,
@@ -31,8 +36,9 @@ const Table = styled('table')`
   }
 
   tr {
-    display: inline-flex;
+    display: flex;
     flex-direction: row;
+    justify-content: stretch;
     height: ${({ rowHeight }) => rowHeight}px;
   }
   th,
@@ -43,8 +49,8 @@ const Table = styled('table')`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-width: ${CELL_WIDTH}px;
 
-    width: ${CELL_WIDTH}px;
     &:first-child {
       width: ${TIMESTAMP_CELL_WIDTH}px;
     }
