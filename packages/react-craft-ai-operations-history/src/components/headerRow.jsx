@@ -1,4 +1,4 @@
-import { computeWidth } from './table';
+import { computeCellWidth } from './table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -24,7 +24,7 @@ const PropertyTypeIcons = {
 };
 
 const CustomWidthTh = styled('th')`
-  width: ${({ width }) => computeWidth(width)}px !important;
+  width: ${({ width }) => computeCellWidth(width)}px !important;
 `;
 
 const HeaderCell = ({ output, property, type }) => (

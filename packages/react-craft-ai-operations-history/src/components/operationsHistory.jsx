@@ -10,7 +10,7 @@ import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as most from 'most';
-import Table, { computeWidth, TIMESTAMP_CELL_WIDTH } from './table';
+import Table, { computeCellWidth, TIMESTAMP_CELL_WIDTH } from './table';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
 const TIMESTAMP_MIN = 0;
@@ -262,7 +262,7 @@ class OperationsHistory extends React.Component {
     this._extractedProperties = extractProperties(props.agentConfiguration);
     this._totalWidth = TIMESTAMP_CELL_WIDTH;
     this._extractedProperties.forEach(
-      ({ property }) => (this._totalWidth += computeWidth(property.length))
+      ({ property }) => (this._totalWidth += computeCellWidth(property.length))
     );
   }
 

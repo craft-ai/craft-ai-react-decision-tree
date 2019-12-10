@@ -1,5 +1,5 @@
 import camelCase from 'camelcase';
-import { computeWidth } from './table';
+import { computeCellWidth } from './table';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
@@ -39,7 +39,7 @@ function createPropertyCellComponent(property, renderFun) {
 
 const CustomWidthTd = styled('td')`
   width: ${({ width, isLoading }) =>
-    isLoading ? width : computeWidth(width)}px !important;
+    isLoading ? width : computeCellWidth(width)}px !important;
 `;
 
 const CustomWidthTr = styled('tr')`
