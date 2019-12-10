@@ -1,6 +1,5 @@
 import camelCase from 'camelcase';
-import { CELL_WIDTH } from './table';
-import { extractProperties } from './headerRow';
+import { computeCellWidth } from './table';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
@@ -38,6 +37,15 @@ function createPropertyCellComponent(property, renderFun) {
   return PropertyCell;
 }
 
+const CustomWidthTd = styled('td')`
+  width: ${({ width, isLoading }) =>
+    isLoading ? width : computeCellWidth(width)}px !important;
+`;
+
+const CustomWidthTr = styled('tr')`
+  width: ${({ width }) => width}px !important;
+`;
+
 function createRowCellComponent({ isGenerated, output, property, type }) {
   const formatter = interpreter.formatProperty(type);
   if (property === 'timestamp') {
@@ -54,40 +62,35 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
     isGenerated ||
     GENERATED_TIME_TYPES.find((generatedType) => generatedType == type)
   ) {
-    return createPropertyCellComponent(
-      property,
-      ({ state = {}, timestamp }) => {
-        return (
-          <td className='craft-property-generated-value'>
-            {formatter(state[property])}
-          </td>
-        );
-      }
-    );
+    return createPropertyCellComponent(property, ({ state = {} }) => {
+      return (
+        <CustomWidthTd
+          width={ property.length }
+          className='craft-property-generated-value'
+        >
+          {formatter(state[property])}
+        </CustomWidthTd>
+      );
+    });
   }
   return createPropertyCellComponent(property, ({ operation = {} }) => {
     const value = operation[property];
     const isUndefined = value === undefined;
     return (
-      <td
+      <CustomWidthTd
+        width={ property.length }
         className={ cx({
           'craft-property-undefined': isUndefined,
           'craft-property-output': output
         }) }
       >
         {isUndefined ? '-' : formatter(value)}
-      </td>
+      </CustomWidthTd>
     );
   });
 }
 
-const LoadingTd = styled('td')`
-  width: ${({ span }) => span * CELL_WIDTH}px !important;
-`;
-
-export default function createRowComponent({ agentConfiguration }) {
-  const properties = extractProperties(agentConfiguration);
-
+export default function createRowComponent({ properties, totalWidth }) {
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
   const Cells = properties.map(createRowCellComponent);
   const Row = ({ focus, index, loading, operation, state, timestamp }) => {
@@ -101,16 +104,16 @@ export default function createRowComponent({ agentConfiguration }) {
     });
     if (loading) {
       return (
-        <tr key={ index } className={ classNames }>
+        <CustomWidthTr width={ totalWidth } key={ index } className={ classNames }>
           <TimestampCell timestamp={ timestamp } />
-          <LoadingTd colSpan={ properties.length } span={ properties.length }>
+          <CustomWidthTd width={ totalWidth } isLoading={ true }>
             <FontAwesomeIcon icon={ faSpinner } spin />
-          </LoadingTd>
-        </tr>
+          </CustomWidthTd>
+        </CustomWidthTr>
       );
     }
     return (
-      <tr key={ index } className={ classNames }>
+      <CustomWidthTr width={ totalWidth } key={ index } className={ classNames }>
         <TimestampCell timestamp={ timestamp } />
         {Cells.map((Cell, cellIndex) => (
           <Cell
@@ -120,7 +123,7 @@ export default function createRowComponent({ agentConfiguration }) {
             timestamp={ timestamp }
           />
         ))}
-      </tr>
+      </CustomWidthTr>
     );
   };
   Row.defaultProps = {

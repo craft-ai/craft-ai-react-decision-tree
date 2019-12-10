@@ -1,0 +1,27 @@
+{
+  "context": {
+    "movement": {
+      "type": "continuous"
+    },
+    "light": {
+      "type": "enum"
+    },
+    "tz": {
+      "type": "timezone"
+    },
+    "time": {
+      "type": "time_of_day"
+    },
+    "nb_of_people": {
+      "type": "continuous"
+    },
+    "is_weekday": {
+      "type": "boolean"
+    },
+    "weather": {
+      "type": "enum"
+    }
+  },
+  "output": ["light"],
+  "time_quantum": 900
+}
