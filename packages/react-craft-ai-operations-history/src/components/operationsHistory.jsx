@@ -1,4 +1,5 @@
 import createRowComponent from './createRowComponent';
+import { EventEmitter } from 'events';
 import HeaderRow from './headerRow';
 import InfiniteList from './infiniteList';
 import last from 'lodash.last';
@@ -8,9 +9,8 @@ import PlaceholderRow from './placeholderRow';
 import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Table, { computeWidth, TIMESTAMP_CELL_WIDTH } from './table';
-import { EventEmitter } from 'events';
 import * as most from 'most';
+import Table, { computeWidth, TIMESTAMP_CELL_WIDTH } from './table';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
 const TIMESTAMP_MIN = 0;
@@ -261,8 +261,8 @@ class OperationsHistory extends React.Component {
 
     this._extractedProperties = extractProperties(props.agentConfiguration);
     this._totalWidth = TIMESTAMP_CELL_WIDTH;
-    this._extractedProperties.forEach(({ property }) =>
-      this._totalWidth += computeWidth(property.length)
+    this._extractedProperties.forEach(
+      ({ property }) => (this._totalWidth += computeWidth(property.length))
     );
   }
 
@@ -451,7 +451,11 @@ class OperationsHistory extends React.Component {
       loadedOperations,
       to
     } = this.state;
-    const Row = memoizedCreateRowComponent(this._extractedProperties, this._totalWidth, this._cellsWidth);
+    const Row = memoizedCreateRowComponent(
+      this._extractedProperties,
+      this._totalWidth,
+      this._cellsWidth
+    );
     const estimatedFocusIndex = memoizedComputedEstimatedFocusIndex(
       focus,
       this.state
@@ -561,7 +565,7 @@ class OperationsHistory extends React.Component {
   }
 
   render() {
-    const { agentConfiguration, height, rowHeight, width } = this.props;
+    const { height, rowHeight, width } = this.props;
     const { error, estimatedCount, scrollToTimestamp } = this.state;
 
     if (error) {

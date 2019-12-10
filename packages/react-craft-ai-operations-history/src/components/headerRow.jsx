@@ -1,7 +1,9 @@
+import { computeWidth } from './table';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
-import { computeWidth } from './table';
+import { TYPES } from 'craft-ai/lib/constants';
 import {
   faCalendar,
   faClock,
@@ -10,8 +12,6 @@ import {
   faTachometerAlt,
   faTags
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { TYPES } from 'craft-ai/lib/constants';
 
 const PropertyTypeIcons = {
   [TYPES.continuous]: <FontAwesomeIcon icon={ faTachometerAlt } />,

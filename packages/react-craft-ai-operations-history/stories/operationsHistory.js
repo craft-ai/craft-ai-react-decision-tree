@@ -52,9 +52,9 @@ const CONFIGURATION_3_OPERATIONS_1 = orderBy(
   ['timestamp']
 );
 const CONFIGURATION_3_OPERATIONS_1_FROM =
-CONFIGURATION_3_OPERATIONS_1[0].timestamp;
+  CONFIGURATION_3_OPERATIONS_1[0].timestamp;
 const CONFIGURATION_3_OPERATIONS_1_TO =
-CONFIGURATION_3_OPERATIONS_1[CONFIGURATION_3_OPERATIONS_1.length - 1]
+  CONFIGURATION_3_OPERATIONS_1[CONFIGURATION_3_OPERATIONS_1.length - 1]
     .timestamp;
 
 const CONFIGURATION_3_OPERATIONS_1_STATES = orderBy(
@@ -64,7 +64,6 @@ const CONFIGURATION_3_OPERATIONS_1_STATES = orderBy(
     ),
   ['timestamp']
 );
-
 
 function delay(delay) {
   return new Promise((resolve) => setTimeout(resolve, delay));
@@ -112,6 +111,11 @@ const requestOperationsFromC1O1 = createRequestOperations(
 const requestOperationsFromC2O1 = createRequestOperations(
   CONFIGURATION_2_OPERATIONS_1,
   CONFIGURATION_2_OPERATIONS_1_STATES
+);
+
+const requestOperationsFromC3O1 = createRequestOperations(
+  CONFIGURATION_3_OPERATIONS_1,
+  CONFIGURATION_3_OPERATIONS_1_STATES
 );
 
 const requestOperationsBadC1 = (
@@ -295,18 +299,20 @@ storiesOf('OperationsHistory', module)
   })
   .add('Fully dynamic loading, with width and height (custom css) ', () => {
     return (
-      <div style={{
-        display: 'flex',
-        padding: '20px 100px',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'flex-start',
-        flex: '1 1 auto',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          padding: '20px 100px',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          justifyContent: 'flex-start',
+          flex: '1 1 auto'
+        }}
+      >
         <div className='test'>
           <OperationsHistory
             agentConfiguration={ CONFIGURATION_3 }
-            onRequestOperations={ requestOperationsFromC2O1 }
+            onRequestOperations={ requestOperationsFromC3O1 }
             from={ number('From', CONFIGURATION_3_OPERATIONS_1[500].timestamp, {
               range: true,
               min: CONFIGURATION_3_OPERATIONS_1_FROM,
@@ -319,7 +325,7 @@ storiesOf('OperationsHistory', module)
               max: CONFIGURATION_3_OPERATIONS_1_TO,
               step: 1
             }) }
-            width={ 500 }
+            width={ 1000 }
             height={ 300 }
             focus={ number('Focus', null) }
           />

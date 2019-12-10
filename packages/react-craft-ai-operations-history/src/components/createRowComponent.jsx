@@ -1,12 +1,12 @@
 import camelCase from 'camelcase';
-import PropTypes from 'prop-types';
-import React from 'react';
-import styled, { cx } from 'react-emotion';
 import { computeWidth } from './table';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled, { cx } from 'react-emotion';
 
 function formatTimestampAsUtcDate(timestamp) {
   const date = new Date(timestamp * 1000);
@@ -38,7 +38,8 @@ function createPropertyCellComponent(property, renderFun) {
 }
 
 const CustomWidthTd = styled('td')`
-  width: ${({ width, isLoading }) => isLoading ? width : computeWidth(width)}px !important;
+  width: ${({ width, isLoading }) =>
+    isLoading ? width : computeWidth(width)}px !important;
 `;
 
 const CustomWidthTr = styled('tr')`
@@ -61,18 +62,16 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
     isGenerated ||
     GENERATED_TIME_TYPES.find((generatedType) => generatedType == type)
   ) {
-    return createPropertyCellComponent(
-      property,
-      ({ state = {} }) => {
-        return (
-          <CustomWidthTd
-            width={ property.length }
-            className='craft-property-generated-value'>
-            {formatter(state[property])}
-          </CustomWidthTd>
-        );
-      }
-    );
+    return createPropertyCellComponent(property, ({ state = {} }) => {
+      return (
+        <CustomWidthTd
+          width={ property.length }
+          className='craft-property-generated-value'
+        >
+          {formatter(state[property])}
+        </CustomWidthTd>
+      );
+    });
   }
   return createPropertyCellComponent(property, ({ operation = {} }) => {
     const value = operation[property];
