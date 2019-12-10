@@ -5,7 +5,7 @@ import styled from 'react-emotion';
 export const CELL_WIDTH = 120;
 export const TIMESTAMP_CELL_WIDTH = 280;
 
-export function computeWidth(width) {
+export function computeCellWidth(width) {
   const computedWidth = width * 15;
   return computedWidth > CELL_WIDTH ? computedWidth : CELL_WIDTH;
 }
