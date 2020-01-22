@@ -243,12 +243,15 @@ const Tree = React.memo(function Tree({
   ]);
 
   const [foldedNodesState, setFoldedNodesState] = useState(foldedNodes);
+  const [lastFoldedNode, setLastFoldedNode] = useState(undefined);
+
   const toggleSubtreeFold = useCallback(
     (hNode) => {
       const folded = hNode.foldedChildren != null;
       const currentFoldedNodes = updateFoldedNodes ? foldedNodes : foldedNodesState;
       const newFoldedNodes = folded ? currentFoldedNodes.filter((path) => path !== hNode.path) : [...currentFoldedNodes, hNode.path];
 
+      setLastFoldedNode(hNode.path);
       applyFoldingAndFixPosition(newFoldedNodes, hNode);
       if (updateFoldedNodes) {
         updateFoldedNodes(newFoldedNodes);
@@ -294,6 +297,7 @@ const Tree = React.memo(function Tree({
           hierarchy={ hierarchy }
           updateSelectedNode={ updateSelectedNode }
           selectedNodePath={ selectedNode || '' }
+          lastFoldedNode={ lastFoldedNode || '' }
           onToggleSubtreeFold={ toggleSubtreeFold }
         />
         <Edges
