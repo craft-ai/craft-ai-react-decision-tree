@@ -111,6 +111,7 @@ const Node = ({
   hNode,
   interpreter,
   selected = false,
+  showButton = false,
   onSelectNode,
   onShowTooltip = (ref, text) => {},
   onHideTooltip = () => {},
@@ -124,7 +125,7 @@ const Node = ({
     interpreter
   );
 
-  const [showNodeButton, setShowNodeButton] = useState(false);
+  const [showNodeButton, setShowNodeButton] = useState(showButton);
 
   return (
     <NodeWrapper

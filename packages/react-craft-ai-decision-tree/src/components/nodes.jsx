@@ -33,6 +33,7 @@ const NodesNodes = React.memo(
   ({
     descendants,
     selectedNodePath,
+    lastFoldedNode,
     onSelectNode,
     onToggleSubtreeFold,
     onShowTooltip,
@@ -45,6 +46,7 @@ const NodesNodes = React.memo(
           key={ index }
           hNode={ hNode }
           selected={ hNode.path === selectedNodePath }
+          showButton={ hNode.path == lastFoldedNode }
           // eslint-disable-next-line react/jsx-no-bind
           onSelectNode={
             onSelectNode ? () => onSelectNode(hNode.path) : undefined
@@ -65,6 +67,7 @@ NodesNodes.displayName = 'NodesNodes';
 NodesNodes.propTypes = {
   descendants: PropTypes.array.isRequired,
   selectedNodePath: PropTypes.string,
+  lastFoldedNode: PropTypes.string,
   onSelectNode: PropTypes.func,
   onToggleSubtreeFold: PropTypes.func.isRequired,
   onShowTooltip: PropTypes.func.isRequired,
@@ -76,6 +79,7 @@ const Nodes = ({
   interpreter,
   hierarchy,
   selectedNodePath,
+  lastFoldedNode,
   selectable,
   updateSelectedNode,
   onToggleSubtreeFold,
@@ -146,6 +150,7 @@ const Nodes = ({
       <NodesNodes
         descendants={ descendants }
         selectedNodePath={ selectedNodePath }
+        lastFoldedNode={ lastFoldedNode }
         onSelectNode={ selectNode }
         onToggleSubtreeFold={ toggleSubtreeFold }
         onShowTooltip={ showTooltip }
@@ -180,6 +185,7 @@ Nodes.propTypes = {
   hierarchy: PropTypes.object.isRequired,
   interpreter: PropTypes.object.isRequired,
   selectedNodePath: PropTypes.string,
+  lastFoldedNode: PropTypes.string,
   onToggleSubtreeFold: PropTypes.func.isRequired
 };
 
