@@ -24,11 +24,10 @@ const DecisionTreeWithPanel = ({
 }) => {
   const [selectedNodeState, setSelectedNode] = useState(selectedNode);
 
-  useEffect(() => console.log('SELECT INIT') || setSelectedNode(selectedNode), [selectedNode]);
+  useEffect(() => setSelectedNode(selectedNode), [selectedNode]);
 
   const interpreter = useMemo(
     () => {
-      console.log('interpreter init');
       setSelectedNode(undefined);
       return createInterpreter(data, Object.keys(data.trees)[0]);
     },
