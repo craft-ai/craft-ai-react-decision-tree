@@ -57,7 +57,7 @@ const HeaderRow = ({ properties }) => {
 };
 
 HeaderRow.propTypes = {
-  properties: PropTypes.object.isRequired
+  properties: PropTypes.array.isRequired
 };
 
 export default HeaderRow;

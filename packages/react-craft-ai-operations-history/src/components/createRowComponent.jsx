@@ -30,9 +30,9 @@ function createPropertyCellComponent(property, renderFun) {
     pascalCase: true
   })}PropertyCell`;
   PropertyCell.propTypes = {
-    timestamp: PropTypes.number.isRequired,
-    operation: PropTypes.object.isRequired,
-    state: PropTypes.object.isRequired
+    timestamp: PropTypes.number,
+    operation: PropTypes.object,
+    state: PropTypes.object
   };
   return PropertyCell;
 }
