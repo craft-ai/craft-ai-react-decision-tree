@@ -51,8 +51,8 @@ function preprocessOperations(
     },
     []
   );
-  const descOperations = orderBy(enrichedOperations, ['timestamp'], ['desc']);
-  return descOperations;
+  // const descOperations = orderBy(enrichedOperations, ['timestamp'], ['desc']);
+  return enrichedOperations;
 }
 
 export default preprocessOperations;

@@ -73,7 +73,7 @@ function computeUpdatedEstimations({
 
   let updatedFrom;
   let updatedLoadedFrom = Math.min(
-    loadedOperations[loadedCount - 1].timestamp, // Operations are ordered from the latest to the earliest
+    loadedOperations[0].timestamp, // Operations are ordered from the earliest to the latest
     loadedFrom || TIMESTAMP_MAX
   );
   if (from == null) {
@@ -86,7 +86,7 @@ function computeUpdatedEstimations({
 
   let updatedTo;
   let updatedLoadedTo = Math.max(
-    loadedOperations[0].timestamp, // Operations are ordered from the latest to the earliest
+    loadedOperations[loadedCount - 1].timestamp, // Operations are ordered from the earliest to the latest
     loadedTo || updatedLoadedFrom
   );
   if (to == null) {
@@ -98,7 +98,8 @@ function computeUpdatedEstimations({
   }
 
   // Period is the average time between operations
-  const updatedEstimatedPeriod =
+  const updatedEstimatedPeriod = loadedCount === 1 ?
+    loadedCount :
     (updatedLoadedTo - updatedLoadedFrom) / (loadedCount - 1);
 
   // Estimate how many operations there is before and after what is loaded
@@ -125,11 +126,12 @@ function computeUpdatedEstimations({
 }
 
 function computeInitialStateFromProps(props) {
-  const { agentConfiguration, focus, from, initialOperations, to } = props;
+  const { agentConfiguration, focus, from, initialOperations, initialState, to } = props;
 
   const loadedOperations = preprocessOperations(
     agentConfiguration,
-    initialOperations
+    initialOperations,
+    initialState
   );
   const estimations = computeUpdatedEstimations({
     from,
@@ -522,7 +524,7 @@ class OperationsHistory extends React.Component {
     );
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { scrollToTimestamp } = this.state;
     if (scrollToTimestamp != null) {
       // Desired offset was set to something, that triggered a scroll to the offset
@@ -532,9 +534,9 @@ class OperationsHistory extends React.Component {
       });
     }
     if (this.props.focus != prevProps.focus) {
-      this.setState((state) => ({
+      this.setState({
         scrollToTimestamp: this.props.focus
-      }));
+      });
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
       // New initial operations, it's like a new start.
@@ -608,7 +610,8 @@ OperationsHistory.defaultProps = {
   ) => Promise.reject(new Error('\'onRequestOperations\' is not defined.')),
   rowHeight: 45,
   height: 600,
-  initialOperations: []
+  initialOperations: [],
+  initialState: {}
 };
 
 OperationsHistory.propTypes = {
@@ -618,6 +621,7 @@ OperationsHistory.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   initialOperations: PropTypes.array,
+  initialState: PropTypes.object,
   to: PropTypes.number,
   from: PropTypes.number,
   focus: PropTypes.number
