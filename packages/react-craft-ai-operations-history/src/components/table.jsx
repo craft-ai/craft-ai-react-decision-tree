@@ -17,19 +17,21 @@ const Table = styled('table')`
     box-sizing: border-box;
   }
 
+  max-width: ${({ maxWidth }) => (maxWidth == null ? 'auto' : `${maxWidth}px`)};
+
   border-spacing: 0px;
   border-collapse: collapse;
 
   thead {
     display: block;
-    width: ${({ width }) => (width == null ? 'auto' : `${width}px`)};
+    max-width: ${({ maxWidth }) => (maxWidth == null ? 'auto' : `${maxWidth}px`)};
 
     overflow-x: hidden;
   }
   tbody {
     display: block;
     height: ${({ height, rowHeight }) => `${height - rowHeight}px`};
-    width: ${({ width }) => (width == null ? 'auto' : `${width}px`)};
+    max-width: ${({ maxWidth }) => (maxWidth == null ? 'auto' : `${maxWidth}px`)};
 
     overflow-x: scroll;
     overflow-y: scroll;
@@ -72,6 +74,7 @@ const Table = styled('table')`
 
 Table.propTypes = {
   height: PropTypes.number.isRequired,
+  maxWidth: PropTypes.number.isRequired,
   rowHeight: PropTypes.number.isRequired
 };
 

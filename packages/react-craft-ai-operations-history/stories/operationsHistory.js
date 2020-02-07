@@ -2,6 +2,7 @@ import backgrounds from '@storybook/addon-backgrounds';
 import CONFIGURATION_1 from './configuration_1.json';
 import CONFIGURATION_2 from './configuration_2.json';
 import CONFIGURATION_3 from './configuration_3.json';
+import CONFIGURATION_4 from './configuration_4.json';
 import OperationsHistory from '../src';
 import orderBy from 'lodash.orderby';
 import preprocessOperations from '../src/utils/preprocessOperations';
@@ -62,6 +63,11 @@ const CONFIGURATION_3_OPERATIONS_1_STATES = orderBy(
     .map(
       ({ state, timestamp }) => ({ context: state, timestamp })
     ),
+  ['timestamp']
+);
+
+const CONFIGURATION_4_OPERATIONS_4 = orderBy(
+  require('./configuration_4_operations_4.json'),
   ['timestamp']
 );
 
@@ -191,6 +197,20 @@ storiesOf('OperationsHistory', module)
             0,
             createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 200)
           ) }
+          focus={ number('Focus', null) }
+          height={ createHeightKnob() }
+          width={ createWidthKnob() }
+          rowHeight={ createRowHeightKnob() }
+        />
+      </div>
+    );
+  })
+  .add('no dynamic loading (custom css)  with only 3 properties', () => {
+    return (
+      <div className='test'>
+        <OperationsHistory
+          agentConfiguration={ CONFIGURATION_4 }
+          initialOperations={ CONFIGURATION_4_OPERATIONS_4 }
           focus={ number('Focus', null) }
           height={ createHeightKnob() }
           width={ createWidthKnob() }
