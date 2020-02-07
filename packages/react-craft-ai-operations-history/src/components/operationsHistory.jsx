@@ -126,10 +126,10 @@ function computeUpdatedEstimations({
 }
 
 function computeInitialStateFromProps(props) {
-  const { agentConfiguration, focus, from, initialOperations, initialState, to } = props;
+  const { entityConfiguration, focus, from, initialOperations, initialState, to } = props;
 
   const loadedOperations = preprocessOperations(
-    agentConfiguration,
+    entityConfiguration,
     initialOperations,
     initialState
   );
@@ -137,7 +137,7 @@ function computeInitialStateFromProps(props) {
     from,
     to,
     loadedOperations,
-    estimatedPeriod: agentConfiguration.time_quantum || 1 // Use a time quantum of 1 as the default period
+    estimatedPeriod: entityConfiguration.time_quantum || 1 // Use a time quantum of 1 as the default period
   });
 
   return {
@@ -261,7 +261,7 @@ class OperationsHistory extends React.Component {
     this._renderRow = this._renderRow.bind(this);
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
 
-    this._extractedProperties = extractProperties(props.agentConfiguration);
+    this._extractedProperties = extractProperties(props.entityConfiguration);
     this._totalWidth = TIMESTAMP_CELL_WIDTH;
     this._extractedProperties.forEach(
       ({ property }) => (this._totalWidth += computeCellWidth(property.length))
@@ -326,7 +326,7 @@ class OperationsHistory extends React.Component {
             onRequestOperations(requestedFrom, requestedTo, true)
               .then(
                 (result) => {
-                  const { agentConfiguration } = this.props;
+                  const { entityConfiguration } = this.props;
 
                   if (result.to < requestedFrom) {
                     throw new Error(
@@ -335,7 +335,7 @@ class OperationsHistory extends React.Component {
                   }
 
                   const preprocessedOperations = preprocessOperations(
-                    agentConfiguration,
+                    entityConfiguration,
                     result.operations,
                     result.initialState
                   );
@@ -379,12 +379,12 @@ class OperationsHistory extends React.Component {
                 );
               }
 
-              const { agentConfiguration } = this.props;
+              const { entityConfiguration } = this.props;
               const { loadedFrom, loadedOperations, loadedTo } = this.state;
               // Let's deal with 'afterOperations'
               const lastLoadedState = loadedOperations[0].state;
               const preprocessedAfterOperations = preprocessOperations(
-                agentConfiguration,
+                entityConfiguration,
                 afterResults.operations.filter(
                   ({ timestamp }) => timestamp > loadedTo
                 ),
@@ -393,7 +393,7 @@ class OperationsHistory extends React.Component {
 
               // Let's deal with 'beforeOperations' && 'beforeInitialState'
               const preprocessedBeforeOperations = preprocessOperations(
-                agentConfiguration,
+                entityConfiguration,
                 beforeResults.operations.filter(
                   ({ timestamp }) => timestamp < loadedFrom
                 ),
@@ -567,7 +567,7 @@ class OperationsHistory extends React.Component {
   }
 
   render() {
-    const { height, rowHeight, width } = this.props;
+    const { entityConfiguration, height, rowHeight, width } = this.props;
     const { error, estimatedCount, scrollToTimestamp } = this.state;
 
     if (error) {
@@ -582,7 +582,7 @@ class OperationsHistory extends React.Component {
         maxWidth={ width }
       >
         <thead ref={ this._setHeaderElement }>
-          <HeaderRow properties={ this._extractedProperties } />
+          <HeaderRow properties={ this._extractedProperties } isGenerator={ entityConfiguration.filter !== undefined } />
         </thead>
         <InfiniteList
           tag='tbody'
@@ -615,7 +615,7 @@ OperationsHistory.defaultProps = {
 };
 
 OperationsHistory.propTypes = {
-  agentConfiguration: PropTypes.object.isRequired,
+  entityConfiguration: PropTypes.object.isRequired,
   onRequestOperations: PropTypes.func,
   rowHeight: PropTypes.number,
   height: PropTypes.number,

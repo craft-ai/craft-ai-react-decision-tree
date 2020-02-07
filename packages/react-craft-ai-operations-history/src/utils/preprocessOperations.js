@@ -9,17 +9,17 @@ import { Properties, Time } from 'craft-ai';
 // - feedforward the state.
 // ---
 function preprocessOperations(
-  agentConfiguration,
+  entityConfiguration,
   operations,
   initialState = {}
 ) {
-  const properties = Object.keys(agentConfiguration.context);
+  const properties = Object.keys(entityConfiguration.context);
   const tzProperty = properties.find(
     (property) =>
-      agentConfiguration.context[property].type === Properties.TYPES.timezone
+      entityConfiguration.context[property].type === Properties.TYPES.timezone
   );
   const generatedProperties = properties.filter((property) => {
-    const propertyCfg = agentConfiguration.context[property];
+    const propertyCfg = entityConfiguration.context[property];
     return (
       propertyCfg.isGenerated ||
       GENERATED_TIME_TYPES.find(
@@ -27,31 +27,48 @@ function preprocessOperations(
       )
     );
   });
+  const isGenerator = entityConfiguration.filter !== undefined ? true : false;
   const ascOperations = orderBy(operations, ['timestamp'], ['asc']);
+  let previousState = {
+    ...initialState
+  };
   const enrichedOperations = ascOperations.reduce(
-    (enrichedOperations, { context, timestamp }) => {
-      const previousState =
-        (last(enrichedOperations) || {}).state || initialState;
-      const state = {
-        ...previousState,
-        ...context
-      };
+    (enrichedOperations, { context, agentName, timestamp }) => {
+      let state;
+      if (!isGenerator) {
+        state = {
+          ...previousState,
+          ...context
+        };
+        // Update the previous state with the newly computed one
+        previousState = state;
+      }
+      else {
+        state = {
+          ...previousState[agentName],
+          ...context
+        };
+        // Update the previous state with the newly computed one
+        previousState[agentName] = state;
+      }
       const operationTz = state[tzProperty];
       const time = Time(timestamp, operationTz);
       generatedProperties.forEach((property) => {
-        state[property] = time[agentConfiguration.context[property].type];
+        state[property] = time[entityConfiguration.context[property].type];
       });
 
       enrichedOperations.push({
         timestamp,
         state,
+        agentName,
         operation: context
       });
+
       return enrichedOperations;
     },
     []
   );
-  // const descOperations = orderBy(enrichedOperations, ['timestamp'], ['desc']);
+
   return enrichedOperations;
 }
 
