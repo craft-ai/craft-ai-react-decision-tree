@@ -71,6 +71,11 @@ const CONFIGURATION_4_OPERATIONS_4 = orderBy(
   ['timestamp']
 );
 
+const GENERATOR_OPERATIONS = orderBy(
+  require('./generator_operations.json'),
+  ['timestamp']
+);
+
 function delay(delay) {
   return new Promise((resolve) => setTimeout(resolve, delay));
 }
@@ -192,7 +197,7 @@ storiesOf('OperationsHistory', module)
     return (
       <div className='test'>
         <OperationsHistory
-          agentConfiguration={ CONFIGURATION_1 }
+          entityConfiguration={ CONFIGURATION_1 }
           initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
             0,
             createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 200)
@@ -222,7 +227,7 @@ storiesOf('OperationsHistory', module)
   .add('no dynamic loading', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_1 }
+        entityConfiguration={ CONFIGURATION_1 }
         initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
           0,
           createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 1000)
@@ -230,10 +235,53 @@ storiesOf('OperationsHistory', module)
       />
     );
   })
+  .add('no dynamic loading and one operation', () => {
+    const operations = CONFIGURATION_1_OPERATIONS_1.slice(0, 1);
+    return (
+      <OperationsHistory
+        entityConfiguration={ CONFIGURATION_1 }
+        initialOperations={ operations }
+        from={ operations[0].timestamp }
+        to={ operations[0].timestamp }
+      />
+    );
+  })
+  .add('no dynamic loading and with initial state', () => {
+    const operations = CONFIGURATION_1_OPERATIONS_1.slice(1, 5);
+    return (
+      <OperationsHistory
+        entityConfiguration={ CONFIGURATION_1 }
+        initialOperations={ operations }
+        initialState={ CONFIGURATION_1_OPERATIONS_1[0].context }
+        from={ operations[0].timestamp }
+        to={ operations[operations.length - 1].timestamp }
+      />
+    );
+  })
+  .add('no dynamic loading and with initial state for generators', () => {
+    const operations = GENERATOR_OPERATIONS;
+    return (
+      <OperationsHistory
+        entityConfiguration={{
+          ...CONFIGURATION_1,
+          filter: ['toto', 'toto2', 'toto3', 'toto4']
+        }}
+        initialOperations={ operations }
+        initialState={{
+          'toto': { 'load': 1947.4, 'timezone': '-07:00', 'temperature': 4.7 },
+          'toto2': { 'load': 1947.4, 'timezone': '-05:00', 'temperature': 4.7 },
+          'toto3': { 'load': 1947.4, 'timezone': '+02:00', 'temperature': 4.7 },
+          'toto4': { 'load': 1947.4, 'timezone': '+03:00', 'temperature': 4.7 }
+        }}
+        from={ operations[0].timestamp }
+        to={ operations[operations.length - 1].timestamp }
+      />
+    );
+  })
   .add('Future operations dynamic loading', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_1 }
+        entityConfiguration={ CONFIGURATION_1 }
         initialOperations={ CONFIGURATION_1_OPERATIONS_1.slice(
           0,
           createInitialRowCountKnob(CONFIGURATION_1_OPERATIONS_1, 300)
@@ -247,7 +295,7 @@ storiesOf('OperationsHistory', module)
   .add('Future operations dynamic loading, irregular operations', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_2 }
+        entityConfiguration={ CONFIGURATION_2 }
         initialOperations={ CONFIGURATION_2_OPERATIONS_1.slice(0, 300) }
         onRequestOperations={ requestOperationsFromC2O1 }
         from={ CONFIGURATION_2_OPERATIONS_1_FROM }
@@ -258,7 +306,7 @@ storiesOf('OperationsHistory', module)
   .add('Past operations dynamic loading', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_1 }
+        entityConfiguration={ CONFIGURATION_1 }
         initialOperations={ [
           CONFIGURATION_1_OPERATIONS_1_STATES[
             CONFIGURATION_1_OPERATIONS_1_STATES.length - 200
@@ -276,7 +324,7 @@ storiesOf('OperationsHistory', module)
   .add('Fully dynamic loading', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_1 }
+        entityConfiguration={ CONFIGURATION_1 }
         onRequestOperations={ requestOperationsFromC1O1 }
         from={ CONFIGURATION_1_OPERATIONS_1_FROM }
         to={ CONFIGURATION_1_OPERATIONS_1_TO }
@@ -286,7 +334,7 @@ storiesOf('OperationsHistory', module)
   .add('Fully dynamic loading, irregular operations', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_2 }
+        entityConfiguration={ CONFIGURATION_2 }
         onRequestOperations={ requestOperationsFromC2O1 }
         from={ CONFIGURATION_2_OPERATIONS_1_FROM }
         to={ CONFIGURATION_2_OPERATIONS_1_TO }
@@ -298,7 +346,7 @@ storiesOf('OperationsHistory', module)
     return (
       <div className='test'>
         <OperationsHistory
-          agentConfiguration={ CONFIGURATION_2 }
+          entityConfiguration={ CONFIGURATION_2 }
           onRequestOperations={ requestOperationsFromC2O1 }
           from={ number('From', CONFIGURATION_2_OPERATIONS_1[500].timestamp, {
             range: true,
@@ -331,7 +379,7 @@ storiesOf('OperationsHistory', module)
       >
         <div className='test'>
           <OperationsHistory
-            agentConfiguration={ CONFIGURATION_3 }
+            entityConfiguration={ CONFIGURATION_3 }
             onRequestOperations={ requestOperationsFromC3O1 }
             from={ number('From', CONFIGURATION_3_OPERATIONS_1[500].timestamp, {
               range: true,
@@ -356,7 +404,7 @@ storiesOf('OperationsHistory', module)
   .add('Faulty request operations callback', () => {
     return (
       <OperationsHistory
-        agentConfiguration={ CONFIGURATION_1 }
+        entityConfiguration={ CONFIGURATION_1 }
         onRequestOperations={ requestOperationsBadC1 }
         from={ CONFIGURATION_1_OPERATIONS_1_TO }
         to={ CONFIGURATION_1_OPERATIONS_1_TO + 1500 }

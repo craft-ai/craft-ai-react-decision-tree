@@ -135,7 +135,7 @@ class InfiniteList extends React.Component {
 InfiniteList.defaultProps = {
   className: '',
   tag: 'div',
-  scrollToIndex: undefined,
+  scrollToIndex: null,
   onHorizontalScroll: undefined,
   bufferedCount: 500
 };

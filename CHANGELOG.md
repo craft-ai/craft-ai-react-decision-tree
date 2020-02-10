@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.28...HEAD)
 
+## Added
+
+- Add support for generator inside the operations widget component.
+- Expose a parameter initial state to compute generated types on non dynamically loading operations.
+
 ## Fixed
 
 - In the `DecisionTree` component, when double-clicking on a folding button, the tree does not fit to screen anymore.
+- Fix propTypes warning.
+- Fix issue when the `from` and the `to` where equals.
 - Fix operations widget width issue.
 
 ## [0.0.28](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.27...v0.0.28) - 2020-01-28

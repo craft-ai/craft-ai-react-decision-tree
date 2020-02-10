@@ -1,4 +1,5 @@
 import { computeCellWidth } from './table';
+import { craftAiStanley } from '../utils/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -41,23 +42,35 @@ HeaderCell.propTypes = {
   output: PropTypes.bool.isRequired
 };
 
-const HeaderRow = ({ properties }) => {
-  return (
-    <tr>
-      <th>
-        <span>
-          <FontAwesomeIcon icon={ faStopwatch } /> timestamp
-        </span>
-      </th>
-      {properties.map((property, index) => (
-        <HeaderCell key={ index } { ...property } />
-      ))}
-    </tr>
-  );
+const HeaderRow = ({ isGenerator, properties }) => (
+  <tr>
+    <th>
+      <span>
+        <FontAwesomeIcon icon={ faStopwatch } /> timestamp
+      </span>
+    </th>
+    {
+      isGenerator ? (
+        <th>
+          <span>
+            <FontAwesomeIcon icon={ craftAiStanley } /> AgentName
+          </span>
+        </th>
+      ) : null
+    }
+    {properties.map((property, index) => (
+      <HeaderCell key={ index } { ...property } />
+    ))}
+  </tr>
+);
+
+HeaderRow.defaultProps = {
+  isGenerator: false
 };
 
 HeaderRow.propTypes = {
-  properties: PropTypes.object.isRequired
+  properties: PropTypes.array.isRequired,
+  isGenerator: PropTypes.bool
 };
 
 export default HeaderRow;

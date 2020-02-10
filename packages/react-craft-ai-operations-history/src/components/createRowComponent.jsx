@@ -30,9 +30,10 @@ function createPropertyCellComponent(property, renderFun) {
     pascalCase: true
   })}PropertyCell`;
   PropertyCell.propTypes = {
-    timestamp: PropTypes.number.isRequired,
-    operation: PropTypes.object.isRequired,
-    state: PropTypes.object.isRequired
+    timestamp: PropTypes.number,
+    agentName: PropTypes.string,
+    operation: PropTypes.object,
+    state: PropTypes.object
   };
   return PropertyCell;
 }
@@ -54,6 +55,15 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
         <td>
           {formatTimestampAsUtcDate(timestamp)}
           <small>{timestamp}</small>
+        </td>
+      );
+    });
+  }
+  if (property === 'agentName') {
+    return createPropertyCellComponent(property, ({ agentName }) => {
+      return (
+        <td>
+          { agentName }
         </td>
       );
     });
@@ -92,8 +102,9 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
 
 export default function createRowComponent({ properties, totalWidth }) {
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
+  const AgentNameCell = createRowCellComponent({ property: 'agentName' });
   const Cells = properties.map(createRowCellComponent);
-  const Row = ({ focus, index, loading, operation, state, timestamp }) => {
+  const Row = ({ agentName, focus, index, loading, operation, state, timestamp }) => {
     const classNames = cx({
       'craft-operation': true,
       [`${timestamp}`]: timestamp != null,
@@ -115,6 +126,11 @@ export default function createRowComponent({ properties, totalWidth }) {
     return (
       <CustomWidthTr width={ totalWidth } key={ index } className={ classNames }>
         <TimestampCell timestamp={ timestamp } />
+        {
+          agentName !== undefined ? (
+            <AgentNameCell agentName={ agentName } />
+          ) : null
+        }
         {Cells.map((Cell, cellIndex) => (
           <Cell
             key={ cellIndex }
@@ -133,6 +149,7 @@ export default function createRowComponent({ properties, totalWidth }) {
     state: {}
   };
   Row.propTypes = {
+    agentName: PropTypes.string,
     index: PropTypes.number.isRequired,
     loading: PropTypes.bool,
     focus: PropTypes.bool,
