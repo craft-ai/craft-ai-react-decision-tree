@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.28...HEAD)
 
+## Fixed
+
+- In the `DecisionTree` component, when double-clicking on a folding button, the tree does not fit to screen anymore.
+- Fix operations widget width issue.
+
 ## [0.0.28](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.27...v0.0.28) - 2020-01-28
 
 ## Fixed
 
 - In the `DecisionTree` component, when selecting a node and changing the `data` prop, it unselects now the previous selected node.
-- In the `DecisionTree` component, when double-clicking on a folding button, the tree does not fit to screen anymore.
 
 ## [0.0.27](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.26...v0.0.27) - 2019-12-12
 

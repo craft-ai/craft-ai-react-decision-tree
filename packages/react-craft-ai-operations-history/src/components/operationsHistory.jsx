@@ -577,7 +577,7 @@ class OperationsHistory extends React.Component {
         className='craft-operations-history'
         height={ height }
         rowHeight={ rowHeight }
-        width={ width }
+        maxWidth={ width }
       >
         <thead ref={ this._setHeaderElement }>
           <HeaderRow properties={ this._extractedProperties } />

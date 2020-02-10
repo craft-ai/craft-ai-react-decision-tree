@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": 1333263600,
+    "context": { "load": 1947.4, "timezone": "-07:00" }
+  },
+  { "timestamp": 1333265400, "context": { "load": 1269.7666666666667 } },
+  { "timestamp": 1333267200, "context": { "load": 1645.3 } },
+  {
+    "timestamp": 1333269000,
+    "context": { "load": 845.6666666666666 }
+  }
+]
