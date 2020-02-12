@@ -210,6 +210,30 @@ storiesOf('OperationsHistory', module)
       </div>
     );
   })
+  .add('no dynamic loading and with initial state for generators (custom css)', () => {
+    const operations = GENERATOR_OPERATIONS;
+    return (
+      <div className='test'>
+        <OperationsHistory
+          entityConfiguration={{
+            ...CONFIGURATION_1,
+            filter: ['toto', 'toto2', 'toto3', 'toto4']
+          }}
+          initialOperations={ operations }
+          initialState={{
+            'toto': { 'load': 1947.4, 'timezone': '-07:00', 'temperature': 4.7 },
+            'toto2': { 'load': 1947.4, 'timezone': '-05:00', 'temperature': 4.7 },
+            'toto3': { 'load': 1947.4, 'timezone': '+02:00', 'temperature': 4.7 },
+            'toto4': { 'load': 1947.4, 'timezone': '+03:00', 'temperature': 4.7 }
+          }}
+          from={ operations[0].timestamp }
+          to={ operations[operations.length - 1].timestamp }
+          height={ createHeightKnob() }
+          width={ createWidthKnob() }
+        />
+      </div>
+    );
+  })
   .add('no dynamic loading (custom css)  with only 3 properties', () => {
     return (
       <div className='test'>

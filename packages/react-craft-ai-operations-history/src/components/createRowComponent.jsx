@@ -1,11 +1,14 @@
 import camelCase from 'camelcase';
-import { computeCellWidth } from './table';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {
+  AGENT_NAME_CELL_WIDTH,
+  computeCellWidth
+} from './table';
 import styled, { cx } from 'react-emotion';
 
 function formatTimestampAsUtcDate(timestamp) {
@@ -62,7 +65,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
   if (property === 'agentName') {
     return createPropertyCellComponent(property, ({ agentName }) => {
       return (
-        <td>
+        <td style={{ width: AGENT_NAME_CELL_WIDTH }}>
           { agentName }
         </td>
       );
