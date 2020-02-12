@@ -10,18 +10,22 @@ import preprocessOperations from '../utils/preprocessOperations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as most from 'most';
-import Table, { computeCellWidth, TIMESTAMP_CELL_WIDTH } from './table';
+import Table, {
+  AGENT_NAME_CELL_WIDTH,
+  computeCellWidth,
+  TIMESTAMP_CELL_WIDTH
+} from './table';
 
 const TIMESTAMP_MAX = Number.MAX_SAFE_INTEGER;
 const TIMESTAMP_MIN = 0;
 
-function extractProperties(agentConfiguration) {
-  const properties = Object.keys(agentConfiguration.context)
+function extractProperties(entityConfiguration) {
+  const properties = Object.keys(entityConfiguration.context)
     .map(
       (property) => ({
         property,
-        ...agentConfiguration.context[property],
-        output: !!agentConfiguration.output.find(
+        ...entityConfiguration.context[property],
+        output: !!entityConfiguration.output.find(
           (outputProperty) => outputProperty === property
         )
       })
@@ -262,7 +266,7 @@ class OperationsHistory extends React.Component {
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
 
     this._extractedProperties = extractProperties(props.entityConfiguration);
-    this._totalWidth = TIMESTAMP_CELL_WIDTH;
+    this._totalWidth = TIMESTAMP_CELL_WIDTH + (props.entityConfiguration.filter ? AGENT_NAME_CELL_WIDTH : 0);
     this._extractedProperties.forEach(
       ({ property }) => (this._totalWidth += computeCellWidth(property.length))
     );

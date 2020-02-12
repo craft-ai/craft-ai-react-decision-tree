@@ -1,10 +1,13 @@
-import { computeCellWidth } from './table';
 import { craftAiStanley } from '../utils/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
 import { TYPES } from 'craft-ai/lib/constants';
+import {
+  AGENT_NAME_CELL_WIDTH,
+  computeCellWidth
+} from './table';
 import {
   faCalendar,
   faClock,
@@ -51,7 +54,7 @@ const HeaderRow = ({ isGenerator, properties }) => (
     </th>
     {
       isGenerator ? (
-        <th>
+        <th width={ AGENT_NAME_CELL_WIDTH }>
           <span>
             <FontAwesomeIcon icon={ craftAiStanley } /> AgentName
           </span>
@@ -61,6 +64,7 @@ const HeaderRow = ({ isGenerator, properties }) => (
     {properties.map((property, index) => (
       <HeaderCell key={ index } { ...property } />
     ))}
+    <th />
   </tr>
 );
 

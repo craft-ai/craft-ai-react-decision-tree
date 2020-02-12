@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.29...HEAD)
 
+## Fixed
+
+- Fix the width of a row when its a generators.
+- Fix the horizontal scoll between the header and the row.
+
 ## [0.0.29](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.28...v0.0.29) - 2020-02-10
 
 ## Added
