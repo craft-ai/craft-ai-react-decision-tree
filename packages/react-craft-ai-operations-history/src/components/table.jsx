@@ -59,9 +59,6 @@ const Table = styled('table')`
     }
 
     padding: 10px;
-    &:last-child {
-      padding-right: 17px; // Take into account the scrollbar
-    }
 
     white-space: nowrap;
     overflow: hidden;

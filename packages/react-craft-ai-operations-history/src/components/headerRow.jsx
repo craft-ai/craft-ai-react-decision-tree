@@ -64,6 +64,7 @@ const HeaderRow = ({ isGenerator, properties }) => (
     {properties.map((property, index) => (
       <HeaderCell key={ index } { ...property } />
     ))}
+    <th />
   </tr>
 );
 
