@@ -44,6 +44,7 @@ const Table = styled('table')`
     justify-content: stretch;
     height: ${({ rowHeight }) => rowHeight}px;
   }
+
   th,
   td {
     flex: 0 0 auto;
@@ -67,6 +68,11 @@ const Table = styled('table')`
     small {
       font-size: 0.7em;
     }
+  }
+
+  th:last-child {
+    min-width: 10px;
+    padding: 0px;
   }
 `;
 
