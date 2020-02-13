@@ -238,7 +238,7 @@ storiesOf('OperationsHistory', module)
     return (
       <div className='test'>
         <OperationsHistory
-          agentConfiguration={ CONFIGURATION_4 }
+          entityConfiguration={ CONFIGURATION_4 }
           initialOperations={ CONFIGURATION_4_OPERATIONS_4 }
           focus={ number('Focus', null) }
           height={ createHeightKnob() }

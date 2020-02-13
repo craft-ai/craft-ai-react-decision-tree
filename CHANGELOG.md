@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.30...HEAD)
 
+## Fixed
+
+- Fix horizontal scroll vizualisation.
+
 ## [0.0.30](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.29...v0.0.30) - 2020-02-12
 
 ## Fixed
