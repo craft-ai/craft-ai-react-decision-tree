@@ -33,7 +33,7 @@ function preprocessOperations(
     ...initialState
   };
   const enrichedOperations = ascOperations.reduce(
-    (enrichedOperations, { context, agentName, timestamp }) => {
+    (enrichedOperations, { context, agent_id, timestamp }) => {
       let state;
       if (!isGenerator) {
         state = {
@@ -45,11 +45,11 @@ function preprocessOperations(
       }
       else {
         state = {
-          ...previousState[agentName],
+          ...previousState[agent_id],
           ...context
         };
         // Update the previous state with the newly computed one
-        previousState[agentName] = state;
+        previousState[agent_id] = state;
       }
       const operationTz = state[tzProperty];
       const time = Time(timestamp, operationTz);
@@ -60,7 +60,7 @@ function preprocessOperations(
       enrichedOperations.push({
         timestamp,
         state,
-        agentName,
+        agent_id,
         operation: context
       });
 

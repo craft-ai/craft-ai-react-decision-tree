@@ -56,7 +56,7 @@ const HeaderRow = ({ isGenerator, properties }) => (
       isGenerator ? (
         <th width={ AGENT_NAME_CELL_WIDTH }>
           <span>
-            <FontAwesomeIcon icon={ craftAiStanley } /> AgentName
+            <FontAwesomeIcon icon={ craftAiStanley } /> agent_id
           </span>
         </th>
       ) : null

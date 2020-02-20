@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.31...HEAD)
 
+## Fixed
+
+- Rename generator operation property from "agentName" to "agent_id".
+
 ## [0.0.31](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.30...v0.0.31) - 2020-02-13
 
 ## Fixed
