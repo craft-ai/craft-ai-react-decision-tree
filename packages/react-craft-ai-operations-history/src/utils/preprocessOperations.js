@@ -1,5 +1,4 @@
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
-import last from 'lodash.last';
 import orderBy from 'lodash.orderby';
 import { Properties, Time } from 'craft-ai';
 
