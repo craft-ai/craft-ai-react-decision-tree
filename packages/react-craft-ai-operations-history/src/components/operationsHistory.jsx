@@ -11,8 +11,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as most from 'most';
 import Table, {
-  AGENT_NAME_CELL_WIDTH,
   computeCellWidth,
+  INIT_AGENT_NAME_CELL_WIDTH,
   TIMESTAMP_CELL_WIDTH
 } from './table';
 
@@ -36,8 +36,8 @@ function extractProperties(entityConfiguration) {
   return sortedProperties;
 }
 
-const memoizedCreateRowComponent = memoizeOne((properties, totalWidth) => {
-  return createRowComponent({ properties, totalWidth });
+const memoizedCreateRowComponent = memoizeOne((properties, totalWidth, agentColumnWidth) => {
+  return createRowComponent({ properties, totalWidth, agentColumnWidth });
 });
 
 function computeUpdatedEstimations({
@@ -245,6 +245,16 @@ const memoizedComputedEstimatedFocusIndex = memoizeOne((timestamp, state) => {
   }
 });
 
+const computeCurrentAgentWidth = (operations) => {
+  const charPixelSize = 12;
+
+  return operations.reduce((acc, op) => {
+    return op.agent_id && op.agent_id.length * charPixelSize > acc
+      ? op.agent_id.length * charPixelSize
+      : acc;
+  }, INIT_AGENT_NAME_CELL_WIDTH);
+};
+
 class OperationsHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -266,10 +276,17 @@ class OperationsHistory extends React.Component {
     this._renderPlaceholderRow = this._renderPlaceholderRow.bind(this);
 
     this._extractedProperties = extractProperties(props.entityConfiguration);
-    this._totalWidth = TIMESTAMP_CELL_WIDTH + (props.entityConfiguration.filter ? AGENT_NAME_CELL_WIDTH : 0);
+    this._agentColumnWidth = computeCurrentAgentWidth(props.initialOperations);
+    this._totalWidth = this._computeTotalWidth(props.entityConfiguration.filter);
+  }
+
+  _computeTotalWidth(filter) {
+    const agentWidth = filter ? this._agentColumnWidth : 0;
+    let width = TIMESTAMP_CELL_WIDTH + agentWidth;
     this._extractedProperties.forEach(
-      ({ property }) => (this._totalWidth += computeCellWidth(property.length))
+      ({ property }) => (width += computeCellWidth(property.length))
     );
+    return width;
   }
 
   _setHeaderElement(element) {
@@ -460,7 +477,7 @@ class OperationsHistory extends React.Component {
     const Row = memoizedCreateRowComponent(
       this._extractedProperties,
       this._totalWidth,
-      this._cellsWidth
+      this._agentColumnWidth
     );
     const estimatedFocusIndex = memoizedComputedEstimatedFocusIndex(
       focus,
@@ -543,6 +560,8 @@ class OperationsHistory extends React.Component {
       });
     }
     if (this.props.initialOperations !== prevProps.initialOperations) {
+      this._agentColumnWidth = computeCurrentAgentWidth(this.props.initialOperations);
+      this._totalWidth = this._computeTotalWidth(this.props.entityConfiguration.filter);
       // New initial operations, it's like a new start.
       this.setState((state, props) => {
         const newState = computeInitialStateFromProps(props);
@@ -586,7 +605,11 @@ class OperationsHistory extends React.Component {
         maxWidth={ width }
       >
         <thead ref={ this._setHeaderElement }>
-          <HeaderRow properties={ this._extractedProperties } isGenerator={ entityConfiguration.filter !== undefined } />
+          <HeaderRow
+            properties={ this._extractedProperties }
+            isGenerator={ entityConfiguration.filter !== undefined }
+            agentColumnWidth={ this._agentColumnWidth }
+          />
         </thead>
         <InfiniteList
           tag='tbody'

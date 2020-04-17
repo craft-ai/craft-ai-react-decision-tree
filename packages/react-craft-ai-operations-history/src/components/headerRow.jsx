@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'react-emotion';
 import { TYPES } from 'craft-ai/lib/constants';
-import {
-  AGENT_NAME_CELL_WIDTH,
-  computeCellWidth
-} from './table';
+import { computeCellWidth, INIT_AGENT_NAME_CELL_WIDTH } from './table';
 import {
   faCalendar,
   faClock,
@@ -45,7 +42,7 @@ HeaderCell.propTypes = {
   output: PropTypes.bool.isRequired
 };
 
-const HeaderRow = ({ isGenerator, properties }) => (
+const HeaderRow = ({ isGenerator, properties, agentColumnWidth }) => (
   <tr>
     <th>
       <span>
@@ -54,7 +51,7 @@ const HeaderRow = ({ isGenerator, properties }) => (
     </th>
     {
       isGenerator ? (
-        <th width={ AGENT_NAME_CELL_WIDTH }>
+        <th width={ agentColumnWidth }>
           <span>
             <FontAwesomeIcon icon={ craftAiStanley } /> agent_id
           </span>
@@ -69,10 +66,12 @@ const HeaderRow = ({ isGenerator, properties }) => (
 );
 
 HeaderRow.defaultProps = {
+  agentColumnWidth: INIT_AGENT_NAME_CELL_WIDTH,
   isGenerator: false
 };
 
 HeaderRow.propTypes = {
+  agentColumnWidth: PropTypes.number,
   properties: PropTypes.array.isRequired,
   isGenerator: PropTypes.bool
 };

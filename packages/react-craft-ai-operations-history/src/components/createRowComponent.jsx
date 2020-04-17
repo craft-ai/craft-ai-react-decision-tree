@@ -1,14 +1,11 @@
 import camelCase from 'camelcase';
+import { computeCellWidth } from './table';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GENERATED_TIME_TYPES } from 'craft-ai/lib/constants';
 import { interpreter } from 'craft-ai';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  AGENT_NAME_CELL_WIDTH,
-  computeCellWidth
-} from './table';
 import styled, { cx } from 'react-emotion';
 
 function formatTimestampAsUtcDate(timestamp) {
@@ -50,7 +47,7 @@ const CustomWidthTr = styled('tr')`
   width: ${({ width }) => width}px !important;
 `;
 
-function createRowCellComponent({ isGenerated, output, property, type }) {
+function createRowCellComponent({ isGenerated, output, property, type, agentColumnWidth }) {
   const formatter = interpreter.formatProperty(type);
   if (property === 'timestamp') {
     return createPropertyCellComponent(property, ({ timestamp }) => {
@@ -65,7 +62,7 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
   if (property === 'agent_id') {
     return createPropertyCellComponent(property, ({ agent_id }) => {
       return (
-        <td style={{ width: AGENT_NAME_CELL_WIDTH }}>
+        <td style={{ width: agentColumnWidth }}>
           { agent_id }
         </td>
       );
@@ -103,9 +100,9 @@ function createRowCellComponent({ isGenerated, output, property, type }) {
   });
 }
 
-export default function createRowComponent({ properties, totalWidth }) {
+export default function createRowComponent({ properties, totalWidth, agentColumnWidth }) {
   const TimestampCell = createRowCellComponent({ property: 'timestamp' });
-  const AgentIdCell = createRowCellComponent({ property: 'agent_id' });
+  const AgentIdCell = createRowCellComponent({ property: 'agent_id', agentColumnWidth });
   const Cells = properties.map(createRowCellComponent);
   const Row = ({ agent_id, focus, index, loading, operation, state, timestamp }) => {
     const classNames = cx({
