@@ -27,7 +27,7 @@
     "test": "npm run lint && npm run style:check"
   },
   "engines": {
-    "node": ">= 6.9.1"
+    "node": ">= 8.17.0"
   },
   "devDependencies": {
     "http-cli": "2.1.0",
