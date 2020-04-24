@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.32...HEAD)
 
+## Updated
+
+- Bump node version to 12.16.1 and update packages
+
 ## Fixed
 
 - Fix agent_id column display when agent_id label is bigger than the column width.
