@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-no-bind */
 import _ from 'lodash';
-import backgrounds from '@storybook/addon-backgrounds';
 import bigTree from './bigTree.json';
 import ParentComponent from './ParentComponent';
 import PropTypes from 'prop-types';
@@ -15,6 +14,7 @@ import treeV2Boolean from './treeV2-boolean.json';
 import treeV2Classif from './treeV2.json';
 import treeV2ClassifBinary from './treeV2-classif-binary.json';
 import treeV2Reg from './treeV2-regression.json';
+import { withBackgrounds } from '@storybook/addon-backgrounds';
 import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 import { DecisionTree, DecisionTreeWithPanel, NodeInformation } from '../src/';
 import React, { useState } from 'react';
@@ -95,7 +95,7 @@ CustomComponent.propTypes = {
 storiesOf('Decision Tree with panel', module)
   .addDecorator(withKnobs)
   .addDecorator(
-    backgrounds([
+    withBackgrounds([
       { name: 'craft', value: '#42348b', default: true },
       { name: 'pink', value: '#d54267' }
     ])
@@ -387,7 +387,7 @@ storiesOf('Tree in content', module)
 storiesOf('Custom component for displaying nodes', module)
   .addDecorator(withKnobs)
   .addDecorator(
-    backgrounds([
+    withBackgrounds([
       { name: 'craft', value: '#42348b', default: true },
       { name: 'pink', value: '#d54267' }
     ])
@@ -403,7 +403,7 @@ storiesOf('Custom component for displaying nodes', module)
 storiesOf('Using separate component', module)
   .addDecorator(withKnobs)
   .addDecorator(
-    backgrounds([
+    withBackgrounds([
       { name: 'craft', value: '#42348b', default: true },
       { name: 'pink', value: '#d54267' }
     ])

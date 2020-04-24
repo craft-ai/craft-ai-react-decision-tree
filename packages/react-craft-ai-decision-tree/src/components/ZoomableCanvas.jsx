@@ -178,7 +178,7 @@ const ZoomableCanvas = React.memo(
           createZoom({ x: initialZoomX, y: initialZoomY, k: initialZoomK })
         );
       }
-    }, [fitToScreen, setZoom, initialZoomX, initialZoomY, initialZoomK]);
+    }, [fitToScreen, setZoom, initialZoomX, initialZoomY, initialZoomK, initialZoom]);
     return (
       <Viewport
         { ...otherProps }

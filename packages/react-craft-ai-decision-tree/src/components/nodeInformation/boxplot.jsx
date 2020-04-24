@@ -66,15 +66,15 @@ class BoxPlot extends React.Component {
   };
 
   createBoxPlot = ({ totalMin, totalMax, mean, std, min, max, width, height }) => {
-    // Scalers 
+    // Scalers
     const scaleX = scaleLinear()
       .domain([totalMin, totalMax])
       .range([boxPlotMargin.left, width - boxPlotMargin.right]);
-  
+
     const scaleY = scaleLinear()
       .domain([0, 1])
       .range([boxPlotMargin.top, height - boxPlotMargin.down]);
-    
+
     // constant positions:
     const minPosX = scaleX(min);
     const maxPosX = scaleX(max);
@@ -88,7 +88,7 @@ class BoxPlot extends React.Component {
     d3Select(this.node)
       .selectAll('*')
       .remove();
-    
+
     // Begin here to define the svg:
     let svg = d3Select(this.node)
       .attr('width', width)
@@ -161,7 +161,7 @@ class BoxPlot extends React.Component {
     // If two local min/max are too close draw a bezier line and separate them more
     else if (maxPosX - minPosX > 0) {
       const shift = 15;
-  
+
       svg
         .append('path')
         .attr('d', () => {
@@ -258,7 +258,7 @@ class BoxPlot extends React.Component {
         </div>
         <ToolTip
           // disable click on tooltip
-          style={{ pointerEvents: 'none', fontFamily: 'monospace', whiteSpace: 'pre' }} 
+          style={{ pointerEvents: 'none', fontFamily: 'monospace', whiteSpace: 'pre' }}
           show={ this.state.tooltipShown }
           placement={ 'top' }
           target={ this.info }
