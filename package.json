@@ -30,8 +30,8 @@
     "node": ">= 6.9.1"
   },
   "devDependencies": {
-    "http-cli": "^2.0",
-    "lerna": "^3.4",
+    "http-cli": "2.1.0",
+    "lerna": "3.20.2",
     "prettier": "^1.15",
     "prop-types": "15.6.2",
     "react": "16.8.4",
