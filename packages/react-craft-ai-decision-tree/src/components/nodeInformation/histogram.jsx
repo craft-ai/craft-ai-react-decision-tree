@@ -66,7 +66,7 @@ class Histogram extends React.Component {
     const xAxis = axisTop()
       .ticks(3)
       .scale(scaleX);
-    
+
     const yAxis = axisLeft()
       .tickFormat('')
       .ticks(distribution.length)
@@ -76,7 +76,7 @@ class Histogram extends React.Component {
       .append('g')
       .attr('transform', `translate(0, ${scaleY(0)})`)
       .call(xAxis);
-    
+
     d3Select(this.node)
       .append('g')
       .attr('transform', `translate(${scaleX(0)}, 0)`)
@@ -98,7 +98,7 @@ class Histogram extends React.Component {
     const updateHistogram = ({ size: newSize, distribution: newDistribution }) => {
       // Get the tooltip div, apply style and hide it initially
       const div = d3Select(this.tooltip)
-        .attr('class', tooltipCssClass)	
+        .attr('class', tooltipCssClass)
         .style('opacity', 0);
 
       let histogram = d3Select(this.node)
@@ -114,7 +114,7 @@ class Histogram extends React.Component {
         .attr('y', (d, i) => scaleY(i) + (scaleY(1) - margin.top - barWidth) / 2)
         .attr('width', 0)
         .attr('height', barWidth);
-      
+
       const histUpdate = histEnter.merge(histogram);
 
       histUpdate
@@ -154,8 +154,8 @@ class Histogram extends React.Component {
             .duration(100)
             .style('opacity', 0.9);
           return div.html(`<b>${outputValues[i]}</b></br>${d.toFixed(2)}</br>${Math.floor(newSize * d)} samples`)
-            .style('left', `${scaleX(1)}px`)		
-            .style('top', `${scaleY(i) + (fullBarWidth) / 2}px`);	
+            .style('left', `${scaleX(1)}px`)
+            .style('top', `${scaleY(i) + (fullBarWidth) / 2}px`);
         })
         .on('mouseout', function() {
           d3Select(this)
@@ -167,7 +167,7 @@ class Histogram extends React.Component {
             .duration(100)
             .style('opacity', 0);
         });
-      
+
       rectback
         .exit()
         .remove();
@@ -204,7 +204,7 @@ Histogram.propTypes = {
   outputValues: PropTypes.array.isRequired,
   size: PropTypes.number.isRequired,
   width: PropTypes.number,
-  fullBarWidth: PropTypes.number  
+  fullBarWidth: PropTypes.number
 };
 
 export default Histogram;

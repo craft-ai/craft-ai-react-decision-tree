@@ -1,4 +1,3 @@
-import backgrounds from '@storybook/addon-backgrounds';
 import CONFIGURATION_1 from './configuration_1.json';
 import CONFIGURATION_2 from './configuration_2.json';
 import CONFIGURATION_3 from './configuration_3.json';
@@ -8,6 +7,7 @@ import orderBy from 'lodash.orderby';
 import preprocessOperations from '../src/utils/preprocessOperations';
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { withBackgrounds } from '@storybook/addon-backgrounds';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './test.css';
@@ -187,7 +187,7 @@ function createInitialRowCountKnob(array, defaultCount) {
 storiesOf('OperationsHistory', module)
   .addDecorator(withKnobs)
   .addDecorator(
-    backgrounds([
+    withBackgrounds([
       { name: 'light-green', value: '#99F2C5', default: true },
       { name: 'craft', value: '#42348b' },
       { name: 'pink', value: '#d54267' }
