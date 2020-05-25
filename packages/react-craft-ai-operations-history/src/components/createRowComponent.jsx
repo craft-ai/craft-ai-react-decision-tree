@@ -94,7 +94,7 @@ function createRowCellComponent({ isGenerated, output, property, type, agentColu
           'craft-property-output': output
         }) }
       >
-        {isUndefined ? '-' : formatter(value)}
+        {isUndefined ? '-' : `${formatter(value)}`}
       </CustomWidthTd>
     );
   });
