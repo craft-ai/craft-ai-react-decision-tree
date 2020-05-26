@@ -65,7 +65,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.7",
     "@fortawesome/react-fontawesome": "^0.1",
     "babel-core": "^6.26.3",
-    "craft-ai": "1.19.0",
+    "craft-ai": "1.19.1",
     "d3": "^5.7",
     "emotion": "^9.2",
     "lodash": "^4",

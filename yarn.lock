@@ -5709,17 +5709,17 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
-craft-ai@1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/craft-ai/-/craft-ai-1.19.0.tgz#3bde3a8534e06427119dee25d0e50bc660b199a9"
-  integrity sha512-i/1HYHUwudjvjeCSJP5oxfwNlZjOa0HXG5Zh890kNIFUWAOiFXJyAeV4AiKVUO4qRBZDLQ7XI6TKrbN2QlRwiQ==
+craft-ai@1.19.1:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/craft-ai/-/craft-ai-1.19.1.tgz#2d6f269f821ed085e3f80ee31b90b26d99b87a45"
+  integrity sha512-iWvQ6cZ3OTGEtQGUmI4KL4HjMctnf49jM3nHdBMnjPQIJnXEfp9lrD54ja8969/Nk9PxoCPetzBdgI9s5QVfag==
   dependencies:
     debug "4.1.1"
     http-proxy-agent "4.0.1"
     https-proxy-agent "5.0.0"
     inherits "2.0.4"
     jwt-decode "2.2.0"
-    lodash "^4.17.15"
+    lodash "4.17.15"
     moment "2.24.0"
     node-fetch "2.6.0"
     semver "7.3.2"
@@ -9320,15 +9320,15 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
+lodash@4.17.15, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 lodash@^4, lodash@^4.0.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.2.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
-
-lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
