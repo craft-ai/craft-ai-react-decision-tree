@@ -8,6 +8,9 @@
     },
     "timezone": {
       "type": "timezone"
+    },
+    "bool_value": {
+      "type": "boolean"
     }
   },
   "output": ["load"]
