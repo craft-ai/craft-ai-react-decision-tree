@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## Fixed
 
 - Fix display bug for falsy values in operations history.
+- Fix flickering for decision tree.
 
 ## [0.1.0](https://github.com/craft-ai/react-craft-ai-components/compare/v0.0.32...v0.1.0) - 2020-05-05
 
