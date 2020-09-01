@@ -289,26 +289,30 @@ const Tree = React.memo(function Tree({
       maxZoomScale={ ZOOM_EXTENT[1] }
       style={{ height, width, backgroundColor: 'white', minWidth: 400 }}
     >
-      <React.Fragment key={ layout.version }>
-        <Nodes
-          selectable={ !zooming }
-          interpreter={ interpreter }
-          configuration={ configuration }
-          hierarchy={ hierarchy }
-          updateSelectedNode={ updateSelectedNode }
-          selectedNodePath={ selectedNode || '' }
-          lastFoldedNode={ lastFoldedNode || '' }
-          onToggleSubtreeFold={ toggleSubtreeFold }
-        />
-        <Edges
-          selectedNodeIdPath={ selectedHNode ? selectedHNode.idPath : [] }
-          dt={ interpreter.dt }
-          hierarchy={ hierarchy }
-          width={ layout.canvasWidth }
-          height={ layout.canvasHeight }
-          edgeType={ interpreter.version == 1 ? 'constant' : edgeType }
-        />
-      </React.Fragment>
+      {
+        initialZoom
+          ? <React.Fragment key={ layout.version }>
+            <Nodes
+              selectable={ !zooming }
+              interpreter={ interpreter }
+              configuration={ configuration }
+              hierarchy={ hierarchy }
+              updateSelectedNode={ updateSelectedNode }
+              selectedNodePath={ selectedNode || '' }
+              lastFoldedNode={ lastFoldedNode || '' }
+              onToggleSubtreeFold={ toggleSubtreeFold }
+            />
+            <Edges
+              selectedNodeIdPath={ selectedHNode ? selectedHNode.idPath : [] }
+              dt={ interpreter.dt }
+              hierarchy={ hierarchy }
+              width={ layout.canvasWidth }
+              height={ layout.canvasHeight }
+              edgeType={ interpreter.version == 1 ? 'constant' : edgeType }
+            />
+          </React.Fragment>
+          : null
+      }
     </ZoomableCanvas>
   );
 });
