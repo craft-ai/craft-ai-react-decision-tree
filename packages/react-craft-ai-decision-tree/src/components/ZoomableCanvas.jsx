@@ -205,7 +205,7 @@ ZoomableCanvas.propTypes = {
       y: PropTypes.number
     })
   ]),
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   disable: PropTypes.bool,
   minZoomScale: PropTypes.number,
   maxZoomScale: PropTypes.number,
