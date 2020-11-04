@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import memoize from 'lodash/memoize';
 import { mix } from 'polished';
 import {
   COLOR_LEAVES_CONFIDENCE_0,
@@ -23,7 +23,7 @@ export function findSelectedNode(path, tree) {
   }
   else {
     // remove the first element of the path because it is the root path;
-    return findSelectedNodeRecursion(_.tail(pathArray), tree, {});
+    return findSelectedNodeRecursion(pathArray.slice(1), tree, {});
   }
 }
 
@@ -48,7 +48,7 @@ function findSelectedNodeRecursion(path, tree, decisionRules) {
   if (path.length !== 0) {
     const indexChild = parseInt(path[0]);
     return findSelectedNodeRecursion(
-      _.tail(path),
+      path.slice(1),
       tree.children[indexChild],
       decisionRules
     );
@@ -59,7 +59,7 @@ function findSelectedNodeRecursion(path, tree, decisionRules) {
   }
 }
 
-export const computeSamplesCount = _.memoize((dtNode) => {
+export const computeSamplesCount = memoize((dtNode) => {
   const selfCount = (dtNode.prediction && dtNode.prediction.nb_samples) || 0;
   const children = dtNode.children || [];
   return children.reduce(

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
-import _ from 'lodash';
 import bigTree from './bigTree.json';
+import cloneDeep from 'lodash/cloneDeep';
 import ParentComponent from './ParentComponent';
 import PropTypes from 'prop-types';
 import smallTree from './smallTree.json';
@@ -257,7 +257,7 @@ storiesOf('Decision Tree with panel', module)
     />
   ))
   .add('small tree parameterized confidence', () => {
-    const parametrizedTree = _.cloneDeep(smallTree);
+    const parametrizedTree = cloneDeep(smallTree);
     parametrizedTree.trees.interest.children[0].confidence = number(
       'confidence',
       parametrizedTree.trees.interest.children[0].confidence,

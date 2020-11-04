@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import BoxPlot from './boxplot';
 import Histogram from './histogram';
 import PropTypes from 'prop-types';
@@ -33,7 +32,7 @@ const Statistics = ({
           <Ul>
             <li>{size} samples</li>
           </Ul>
-          {_.isUndefined(standard_deviation) ? (
+          {standard_deviation === undefined ? (
             <Histogram
               distribution={ value }
               outputValues={ outputValues }

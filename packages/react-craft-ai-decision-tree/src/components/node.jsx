@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-import _ from 'lodash';
 import { computeLeafColor } from '../utils/utils';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -83,11 +81,11 @@ function computeNodePresentationData(hNode, interpreter) {
   if (isLeaf || isFolded) {
     const { value, confidence } = interpreter.getPrediction(dtNode);
     let text;
-    if (_.isUndefined(value)) {
+    if (value === undefined) {
       text = dtNode.children[0].decision_rule.property;
     }
     else {
-      text = _.isFinite(value) ? parseFloat(value.toFixed(3)) : `${value}`;
+      text = Number.isFinite(value) ? parseFloat(value.toFixed(3)) : `${value}`;
     }
 
     return {

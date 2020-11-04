@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import Edges from './edges';
 import Nodes from './nodes';
 import PropTypes from 'prop-types';
@@ -110,7 +109,7 @@ function applyHierarchyLayout(hierarchy, version = 0) {
 function recursiveHNodeFromPath(nodePath, hNode) {
   if (nodePath.length !== 0) {
     const indexChild = parseInt(nodePath[0]);
-    return recursiveHNodeFromPath(_.tail(nodePath), hNode.children[indexChild]);
+    return recursiveHNodeFromPath(nodePath.slice(1), hNode.children[indexChild]);
   }
   return hNode;
 }
@@ -129,7 +128,7 @@ function hNodeFromPath(nodePathStr, hierarchy) {
 
   const nodePath = nodePathStr.split(NODE_PATH_SEPARATOR);
   // remove the first element of the path because it is the root path;
-  return recursiveHNodeFromPath(_.tail(nodePath), hierarchy);
+  return recursiveHNodeFromPath(nodePath.slice(1), hierarchy);
 }
 
 const DEFAULT_PROPS = {
