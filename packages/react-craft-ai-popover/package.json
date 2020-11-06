@@ -54,7 +54,6 @@
   "dependencies": {
     "babel-core": "^6.26.3",
     "emotion": "^9.2",
-    "lodash": "^4",
     "react-emotion": "^9.2",
     "react-overlays": "0.8.0"
   },

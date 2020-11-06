@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/craft-ai/react-craft-ai-components/compare/v0.1.2...HEAD)
 
+## Updated
+
+- Bump craft ai package to 1.20.0.
+
 ## [0.1.2](https://github.com/craft-ai/react-craft-ai-components/compare/v0.1.1...v0.1.2) - 2020-09-07
 
 ## [0.1.1](https://github.com/craft-ai/react-craft-ai-components/compare/v0.1.0...v0.1.1) - 2020-05-28

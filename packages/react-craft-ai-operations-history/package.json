@@ -64,7 +64,7 @@
     "@fortawesome/react-fontawesome": "^0.1",
     "babel-core": "^6.26.3",
     "camelcase": "^5.0",
-    "craft-ai": "1.19.1",
+    "craft-ai": "1.20.0",
     "lodash.debounce": "^4.0",
     "lodash.last": "^3.0",
     "lodash.orderby": "^4.6",
@@ -76,8 +76,5 @@
     "prop-types": "^15.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
-  },
-  "browser": {
-    "lodash": "lodash/lodash.min.js"
   }
 }
