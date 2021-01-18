@@ -1,0 +1,60 @@
+name: test react components
+on: [push]
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["12.x", "14.x"]
+        # include:
+        # # Define a build_id for each matrix config
+        #   - node-version: "10.x"
+        #     build_id: ${{ github.run_number }}0
+        #   - node-version: "12.x"
+        #     build_id: ${{ github.run_number }}1
+    steps:
+      # Preparing test/build environment 
+      - name: Checkout scm
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.com'
+      - name: Run lint
+        run: yarn run lint
+      - name: Run build
+        run: yarn run build
+      - name: Run build
+        run: yarn run storybook:build
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v1.0.3
+        id: notify
+        with:
+          # slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack-bot-user-oauth-access-token: "xoxb-3342203735-638762885824-ZkvQa8dTPZgND7Jq0WxmAJpm"
+          slack-channel: ci
+          slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 🤓
+  deploy:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    runs-on: "ubuntu-latest"
+    steps:
+      # Preparing test/build environment 
+      - name: Script deployment
+        run: bash scripts/npm_publish.sh ${{ CRAFTAI_NPM_TOKEN }}
+      - name: Pages deployment
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOLDER: site # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+
+      # - name: Install packages
+      #   run: npm install
+      # - name: Run test
+      #   env: 
+      #     CRAFT_TOKEN: ${{ secrets.STANLEY_CRAFT_AI_TOKEN }}
+      #     JOB_ID: ${{ matrix.build_id }}
+      #   run: npm test
