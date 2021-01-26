@@ -34,7 +34,7 @@ jobs:
         id: notify
         with:
           # slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-bot-user-oauth-access-token: "xoxb-3342203735-638762885824-ZkvQa8dTPZgND7Jq0WxmAJpm"
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
           slack-channel: ci
           slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 🤓
   deploy:
