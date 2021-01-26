@@ -19,16 +19,19 @@ jobs:
         with:
           submodules: true
       - name: Set up Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.com'
-      - name: Run lint
-        run: yarn run lint
-      - name: Run build
-        run: yarn run build
-      - name: Run build
-        run: yarn run storybook:build
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn storybook:build # will run `yarn install` command
+      # - name: Run lint
+      #   run: yarn run lint
+      # - name: Run build
+      #   run: yarn run build
+      # - name: Run build
+      #   run: yarn run storybook:build
       - name: Send message to Slack API
         uses: archive/github-actions-slack@v1.0.3
         id: notify
@@ -43,7 +46,7 @@ jobs:
     steps:
       # Preparing test/build environment 
       - name: Script deployment
-        run: bash scripts/npm_publish.sh ${{ CRAFTAI_NPM_TOKEN }}
+        run: bash scripts/npm_publish.sh ${{ secrets.CRAFT_AI_NPM_TOKEN }}
       - name: Pages deployment
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
