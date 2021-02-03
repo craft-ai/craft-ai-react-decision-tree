@@ -1,0 +1,43 @@
+name: test react components
+on: [push]
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["12.x"]
+    steps:
+      # Preparing test/build environment 
+      - name: Checkout scm
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.com'
+      - run: yarn install
+      - run: yarn run lint
+      - run: yarn run build
+      - run: yarn run storybook:build
+  deploy:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    runs-on: "ubuntu-latest"
+    steps:
+      # Preparing test/build environment 
+      - name: Script deployment
+        run: bash scripts/npm_publish.sh ${{ secrets.CRAFT_AI_NPM_TOKEN }}
+      - name: Pages deployment
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FOLDER: site # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v1.0.3
+        id: notify
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          slack-channel: ci
+          slack-text: Success! Github Actions for ${{ github.head_ref }} ("https://github.com/${{ github.repository }}/actions")
