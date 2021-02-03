@@ -23,9 +23,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.com'
-      - run: npm run lint
-      - run: npm run build
-      - run: npm run storybook:build # will run `yarn install` command
+      - run: yarn install
+      - run: yarn run lint
+      - run: yarn run build
+      - run: yarn run storybook:build # will run `yarn install` command
       # - name: Run lint
       #   run: yarn run lint
       # - name: Run build
