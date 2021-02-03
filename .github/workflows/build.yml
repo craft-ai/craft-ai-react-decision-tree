@@ -5,13 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["12.x", "14.x"]
-        # include:
-        # # Define a build_id for each matrix config
-        #   - node-version: "10.x"
-        #     build_id: ${{ github.run_number }}0
-        #   - node-version: "12.x"
-        #     build_id: ${{ github.run_number }}1
+        node-version: ["12.x"]
     steps:
       # Preparing test/build environment 
       - name: Checkout scm
@@ -23,25 +17,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.com'
-      - name: Yarn install letsgo
-        run: yarn install
+      - run: yarn install
       - run: yarn run lint
       - run: yarn run build
-      - run: yarn run storybook:build # will run `yarn install` command
-      # - name: Run lint
-      #   run: yarn run lint
-      # - name: Run build
-      #   run: yarn run build
-      # - name: Run build
-      #   run: yarn run storybook:build
-      - name: Send message to Slack API
-        uses: archive/github-actions-slack@v1.0.3
-        id: notify
-        with:
-          # slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          slack-channel: ci
-          slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 🤓
+      - run: yarn run storybook:build
   deploy:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     runs-on: "ubuntu-latest"
@@ -55,11 +34,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FOLDER: site # The folder the action should deploy.
           CLEAN: true # Automatically remove deleted files from the deploy branch
-
-      # - name: Install packages
-      #   run: npm install
-      # - name: Run test
-      #   env: 
-      #     CRAFT_TOKEN: ${{ secrets.STANLEY_CRAFT_AI_TOKEN }}
-      #     JOB_ID: ${{ matrix.build_id }}
-      #   run: npm test
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v1.0.3
+        id: notify
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          slack-channel: ci
+          slack-text: Success! Github Actions for ${{ github.head_ref }} ("https://github.com/${{ github.repository }}/actions")
